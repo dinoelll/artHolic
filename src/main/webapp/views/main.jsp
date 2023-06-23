@@ -54,6 +54,9 @@
 	    <td><input type="password" id="pw" placeholder="Password"></td>
 	  </tr>
 	  <tr>
+	    <td><div id="msg"></div></td>
+	  </tr>
+	  <tr>
 	    <th colspan="2">
 	      <button onclick="login()" id="login">Login</button>
 	    </th>
@@ -65,14 +68,18 @@
 </body>
 <script>
 
+
 function login() {
     var $id = $('#id');
     var $pw = $('#pw');
 
     if ($id.val() == '') {
-        alert('아이디를 입력해 주세요.');
+        $('#msg').css({'font-size': '12px','color': 'red'});
+		$('#msg').html('아이디를 입력해 주세요.');
     } else if ($pw.val() == '') {
-        alert('비밀번호를 입력해 주세요.');
+        
+        $('#msg').css({'font-size': '12px','color': 'red'});
+		$('#msg').html('비밀번호를 입력해 주세요.');
     } else {
         $.ajax({
             type: 'post',
@@ -88,7 +95,9 @@ function login() {
             },
             error: function(e) {
                 console.log(e);
-                alert('회원가입에 실패 했습니다.\r\n 다시 시도해 주세요!');
+      
+                $('#msg').css({'font-size': '12px','color': 'red'});
+        		$('#msg').html('로그인에 실패 했습니다.\r\n 다시 시도해 주세요!');
             }
         });
     }
