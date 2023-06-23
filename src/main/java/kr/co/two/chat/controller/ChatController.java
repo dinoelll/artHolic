@@ -33,7 +33,7 @@ public class ChatController {
 		this.template = template;
 	}
 	
-	@GetMapping(value="/chat")
+	@GetMapping(value="/chat.go")
 	public String home() {
 		return "chat";
 	}
