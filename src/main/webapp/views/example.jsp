@@ -52,6 +52,10 @@
 		width : 231px;
 		height : 68px;
 	}
+<<<<<<< HEAD
+	
+=======
+>>>>>>> origin/master
 	#footer {
 		margin-left: 0px;
 	}
