@@ -7,35 +7,40 @@
 <!-- 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
  -->
-	<!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!--  Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">	
+<!-- Ionicons -->
+<link rel="stylesheet"
+	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!--  Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
-  <!-- Font Awesome-->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  
-  <!--  iCheck -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  
-   <!-- JQVMap
+<!-- Font Awesome-->
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+
+<!-- Tempusdominus Bootstrap 4 -->
+<link rel="stylesheet"
+	href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
+<!--  iCheck -->
+<link rel="stylesheet"
+	href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+
+<!-- JQVMap
   <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
   -->
-  <!-- Theme style-->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- overlayScrollbars-->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker
+<!-- Theme style-->
+<link rel="stylesheet" href="dist/css/adminlte.min.css">
+<!-- overlayScrollbars-->
+<link rel="stylesheet"
+	href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+<!-- Daterange picker
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   -->
-  <!-- summernote 
+<!-- summernote 
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
   -->
-  <!-- fullCalendar (캘린더) -->
-  <link rel="stylesheet" href="plugins/fullcalendar/main.css">
+<!-- fullCalendar (캘린더) -->
+<link rel="stylesheet" href="plugins/fullcalendar/main.css">
 <style>
 	.main-sidebar {
 		background-color: #e9ddc6;
@@ -300,28 +305,33 @@
 </div>
 	
 	
+
+
 <!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+	<script src="plugins/jquery/jquery.min.js"></script>
+	<!-- jQuery UI -->
+	<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
+	<!-- Bootstrap 4 -->
+	<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- overlayScrollbars -->
+	<script
+		src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="dist/js/adminlte.js"></script>
 
-<!-- AdminLTE for demo purposes 
+	<!-- AdminLTE for demo purposes 
 <script src="dist/js/demo.js"></script>
 -->
 
-<!-- ChartJS(차트) -->
-<script src="plugins/chart.js/Chart.min.js"></script>
+	<!-- ChartJS(차트) -->
+	<script src="plugins/chart.js/Chart.min.js"></script>
 
-<!-- fullCalendar 2.2.5 (캘린더) -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/fullcalendar/main.js"></script>
+	<!-- fullCalendar 2.2.5 (캘린더) -->
+	<script src="plugins/moment/moment.min.js"></script>
+	<script src="plugins/fullcalendar/main.js"></script>
+
+
 
 </body>
 <script>
