@@ -52,6 +52,9 @@
 		width : 231px;
 		height : 68px;
 	}
+	#footer {
+		margin-left: 0px;
+	}
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -282,17 +285,14 @@
           </div>
           <!-- /.col -->
         </div>
-        
       </div>
-       
       <!-- /.timeline -->
       
     </section>
-   
     <!-- /.content -->
-      
-	<jsp:include page="footer.jsp"/>
-	 
+    
+    <jsp:include page="footer.jsp"/>
+	</div>
 	 
 	  
 	<!-- Control Sidebar -->
@@ -301,9 +301,11 @@
   </aside>
   <!-- /.control-sidebar -->
 	
-</div>
-</div>
+
+
 	
+</div>
+
 	
 
 
