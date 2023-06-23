@@ -42,7 +42,7 @@
 <body>
 
 <div class="main-container">
-	<img src="resources/img/Artholic.png" alt="">
+	<img src="img/Artholic.png" alt="">
 </div>
 	
 <div class="main-container">     
