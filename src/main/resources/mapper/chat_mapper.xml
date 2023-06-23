@@ -4,6 +4,7 @@
 
 	   
 <mapper namespace="kr.co.two.chat.dao.ChatDAO">
+
 	<select id="chatList" resultType="ChatDTO" parameterType="String">
 		select * from chat_room_info
 		WHERE id=#{name}
