@@ -15,7 +15,7 @@
 	    justify-content: center;
 	    align-items: center;
 	}
-	input[type="text"],
+	input[type="text"],`	
   	input[type="password"] {
     	width: 330px;
 		height: 40px;
