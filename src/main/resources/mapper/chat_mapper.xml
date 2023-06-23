@@ -4,4 +4,30 @@
 	   
 <mapper namespace="kr.co.two.chat.dao.ChatDAO">
 
+	<select id="chatList" resultType="ChatDTO" parameterType="String">
+		select * from chat_room_info
+		WHERE id=#{name}
+	</select>
+	
+	<select id="room_list" resultType="ChatDTO" parameterType="int">
+		select * from chat_room
+		WHERE chat_room_id = #{chat_room_id}
+	</select>
+	
+	<select id="chatHistory" resultType="ChatDTO" parameterType="String">
+		select * from chat
+		WHERE chat_room_id = #{chat_room_id}
+	</select>
+	
+	<insert id="chatStored" parameterType="hashmap">
+		INSERT INTO chat(send_id, chat_room_id, content)
+		VALUES(#{send_id}, #{chat_room_id}, #{content})
+	
+	</insert>
+	
+	<select id="chatLoad" parameterType="String">
+		SELECT * FROM chat
+		WHERE chat_room_id = #{id}
+	
+	</select>
 </mapper>
