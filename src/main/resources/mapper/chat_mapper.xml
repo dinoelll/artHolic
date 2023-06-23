@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+	   
 <mapper namespace="kr.co.two.chat.dao.ChatDAO">
-<select id="chatList" resultType="ChatDTO" parameterType="String">
+	<select id="chatList" resultType="ChatDTO" parameterType="String">
 		select * from chat_room_info
 		WHERE id=#{name}
 	</select>
@@ -29,5 +30,4 @@
 		WHERE chat_room_id = #{id}
 	
 	</select>
-
 </mapper>
