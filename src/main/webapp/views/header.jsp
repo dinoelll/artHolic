@@ -140,19 +140,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.move" class="nav-link">
+                <a href="./mycalendar" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>캘린더</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.move" class="nav-link">
+                <a href="./myfolder" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p class="dashboard2">내 문서</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index3.move" class="nav-link">
+                <a href="./pwchange" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>비밀번호 변경</p>
                 </a>
@@ -160,11 +160,10 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="pages/widgets.move" class="nav-link">
+            <a href="./projectList.go" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 프로젝트
-                
               </p>
             </a>
           </li>
@@ -179,37 +178,37 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.move" class="nav-link">
+                <a href="./sendBox.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>보낸메일함</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.move" class="nav-link">
+                <a href="./inBox.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>받은 메일함</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/fixed-sidebar.move" class="nav-link">
+                <a href="./outBox.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>임시 보관함</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/fixed-sidebar-custom.move" class="nav-link">
+                <a href="./selfBox.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>내게 쓴 메일함</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/fixed-topnav.move" class="nav-link">
+                <a href="./importantBox.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>중요 메일함</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/fixed-footer.move" class="nav-link">
+                <a href="./trashBox.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>휴지통</p>
                 </a>
@@ -227,13 +226,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.move" class="nav-link">
+                <a href="./address.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>사내 연락처</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.move" class="nav-link">
+                <a href="./companyAddress.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>협력 업체</p>
                 </a>
@@ -241,7 +240,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="./metingRoom.go" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
                 회의실 예약
@@ -250,7 +249,7 @@
             
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="./briefingList.go" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
                 현장 설명회
@@ -260,7 +259,7 @@
             
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="./paymentMain.go" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>
                 결재
@@ -277,29 +276,30 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.move" class="nav-link">
+                <a href="./rentalList.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>재고관리</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.move" class="nav-link">
+                <a href="./employeeList.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>사원관리</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.move" class="nav-link">
+                <a href="./attendance.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>근태관리</p>
                 </a>
               </li>
+              <!-- 매출관리 삭제
               <li class="nav-item">
                 <a href="pages/charts/flot.move" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>매출관리</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
         </ul>

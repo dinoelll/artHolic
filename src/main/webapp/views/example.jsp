@@ -47,6 +47,10 @@
 		width : 231px;
 		height : 68px;
 	}
+	
+	#footer {
+		margin-left: 0px;
+	}
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
