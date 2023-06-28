@@ -1,16 +1,13 @@
 package kr.co.two.mypage.service;
 
-<<<<<<< HEAD
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-=======
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
->>>>>>> origin/master
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +26,7 @@ public class MypageService {
 	MypageDAO dao;
 
 	Logger logger = LoggerFactory.getLogger(getClass());
-<<<<<<< HEAD
+
 
 	public void calendarUpdate(ArrayList<EventDataDTO> eventDataList) {
 		String member_id = "1812001";
@@ -58,7 +55,7 @@ public class MypageService {
 		
 		return dao.getEvent();
 	}
-=======
+
 	
 	@Value("${spring.servlet.multipart.location}") private String root;
 
@@ -111,7 +108,4 @@ public class MypageService {
 		return dao.fileList(folderId);
 	}
 
-		
-	
->>>>>>> origin/master
 }

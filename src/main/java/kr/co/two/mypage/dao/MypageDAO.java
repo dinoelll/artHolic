@@ -1,10 +1,8 @@
 package kr.co.two.mypage.dao;
 
-<<<<<<< HEAD
-import java.util.List;
-=======
+
 import java.util.ArrayList;
->>>>>>> origin/master
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,11 +11,11 @@ import kr.co.two.mypage.dto.EventDataDTO;
 @Mapper
 public interface MypageDAO {
 
-<<<<<<< HEAD
+
 	void calendarUpdate(EventDataDTO eventDataDTO);
 
 	List<EventDataDTO> getEvent();
-=======
+
 	void myFolderCreate(String folderName);
 
 	ArrayList<String> folderList();
@@ -30,6 +28,5 @@ public interface MypageDAO {
 
 	void fileUpload(String fileName, String ext, String newFileName, int folderId);
 
->>>>>>> origin/master
 
 }
