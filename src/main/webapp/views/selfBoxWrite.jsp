@@ -42,7 +42,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>메일 쓰기</h1>
+            <h1>내게 쓰기</h1>
           </div>
           <!--  
           <div class="col-sm-6">
@@ -69,12 +69,6 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="form-group">
-                  받는사람 <input class="form-control" >
-                </div>
-                <div class="form-group">
-                  참조 <input class="form-control" >
-                </div>
-                <div class="form-group">
                   제목 <input class="form-control">
                 </div>
                 <div class="form-group">
@@ -83,7 +77,7 @@
                 </div>
                 <div class="form-group">
                   <div class="btn btn-default btn-file">
-                    <i class="fas fa-paperclip"></i> Attachment
+                    <i class="fas fa-paperclip"></i> 파일 첨부
                     <input type="file" name="attachment">
                   </div>
                   <p class="help-block">Max. 32MB</p>

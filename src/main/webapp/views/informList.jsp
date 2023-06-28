@@ -11,13 +11,13 @@
  <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <!-- Toastr -->
-  <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
 <!-- --------------------------------------------------------------------------------------------------- -->
 
@@ -165,117 +165,54 @@ table, td, th {
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0">프로젝트</h1>
+							<h1 class="m-0">공지사항</h1>
 						</div>
-						<!-- /.col -->
-						<div class="col-sm-6">
-							<ol class="breadcrumb float-sm-right">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active">Dashboard v1</li>
-							</ol>
-						</div>
-						<!-- /.col -->
 					</div>
 					<!-- /.row -->
 				</div>
 				<!-- /.container-fluid -->
 			</div>
 			<!-- /.content-header -->
-			
-			
-			
-			
-
-
-				<div class="modal fade" id="modal-default">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h4 class="modal-title">프로젝트 등록</h4>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<table>
-												<tr>
-													<th>프로젝트명</th>
-													<td><input type="text" id="" value=""placeholder="프로젝트명을 입력하세요" /></td>
-												</tr>
-												<tr>
-													<th>프로젝트담당자</th>
-													<td><input type="text" id="" value=""placeholder="담당자명을 입력하세요" /></td>
-												</tr>
-												<tr>
-													<th>연락처</th>
-													<td><input type="text" id="" value=""placeholder="연락처를 입력하세요" /></td>
-												</tr>
-											
-											</table>
-											<hr>
-											<h2>일정</h2>
-											<table>
-												<tr>
-													<th>시작일</th>
-													<td><input type="text" id="" value=""placeholder="시작일을 입력하세요" /></td>
-												</tr>
-												<tr>
-													<th>종료일</th>
-													<td><input type="text" id="" value=""placeholder="종료일을 입력하세요" /></td>
-												</tr>
-											</table>
-							</div>
-							<div class="modal-footer justify-content-between">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal">닫기</button>
-								<button type="button" class="btn btn-primary">등록</button>
-							</div>
-						</div>
-						<!-- /.modal-content -->
-					</div>
-					<!-- /.modal-dialog -->
-				</div>
-				<!-- /.modal -->
-			
-			
-			
-			
 
 
 			<!-- Main content -->
 			<section class="content">
 				<div class="container-fluid">
-
 					<hr>
 					<br> <br> <br>
-
-
 					<table>
 						<thead>
 							<tr>
-								<td colspan="5"><select id="opt">
-										<option value="subject">프로젝트명</option>
-										<option value="manager">프로젝트담당자</option>
-								</select> <input type="text" id="keyword" value=""
+								<td colspan="5">
+									<select id="opt">
+										<option value="subject">제목</option>
+										<option value="member_id">작성자</option>
+									</select> 
+								<input type="text" id="keyword" value=""
 									placeholder="검색어를 입력하세요" />
-									<button onclick=opt()>검색</button>
-									<button type="button" class="btn btn-default"
-										data-toggle="modal" data-target="#modal-default">
-										등록</button>	
+									<button onclick="opt()">검색</button>
+									<button type="button" class="btn btn-sm btn-primary">필독삭제</button>	
+									<button type="button" onclick="location.href='/informWrite.go'" class="btn btn-sm btn-primary">등록</button>
+									<button type="button" class="btn btn-sm btn-primary">삭제</button>
 								</td>
 							</tr>
 							<tr>
-								<th>프로젝트명</th>
-								<th>프로젝트 담당자</th>
-								<th>프로젝트 일정</th>
-								<th>담당자 연락처</th>
-								<th>진행상태</th>
-
+								<th>체크박스</th>
+								<th>작성자</th>
+								<th colspan="2">제목</th>
+								<th>작성일자</th>
 							</tr>
 						</thead>
 						<tbody id="list">
-							<!-- 리스트가 출력될 영역 -->
+							<c:forEach items="${list}" var="dto">
+								<tr>
+									<td><input type="checkbox" /></td>
+									<th>${dto.member_id}</th>
+									<th><a href="informDetail.do?idx=${dto.board_id}">${dto.subject}</a></th>
+									<td>${dto.writeTime}</td>
+									<td><button type="button" class="btn btn-sm btn-primary">삭제</button></td>
+								</tr>
+							</c:forEach>
 						</tbody>
 						<tr>
 							<td colspan="6" id="paging">
@@ -334,17 +271,17 @@ table, td, th {
 	<script src="plugins/fullcalendar/main.js"></script>
 	
 		<!-- jQuery -->
-	<script src="../../plugins/jquery/jquery.min.js"></script>
+	<script src="plugins/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
-	<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<!-- SweetAlert2 -->
-	<script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+	<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
 	<!-- Toastr -->
-	<script src="../../plugins/toastr/toastr.min.js"></script>
+	<script src="plugins/toastr/toastr.min.js"></script>
 	<!-- AdminLTE App -->
-	<script src="../../dist/js/adminlte.min.js"></script>
+	<script src="dist/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
-	<script src="../../dist/js/demo.js"></script>
+	<script src="dist/js/demo.js"></script>
 	<!-- Page specific script -->
 
 

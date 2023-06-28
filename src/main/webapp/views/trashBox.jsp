@@ -42,7 +42,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>내게 쓴 메일함</h1>
+            <h1>휴지통</h1>
           </div>
           <!--  
           <div class="col-sm-6">
@@ -70,6 +70,7 @@
                 <div class="input-group input-group-sm">
                 <select name="searchFilter" id="searchFilter">
                 	<option value="allMail">전체</option>
+				    <option value="senter">보낸 사람</option>
 				    <option value="mailSubject">제목</option>
 				    <option value="mailContent">내용</option>
 				</select>

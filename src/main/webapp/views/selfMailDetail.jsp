@@ -42,16 +42,8 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>메일 쓰기</h1>
+            <h1>내게 쓴 메일함</h1>
           </div>
-          <!--  
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Inbox</li>
-            </ol>
-          </div>
-          -->
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -62,44 +54,79 @@
           
         <!-- /.col -->
         <div class="col-md-9">
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h3 class="card-title">새 메일 작성</h3>
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
+              <a href="selfBoxWrite.go" class="btn btn-primary btn-sm ">내게 쓰기</a>
+              <div class="card-tools">
+              	<a href="mailWrite.jsp" class="btn btn-primary btn-sm ">전달</a>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <div class="form-group">
-                  받는사람 <input class="form-control" >
-                </div>
-                <div class="form-group">
-                  참조 <input class="form-control" >
-                </div>
-                <div class="form-group">
-                  제목 <input class="form-control">
-                </div>
-                <div class="form-group">
-                    <textarea id="compose-textarea" class="form-control" style="height: 300px">메일 작성 내용 경석 하이
-                    </textarea>
-                </div>
-                <div class="form-group">
-                  <div class="btn btn-default btn-file">
-                    <i class="fas fa-paperclip"></i> Attachment
-                    <input type="file" name="attachment">
-                  </div>
-                  <p class="help-block">Max. 32MB</p>
-                </div>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-                <div class="float-right">
-                	<button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> 보내기</button>
-                 	<button type="reset" class="btn btn-default"><i class="fas fa-times"></i> 취소</button>
-                </div>
-              </div>
-              <!-- /.card-footer -->
             </div>
-            <!-- /.card -->
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="mailbox-read-info">
+                <h5>을지로 3가 공사현장 사진</h5>
+                  <span class="mailbox-read-time float-right">2023.07.24 10:03</span></h6>
+              </div>
+              <!-- /.mailbox-read-info -->
+              <div class="mailbox-controls with-border text-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm" data-container="body" title="Reply">
+                    <i class="fas fa-reply"></i>
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm" data-container="body" title="Forward">
+                    <i class="fas fa-share"></i>
+                  </button>
+                </div>
+                <!-- /.btn-group -->
+              </div>
+              <!-- /.mailbox-controls -->
+              <div class="mailbox-read-message">
+                <p>하이</p>
+
+                <p>사진 2장 첨부</p>
+                  
+                <p>바이</p>
+              </div>
+              <!-- /.mailbox-read-message -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer bg-white">
+              <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+                <li>
+                  <span class="mailbox-attachment-icon has-img"><img src="../../dist/img/photo1.png" alt="Attachment"></span>
+
+                  <div class="mailbox-attachment-info">
+                    <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> 사진.png</a>
+                        <span class="mailbox-attachment-size clearfix mt-1">
+                          <span>2.67 MB</span>
+                          <a href="#" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
+                        </span>
+                  </div>
+                </li>
+                <li>
+                  <span class="mailbox-attachment-icon has-img"><img src="../../dist/img/photo2.png" alt="Attachment"></span>
+
+                  <div class="mailbox-attachment-info">
+                    <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> 사진2.png</a>
+                        <span class="mailbox-attachment-size clearfix mt-1">
+                          <span>1.9 MB</span>
+                          <a href="#" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
+                        </span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <!-- /.card-footer -->
+            <div class="card-footer">
+            </div>
+            <!-- /.card-footer -->
           </div>
+          <!-- /.card -->
+        </div>
         <!-- /.col -->
       </div>
       <!-- /.row -->

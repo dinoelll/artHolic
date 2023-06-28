@@ -47,5 +47,41 @@ public class MailController {
 		return "mailWrite";
 	}
 	
+	@GetMapping(value="/trashBox.go")
+	public String trashBox() {
+		
+		return "trashBox";
+	}
+	
+	@GetMapping(value="/searchBox.go")
+	public String searchBox() {
+		
+		return "searchBox";
+	}
+	
+	@GetMapping(value="/selfBoxWrite.go")
+	public String selfBoxWrite() {
+		
+		return "selfBoxWrite";
+	}
+	
+	@GetMapping(value="/mailDetail.go")
+	public String mailDetail() {
+		
+		return "mailDetail";
+	}
+	
+	@GetMapping(value="/selfMailDetail.go")
+	public String selfMailDetail() {
+		
+		return "selfMailDetail";
+	}
+	
+	@GetMapping(value="/writeComplete.go")
+	public String writeComplete() {
+		
+		return "writeComplete";
+	}
+	
 	
 }
