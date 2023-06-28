@@ -1,33 +1,33 @@
 package kr.co.two.mypage.controller;
 
-<<<<<<< HEAD
+
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-=======
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
->>>>>>> origin/master
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-<<<<<<< HEAD
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-=======
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
->>>>>>> origin/master
+
 
 import kr.co.two.mypage.dto.EventDataDTO;
 import kr.co.two.mypage.service.MypageService;
@@ -64,7 +64,7 @@ public class MypageController {
 		return "myCalendar";
 	}
 	
-<<<<<<< HEAD
+
 	
 	@RequestMapping(value="/calendarUpdate.ajax")
 	@ResponseBody
@@ -89,7 +89,7 @@ public class MypageController {
         
         return events;
     }
-=======
+
 	@RequestMapping(value="/createFolder")
 	public String myFolderCreate(@RequestParam String folderName, HttpServletResponse response) {
 		
@@ -187,5 +187,5 @@ public class MypageController {
 		return "redirect:/myfolder";
 		
 	}
->>>>>>> origin/master
+
 }
