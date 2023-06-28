@@ -52,10 +52,7 @@
 		width : 231px;
 		height : 68px;
 	}
-<<<<<<< HEAD
-	
-=======
->>>>>>> origin/master
+
 	#footer {
 		margin-left: 0px;
 	}
@@ -324,7 +321,7 @@
 	<script
 		src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 	<!-- AdminLTE App -->
-	<script src="dist/js/adminlte.js"></script>
+	<script src="dist/js/adminlte.min.js"></script>
 
 	<!-- AdminLTE for demo purposes 
 <script src="dist/js/demo.js"></script>

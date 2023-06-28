@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.two.chat.dto.ChatDTO;
+import kr.co.two.chat.dto.MemberDTO;
 
 @Mapper
 public interface ChatDAO {
@@ -19,5 +20,7 @@ public interface ChatDAO {
 	int chatStored(HashMap<String, Object> map);
 
 	ArrayList<ChatDTO> chatLoad(String id);
+
+	ArrayList<MemberDTO> memberList();
 
 }

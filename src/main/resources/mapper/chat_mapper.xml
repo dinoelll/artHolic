@@ -7,7 +7,7 @@
 
 	<select id="chatList" resultType="ChatDTO" parameterType="String">
 		select * from chat_room_info
-		WHERE id=#{name}
+		WHERE member_id=#{name}
 	</select>
 	
 	<select id="room_list" resultType="ChatDTO" parameterType="int">
@@ -31,5 +31,8 @@
 		WHERE chat_room_id = #{id}
 	
 	</select>
-
+	
+	<select id="memberList" resultType="MemberDTO">
+		SELECT * FROM member
+	</select>
 </mapper>
