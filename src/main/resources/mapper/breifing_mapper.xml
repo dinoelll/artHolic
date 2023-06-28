@@ -4,4 +4,47 @@
 	   
 <mapper namespace="kr.co.two.board.dao.BreifingDAO">
 
+<insert id="write" parameterType="briefing">
+		INSERT INTO board(subject,member_id,content)
+		VALUES(#{subject},#{user_name},#{content})
+	</insert>
+	
+	<!-- <select id="list" resultType="board">
+		SELECT*FROM editor ORDER BY idx DESC
+	</select> -->
+	
+	<select id="list" resultType="briefing" parameterType="string">
+		SELECT * FROM board
+		<where>
+			<if test="keyword != null and !keyword.equals('') and opt =='name'"> member_id LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> subject LIKE CONCAT('%',#{keyword},'%')</if>
+		</where>
+		ORDER BY board_id DESC
+		LIMIT #{cnt} OFFSET #{offset}
+	</select>
+	
+	<select id="totalCount" resultType="int" parameterType="string">
+		SELECT COUNT(board_id) FROM board
+		<where>
+			<if test="keyword != null and !keyword.equals('') and opt =='name'"> member_id LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> subject LIKE CONCAT('%',#{keyword},'%')</if>
+		</where>
+	</select>
+	
+	<update id="bHit">
+		UPDATE board SET bHit = bHit+1
+		WHERE board_id = #{idx}
+	</update>
+	
+	<select id="detail" resultType="briefing">
+		SELECT*FROM board WHERE board_id = #{idx}
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM board WHERE board_id=#{idx}
+	
+	</delete>
+
+
+
 </mapper>
