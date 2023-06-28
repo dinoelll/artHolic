@@ -72,6 +72,9 @@
                   받는사람 <input class="form-control" >
                 </div>
                 <div class="form-group">
+                  참조 <input class="form-control" >
+                </div>
+                <div class="form-group">
                   제목 <input class="form-control">
                 </div>
                 <div class="form-group">
