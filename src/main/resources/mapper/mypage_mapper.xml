@@ -4,6 +4,17 @@
 	   
 <mapper namespace="kr.co.two.mypage.dao.MypageDAO">
 
+	<insert id="calendarUpdate" parameterType="eventdata">
+		INSERT INTO indi_calendar (content, start_date, end_date,member_id,allDay,backgroundColor,borderColor) 
+		VALUES (#{content},#{start_date},#{end_date},#{member_id},#{allDay},#{backgroundColor},#{borderColor})
+	</insert>
+	
+	<select id="getEvent" resultType="eventdata">
+		SELECT * FROM indi_calendar WHERE member_id="1812001"
+	
+	</select>
+
+
 	<insert id="myFolderCreate" parameterType="java.lang.String">
     	INSERT INTO myFolder (member_id, folder_name)
     	VALUES ("1812001", #{folderName})
@@ -32,4 +43,5 @@
     	VALUES (#{folderId},  #{fileName}, #{ext}, #{newFileName})
 	</insert>
 	
+
 </mapper>

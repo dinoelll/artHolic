@@ -1,10 +1,13 @@
 package kr.co.two.mypage.service;
 
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +17,45 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.two.mypage.dao.MypageDAO;
+import kr.co.two.mypage.dto.EventDataDTO;
 
 @Service
 public class MypageService {
 
-	@Autowired MypageDAO dao;
-	
+	@Autowired
+	MypageDAO dao;
+
 	Logger logger = LoggerFactory.getLogger(getClass());
+
+
+	public void calendarUpdate(ArrayList<EventDataDTO> eventDataList) {
+		String member_id = "1812001";
+		for (EventDataDTO eventDataDTO : eventDataList) {
+			eventDataDTO.setMember_id(member_id);
+			String title = eventDataDTO.getContent();
+			LocalDateTime start = eventDataDTO.getStart_date();
+			LocalDateTime end = eventDataDTO.getEnd_date();
+			boolean allday = eventDataDTO.getAllDay();
+			String backgroundColor = eventDataDTO.getBackgroundColor();
+			String borderColor = eventDataDTO.getBorderColor();
+
+			logger.info("title" + title);
+			logger.info("start" + start);
+			logger.info("end" + end);
+			logger.info("allday" + allday);
+			logger.info("backgroundColor" + backgroundColor);
+			logger.info("borderColor" + borderColor);
+			
+			dao.calendarUpdate(eventDataDTO);
+		}
+
+	}
+
+	public List<EventDataDTO> getEvents() {
+		
+		return dao.getEvent();
+	}
+
 	
 	@Value("${spring.servlet.multipart.location}") private String root;
 
@@ -73,6 +108,4 @@ public class MypageService {
 		return dao.fileList(folderId);
 	}
 
-		
-	
 }
