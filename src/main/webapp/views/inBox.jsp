@@ -64,8 +64,8 @@
         <div class="col-md-9">
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <a href="compose.jsp" class="btn btn-primary btn-sm ">메일 쓰기</a>
-              <a href="selfcompose.jsp" class="btn btn-primary btn-sm ">내게 쓰기</a>
+              <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
+              <a href="selfBoxWrite.go" class="btn btn-primary btn-sm ">내게 쓰기</a>
               <div class="card-tools">
                 <div class="input-group input-group-sm">
                 <select name="searchFilter" id="searchFilter">
@@ -102,9 +102,7 @@
                   </button>
                 </div>
                 <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm">
-                  <i class="fas fa-sync-alt"></i>
-                </button>
+
                 <div class="float-right">
                   1-50/200
                   <div class="btn-group">
@@ -134,7 +132,7 @@
                     <td class="mailbox-subject"><b>응애</b>
                     </td>
                     <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">5 분 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -148,7 +146,7 @@
                     <td class="mailbox-subject"><b>밥 줘</b>
                     </td>
                     <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">28 분 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -162,7 +160,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b> 
                     </td>
                     <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">11 시간 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -176,7 +174,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">15 시간 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -190,7 +188,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">어제</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -204,7 +202,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">2 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -218,7 +216,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">2 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -232,7 +230,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">2 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -246,7 +244,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">2 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -260,7 +258,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">2 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -274,7 +272,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">4 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -288,7 +286,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">12 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -302,7 +300,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">12 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -316,7 +314,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">14 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   <tr>
                     <td>
@@ -330,7 +328,7 @@
                     <td class="mailbox-subject"><b>메일 보내드립니다.</b>
                     </td>
                     <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">15 일 전</td>
+                    <td class="mailbox-date">2023.07.24 14:00</td>
                   </tr>
                   </tbody>
                 </table>

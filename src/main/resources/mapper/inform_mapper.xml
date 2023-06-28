@@ -4,4 +4,15 @@
 	   
 <mapper namespace="kr.co.two.board.dao.InformDAO">
 
+   <insert id="informWriteDo" parameterType="inform">
+      INSERT INTO board(subject, member_id, content)
+         VALUES(#{subject}, '강경석',#{content})   
+   </insert>
+   
+   <select id="informList" resultType="inform">
+   	SELECT board_id, subject, member_id
+   		FROM board ORDER BY board_id DESC
+   </select>
+
+
 </mapper>

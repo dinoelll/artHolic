@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>spring boot</title>
+<title>ArtHolic</title>
 
 
  <!-- Google Font: Source Sans Pro -->
