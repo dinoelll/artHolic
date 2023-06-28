@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.two.chat.dto.ChatDTO;
+import kr.co.two.chat.dto.MemberDTO;
 import kr.co.two.chat.dao.ChatDAO;
 
 @Service
@@ -48,5 +49,9 @@ public class ChatService {
 
 	public ArrayList<ChatDTO> chatLoad(String id) {
 		return dao.chatLoad(id);
+	}
+
+	public ArrayList<MemberDTO> memberList() {
+		return dao.memberList();
 	}
 }
