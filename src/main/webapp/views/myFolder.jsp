@@ -50,7 +50,7 @@
 		height : 68px;
 	}
 	#footer {
-		margin-left: 0px;	
+		margin-left: 251px;	
 	}
 	
 	.content {
@@ -61,6 +61,154 @@
 		text-align: center;
 	}
 	
+	#folderUpdate{
+		height: 30px;
+		width: 350px;
+		margin-left: 55px;
+	}
+	
+	#folderCreate{
+		height: 30px;
+		width: 350px;
+		margin-left: 55px;
+	}
+	
+	.modal-title{
+		margin-left: 180px;
+	}
+	
+	.rectangle {
+		width: 400px;
+		height: 700px;
+		background-color: rgba(233, 221, 198, 0.4);
+		margin-top: 100px;
+	}
+	
+	.rectangle_list {
+		width: 1200px;
+		height: 700px;
+		background-color: rgba(233, 221, 198, 0.4);
+		margin-top: 100px;
+	}
+    
+	.folder-container {
+		display: flex;
+		align-items: center;
+		justify-content: center; /* 요소들을 수평 가운데 정렬 */
+		margin-left: 150px;
+	}	
+	
+	.file-container {
+		display: flex;
+		align-items: center;
+		justify-content: center; /* 요소들을 수평 가운데 정렬 */
+		margin-left: 550px;
+	}
+	
+	.btn-icon {
+		margin-left: 100px;
+		background: none;
+		border: none;
+	}
+	
+	.folder-title {
+		margin-top: 20px;
+		white-space: nowrap; /* 폴더 이름이 한 줄에 표시되도록 설정 */
+	}
+	
+	.horizontal-line {
+	    width: 100%;
+	    height: 1px;
+	    background-color: #ccc;
+	    margin-top: 5px;
+	    margin-bottom: 20px;
+	}
+	
+	.folder-icon {
+    	font-size: 32px;
+    	margin-right: 10px;
+    	color: #91bdce;
+	}
+	
+	.file-icon {
+    	font-size: 32px;
+    	margin-right: 10px;
+    	color: #91bdce;
+	}
+	
+	.btn-container {
+		margin-left: 350px;
+		margin-right: 20px;
+	}	
+	
+	#file-list {
+	  	list-style-type: none;
+	  	padding: 0;
+	}
+	
+	#file-list li {
+	  	margin-bottom: 5px;
+	}
+	
+	#file-list li {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.delete-file {
+		margin-left: auto;
+	}
+	
+	.file-size {
+  		color: #91bdce;
+	}
+	
+	input[type="file"] {
+		display: none;
+	}
+
+	label.file-input-label {
+		/* 파일 선택 버튼을 스타일링할 레이블 요소에 스타일 적용 */
+		background-color: #91bdce;
+		color: white;
+		padding: 10px 20px;
+		border: 1px solid #91bdce;
+		cursor: pointer;
+		align-items: center;
+		width: 475px;
+		text-align: center;
+		border-radius: 5px;
+	}
+	
+	label.file-input-label:hover {
+		/* 호버 상태일 때의 스타일 */
+		background-color: #ddd;
+	}
+	
+	label.file-input-label::after {
+		/* 파일 선택 버튼 아이콘 추가 (예: Font Awesome 아이콘 사용) */
+		content: "\f07b";
+		font-family: "Font Awesome 5 Free";
+		font-weight: 900;
+		margin-left: 10px;
+	}
+	
+	/* 파일 선택 버튼을 눌렀을 때의 스타일 (선택한 파일명 표시 등) */
+	input[type="file"]:focus + label.file-input-label {
+		/* 파일 선택 버튼에 포커스가 있을 때 스타일 적용 */
+		outline: 2px solid #aaa;
+	}
+	
+	.btn-primary{
+		background-color: #91bdce;
+		border: 1px solid #91bdce;
+	}
+
+	
+	
+
+	
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -68,42 +216,208 @@
 		<jsp:include page="header.jsp"/>
 	 	<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-		<!--<h1 class="m-0">Dashboard</h1> -->
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+	    <!-- Content Header (Page header) -->
+	    <div class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+			<!--<h1 class="m-0">Dashboard</h1> -->
+	          </div><!-- /.col -->
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="#">Home</a></li>
+	              <li class="breadcrumb-item active">Dashboard v1</li>
+	            </ol>
+	          </div><!-- /.col -->
+	        </div><!-- /.row -->
+	      </div><!-- /.container-fluid -->
+	    </div>
+	    <!-- /.content-header -->
     
     <!-- Main content -->
-	 <section class="content">
-	   <div class="container-fluid">
-	    
-	    
-	    
-		<h2>내 문서</h2>
-		
-	   </div>
-	   <!-- /.container-fluid -->
-	      
-	</section>
-    <!-- /.content -->
+<section class="content">
+    <div class="container-fluid">
     
-		
-		<jsp:include page="footer.jsp"/>
+    <!-- 폴더 리스트 -->
+      <div class="row">
+        <div class="col-md-3">
+          <div class="rectangle">
+            <div class="folder-container">
+              <i class="fas fa-folder folder-icon"></i>
+              <h4 class="folder-title">내 폴더</h4>
+              <button type="button" class="btn btn-default btn-icon" data-toggle="modal" data-target="#modal-default">
+                <i class="fas fa-plus"></i>
+              </button>	
+            </div>	
+            <div class="horizontal-line"></div>
+	            <table id="folder-list-table" class="table">
+				  <thead>
+				  </thead>
+				  <tbody id="folder-list"></tbody>
+				</table>
+          </div>
+        </div>
+        
+	<!-- 파일 리스트 -->
+        <div class="col-md-6">
+          <div class="rectangle_list">	
+            <div class="file-container">
+				<i class="fas fa-file file-icon"></i>
+             	<h4 class="folder-title">파일 리스트</h4>
+             	<div class="btn-container">
+	            	<button type="button" class="btn btn-default btn-icon" data-toggle="modal" data-target="#modal-upload">
+	              	<i class="fas fa-plus"></i>
+	              	</button>
+	              	
+	            </div>	
+            </div>	
+            <div class="horizontal-line"></div>
+            	<table id="file-list-table" class="table">
+				  <thead>
+				  </thead>
+				  <tbody id="file-list"></tbody>
+				</table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->
+</div>
+	
+   		<!-- 폴더 등록 모달창 -->
+		<div class="modal fade" id="modal-default">
+			<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">폴더 생성</h4>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<div class="modal-body">
+				<table>
+					<tr>
+						<td><input type="text" id="folderCreate" placeholder="폴더 이름을 입력해주세요." /></td>
+					</tr>
+				</table>		
+			</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default"
+						data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary btn-create">생성</button>
+				</div>
 		</div>
+		<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+		
+		
+		<!-- 폴더 수정 모달창 -->
+		<div class="modal fade" id="modal-update">
+			<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">폴더 수정</h4>
+					
+					<!-- 폴더 id -->
+           			<span class="folder_id update" hidden=""></span>
+         
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<div class="modal-body">
+				<table>
+					<tr>
+						<td><input type="text" id="folderUpdate" placeholder="변경할 폴더 이름을 입력해주세요." /></td>
+					</tr>
+				</table>		
+			</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default"
+						data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary btn-update">수정</button>
+				</div>
+		</div>
+		<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+		
+		
+		<!-- 폴더 삭제 모달창 -->
+		<div class="modal fade" id="modal-delete">
+			<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">폴더 삭제</h4>
+					
+					<!-- 폴더 id -->
+           			<span class="folder_id delete" hidden=""></span>
+         
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<div class="modal-body">
+				<p style="text-align: center;">폴더를 정말로 <strong>삭제</strong>하시겠습니까?</p>
+				<br>
+				<p style="text-align: center; font-size: 20px;">*삭제된 폴더는 <span style="color: red; font-weight: bolder;">복구</span>되지 않습니다.*</p>
+			</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default"
+						data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary btn-delete">삭제</button>
+				</div>
+		</div>
+		<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+		
+		
+		
+		<!-- 파일 등록 모달창 -->
+		<div class="modal fade" id="modal-upload">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title">파일 업로드</h4>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <ul id="upload-list"></ul>
+				    <table>
+				        <tr>
+				            <td><input type="file" id="file-input" multiple /></td>
+				            <label for="file-input" class="file-input-label">파일 선택</label>
+				        </tr>
+				    </table>
+		      </div>
+		      <div class="modal-footer justify-content-between">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+		        <button type="button" class="btn btn-primary btn-primary-file" id="upload-button">업로드</button>
+		      </div>
+		    </div>
+		    <!-- /.modal-content -->
+		  </div>
+		  <!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+	   
 	</div>
+    <!-- /.container-fluid -->
+
 	
 	<!-- jQuery -->
 	<script src="plugins/jquery/jquery.min.js"></script>
@@ -124,6 +438,304 @@
 
 <script>
 
+listcall();
+filelistcall();
 
+	/* 폴더 생성 */
+	$(document).ready(function() {
+		// 생성 버튼 클릭 시
+		$('.btn-create').click(function() {
+		// 입력된 폴더 이름 가져오기
+	    var folderName = $('#folderCreate').val().trim();
+	        
+	    // 폴더 이름이 공백인 경우 경고창 띄우고 함수 종료
+	    if (folderName === '') {
+	       	alert('폴더 이름을 입력하세요.');
+	        return;
+	    }
+		// 서버로 폴더 생성 요청 전송
+		$.ajax({
+			type: 'POST',
+			url: '/createFolder',
+			data: { folderName: folderName },
+			success: function(data) {
+			  // 폴더 생성 성공 시
+			  alert('폴더 생성에 성공했습니다.');
+			  location.reload(); // 페이지 새로고침
+			},
+			error: function(error) {
+			  // 폴더 생성 실패 시
+			  alert('폴더 생성에 실패했습니다.');
+			  console.log(error);
+			}
+		});
+		
+			// 모달창 닫기
+			$('#modal-default').modal('hide');
+			});
+	});
+		
+	/* 폴더 수정 */
+	$(document).ready(function() {
+	  // 수정 버튼 클릭 시
+	  $('.btn-update').click(function() {
+	    // 입력된 폴더 이름 가져오기
+	    var folderName = $('#folderUpdate').val();
+	    var folderId = $('.folder_id.update').text();
+		console.log(folderName,folderId);
+	    // 서버로 폴더 수정 요청 전송
+	    $.ajax({
+	      type: 'POST',
+	      url: '/updateFolder',
+	      data: {
+	        folderName: folderName,
+	        folder_id: folderId
+	      },
+	      success: function(data) {
+	        // 폴더 수정 성공 시
+	        alert('폴더 이름 변경에 성공했습니다.');
+	        location.reload(); // 페이지 새로고침
+	      },
+	      error: function(error) {
+	        // 폴더 수정 실패 시
+	        alert('폴더 이름 변경에 실패했습니다.');
+	        console.log(error);
+	      }
+	    });
+
+	    // 모달창 닫기
+	    $('#modal-update').modal('hide');
+	  });
+	});
+	
+	/* 폴더 삭제 */
+	$(document).ready(function() {
+	  // 삭제 버튼 클릭 시
+	  $('.btn-delete').click(function() {
+	    var folderId = $('.folder_id.delete').text();
+		console.log(folderId);
+	    // 서버로 폴더 삭제 요청 전송
+	    $.ajax({
+	      type: 'POST',
+	      url: '/deleteFolder',
+	      data: {
+	        folder_id: folderId
+	      },
+	      success: function(data) {
+	        // 폴더 삭제 성공 시
+	        alert('폴더 삭제에 성공했습니다.');
+	        location.reload(); // 페이지 새로고침
+	      },
+	      error: function(error) {
+	        // 폴더 삭제 실패 시
+	        alert('폴더 삭제에 실패했습니다.');
+	        console.log(error);
+	      }
+	    });
+
+	    // 모달창 닫기
+	    $('#modal-delete').modal('hide');
+	  });
+	});
+	
+	$(document).on('click', '.btn-edit', function() {
+		  var folderId = $(this).data('id'); // 클릭된 버튼의 data-id 값을 가져옴
+		  console.log(folderId);
+		  $('#modal-update').find('.folder_id.update').text(folderId); // 모달 내부의 특정 요소에 폴더 ID를 설정
+		  
+		  // 모달 열기 코드
+		  $('#modal-update').modal('show');
+		});
+	
+	$(document).on('click', '.btn-delete', function() {
+		  var folderId = $(this).data('id'); // 클릭된 버튼의 data-id 값을 가져옴
+		  console.log(folderId);
+		  $('#modal-delete').find('.folder_id.delete').text(folderId); // 모달 내부의 특정 요소에 폴더 ID를 설정
+		  
+		  // 모달 열기 코드
+		  $('#modal-delete').modal('show');
+		});
+	
+	
+	
+	/* 파일 업로드 */
+	$(document).ready(function() {
+	  // 파일 선택 시
+	  $('#file-input').change(function() {
+	    var fileList = $('#file-input')[0].files; // 선택된 파일들의 리스트
+	    var fileListContainer = $('#upload-list'); // 파일 목록을 표시할 컨테이너
+		
+	    console.log(fileList);
+	    
+	    // 기존 파일 목록 초기화
+	    fileListContainer.empty();
+	
+	 	// 선택된 파일들의 리스트를 동적으로 생성하여 파일 목록 컨테이너에 추가
+	    for (var i = 0; i < fileList.length; i++) {
+	    	var listItem = $('<li>').css('display', 'flex').css('justify-content', 'space-between').html(
+	    			  '<span class="file-info">' +
+	    			    fileList[i].name + '<br>' +
+	    			    '<span class="file-size">' + formatFileSize(fileList[i].size) + '</span>' +
+	    			  '</span>'
+	    			);
+	    	var deleteButton = $('<button>').text('X').addClass('btn btn-xs btn-danger delete-file').css({
+	    		  height: '23px',
+	    		  width: '19px'
+	    		});
+			listItem.append(deleteButton);
+			fileListContainer.append(listItem);
+	    }
+	  });
+	  
+	// 파일 삭제 버튼 클릭 시
+		$('#upload-list').on('click', '.delete-file', function() {
+			$(this).parent().remove();
+		});
+	  
+	});
+	 
+	// 파일 크기를 읽기 좋은 형식으로 변환하는 함수
+	function formatFileSize(size) {
+	  var kilobyte = 1024;
+	  var megabyte = kilobyte * 1024;
+	  var gigabyte = megabyte * 1024;
+	  var terabyte = gigabyte * 1024;
+
+	  if (size < kilobyte) {
+	    return size + ' 바이트';
+	  } else if (size < megabyte) {
+	    return (size / kilobyte).toFixed(2) + ' KB';
+	  } else if (size < gigabyte) {
+	    return (size / megabyte).toFixed(2) + ' MB';
+	  } else if (size < terabyte) {
+	    return (size / gigabyte).toFixed(2) + ' GB';
+	  } else {
+	    return (size / terabyte).toFixed(2) + ' TB';
+	  }
+	}
+	
+	  // 업로드 버튼 클릭 시
+	  $('#upload-button').click(function() {
+	    // 선택된 파일 가져오기
+	    var fileList = $('#file-input')[0].files;
+	    
+	    // FormData 객체 생성
+	    var formData = new FormData();
+	    for (var i = 0; i < fileList.length; i++) {
+	      formData.append('file', fileList[i]);
+	    }
+	    console.log(formData);
+	    
+	    // 저장된 폴더 ID 가져오기
+	    var folderId = $('#modal-upload').data('folder-id');
+	      
+	    // 서버로 파일 업로드 요청 전송
+	    $.ajax({
+	      type: 'POST',
+	      url: '/uploadFile',
+	      data: { formData: formData, folder_id: folderId },
+	      processData: false,
+	      contentType: false,
+	      success: function(data) {
+	        // 파일 업로드 성공 시
+	        alert('파일 업로드에 성공했습니다.');
+	        location.reload(); // 페이지 새로고침
+	      },
+	      error: function(error) {
+	        // 파일 업로드 실패 시
+	        alert('파일 업로드에 실패했습니다.');
+	        console.log(error);
+	      }
+	    });
+	  
+	    // 모달창 닫기
+	    $('#modal-upload').modal('hide');
+	  });	
+		
+	  
+	  	// 폴더 리스트 
+		function listcall(){
+			
+			$.ajax({
+				type : 'get',
+				url : '/list.ajax',
+				data : {},
+				dataType : 'json',
+				success:function(data){
+					console.log(data);
+					drawList(data['folder-list']);
+				},
+				error:function(e){
+					console.log(e);
+				}
+				
+			});
+			
+		}
+		
+		function drawList(list) {
+		    var content = '';
+		    list.forEach(function(item, idx) {
+		        content += '<tr>';
+		        content += '<td style="width: 150px;"><button type="button" class="btn btn-link text-dark folder-id font-weight-bold" data-folder="' + item.folder_id + '">' + item.folder_name + '</button></td>';
+		        content += '<td class="text-right">';
+		        content += '<div class="btn-group" role="group">';
+		        content += '<button type="button" class="btn btn-default btn-icon btn-edit" data-toggle="modal" data-target="#modal-update" data-id="' + item.folder_id + '"><i class="fas fa-cog"></i></button>';
+		        content += '<button type="button" class="btn btn-default btn-icon btn-delete" data-toggle="modal" data-target="#modal-delete" data-id="' + item.folder_id + '"><i class="fas fa-trash-alt"></i></button>';
+		        content += '</div>';
+		        content += '</td>';
+		        content += '</tr>';
+		    });
+		    $('#folder-list').html(content);
+		}	
+		
+		// 폴더 생성 후 자동 새로고침
+		  function refreshPage() {
+		    location.reload();
+		  }
+		
+		// 폴더 클릭 이벤트 처리
+		  $('#folder-list').on('click', '.folder-id', function () {
+		    var folderId = $(this).data('folder');
+		    console.log(folderId);
+		    filelistcall(folderId);
+		    $('#modal-upload').data('folder-id', folderId);
+		  });
+		
+		// 파일 리스트 
+			function filelistcall(folderId){
+				
+				$.ajax({
+					type : 'post',
+					url : '/filelist.ajax',
+					data: { folder_id: folderId },
+					dataType : 'json',
+					success:function(data){
+						console.log(data);
+						drawFileList(data['file-list']);
+					},
+					error:function(e){
+						console.log(e);
+					}
+					
+				});
+				
+			}
+			
+			function drawFileList(fileList) {
+			    var content = '';
+			    fileList.forEach(function(item, idx) {
+			        content += '<tr>';
+			        content += '<td>' + item.new_fileName + '</td>';
+			        content += '<td>' + item.ext + '</td>';
+			        content += '</tr>';
+			    });
+			    $('#file-list').html(content);
+			}	
+			
+			// 파일 생성 후 자동 새로고침
+			  function refreshPage() {
+			    location.reload();
+			  }
 </script>
 </html>
