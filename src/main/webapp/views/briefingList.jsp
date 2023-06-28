@@ -114,7 +114,7 @@ function opt() {
 function listCall(page){
 	$.ajax({
 		type:'post',
-		url:'briefingList.ajax',
+		url:'/briefingList.ajax',
 		data:{
 			'page':page,
 			'cnt':cnt,
