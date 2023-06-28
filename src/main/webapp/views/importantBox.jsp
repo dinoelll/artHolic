@@ -64,8 +64,8 @@
         <div class="col-md-9">
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <a href="compose.jsp" class="btn btn-primary btn-sm ">메일 쓰기</a>
-              <a href="selfcompose.jsp" class="btn btn-primary btn-sm ">내게 쓰기</a>
+              <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
+              <a href="selfBoxWrite.go" class="btn btn-primary btn-sm ">내게 쓰기</a>
               <div class="card-tools">
                 <div class="input-group input-group-sm">
                 <select name="searchFilter" id="searchFilter">
@@ -102,9 +102,6 @@
                   </button>
                 </div>
                 <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm">
-                  <i class="fas fa-sync-alt"></i>
-                </button>
                 <div class="float-right">
                   1-50/200
                   <div class="btn-group">
