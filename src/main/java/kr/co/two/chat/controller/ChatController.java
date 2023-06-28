@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.two.chat.dto.ChatDTO;
+import kr.co.two.chat.dto.MemberDTO;
 import kr.co.two.chat.service.ChatService;
 
 @Controller
@@ -61,7 +63,9 @@ public class ChatController {
 	}
 	
 	@MessageMapping(value="/chat/sendMessage")
-	public void sendMessage(@PathVariable String chat_room_id, @Payload ChatDTO dto) {
+	public void sendMessage(@PathVariable String chat_room_id, @Payload ChatDTO dto
+			,SimpMessageHeaderAccessor headerAccessor) {
+		logger.info("session id : " + headerAccessor.getSessionId());
 		logger.info("dto : " + dto.getChat_room_id());
 		logger.info("dto : " + dto.getSend_id());
 		logger.info("dto : " + dto.getContent());
@@ -75,5 +79,12 @@ public class ChatController {
 	public ArrayList<ChatDTO> chatStored(@RequestBody String id) {
 		logger.info("id : " + id);
 		return service.chatLoad(id);
+	}
+	
+	@PostMapping(value="/memberList.ajax")
+	@ResponseBody
+	public ArrayList<MemberDTO> memberList() {
+		logger.info("/memberList.ajax");
+		return service.memberList();
 	}
 }
