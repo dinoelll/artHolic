@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.two.mypage.dao.MypageDAO;
@@ -81,7 +82,7 @@ public class MypageService {
 		
 	}
 
-	public void upload(MultipartFile[] formData, int folderId) {
+	public void upload(List<MultipartFile> formData, int folderId) {
 		
 		for (MultipartFile file : formData) {
 	        String fileName = file.getOriginalFilename();
@@ -91,10 +92,17 @@ public class MypageService {
 			String newFileName = System.currentTimeMillis()+ext; // 시간으로 하는건 옛날 방법 요새는 해쉬 코드 사용
 			logger.info(fileName+"=>"+newFileName);
 			
+			 // MIME 유형 설정
+	        String contentType = file.getContentType();
+	        if (contentType == null) {
+	            // MIME 유형이 지정되지 않은 경우 기본값으로 설정
+	            contentType = MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE;
+	        }
+			
 			dao.fileUpload(fileName,ext,newFileName,folderId);
 	  
 			try {
-				byte[] bytes = fileName.getBytes();
+				byte[] bytes = file.getBytes();
 				Path path = Paths.get(root+"/"+newFileName);
 				Files.write(path, bytes);
 			} catch (IOException e) {
@@ -107,5 +115,13 @@ public class MypageService {
 		
 		return dao.fileList(folderId);
 	}
+
+	public int deleteFile(String fileName) {
+		
+		return dao.deleteFile(fileName);
+	}
+
+	
+	
 
 }

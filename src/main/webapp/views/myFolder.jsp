@@ -96,6 +96,7 @@
 		align-items: center;
 		justify-content: center; /* 요소들을 수평 가운데 정렬 */
 		margin-left: 150px;
+		position: relative;
 	}	
 	
 	.file-container {
@@ -103,17 +104,22 @@
 		align-items: center;
 		justify-content: center; /* 요소들을 수평 가운데 정렬 */
 		margin-left: 550px;
+		position: relative;
 	}
 	
 	.btn-icon {
 		margin-left: 100px;
 		background: none;
 		border: none;
+		position: absolute;
+		top: 20px;
+  		right: 20px;
 	}
 	
 	.folder-title {
 		margin-top: 20px;
 		white-space: nowrap; /* 폴더 이름이 한 줄에 표시되도록 설정 */
+		margin-right: 150px;
 	}
 	
 	.horizontal-line {
@@ -204,10 +210,64 @@
 		background-color: #91bdce;
 		border: 1px solid #91bdce;
 	}
-
 	
-	
+	img {
+ 		width: 70px;
+  		height: 70px;
+	}
 
+	.file-gallery {
+		display: grid;
+		grid-template-columns: repeat(10, minmax(1200px, 1fr));
+		grid-gap: 20px;
+		justify-items: center;
+		overflow-x:hidden; 
+		overflow-y: auto;
+ 		max-height: 500px;
+	}
+
+	.file-list {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap; 
+		margin-left: 60px;
+	}
+
+	.file-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin: 5px;
+		justify-content: center;
+		width: 130px;
+		height: 120px;
+	}
+
+	.file-icon {
+	    max-width: 100%;
+	    height: auto;
+	}
+
+	.file-ext {
+	    font-size: 12px;
+	    margin-top: 5px;
+	}
+	
+	.file-name {
+ 		text-align: center;
+ 		font-size:14px;
+	}
+	
+	.delete-file {
+		height: 17px;
+		width: 15px;
+		padding-left: 0px;
+		padding-right: 0px;
+		padding-top: 0px;
+		padding-bottom: 0px;
+		border: none;
+		margin-left: 5px;
+	}
 	
 </style>
 </head>
@@ -263,20 +323,27 @@
           <div class="rectangle_list">	
             <div class="file-container">
 				<i class="fas fa-file file-icon"></i>
-             	<h4 class="folder-title">파일 리스트</h4>
+             	<h4 class="folder-title"></h4>
+             	
+             	<span id="folderFileId" class="folder_id file" hidden=""></span>
+             	
              	<div class="btn-container">
-	            	<button type="button" class="btn btn-default btn-icon" data-toggle="modal" data-target="#modal-upload">
+	            	<button type="button" class="btn btn-default btn-icon btn-upload" data-toggle="modal" data-target="#modal-upload" data-id="">
 	              	<i class="fas fa-plus"></i>
 	              	</button>
 	              	
 	            </div>	
             </div>	
             <div class="horizontal-line"></div>
-            	<table id="file-list-table" class="table">
+            
+            	<div id="file-gallery" class="file-gallery">
+  					<div id="file-list" class="file-list"></div>
+				</div>
+            	<!-- <table id="file-list-table" class="table">
 				  <thead>
 				  </thead>
 				  <tbody id="file-list"></tbody>
-				</table>
+				</table> -->
             </div>
         </div>
       </div>
@@ -385,12 +452,16 @@
 		
 		
 		
-		<!-- 파일 등록 모달창 -->
+		<!-- 파일 업로드 모달창 -->
 		<div class="modal fade" id="modal-upload">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <h4 class="modal-title">파일 업로드</h4>
+		
+		      	<!-- 폴더 id -->
+           		<span class="folder_id upload" hidden=""></span>
+           		
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
@@ -456,7 +527,7 @@ filelistcall();
 		// 서버로 폴더 생성 요청 전송
 		$.ajax({
 			type: 'POST',
-			url: '/createFolder',
+			url: '/createFolder.ajax',
 			data: { folderName: folderName },
 			success: function(data) {
 			  // 폴더 생성 성공 시
@@ -486,7 +557,7 @@ filelistcall();
 	    // 서버로 폴더 수정 요청 전송
 	    $.ajax({
 	      type: 'POST',
-	      url: '/updateFolder',
+	      url: '/updateFolder.ajax',
 	      data: {
 	        folderName: folderName,
 	        folder_id: folderId
@@ -517,7 +588,7 @@ filelistcall();
 	    // 서버로 폴더 삭제 요청 전송
 	    $.ajax({
 	      type: 'POST',
-	      url: '/deleteFolder',
+	      url: '/deleteFolder.ajax',
 	      data: {
 	        folder_id: folderId
 	      },
@@ -538,6 +609,7 @@ filelistcall();
 	  });
 	});
 	
+	// 폴더 수정 
 	$(document).on('click', '.btn-edit', function() {
 		  var folderId = $(this).data('id'); // 클릭된 버튼의 data-id 값을 가져옴
 		  console.log(folderId);
@@ -547,6 +619,7 @@ filelistcall();
 		  $('#modal-update').modal('show');
 		});
 	
+	// 폴더 삭제
 	$(document).on('click', '.btn-delete', function() {
 		  var folderId = $(this).data('id'); // 클릭된 버튼의 data-id 값을 가져옴
 		  console.log(folderId);
@@ -555,6 +628,22 @@ filelistcall();
 		  // 모달 열기 코드
 		  $('#modal-delete').modal('show');
 		});
+	
+	// 파일 업로드
+	$(document).on('click', '.btn-upload', function() {
+		var folderId = $(this).data('id'); // 클릭된 버튼의 data-id 값을 가져옴
+		console.log(folderId);
+		console.log('업로드 버튼 클릭 이벤트');
+	    console.log('folderID : ' + $('#folderFileId').text());
+	    
+	    // $('#modal-upload').attr('data-id', $('#folderFileId').text());
+	    
+		$('#modal-upload').find('.folder_id.upload').text(folderId); // 모달 내부의 특정 요소에 폴더 ID를 설정
+		  
+		  // 모달 열기 코드
+		  $('#modal-upload').modal('show');
+		});
+	
 	
 	
 	
@@ -565,6 +654,7 @@ filelistcall();
 	    var fileList = $('#file-input')[0].files; // 선택된 파일들의 리스트
 	    var fileListContainer = $('#upload-list'); // 파일 목록을 표시할 컨테이너
 		
+	    console.log('파일 선택 시');
 	    console.log(fileList);
 	    
 	    // 기존 파일 목록 초기화
@@ -618,25 +708,35 @@ filelistcall();
 	  $('#upload-button').click(function() {
 	    // 선택된 파일 가져오기
 	    var fileList = $('#file-input')[0].files;
+	    console.log('업로드 클릭 시');
+	    console.log(fileList);
 	    
 	    // FormData 객체 생성
 	    var formData = new FormData();
 	    for (var i = 0; i < fileList.length; i++) {
+	    	console.log(fileList[i]);
 	      formData.append('file', fileList[i]);
 	    }
-	    console.log(formData);
+	   
+	    //console.log(formData);
 	    
 	    // 저장된 폴더 ID 가져오기
-	    var folderId = $('#modal-upload').data('folder-id');
-	      
+	    var folderId = $('#folderFileId').text();
+	    formData.append('folderId',folderId);
+	    console.log(formData);
+	    
+	    console.log('folderID : ' + $('#folderFileId').text());
+	    console.log('folderID : ' + folderId);
+	    
 	    // 서버로 파일 업로드 요청 전송
 	    $.ajax({
-	      type: 'POST',
-	      url: '/uploadFile',
-	      data: { formData: formData, folder_id: folderId },
-	      processData: false,
-	      contentType: false,
-	      success: function(data) {
+	      	type: 'POST',
+	      	url: '/uploadFile.ajax',
+	      	data: formData,
+	        enctype: 'multipart/form-data',
+	        processData: false,
+	        contentType: false,
+			success: function(data) {
 	        // 파일 업로드 성공 시
 	        alert('파일 업로드에 성공했습니다.');
 	        location.reload(); // 페이지 새로고침
@@ -647,7 +747,7 @@ filelistcall();
 	        console.log(error);
 	      }
 	    });
-	  
+	    
 	    // 모달창 닫기
 	    $('#modal-upload').modal('hide');
 	  });	
@@ -686,9 +786,17 @@ filelistcall();
 		        content += '</td>';
 		        content += '</tr>';
 		    });
+		    
 		    $('#folder-list').html(content);
-		}	
-		
+		    
+			 // 폴더 이름 추가
+			if (list.length > 0) {
+				var folderId = list[0].folder_id; // 첫 번째 폴더의 ID를 가져옴
+				filelistcall(folderId); // 첫 번째 폴더에 해당하는 파일 리스트 가져오기
+				var folderName = list[0].folder_name; // 첫 번째 폴더의 이름을 가져옴
+				updateFolderName(folderName);
+		    }
+		}
 		// 폴더 생성 후 자동 새로고침
 		  function refreshPage() {
 		    location.reload();
@@ -700,6 +808,11 @@ filelistcall();
 		    console.log(folderId);
 		    filelistcall(folderId);
 		    $('#modal-upload').data('folder-id', folderId);
+		    
+		    // 폴더 이름 업데이트
+		    var folderName = $(this).text();
+		    updateFolderName(folderName);
+		    
 		  });
 		
 		// 파일 리스트 
@@ -713,6 +826,7 @@ filelistcall();
 					success:function(data){
 						console.log(data);
 						drawFileList(data['file-list']);
+						$('#folderFileId').text(folderId);
 					},
 					error:function(e){
 						console.log(e);
@@ -723,19 +837,74 @@ filelistcall();
 			}
 			
 			function drawFileList(fileList) {
-			    var content = '';
-			    fileList.forEach(function(item, idx) {
-			        content += '<tr>';
-			        content += '<td>' + item.new_fileName + '</td>';
-			        content += '<td>' + item.ext + '</td>';
-			        content += '</tr>';
-			    });
-			    $('#file-list').html(content);
-			}	
+				  var content = '';
+				  fileList.reverse(); // 파일 순서를 역순으로 변경하여 최신 파일이 오른쪽에 표시되도록 함
+				  fileList.forEach(function(item, idx) {
+					  content += '<div class="file-item" data-new-file-name="' + item.new_fileName + '">';
+				    if (item.ext === '.png' || item.ext === '.jpg' || item.ext === '.txt' || item.ext === '.gif' || item.ext === '.hwp') {
+				      // 파일 확장자에 따라 이미지 소스를 동적으로 생성합니다.
+				      var imageSrc = 'img/' + item.ext.substring(1) + '.png';
+				      content += '<img src="' + imageSrc + '" alt="" class="file-icon" onclick="downloadFile(\'' + item.ori_fileName + '\', \'' + item.new_fileName + '\')">'; // 이미지 클릭 시 downloadFile 함수 호출
+				    } else {
+				      content += '<div class="file-ext">' + item.ext + '</div>';
+				    }
+				    var fileNameWithoutExtension = item.ori_fileName.substring(0, item.ori_fileName.lastIndexOf('.'));
+				    content += '<div class="file-info">';
+				    content += '<div class="file-name">' + fileNameWithoutExtension;
+				    var deleteButton = $('<button>').text('x').addClass('btn btn-xs btn-danger delete-file').css({
+				      height: '15px',
+				      width: '15px',
+	      
+				    });
+				    content += deleteButton.prop('outerHTML'); // 삭제 버튼 추가
+				    content += '</div>';
+				    content += '</div>';
+				    content += '</div>';
+				  });
+
+				  
+				  $('#file-list').html(content);
+				}
+			
+				$(document).on('click', '.delete-file', function() {
+				  var fileName = $(this).closest('.file-item').data('new-file-name');
+				  console.log('fileName :'+fileName);
+				  deleteFile(fileName);
+				});
+			
+			function deleteFile(fileName) {
+		
+				  // 삭제 요청 보내기
+				  $.ajax({
+				    url: '/deleteFile.ajax', // 삭제 요청을 보낼 URL
+				    method: 'POST',
+				    data: { fileName: fileName }, // 삭제할 파일 이름을 서버로 전달
+				    success: function(response) {
+				      // 삭제 성공 시 처리할 코드
+				      // drawFileList(fileList); // 파일 리스트 다시 그리기
+				      location.reload();
+				    },
+				    error: function(error) {
+				      // 삭제 실패 시 처리할 코드
+				      console.log(error);
+				    }
+				  });
+			}
+			
+			function downloadFile(ori_fileName, new_fileName) {
+				  console.log('파일 다운로드');
+				  window.location.href = '/download.do?ori_fileName=' + ori_fileName + '&new_fileName=' + new_fileName; // 파일 다운로드를 위한 요청
+				}
+			
+			function updateFolderName(folderName) {
+				  $('.folder-title').text(folderName);
+				}
 			
 			// 파일 생성 후 자동 새로고침
 			  function refreshPage() {
 			    location.reload();
 			  }
+			
+
 </script>
 </html>

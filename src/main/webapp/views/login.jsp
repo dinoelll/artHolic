@@ -91,7 +91,6 @@ function login() {
             dataType: 'json',
             success: function(data) {
                 alert('로그인에 성공하였습니다.');
-                location.href = './list.do';
             },
             error: function(e) {
                 console.log(e);
