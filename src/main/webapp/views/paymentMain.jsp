@@ -30,6 +30,8 @@
 	margin-left: 40px;
 	
      align-items: center;
+     width: 205px;
+    height: 460px;
 		
 	}
 	#paybutton{
@@ -162,7 +164,7 @@
 
 	<div class="row"> 
 		<div class="col-sm-2">
-			<section class="content" >
+			<section class="content2" >
 			
 					<div class="sidebar">
 						  <div class="card" id="payController" style="align-items: center; text-align: center;">
@@ -540,13 +542,6 @@
      
       
 	
-	
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -556,6 +551,16 @@
 </div>
 <!-- ./wrapper -->
 </div>
+
+
+	
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 3.2.0
+    </div>
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  </footer>
+
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -590,7 +595,7 @@ function item(button) {
 	
 
 	// 사용하기 버튼의 href 변경
-	    document.getElementById("paymentButton").setAttribute("href", "/ArtHolicProject/paymentBuyItemForm.go");
+	    document.getElementById("paymentButton").setAttribute("href", "./paymentBuyItemForm.go");
 
 	  
 	}
@@ -608,7 +613,7 @@ function vacation(button) {
 	  $('#previewBox').append("<img src=\"img/vacationFormMini.jpg\"  style=\"max-width: 100%; max-height: 100%; width: auto; height: auto;\">")
 	
 	// 사용하기 버튼의 href 변경
-	    document.getElementById("paymentButton").setAttribute("href", "/ArtHolicProject/paymentVacationForm.go");
+	    document.getElementById("paymentButton").setAttribute("href", "./paymentVacationForm.go");
 	 }	
 	
 function project(button) {
@@ -625,7 +630,7 @@ function project(button) {
 	  $('#previewBox').append("<img src=\"img/projectForm.jpg\"  style=\"max-width: 100%; max-height: 100%; width: auto; height: auto;\">")
 	
 	// 사용하기 버튼의 href 변경
-	    document.getElementById("paymentButton").setAttribute("href", "/ArtHolicProject/paymentProjectForm.go");
+	    document.getElementById("paymentButton").setAttribute("href", "./paymentProjectForm.go");
 	  }	
 	
 function restoreButtonColor() {
