@@ -38,10 +38,15 @@
    		SELECT * FROM file WHERE folder_id = #{folderId}
     </select>
     
-    <insert id="fileUpload" parameterType="java.lang.String">
-    	INSERT INTO file (folder_id, fileName, ext, newFileName)
-    	VALUES (#{folderId},  #{fileName}, #{ext}, #{newFileName})
+    <insert id="fileUpload" parameterType="java.util.Map">
+   	 	INSERT INTO file (folder_id, ori_fileName, ext, new_fileName)
+    	VALUES (${folderId}, #{fileName}, #{ext}, #{newFileName})
 	</insert>
+	
+	<delete id="deleteFile">
+        DELETE FROM file WHERE new_fileName = #{fileName}
+    </delete>
+	
 	
 
 </mapper>

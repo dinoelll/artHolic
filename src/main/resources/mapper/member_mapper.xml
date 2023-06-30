@@ -4,4 +4,94 @@
 	   
 <mapper namespace="kr.co.two.member.dao.MemberDAO">
 
+		<select id="employeeTotalList" parameterType="HashMap" resultType="member">
+			SELECT member_id, name, dept_code, position_code, admin FROM member
+			ORDER BY name DESC
+			LIMIT #{param2} OFFSET #{param3}
+		</select>
+		
+		<select id="employeeDeptTotalList" parameterType="HashMap" resultType="member">
+			SELECT member_id, name, dept_code, position_code, admin
+			FROM member WHERE dept_code LIKE CONCAT ('%',#{param3},'%')
+			ORDER BY name DESC
+			LIMIT #{param4} OFFSET #{param5}
+		</select>
+		
+		<select id="employeeNameTotalList" parameterType="HashMap" resultType="member">
+			SELECT member_id, name, dept_code, position_code, admin
+			FROM member WHERE name LIKE CONCAT ('%',#{param3},'%')
+			ORDER BY name DESC
+			LIMIT #{param4} OFFSET #{param5}
+		</select>
+		
+		<select id="employeePositionTotalList" parameterType="HashMap" resultType="member">
+			SELECT member_id, name, dept_code, position_code, admin
+			FROM member WHERE position_code LIKE CONCAT ('%',#{param3},'%')
+			ORDER BY name DESC
+			LIMIT #{param4} OFFSET #{param5}
+		</select>
+		
+		
+		
+		<select id="employeeTotalListByProcess" parameterType="HashMap" resultType="member">
+			SELECT member_id, name, dept_code, position_code, admin
+			FROM member WHERE admin = #{param2}
+			ORDER BY name DESC
+			LIMIT #{param3} OFFSET #{param4}
+		</select>
+		
+		<select id="employeeDeptTotalListByProcess" parameterType="HashMap" resultType="member">
+			SELECT member_id, name, dept_code, position_code, admin
+			FROM member WHERE dept_code LIKE CONCAT ('%',#{param3},'%') AND admin = #{param4}
+			LIMIT #{param5} OFFSET #{param6}
+		</select>
+		
+		<select id="employeeNameTotalListByProcess" parameterType="HashMap" resultType="member">
+			SELECT member_id, name, dept_code, position_code, admin
+			FROM member WHERE name LIKE CONCAT ('%',#{param3},'%') AND admin = #{param4}
+			LIMIT #{param5} OFFSET #{param6}
+		</select>
+		
+		<select id="employeePositionTotalListByProcess" parameterType="HashMap" resultType="member">
+			SELECT member_id, name, dept_code, position_code, admin
+			FROM member WHERE position_code LIKE CONCAT ('%',#{param3},'%') AND admin
+			 = #{param4}
+			LIMIT #{param5} OFFSET #{param6}
+		</select>
+		
+		
+		
+		<select id="employeeTotalCount" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(member_id) FROM member
+		</select>
+		
+		<select id="employeeDeptTotalCount" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(dept_code) FROM member WHERE dept_code LIKE CONCAT('%', #{param3}, '%')
+		</select>
+		
+		<select id="employeeNameTotalCount" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(name) FROM member WHERE name LIKE CONCAT('%', #{param3}, '%')
+		</select>
+		
+		<select id="employeePositionTotalCount" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(position_code) FROM member WHERE position_code LIKE CONCAT('%', #{param3}, '%')
+		</select>
+		
+		
+		
+		<select id="employeeTotalCountByProcess" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(member_id) FROM member WHERE admin = #{param2}
+		</select>
+		
+		<select id="employeeDeptTotalCountByProcess" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(dept_code) FROM member WHERE dept_code LIKE CONCAT('%', #{param3}, '%') AND admin = #{param4}
+		</select>
+		
+		<select id="employeeNameTotalCountByProcess" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(name) FROM member WHERE name LIKE CONCAT('%', #{param3}, '%') AND admin = #{param4}
+		</select>
+		
+		<select id="employeePositionTotalCountByProcess" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(position_code) FROM member WHERE position_code LIKE CONCAT('%', #{param3}, '%') AND admin = #{param4}
+		</select>
 </mapper>

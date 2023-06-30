@@ -28,5 +28,7 @@ public interface MypageDAO {
 
 	void fileUpload(String fileName, String ext, String newFileName, int folderId);
 
+	int deleteFile(String fileName);
+
 
 }
