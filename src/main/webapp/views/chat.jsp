@@ -98,7 +98,8 @@
 					<button onclick="sendMessage()">전송</button>
 					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatModal" onclick="create()">채팅방 생성하기</button>
 					<button onclick="invite()">회원 초대하기</button>
-	
+					<button onclick="chat_room_exit()">채팅방 나가기</button>
+					
 					<div id="chat_list">
 						<div id="chat_room"></div>
 						
@@ -151,7 +152,7 @@
 		
 		            	<div class="input-container modal-footer">
 							<span>
-							    <textarea type="text" id="msg" class="chatting-input form-control" aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+							    <input type="text" placeholder="채팅방 이름을 적어주세요" id="chat-room-name">
 							    <button type="button" id="send-button" class="send-button">추가하기</button>
 							</span>
 		            	</div>
@@ -221,33 +222,9 @@
 			},
 			dataType:'json',
 			success:function(data){
-				
-				data.forEach(function(item) {
-					var content = '';
-    				if(name == item.send_id) {
-    					console.log('일치요' + item.send_id);
-    					content+='<div class="direct-chat-msg">';
-        				content+='<div class="direct-chat-infos clearfix">';
-    					content+='<span class="direct-chat-name float-left">'+item.send_id+'</span>';
-    					content+='<span class="direct-chat-timestamp float-right">'+item.send_time+'</span>';
-    				}else {
-    					console.log('불일치요' + item.send_id);
-    					content+='<div class="direct-chat-msg right">';
-        				content+='<div class="direct-chat-infos clearfix">';
-    					content+='<span class="direct-chat-name float-right">'+item.send_id+'</span>';
-    					content+='<span class="direct-chat-timestamp float-left">'+item.send_time+'</span>';
-    				}
-    				
-    				content+='</div>';
-    				content+='<img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image">';
-    				content+='<div class="direct-chat-text">'+item.content+'</div></div>';
-
-    				$('#chat_history').append(content);
-    			});
+				chatHistory(data);
 			},
-			error:function(e){
-				
-			}
+			error:function(e){ console.log(e); }
 		});
 		
 		
@@ -275,29 +252,8 @@
 	        		success:function(data){
 	        			console.log(data);
 	        			$('#chat_history').html('');
-	        			data.forEach(function(item) {
-	        				var content = '';
-	        				if(name == item.send_id) {
-	        					console.log('일치요' + item.send_id);
-	        					content+='<div class="direct-chat-msg">';
-		        				content+='<div class="direct-chat-infos clearfix">';
-	        					content+='<span class="direct-chat-name float-left">'+item.send_id+'</span>';
-	        					content+='<span class="direct-chat-timestamp float-right">'+item.send_time+'</span>';
-	        				}else {
-	        					console.log('불일치요' + item.send_id);
-	        					content+='<div class="direct-chat-msg right">';
-		        				content+='<div class="direct-chat-infos clearfix">';
-	        					content+='<span class="direct-chat-name float-right">'+item.send_id+'</span>';
-	        					content+='<span class="direct-chat-timestamp float-left">'+item.send_time+'</span>';
-	        				}
-	        				
-	        				content+='</div>';
-	        				content+='<img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image">';
-	        				content+='<div class="direct-chat-text">'+item.content+'</div></div>';
-	   
-	        				$('#chat_history').append(content);
-	        			});
 	        			
+	        			chatHistory(data);
 	        			
 	        		},
 	        		error:function(e){
@@ -309,29 +265,36 @@
 	    });
 	}
 	
-	/*
-	function send() {
-		console.log($('#content').val());
-		// 메시지 전송때는 JSON 형식을 메시지를 전달한다.
-		function sendMessage(event) {
-		    var messageContent = $('#content').val();
+	function chatHistory(data) {
+		data.forEach(function(item) {
+			var content = '';
+			console.log(item.is_notice);
+			if(item.is_notice != true){
+				if(name == item.send_id) {
+					console.log('일치요' + item.send_id);
+					content+='<div class="direct-chat-msg">';
+					content+='<div class="direct-chat-infos clearfix">';
+					content+='<span class="direct-chat-name float-left">'+item.send_id+'</span>';
+					content+='<span class="direct-chat-timestamp float-right">'+item.send_time+'</span>';
+				}else {
+					console.log('불일치요' + item.send_id);
+					content+='<div class="direct-chat-msg right">';
+					content+='<div class="direct-chat-infos clearfix">';
+					content+='<span class="direct-chat-name float-right">'+item.send_id+'</span>';
+					content+='<span class="direct-chat-timestamp float-left">'+item.send_time+'</span>';
+				}
+				
+				content+='</div>';
+				content+='<img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image">';
+				content+='<div class="direct-chat-text">'+item.content+'</div></div>';
+			} else {
+				content += '<div>'+item.content+'</div>';
+			}
+			
 
-		    if (messageContent && stompClient) {
-		    	console.log('if문 시작');
-		        var chatMessage = {
-		            chat_room_id: chat_room_id,
-		            send_id: name,
-		            content: $('#content').val()
-		            
-		        };
-
-		        stompClient.send("/pub/chat/sendMessage", {}, JSON.stringify(chatMessage));
-		        $('#content').val('');
-		    }
-		    event.preventDefault();
-		}
+			$('#chat_history').append(content);
+		});
 	}
-	*/
 	
 	function sendMessage(event) {
 	    var messageContent = $('#content').val();
@@ -341,8 +304,8 @@
 	        var chatMessage = {
 	            chat_room_id: chat_room_id,
 	            send_id: name,
-	            content: $('#content').val()
-	            
+	            content: $('#content').val(),
+	            is_notice : false
 	        };
 
 	        stompClient.send("/pub/chat/sendMessage", {}, JSON.stringify(chatMessage));
@@ -355,22 +318,7 @@
 		name= $('#name').val();
 		console.log(name);
 		
-		$.ajax({
-			url:'chatList.ajax',
-			type:'post',
-			data:{'name': name},
-			dataType:'json',
-			success:function(data){
-				console.log(data);
-				data.forEach(function(item) {
-					var content = '<div onclick="chatOpen(\''+item.chat_room_id+'\')">'+item.name+'</div>';
-					$('#chat_room').append(content);
-				});
-			},
-			error:function(e){
-				console.log(e);
-			}
-		});
+		chatListAjax();
 	}
 	
 	function create() {
@@ -382,28 +330,30 @@
 			dataType:'json',
 			success:function(data){
 				console.log(data);
-				var content =  '<table><tr><th><input type="checkbox"></th><th>이름</th><th>부서</th></tr>';
+				$('.chatting-list').html('');
+				var content =  '<table><tr><th><input type="checkbox" name="member_all"></th><th>이름</th><th>부서</th></tr>';
 				data.forEach(function(item) {
-					/*
-					<table>
-						<tr>
-							<th><input type="checkbox"></th>
-							<th>이름</th>
-							<th>부서</th>
-						</tr>
-						<tr>
-							<th><input type="checkbox"></th>
-							<th>강경석</th>
-							<th>인사</th>
-						</tr>
-						<tr></tr>
-						<tr></tr>
-					</table>
-				*/
-					content+='<tr><th><input type="checkbox" value="'+item.member_id+'"></th><th>'+item.member_id+'</th><th>'+item.dept_code+'</th></tr>';
+					if(item.member_id == name) {
+						content+='';
+					}else {
+						content+='<tr><th><input type="checkbox" name="member_id" value="'+item.member_id+'"></th><th>'+item.member_id+'</th><th>'+item.dept_code+'</th></tr>';
+					}
+					
 				});
 				content += '</table>';
+				
 				$('.chatting-list').append(content);
+				
+				$('input:checkbox[name="member_all"]').change(function() {
+					console.log('member_all 체인지 이벤트');
+					if($('input:checkbox[name="member_all"]').is(':checked')) {
+						console.log('체크');
+						$('input:checkbox[name="member_id"]').prop('checked', true);
+					}else {
+						console.log('체크해제');
+						$('input:checkbox[name="member_id"]').prop('checked', false);
+					}
+				});
 			},
 			error:function(e){
 				console.log(e);
@@ -413,6 +363,90 @@
 	
 	function invite() {
 		console.log('invite() 호출');
+	}
+	
+	
+	
+	$('#send-button').click(function() {
+		var member_id_array = [];
+		if($('input:checkbox[name="member_id"]:checked').length == 0) {
+			alert('한명이상 체크해주세요');
+		}else {
+			var chat_room_name = $('#chat-room-name').val();
+			if(chat_room_name == '') {
+				alert('채팅방 이름을 적어주세요');
+			}else {
+				$('input:checkbox[name="member_id"]').each(function() {
+					if($(this).is(":checked")==true){
+				    	console.log($(this).val());
+				    	member_id_array.push($(this).val());
+				    }
+				});
+				member_id_array.push(name);
+				
+				$.ajax({
+					url:'createChatroom.ajax',
+					type:'post',
+					async: false,
+					data:{
+						'member_id_array': member_id_array,
+						'chat_room_name' : chat_room_name
+					},
+					dataType:'text',
+					success:function(data){
+						console.log(data);
+						console.log('createChatroom.ajax () 성공');
+					},
+					error:function(e){
+						console.log(e);
+					}
+				});
+				
+				chatListAjax();
+			}
+		}
+			
+			
+		console.log(member_id_array);
+	});
+	
+	function chatListAjax() {
+		console.log('chatListAjax() 호출');
+		console.log('name : ' + name);
+		$.ajax({
+			url:'chatList.ajax',
+			type:'post',
+			data:{'name': name},
+			dataType:'json',
+			success:function(data){
+				console.log('chatList.ajax : ' + data);
+				console.log('chatList.ajax 통신 성공');
+				$('#chat_room').html('');
+				data.forEach(function(item) {
+					var content = '<div onclick="chatOpen(\''+item.chat_room_id+'\')">'+item.name+'</div>';
+					$('#chat_room').append(content);
+				});
+			},
+			error:function(e){
+				console.log('chatList.ajax 통신 실패');
+				console.log(e);
+			}
+		});
+	}
+	
+	function chat_room_exit() {
+		console.log(chat_room_id);
+		if (stompClient) {
+	    	console.log('if문 시작');
+	        var chatMessage = {
+	            chat_room_id: chat_room_id,
+	            send_id: name,
+	            content: name+'님이 퇴장하셨습니다.',
+	            is_notice : true
+	        };
+
+	        stompClient.send("/pub/chat/sendMessage", {}, JSON.stringify(chatMessage));
+		}
 	}
 </script>
 </html>
