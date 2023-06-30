@@ -1,6 +1,7 @@
 package kr.co.two.chat.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class ChatController {
 	
 	@PostMapping(value="/chatList.ajax")
 	@ResponseBody
-	public ArrayList<ChatDTO> chatList(String name) {
+	public ArrayList<ChatDTO> chatList(@RequestParam String name) {
 		logger.info("name : " + name);
 		return service.chatList(name);
 	}
@@ -69,7 +70,9 @@ public class ChatController {
 		logger.info("dto : " + dto.getChat_room_id());
 		logger.info("dto : " + dto.getSend_id());
 		logger.info("dto : " + dto.getContent());
+		logger.info("dto : " + dto.isIs_notice());
 		logger.info("template : " + template);
+		
 		service.chatStored(dto);
 		template.convertAndSend("/sub/chat/"+ dto.getChat_room_id(), dto);
 	}
@@ -87,4 +90,29 @@ public class ChatController {
 		logger.info("/memberList.ajax");
 		return service.memberList();
 	}
+	
+	@PostMapping(value="/createChatroom.ajax")
+	@ResponseBody
+	public String createChatRoom(@RequestParam(value="member_id_array[]") ArrayList<String> member_id_array
+			,@RequestParam String chat_room_name) {
+		logger.info("member_id_array" + member_id_array);
+		logger.info("chat_room_name : " + chat_room_name);
+		for (String member_id : member_id_array) {
+			logger.info("member_id : " + member_id);
+		}
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("member_id_array", member_id_array);
+		map.put("chat_room_name", chat_room_name);
+		
+		return service.createChatRoom(map);
+	}
+	
+	@PostMapping(value="/chatRoomExit.ajax")
+	@ResponseBody
+	public int chatRoomExit(@RequestParam HashMap<String, Object> params) {
+		logger.info("params : " + params);
+		return service.chatRoomExit(params);
+	}
+	
 }
