@@ -41,7 +41,9 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   
+  
   <style>
+
 
 /* gnb 스타일 */
 
@@ -52,7 +54,6 @@
      align-items: center;
      width: 205px;
     height: 460px;
-    
 		
 	}
 	#paybutton{
@@ -71,7 +72,7 @@
 	    color: black;
 	    
     }
-    	#paybutton3 {
+        	#paybutton3 {
 	    margin-bottom: 10px;
 	    font-size: 16px;
 	    width: 150px;
@@ -82,7 +83,7 @@
     }
     
     
-    #ListGo{
+        #ListGo{
 	color: black;
 	}
     
@@ -165,7 +166,7 @@
 #realForm{
 	border: 1px soild gray;
 	width: 1012px;
-	height: 1163px;
+	height: 1272px;
 	margin-left: 60px;
 	margin-right: 50px; 
 	margin-top: 50px;
@@ -198,12 +199,12 @@
     width: 100%;
     color: transparent;
     text-shadow: 0 0 0 black;
+    
   }
 
 
 
 </style>
-  
   
 </head>
 <body class="hold-transition sidebar-mini">
@@ -281,8 +282,9 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재요청</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-lg2">결재선</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">임시저장</a>
 						          	
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
 						          
@@ -308,7 +310,7 @@
 							<div class="container">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
-												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">프로젝트 신청</h1>
+												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">비품 구매</h1>
 												      <div class="row" style="margin-bottom: 50px;">
 												        
 												          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px; margin-right: 530px;">
@@ -376,42 +378,52 @@
 													    <tr>
 													      <th>문서 분류</th>
 													      <td>문서 분류 입력란</td>
-													      <th>프로젝트 종류</th>
+													      <th>비품 종류</th>
 													      <td>
 													      		<div class="group">
 											                        
 											                        <select class="form-control" >
-											                          <option>주택</option>
-											                          <option>공공기관</option>
-											                          <option>상가</option>
+											                          <option>자재</option>
+											                          <option>장비</option>
+											                          <option>기타</option>
 											                        </select>
 											                      </div>
 														</td>
 													    </tr>
 													    
 													    <tr>
-													      <th>기간 및 일시</th>
+													      <th>금액</th>
 													      <td>
-													      		 <div class="group">
-												                  
-												
-												                  <div class="input-group" >
-												                    <div class="input-group-prepend">
-												                      <span class="input-group-text"><i class="far fa-clock"></i></span>
-												                    </div>
-												                    <input type="text" class="form-control float-right" id="reservationtime">
-												                  </div>
-												                  <!-- /.input group -->
-												                </div>
+													      		 <input type="number">
 														</td>
-													      <th>프로젝트 리더</th>
+													      <th>운송장 여부</th>
 													      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요">
-														      </td>
+														     <div class="form-check form-check-inline">
+															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning">
+															      <label class="form-check-label" for="radioMorning">있음</label>
+															    </div>
+															    <div class="form-check form-check-inline">
+															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon">
+															      <label class="form-check-label" for="radioAfternoon">없음</label>
+														    </div>
+                          								</td>
 													    </tr>
 													  </table>
 												  </div>
-												 
+												  <div class="row" style="margin-bottom: 50px;">
+													  
+													  
+													  <table class="my-table">
+													    <tr>
+													  	  
+														      <td >
+														     	 <a>- 운송장 있을 시 ' 있음으로 체크하고 해당 내용 파일 첨부 요망</a><br>
+														     	 <a>- 파일 첨부가 힘들 경우 해당 내용 내용란에 추가 바람</a>
+														      </td>
+													    </tr>
+													  </table>
+													  
+												  </div>
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  
@@ -491,8 +503,7 @@
 	
 	
       
-      
-			<!-- 모달모달!! 숨겨진 -->
+      	<!-- 모달모달!! 숨겨진 -->
 				<div class="modal fade" id="modal-lg" data-backdrop="static">
 				  <div class="modal-dialog modal-lg">
 				    <div class="modal-content">
@@ -561,21 +572,21 @@
             <div class="modal-body">
 		              <div class="card card-default">
 					          
-				          <form id="demoform" action="#">
+					          
 					          <div class="card-body">
 								  <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
 										      <label>결재선 선택</label>
 										      <div class="dual-listbox-container">
-										        <select id="approvers" class="duallistbox" multiple="multiple" name="duallistbox_demo1[]">
-										          <option value="option1" selected >대리 김형준</option>
-										          <option value="option2">과장 아무개</option>
-										          <option value="option4"> California</option>
-										          <option value="option5">Delaware</option>
-										          <option value="option6">Tennessee</option>
-										          <option value="option7">Texas</option>
-										          <option value="option8">Washington</option>
+										        <select id="approvers" class="duallistbox" multiple="multiple">
+										          <option selected>대리 김형준</option>
+										          <option>과장 아무개</option>
+										          <option>California</option>
+										          <option>Delaware</option>
+										          <option>Tennessee</option>
+										          <option>Texas</option>
+										          <option>Washington</option>
 										        </select>
 										      </div>
 										    </div>
@@ -584,7 +595,7 @@
 										  <!-- /.col -->
 										</div>
 									  <!-- /.row -->
-									 <!--  <div class="row">
+									  <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
 										      <label>참조자 선택</label>
@@ -600,16 +611,16 @@
 										        </select>
 										      </div>
 										    </div>
-										    /.form-group
+										    <!-- /.form-group -->
 										  </div>
-										  /.col
+										  <!-- /.col -->
 										</div>
-									  /.row -->
+									  <!-- /.row -->
 								   
-              						<button type="submit" class="btn btn-default btn-block">Submit data</button>
+              
 
 								</div>
-								</form>
+
 					        </div>
 					        <!-- /.card -->
             </div>
@@ -625,7 +636,8 @@
       <!-- /.modal -->
       
       
-      <!-- 결재 요청 모달 -->
+      
+       <!-- 결재 요청 모달 -->
 				<div class="modal fade" id="modal-default">
 				  <div class="modal-dialog">
 				    <div class="modal-content">
@@ -713,6 +725,7 @@
       <!-- /.modal -->
       
       
+      
      
      
      
@@ -734,7 +747,8 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-</div><!--  제일 큰거-->
+
+</div>
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -947,7 +961,6 @@ $(document).ready(function() {
   });
 
 /*결재 작성하기 모달  */
-
 function item(button) {
 	  // 버튼 클래스 변경
 	  $('#previewBox').empty();
@@ -999,7 +1012,7 @@ function project(button) {
 	// 사용하기 버튼의 href 변경
 	    document.getElementById("paymentButton").setAttribute("href", "./paymentProjectForm.go");
 	  }	
-	  
+	
 function restoreButtonColor() {
 	  // 버튼 클래스 복원
 	  var vacationButton = document.getElementById("vacation");
@@ -1017,7 +1030,7 @@ function restoreButtonColor() {
 	  document.getElementById("paymentButton").removeAttribute("href");
 	  
 	}	
-
+	
 
 /* 모달 글자수 제한  */
 function updateCharCount() {
@@ -1083,6 +1096,7 @@ function updateCharCount() {
 	    
 	    
 	  }
+
   
 </script>
 
