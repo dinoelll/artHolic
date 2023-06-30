@@ -4,4 +4,7 @@
 	   
 <mapper namespace="kr.co.two.mail.dao.MailDAO">
 
+	<select id="mailgetOptions" resultType="mail">
+		SELECT * FROM member
+	</select>
 </mapper>
