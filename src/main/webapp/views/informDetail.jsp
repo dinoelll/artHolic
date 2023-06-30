@@ -39,7 +39,15 @@
 		border : 1px solid lightgray;
 	}
 	table{
-		magin-left: 45px;
+		margin: 0 auto;
+		width: 75%;
+	}
+	
+	table, td, th {
+		border: 1px solid black;
+		border-collapse: collapse;
+		padding: 30px;
+		padding-bottom: 15px;
 	}
 	
   </style>
@@ -54,7 +62,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>공지사항 수정</h3>
+            <h3>공지사항</h3>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -62,28 +70,25 @@
 
     <!-- Main content -->
     <section class="content">
-	<form action="/informUpdate.do" method="post">
+    
+	<form action="/informUpdate.go" method="get">
 		<table>
-			<tr>
-				<td>
-					<input type="text" name="subject" value="${inform.subject}"/>
-		    		<input type="checkbox" name="is_inform" value="1"> 필독 등록
-		    		<input type="hidden" name="board_id" value="${inform.board_id}"/>
-		    	</td>
-			</tr>
-			<tr>
-				<td>
-					<div id="div_editor"></div>
-					<input id="content" type="hidden" name="content" value="${inform.content}"/>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input style="float:right;" type="button" onclick="location.href='redirect:/'" value="취소"/>
-					<input type="button" onclick="updateDo()" style="float:right;" value="수정" />
-				</td>
-			</tr>
-		</table>
+         <tr>
+            <td>
+            <input type="hidden" value="${inform.board_id}" name="board_id" />
+            	<div style="font-size:22px;"><b>${inform.subject}</b></div>
+            	<div style="margin-top: 10px;">${inform.member_id} 작성일자
+	            	<button class="btn btn-sm btn-primary" style="float:right;">수정</button>
+					<button type="button" onclick="location.href='informDel.do?board_id=${inform.board_id}'" class="btn btn-sm btn-primary" style="float:right;">삭제</button>
+					<button type="button" onclick="location.href='/informList.go'" style="float:right;" class="btn btn-sm btn-primary">리스트</button>
+					</div>
+            </td>
+         </tr>
+         <tr>
+            <td><div id="content">${inform.content}</div></td>
+         </tr>
+      </table>
+      
 	</form>
     </section>
     <!-- /.content -->
@@ -106,33 +111,15 @@
 </body>
 <script>
 var config = {};
-config.editorResizeMode = "none"; // 에디터 크기조절 : none
-
-//파일 업로드
-config.file_upload_handler = function(file,callback){//file 정보, 이미지 경로 변경 함수
-	console.log(file);//크기, 이름, 종류 등을 알 수 있다.
-	if(file.size > (1*1024*1024)){
-		alert('1MB 이상의 파일은 올릴수가 없습니다.');
-		callback('/img/noimage.png');
-	}
-}
-
-
-var editor = new RichTextEditor("#div_editor",config);
-
-
+config.editorResizeMode = "none"; // editor 크기 조절 : none
 // 상세보기에서는 필요한 툴바만 노출할 예정(html 저장, 출력, pdf 저장, 코드보기)
 config.toolbar="simple";
 config.toolbar_simple="{save, print, html2pdf, code}";
 
-editor.setHTMLCode($("#content").val()); // editor 에 내용 넣기
 
-function updateDo(){
-var content = editor.getHTMLCode();
-$('input[name="content"]').val(content);
-$('form').submit();
-//editor.setReadOnly();
-}
+var editor = new RichTextEditor("#div_editor",config);
+editor.setHTMLCode($("#content").html()); // editor 에 내용 넣기
+editor.setReadOnly();
 
 </script>
 </html>
