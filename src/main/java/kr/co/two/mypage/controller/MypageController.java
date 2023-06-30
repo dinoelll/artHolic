@@ -1,40 +1,39 @@
 package kr.co.two.mypage.controller;
 
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.util.UriUtils;
 
 import kr.co.two.mypage.dto.EventDataDTO;
 import kr.co.two.mypage.service.MypageService;
 
 @Controller
 public class MypageController {
-
+	
+	
 	private final MypageService service;
 	
 	public MypageController(MypageService service) {
@@ -90,7 +89,8 @@ public class MypageController {
         return events;
     }
 
-	@RequestMapping(value="/createFolder")
+	@RequestMapping(value="/createFolder.ajax")
+	@ResponseBody
 	public String myFolderCreate(@RequestParam String folderName, HttpServletResponse response) {
 		
 		logger.info("createFolder Controller");
@@ -104,12 +104,15 @@ public class MypageController {
 		return "redirect:/myfolder";
 	}
 	
-	@RequestMapping(value="/uploadFile")
-	public String fileUpload(@RequestParam("file") MultipartFile[] formData, @RequestParam String folder_id, HttpServletResponse response) {
+	@RequestMapping(value="/uploadFile.ajax")
+	@ResponseBody
+	public String fileUpload(@RequestPart("file") List<MultipartFile> formData,
+			@RequestParam("folderId") String folder_id, HttpServletResponse response) {
 		
 		logger.info("uploadFile Controller");
 		logger.info("formData :"+formData);
-		
+		logger.info("folder_id :"+folder_id);
+
 		int folderId = Integer.parseInt(folder_id);
 		
 		service.upload(formData,folderId);
@@ -151,7 +154,8 @@ public class MypageController {
 	    return map;
 	}
 	
-	@RequestMapping(value="/updateFolder")
+	@RequestMapping(value="/updateFolder.ajax")
+	@ResponseBody
 	public String myFolderUpdate(@RequestParam String folderName, @RequestParam String folder_id, HttpServletResponse response) {
 		
 		logger.info("updateFolder Controller");
@@ -168,7 +172,7 @@ public class MypageController {
 		return "redirect:/myfolder";
 	}
 	
-	@RequestMapping(value="/deleteFolder")
+	@RequestMapping(value="/deleteFolder.ajax")
 	@ResponseBody
 	public String myFolderDelete(@RequestParam String folder_id, HttpServletResponse response) {
 		
@@ -186,6 +190,59 @@ public class MypageController {
 		 
 		return "redirect:/myfolder";
 		
+	}
+	
+	@GetMapping(value="/download.do")
+	public ResponseEntity<Resource> download(@RequestParam("ori_fileName") String oriFileName, @RequestParam("new_fileName") String newFileName) {
+
+	    logger.info("download Controller");
+	    logger.info("ori_fileName: " + oriFileName);
+	    logger.info("new_fileName: " + newFileName);
+
+	    String filePath = root + "/" + newFileName;
+
+	    Resource body = new FileSystemResource(filePath);
+
+	    HttpHeaders headers = new HttpHeaders();
+	    try {
+	        // String fileName = "이미지" + oriFileName.substring(oriFileName.lastIndexOf("."));
+	    	String fileName = UriUtils.encode(oriFileName, "UTF-8");
+	        // Encode the file name to handle special characters
+	        // fileName = URLEncoder.encode(fileName, "UTF-8");
+
+	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	        headers.setContentDispositionFormData("attachment", fileName);
+	    } catch (Exception  e) {
+	        e.printStackTrace();
+	    }
+
+	    // Return the ResponseEntity with the file resource, headers, and OK status
+	    return new ResponseEntity<>(body, headers, HttpStatus.OK);
+	}
+	
+	@PostMapping(value="/deleteFile.ajax")
+	@ResponseBody
+	public String deleteFile(@RequestParam String fileName, HttpServletResponse response) {
+		
+		logger.info("fileName :"+fileName);
+		
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Refresh", "0;url=/myfolder");
+		
+		service.deleteFile(fileName);
+		
+		return "redirect:/myfolder";
+	}
+	
+	
+	@PostMapping(value="/pwChange.do")
+	public String pwChange(@RequestParam String pw) {
+		
+		logger.info("pw :"+pw);
+		
+		
+		
+		return null;
 	}
 
 }
