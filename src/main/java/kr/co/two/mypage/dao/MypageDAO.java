@@ -14,6 +14,15 @@ public interface MypageDAO {
 
 	void calendarUpdate(EventDataDTO eventDataDTO);
 
+	void calendarUpdate2(EventDataDTO dto);
+	
+	
+	
+	
+	
+	
+	
+	
 	List<EventDataDTO> getEvent();
 
 	void myFolderCreate(String folderName);
@@ -27,6 +36,10 @@ public interface MypageDAO {
 	ArrayList<String> fileList(int folder_id);
 
 	void fileUpload(String fileName, String ext, String newFileName, int folderId);
+
+	int eventDelete(String id);
+
+	
 
 
 }

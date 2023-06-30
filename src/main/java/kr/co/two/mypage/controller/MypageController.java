@@ -65,30 +65,7 @@ public class MypageController {
 	}
 	
 
-	
-	@RequestMapping(value="/calendarUpdate.ajax")
-	@ResponseBody
-	public String calendarUpdate(@RequestBody ArrayList<EventDataDTO> eventDataList) {
-		
-		service.calendarUpdate(eventDataList);
-		
-	
-		
-		return "success";
-	}
-	
-    @GetMapping("/getEvent.ajax")
-    @ResponseBody
-    public List<EventDataDTO> getEvents() {
-        // 이벤트 데이터를 가져와서 리스트 형태로 반환
-        List<EventDataDTO> events = service.getEvents();
-        
-        for (EventDataDTO eventDataDTO : events) {
-			logger.info("start:"+eventDataDTO.getStart_date());
-		}
-        
-        return events;
-    }
+
 
 	@RequestMapping(value="/createFolder")
 	public String myFolderCreate(@RequestParam String folderName, HttpServletResponse response) {
@@ -187,5 +164,82 @@ public class MypageController {
 		return "redirect:/myfolder";
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value="/calendarUpdate.ajax")
+	@ResponseBody
+	public String calendarUpdate(@RequestBody ArrayList<EventDataDTO> eventDataList) {
+		
+		service.calendarUpdate(eventDataList);
+		
+	
+		
+		return "success";
+	}
+	
+	@RequestMapping(value="/calendarUpdate2.ajax")
+	@ResponseBody
+	public String calendarUpdate2(@RequestBody EventDataDTO requestData) {
+		
+		logger.info("requestdata : "+requestData.getMember_id() );
+		
+		service.calendarUpdate2(requestData);
+
+		return "success";
+	}
+	
+    @GetMapping("/getEvent.ajax")
+    @ResponseBody
+    public List<EventDataDTO> getEvents() {
+        // 이벤트 데이터를 가져와서 리스트 형태로 반환
+        List<EventDataDTO> events = service.getEvents();
+        
+        for (EventDataDTO eventDataDTO : events) {
+			logger.info("start:"+eventDataDTO.getStart_date());
+		}
+        
+        return events;
+    }
+    
+    @PostMapping("/eventDelete.ajax")
+    @ResponseBody
+    public HashMap<String, String> eventDelete(@RequestParam String id ) {
+        logger.info("id:"+id);
+        
+        int row = service.eventDelete(id);
+        HashMap<String, String>map = new HashMap<String, String>();
+        
+        
+        if (row ==1) {
+        	
+            map.put("data", "삭제성공");
+		}
+        
+        
+        map.put("data", "삭제실패");
+        
+        
+        
+        return map;
+    }
+	
+	
 
 }

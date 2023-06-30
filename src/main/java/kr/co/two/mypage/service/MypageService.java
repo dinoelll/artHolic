@@ -38,13 +38,14 @@ public class MypageService {
 			boolean allday = eventDataDTO.getAllDay();
 			String backgroundColor = eventDataDTO.getBackgroundColor();
 			String borderColor = eventDataDTO.getBorderColor();
+			int id = eventDataDTO.getId();
 
 			logger.info("title" + title);
 			logger.info("start" + start);
 			logger.info("end" + end);
 			logger.info("allday" + allday);
 			logger.info("backgroundColor" + backgroundColor);
-			logger.info("borderColor" + borderColor);
+			logger.info("id" + id);
 			
 			dao.calendarUpdate(eventDataDTO);
 		}
@@ -106,6 +107,19 @@ public class MypageService {
 	public ArrayList<String> fileList(int folderId) {
 		
 		return dao.fileList(folderId);
+	}
+
+	public void calendarUpdate2(EventDataDTO dto) {
+		String member_id = "1812001";
+		dto.setMember_id(member_id);
+		dao.calendarUpdate2(dto);
+		
+		
+	}
+
+	public int eventDelete(String id) {
+		
+		return dao.eventDelete(id);
 	}
 
 }

@@ -1,6 +1,5 @@
 package kr.co.two.mypage.dto;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 import org.apache.ibatis.type.Alias;
@@ -15,7 +14,14 @@ public class EventDataDTO {
 	  private boolean allDay;
 	  private String backgroundColor;
 	  private String borderColor;
+	  private int id;
 	  
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public boolean getAllDay() {
 		return allDay;
 	}
