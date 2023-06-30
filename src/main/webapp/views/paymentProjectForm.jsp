@@ -50,6 +50,9 @@
 	margin-left: 40px;
 	
      align-items: center;
+     width: 205px;
+    height: 460px;
+     
 		
 	}
 	#paybutton{
@@ -145,6 +148,8 @@
 }
 #paymentForm_vacation{
 	margin-top: 20px;
+	width: 1650px;
+    height: 1483px;
 
 }
 #formGnb{
@@ -182,6 +187,11 @@
 
   table.my-table th {
     background-color: #f2f2f2;
+    width: 52px;
+  }
+    table.my-table td {
+    
+    width: 105px;
   }
     /*  안보이는 박스 설정*/
     .invisible-input {
@@ -194,6 +204,19 @@
     color: transparent;
     text-shadow: 0 0 0 black;
   }
+  
+  
+    #topRow {
+    margin-bottom: 50px;
+    justify-content: space-between;
+  }
+
+
+
+
+
+  
+  
 
 
 
@@ -276,8 +299,10 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-lg2">반려</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재요청</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-lg2">결재선</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">임시저장</a>
+						          	
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
 						          
 						          		
@@ -286,16 +311,12 @@
 					          <div class="col-sm-6">
 					            <ol class="breadcrumb float-sm-right">
 					              <li class="breadcrumb-item"><a href="#">결재 작성하기</a></li>
-					              <li class="breadcrumb-item active">휴가신청</li>
+					              <li class="breadcrumb-item active">프로젝트 신청</li>
 					            </ol>
 					          </div>
 					        </div>
 					      </div><!-- /.container-fluid -->
-					      
-	
-              
-					      
-					      
+
 					    </section>
 						
 						<section class="content2">
@@ -303,60 +324,60 @@
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
 												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">프로젝트 신청</h1>
-												      <div class="row" style="margin-bottom: 50px;">
-												        
-												          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px; margin-right: 530px;">
-												            <colgroup>
-												              <col style="width: 30%;">
-												              <col style="width: 70%;">
-												            </colgroup>
-												            <tr>
-												              <th style="width: 1%; white-space: nowrap; vertical-align: middle;">기안일</th>
-												              <td>
-																<div class="group">
-																  <div class="input-group date" id="reservationdate" data-target-input="nearest">
-																    <input type="date" style="background-color: transparent; border: none; box-shadow: none; outline: none; color: transparent; text-shadow: 0 0 0 gray;">
-																   
-																      
-																    </div>
-																  </div>
-																</div>
-															</td>
-												            </tr>
-												            <tr>
-												              <th style=" width: 1%; white-space: nowrap; ">문서번호</th>
-												              <td >문서번호 입력란</td>
-												            </tr>
-												          </table>
-												        
-												       
-												          <table class="my-table" style="width: auto; table-layout: fixed;">
-												            <colgroup>
-												              <col style="width: 15%;">
-												              <col style="width: 42.5%;">
-												              <col style="width: 42.5%;">
-												            </colgroup>
-												            <tr>
-												              <th style=" width: 1%; white-space: nowrap; " rowspan="4" >결재</th>
-												              <td >기안자</td>
-												              <td >팀장</td>
-												            </tr>
-												            <tr>
-												              
-												              <td >김형준</td>
-												              <td >아무개</td>
-												            </tr>
-												            <tr>
-												              
-												              <td ></td>
-												              <td ></td>
-												            </tr>
-												             <tr>
-												              <td ></td>
-												              <td ></td>
-												            </tr>
-													    </table>
-												  </div>
+												      
+												      <div class="row" style="margin-bottom: 50px;" id="topRow">
+												      	
+																      	<div class="left-table" style="border :1px soild black;">
+																          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px;  ">
+																            <colgroup>
+																              <col style="width: 30%;">
+																              <col style="width: 70%;">
+																            </colgroup>
+																            <tr>
+																              <th style="width: 1%; white-space: nowrap; vertical-align: middle;">기안일</th>
+																              <td>
+																				<div class="group">
+																				  <div class="input-group date" id="reservationdate" data-target-input="nearest">
+																				    <input type="date" style="background-color: transparent; border: none; box-shadow: none; outline: none; color: transparent; text-shadow: 0 0 0 gray;">
+																			    </div>
+																			  </div>
+																			</td>
+																            </tr>
+																            <tr>
+																              <th style=" width: 1%; white-space: nowrap; ">문서번호</th>
+																              <td >문서번호 입력란</td>
+																            </tr>
+																          </table>
+																        </div>
+																        
+																        <div class="right-table" style="border :1px soild black;">
+																        
+															       		<div id="list" class="right" >
+																          <table class="my-table" style="width: auto; table-layout: fixed; ">
+				
+																            <tr>
+																              <th style=" white-space: nowrap; " rowspan="4" >결재</th>
+																              <td style=" white-space: nowrap; ">기안자</td>
+																            </tr>
+																            <tr>
+																              <td >김형준</td>
+																            </tr>
+																            <tr>
+																              <td ></td>
+																            </tr>
+																             <tr>
+																              <td ></td>
+																            </tr>
+																            
+																	    </table>
+																	    </div>
+																	
+																	</div>
+														
+												  </div> <!-- 제일 윗줄 row  -->
+												  
+												  
+												  
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  <table class="my-table">
@@ -457,11 +478,11 @@
 												  <div class="row" style="margin-bottom: 50px;">
 													  
 													  
-													  <table class="my-table">
+													  <table class="my-table" id="referrer">
 													    <tr>
 													  	  <th style="background-color:white">참조자</th>
 														      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요">
+														     	 <input type="text" class="invisible-input" value="">
 														      </td>
 													    </tr>
 													  </table>
@@ -541,13 +562,13 @@
 				</div>
 				<!-- /.modal -->
       
-      
+         <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->
       <!--  결재선 모달-->
       <div class="modal fade" id="modal-lg2">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">결재선 선택</h4>
+              <h4 class="modal-title">결재선</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -556,60 +577,58 @@
 		              <div class="card card-default">
 					          
 					          
+					         <form id="demoform" action="#" method="post">
 					          <div class="card-body">
-								  <div class="row">
+								   <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
-										      <label>결재선 선택</label>
+										      <label style="font-size:27px;">결재선 선택</label>
 										      <div class="dual-listbox-container">
-										        <select id="approvers" class="duallistbox" multiple="multiple">
-										          <option selected>대리 김형준</option>
-										          <option>과장 아무개</option>
-										          <option>California</option>
-										          <option>Delaware</option>
-										          <option>Tennessee</option>
-										          <option>Texas</option>
-										          <option>Washington</option>
+										        <select id="approvers" class="duallistbox" multiple="multiple" name="duallistbox_demo1[]">
+										          <option value="대리 김형준" selected >대리 홍길동</option>
+										          <option value="과장 아무개">과장 아무개</option>
+										          <option value="차장 홍길동"> 차장 박차장</option>
+										          <option value="사장 김사장">사장 김사장</option>
+
 										        </select>
 										      </div>
 										    </div>
-										    <!-- /.form-group -->
+										   <!--  //.form-group -->
 										  </div>
-										  <!-- /.col -->
+										 <!--  /.col -->
 										</div>
-									  <!-- /.row -->
+									  <!-- /.row  -->
+									  
 									  <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
-										      <label>참조자 선택</label>
+										      <label style="font-size:27px;">참조자 선택</label>
 										      <div class="dual-listbox-container">
-										        <select id="referrer" class="duallistbox" multiple="multiple">
-										          <option selected>대리 김형준</option>
-										          <option>과장 아무개</option>
-										          <option>California</option>
-										          <option>Delaware</option>
-										          <option>Tennessee</option>
-										          <option>Texas</option>
-										          <option>Washington</option>
+										        <select id="referrer" class="duallistbox" multiple="multiple" name="duallistbox_demo2[]">
+										          <option value="대리 김형준" selected >대리 홍길동</option>
+										          <option value="과장 아무개">과장 아무개</option>
+										          <option value="차장 홍길동"> 차장 박차장</option>
+										          <option value="사장 김사장">사장 김사장</option>
 										        </select>
 										      </div>
 										    </div>
-										    <!-- /.form-group -->
+										   <!--  /.form-group -->
 										  </div>
 										  <!-- /.col -->
 										</div>
-									  <!-- /.row -->
+									  <!-- /.row  -->
 								   
-              
+              						
 
 								</div>
-
 					        </div>
 					        <!-- /.card -->
+					        
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" id="submitButton" class="btn btn-primary">Save changes</button>            
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+				<button type="submit" id="submitButton" class="btn btn-primary">요청</button>            
+				</form>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -682,8 +701,8 @@
              <h4>취소 하시겠습니까?</h4>
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-              <button type="button" class="btn btn-primary">요청</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">아니요</button>
+              <button type="button" class="btn btn-primary">예</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -764,8 +783,124 @@
 
 <script>
 
+/*  결재선 데이터 전송*/
 
 
+
+
+ $("#approvers").bootstrapDualListbox({
+	  // 기타 매개변수 설정
+	  infoText: false, // "Showing all {0}" 메시지 숨김
+	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
+	  moveAllLabel: '' // "Move all" 버튼 제거
+	});
+	 
+$("#referrer").bootstrapDualListbox({
+	  // 기타 매개변수 설정
+	  infoText: false, // "Showing all {0}" 메시지 숨김
+	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
+	  moveAllLabel: '' // "Move all" 버튼 제거
+	});	
+	
+	
+
+
+var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox();
+$("#demoform").submit(function() {
+  
+  var approversVal = $('[name="duallistbox_demo1[]"]').val();
+  console.log(approversVal);
+  drawList(approversVal);  
+  return false;
+});
+
+
+var demo1 = $('select[name="duallistbox_demo2[]"]').bootstrapDualListbox();
+$("#demoform").submit(function() {
+  
+  var referrer = $('[name="duallistbox_demo2[]"]').val();
+  console.log(referrer);
+  drawList2(referrer);  
+  return false;
+});
+
+
+
+
+
+
+function drawList(approversVal) {
+	approversVal.forEach(function(item,idx){
+		console.log(item,idx)
+		
+		});
+	 
+	  var content = '<table class="my-table" style="width: auto; table-layout: fixed;">';
+
+
+	  content += '<tr>';
+	  content += '<th style=" white-space: nowrap;" rowspan="' + (approversVal.length + 3) + '">결재</th>';
+	  content += '<td style=" white-space: nowrap;">기안자</td>';
+	  for (var i = 0; i < approversVal.length; i++) {
+	    content += '<td style=" white-space: nowrap;">결재자</td>';
+	  }
+	  content += '</tr>';
+
+	  content += '<tr>';
+	  content +=  '<td>' + '김형준' + '</td>';
+	  for (var i = 0; i < approversVal.length; i++) {
+	    content += '<td>' + approversVal[i] + '</td>';
+	  }
+	  content += '</tr>';
+	  
+	  content += '<tr>';
+	  content += '<td>' + '</td>';
+	  for (var i = 0; i < approversVal.length; i++) {
+	    content += '<td>' + '</td>';
+	  }
+	  content += '</tr>';
+	  
+	  content += '<tr>';
+	  content += '<td>' + '</td>';
+	  for (var i = 0; i < approversVal.length; i++) {
+	    content += '<td>' + '</td>';
+	  }
+	  content += '</tr>';
+
+
+	  content += '</table>';
+
+	  
+	  $('#list').html(content);
+	  // 테이블을 어떤 엘리먼트에 추가할지 결정하고, 해당 엘리먼트에 HTML 내용을 할당
+	  
+};
+
+function drawList2(referrer) {
+	referrer.forEach(function(item,idx){
+		console.log(item,idx)
+		
+		});
+		var content2 = '<table class="my-table">'
+		
+		content2 += '<tr>';
+		content2 += '<th style="background-color:white">참조자</th>';
+		content2 += '<td>';
+		content2 += '<input type="text" class="invisible-input" value="'+referrer+'">';
+		content2 += '<td>';
+		content2 += '<tr>';
+		content2 += '</table>';
+	 
+	  
+	  
+	  $('#referrer').html(content2);
+	  // 테이블을 어떤 엘리먼트에 추가할지 결정하고, 해당 엘리먼트에 HTML 내용을 할당
+	  
+}; 
+
+
+ 
+/*  결재선 데이터 전송*/
 
 $(function () {
 	  bsCustomFileInput.init();
@@ -904,32 +1039,9 @@ $(function () {
   }
   // DropzoneJS Demo Code End */
   
-$(document).ready(function() {
-    
 
-    $('#submitButton').click(function() {
-      console.log('버튼이 클릭되었습니다.'); // 버튼 클릭 시 메시지 출력
-      var selectedOptions = $('#approvers').val();
-      console.log(selectedOptions); // 선택된 옵션 값 출력
-
-      $.ajax({
-        url: 'your_controller_url',
-        method: 'POST',
-        data: {
-          selectedOptions: selectedOptions
-        },
-        success: function(response) {
-          console.log('전송 완료');
-        },
-        error: function(xhr, status, error) {
-          console.error('전송 실패');
-        }
-      });
-    });
-  });
 
 /*결재 작성하기 모달  */
-
 function item(button) {
 	  // 버튼 클래스 변경
 	  $('#previewBox').empty();
@@ -944,7 +1056,7 @@ function item(button) {
 	
 
 	// 사용하기 버튼의 href 변경
-	    document.getElementById("paymentButton").setAttribute("href", "/ArtHolicProject/paymentBuyItemForm.go");
+	    document.getElementById("paymentButton").setAttribute("href", "./paymentBuyItemForm.go");
 
 	  
 	}
@@ -962,7 +1074,7 @@ function vacation(button) {
 	  $('#previewBox').append("<img src=\"img/vacationFormMini.jpg\"  style=\"max-width: 100%; max-height: 100%; width: auto; height: auto;\">")
 	
 	// 사용하기 버튼의 href 변경
-	    document.getElementById("paymentButton").setAttribute("href", "/ArtHolicProject/paymentVacationForm.go");
+	    document.getElementById("paymentButton").setAttribute("href", "./paymentVacationForm.go");
 	 }	
 	
 function project(button) {
@@ -979,9 +1091,9 @@ function project(button) {
 	  $('#previewBox').append("<img src=\"img/projectForm.jpg\"  style=\"max-width: 100%; max-height: 100%; width: auto; height: auto;\">")
 	
 	// 사용하기 버튼의 href 변경
-	    document.getElementById("paymentButton").setAttribute("href", "/ArtHolicProject/paymentProjectForm.go");
+	    document.getElementById("paymentButton").setAttribute("href", "./paymentProjectForm.go");
 	  }	
-	
+	  
 function restoreButtonColor() {
 	  // 버튼 클래스 복원
 	  var vacationButton = document.getElementById("vacation");
