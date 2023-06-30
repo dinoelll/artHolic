@@ -6,9 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ReservationController {
 	
-	@RequestMapping(value="/reservation.go")
+	@RequestMapping(value="/metingRoom.go")
 	public String reservation() {
 		return "meetingRoom";
+	}
+	
+	@RequestMapping(value="/createMeetingRoom.go")
+	public String createReservation() {
+		return "createMeetingRoom";
 	}
 
 }

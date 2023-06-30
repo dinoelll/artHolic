@@ -37,8 +37,11 @@
   <!-- fullCalendar (캘린더) -->
   <link rel="stylesheet" href="plugins/fullcalendar/main.css">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<style>
 
+		<link rel="stylesheet" type="text/css" href="dist/css/calendar.css" />
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="dist/js/calendar.js"></script>
+<style>
    .main-sidebar {
       background-color: #e9ddc6;
    }
@@ -53,15 +56,20 @@
       margin-left: 0px;   
    }
    .meetingRoom-time{
+		margin-left: 24px;
 		background-color: 91BDCE;
 		color: white;
 		border-color: #91BDCE;
+		width: 90px;
+		height: 50px;
    }
    .title{
 		font-size: 20px;
    }
    .meetingRoom-people{
-		font-size: 30px;
+		font-size: 27px;
+	    margin-left: 70px;
+	    margin-right: 70px;
    }
    .mettingRoom-time1{
 		margin-top: 30px;
@@ -71,8 +79,8 @@
 		display: inline-block;
    }
    .mettingRoom-Photo{
-		height: 250px;
-		width: 250px;
+		height: 160px;
+		width: 260px;
    }
 	.meetingRoom-Photo,
 	.meetingRoom-people,
@@ -81,8 +89,38 @@
 	}
 	.mettingRoom-time3{
 		margin-top:10px;
+		margin-bottom: 50px;
 	}
 	
+	
+.meetingRoomContainer {
+  display: flex;
+  align-items: center;
+}
+
+.meetingRoomContainer .mettingRoom-time3 {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.calendar.month {
+  font-size: 50px; /* 원하는 폰트 사이즈로 변경하세요 */
+  text-align: center;
+}
+
+.calendar-header {
+  font-size: 50px; /* 원하는 폰트 사이즈로 변경하세요 */
+}
+
+.calendar-yearmonth {
+  font-size: 24px; /* 원하는 폰트 사이즈로 변경하세요 */
+}
+#calendar{
+	text-aline: center;
+}
+
+
 	
 </style>
 </head>
@@ -109,68 +147,46 @@
     </div>
     <!-- /.content-header -->
     
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-       
-       
-       
-      <h3 class="title">날짜 선택</h3>
-      
-      <h3 class="title">회의실 선택</h3>
-	      <div class="meetingRoom-select">
-	      	<hr/>
-	      	 <input type="checkbox" class="mettingRoom-checkbox">
-	      	<img class="mettingRoom-Photo" src="img/meetingRoom.jpg" alt="">
-	      	<h1 class="meetingRoom-people">7명</h1>
-	      	<div class="mettingRoom-time3">
-		      	<div class="mettingRoom-time1">
-			      	<button class="meetingRoom-time" style="border-left-width: 10px;">9:00</button>
-			      	<button class="meetingRoom-time">10:00</button>
-			      	<button class="meetingRoom-time">11:00</button>
-			      	<button class="meetingRoom-time">12:00</button>
-			      	<button class="meetingRoom-time">13:00</button>
-		      	</div>
-		      	<br/>
-		      	<div class="mettingRoom-time2">
-			      	<button class="meetingRoom-time">14:00</button>
-			      	<button class="meetingRoom-time">15:00</button>
-			      	<button class="meetingRoom-time">16:00</button>
-			      	<button class="meetingRoom-time">17:00</button>
-			      	<button class="meetingRoom-time">18:00</button>
-		      	</div>
-		      </div>
-	      	<hr/>
-	      </div> 
+<!-- Main content -->
+	<section class="content">
+		<div class="container-fluid">
+			<h3 class="title">날짜 선택</h3>
+			<div class="calendar month">
+				<div class="calendar-header">
+					<span class="calendar-yearmonth"></span>
+				</div>
+				<div id="calendar"></div>
+			</div>
+			<hr/>
+			<h3 class="title">회의실 선택</h3>
+			<div class="meetingRoomContainer">
+				<hr/>
+				<img class="mettingRoom-Photo" src="img/meetingRoom.jpg" alt="">
+				<h1 class="meetingRoom-people">7명</h1>
+				<div class="mettingRoom-time3">
+					<div class="mettingRoom-time1">
+						<button class="meetingRoom-time" style="border-left-width: 10px;">9:00</button>
+						<button class="meetingRoom-time">10:00</button>
+						<button class="meetingRoom-time">11:00</button>
+						<button class="meetingRoom-time">12:00</button>
+						<button class="meetingRoom-time">13:00</button>
+					</div>
+					<br/>
+					<div class="mettingRoom-time2">
+						<button class="meetingRoom-time">14:00</button>
+						<button class="meetingRoom-time">15:00</button>
+						<button class="meetingRoom-time">16:00</button>
+						<button class="meetingRoom-time">17:00</button>
+						<button class="meetingRoom-time">18:00</button>
+					</div>
+				</div>
+			<hr/>
+			</div> 
+		</div>
+	 
+	<!-- /.container-fluid -->
 	      
-	      <div class="meetingRoom-select">
-	      	<hr/>
-	      	 <input type="checkbox" class="mettingRoom-checkbox">
-	      	<img class="mettingRoom-Photo" src="img/meetingRoom.jpg" alt="">
-	      	<h1 class="meetingRoom-people">7명</h1>
-	      	<div class="mettingRoom-time3">
-		      	<div class="mettingRoom-time1">
-			      	<button class="meetingRoom-time" style="border-left-width: 10px;">9:00</button>
-			      	<button class="meetingRoom-time">10:00</button>
-			      	<button class="meetingRoom-time">11:00</button>
-			      	<button class="meetingRoom-time">12:00</button>
-			      	<button class="meetingRoom-time">13:00</button>
-		      	</div>
-		      	<br/>
-		      	<div class="mettingRoom-time2">
-			      	<button class="meetingRoom-time">14:00</button>
-			      	<button class="meetingRoom-time">15:00</button>
-			      	<button class="meetingRoom-time">16:00</button>
-			      	<button class="meetingRoom-time">17:00</button>
-			      	<button class="meetingRoom-time">18:00</button>
-		      	</div>
-		      </div>
-	      	<hr/>
-	      </div> 
-      </div>
-      <!-- /.container-fluid -->
-         
-   </section>
+	</section>
     <!-- /.content -->
     
       
@@ -195,5 +211,56 @@
    -->
 </body>
 
-<script></script>
+<script>
+var options = {
+		showDay : true,
+		showFullDayName : true,
+		showToday : true
+	};
+	
+	var date = new Date();
+	var html = weekHTML(date, options);
+	$(".calendar-yearmonth").html(date.getFullYear() + "년 " + (date.getMonth() + 1) + "월");
+	$("#calendar").html(html);
+	
+	
+	// JavaScript 코드
+	var tds = document.querySelectorAll('.calendar.month td');
+	var spans = document.querySelectorAll('.calendar.month td span');
+
+	// 각 td 요소에 클릭 이벤트 리스너를 추가합니다.
+	tds.forEach(function(td) {
+	  // 토요일, 일요일, 오늘 날짜에는 클릭 이벤트를 제거합니다.
+	  if (td.classList.contains('saturday') || td.classList.contains('sunday') || td.classList.contains('today')) {
+	    td.style.pointerEvents = 'none'; // 클릭 이벤트를 비활성화합니다.
+	  } else {
+	    td.addEventListener('click', function(event) {
+	      // 클릭한 요소가 span 요소인지 확인합니다.
+	      var clickedSpan = event.target.closest('span');
+	      if (!clickedSpan) {
+	        return; // 클릭한 요소가 span 요소가 아닌 경우 처리 종료
+	      }
+
+	      // 모든 span 요소의 스타일을 초기화하고 "today" 클래스를 제거합니다.
+	      spans.forEach(function(span) {
+	        span.style.border = '';
+	        span.style.borderRadius = '';
+	        span.style.color = '';
+	        span.style.backgroundColor = '';
+	        span.classList.remove('today');
+	      });
+
+	      // 클릭한 요소에 스타일을 적용하고 "today" 클래스를 추가합니다.
+	      clickedSpan.style.border = '1px solid #91BDCE';
+	      clickedSpan.style.borderRadius = '50%';
+	      clickedSpan.style.color = 'white';
+	      clickedSpan.style.backgroundColor = '#91BDCE';
+	      clickedSpan.classList.add('today');
+	    });
+	  }
+	});
+	
+	
+	
+</script>
 </html>
