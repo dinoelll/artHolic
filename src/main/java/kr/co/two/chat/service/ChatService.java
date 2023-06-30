@@ -30,6 +30,7 @@ public class ChatService {
 		ArrayList<ChatDTO> room_info_list = dao.chatList(name);
 		
 		for (ChatDTO chatDTO : room_info_list) {
+			logger.info("chatDTO : " + chatDTO.getChat_room_id());
 			room_list.add(dao.room_list(chatDTO.getChat_room_id()));
 		}
 		return room_list;
@@ -44,6 +45,7 @@ public class ChatService {
 		map.put("chat_room_id", dto.getChat_room_id());
 		map.put("send_id", dto.getSend_id());
 		map.put("content", dto.getContent());
+		map.put("is_notice", dto.isIs_notice());
 		dao.chatStored(map);
 	}
 
@@ -53,5 +55,25 @@ public class ChatService {
 
 	public ArrayList<MemberDTO> memberList() {
 		return dao.memberList();
+	}
+
+	public String createChatRoom(HashMap<String, Object> map) {
+		ChatDTO dto = new ChatDTO();
+		dto.setName(String.valueOf(map.get("chat_room_name")));
+		
+		dao.createRoom(dto);
+		
+		logger.info("chat_member_id : " + dto.getChat_room_id());
+		
+		for (String member_id : (ArrayList<String>) map.get("member_id_array")) {
+			logger.info("member_id : "+ member_id);
+			dao.insert_chat_room_info(dto.getChat_room_id(), member_id);
+		}
+		return "success";
+	}
+
+	public int chatRoomExit(HashMap<String, Object> params) {
+		dao.exitMessage(params);
+		return dao.chatRoomExit(params);
 	}
 }

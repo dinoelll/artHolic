@@ -23,4 +23,12 @@ public interface ChatDAO {
 
 	ArrayList<MemberDTO> memberList();
 
+	int createRoom(ChatDTO dto);
+
+	int insert_chat_room_info(int chat_room_id, String member_id);
+
+	int chatRoomExit(HashMap<String, Object> params);
+
+	int exitMessage(HashMap<String, Object> params);
+
 }
