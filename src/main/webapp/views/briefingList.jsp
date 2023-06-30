@@ -125,8 +125,7 @@ function listCall(page){
 		success:function(data){
 			//console.log(data);
 			console.log(data.pages);
-		
-			
+
 			listPrint(data.list);
 			
 			//총 페이지 수

@@ -70,7 +70,6 @@ public class BriefingService {
 	
 	@Transactional
 	public ModelAndView detail(String idx) {
-		dao.bHit(idx);
 		BriefingDTO dto = dao.detail(idx);
 		
 		ModelAndView mav = new ModelAndView("briefingDetail");

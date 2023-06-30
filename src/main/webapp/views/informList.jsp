@@ -21,6 +21,9 @@
 
 <!-- --------------------------------------------------------------------------------------------------- -->
 
+
+	<!-- jQuery -->
+	<script src="plugins/jquery/jquery.min.js"></script>
 <!-- Ionicons -->
 <link rel="stylesheet"
 	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -53,8 +56,8 @@
 <!-- summernote 
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
   -->
-<!-- fullCalendar (캘린더) -->
-<link rel="stylesheet" href="plugins/fullcalendar/main.css">
+<!-- fullCalendar (캘린더) 
+<link rel="stylesheet" href="plugins/fullcalendar/main.css">-->
 
 
 
@@ -67,11 +70,13 @@ table {
 	width: 100%;
 }
 
+
 table, td, th {
 	border: 1px solid;
 	border-collapse: collapse;
 	padding: 5px;
 }
+
 
 #paging {
 	text-align: center;
@@ -191,31 +196,32 @@ table, td, th {
 								<input type="text" id="keyword" value=""
 									placeholder="검색어를 입력하세요" />
 									<button onclick="opt()">검색</button>
-									<button type="button" class="btn btn-sm btn-primary">필독삭제</button>	
-									<button type="button" onclick="location.href='/informWrite.go'" class="btn btn-sm btn-primary">등록</button>
-									<button type="button" class="btn btn-sm btn-primary">삭제</button>
+									<button onclick="del()" style="float:right;" type="button" class="btn btn-sm btn-primary">삭제</button>
+									<button style="float:right;" type="button" onclick="location.href='/informWrite.go'" class="btn btn-sm btn-primary">등록</button>
+									<button style="float:right;" type="button" class="btn btn-sm btn-primary">필독삭제</button>
 								</td>
 							</tr>
 							<tr>
-								<th>체크박스</th>
+								<th><input id="all" type="checkbox" /></th>
 								<th>작성자</th>
-								<th colspan="2">제목</th>
+								<th>제목</th>
 								<th>작성일자</th>
+								<th>삭제</th>
 							</tr>
 						</thead>
 						<tbody id="list">
-							<c:forEach items="${list}" var="dto">
+							<!--<c:forEach items="${informList}" var="dto">
 								<tr>
-									<td><input type="checkbox" /></td>
-									<th>${dto.member_id}</th>
-									<th><a href="informDetail.do?idx=${dto.board_id}">${dto.subject}</a></th>
-									<td>${dto.writeTime}</td>
-									<td><button type="button" class="btn btn-sm btn-primary">삭제</button></td>
+									<td><input type="checkbox" value="${dto.board_id}" /></td>
+									<th><a href="employeeDetail.go?member_id=${dto.member_id}">${dto.member_id}</a> </th>
+									<th><a href="informDetail.do?board_id=${dto.board_id}">${dto.subject}</a></th>
+									<td>작성시간</td>
+									<th><a href="informDel.do?board_id=${dto.board_id}">삭제</a></th>
 								</tr>
-							</c:forEach>
+							</c:forEach> -->
 						</tbody>
 						<tr>
-							<td colspan="6" id="paging">
+							<td colspan="5" id="paging">
 								<!-- 	플러그인 사용	(twbsPagination)	-->
 								<div class="container">
 									<nav aria-label="Page navigation" style="text-align: center">
@@ -225,29 +231,16 @@ table, td, th {
 							</td>
 						</tr>
 					</table>
-
-
-
-
-
 				</div>
 				<!-- /.timeline -->
-
 			</section>
-
 			<!-- /.content -->
-
-
-
-
-
 		</div>
 	</div>
 
 	<jsp:include page="footer.jsp" />
 
-	<!-- jQuery -->
-	<script src="plugins/jquery/jquery.min.js"></script>
+
 	<!-- jQuery UI -->
 	<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 
@@ -260,29 +253,14 @@ table, td, th {
 	<script src="dist/js/adminlte.js"></script>
 
 	<!-- AdminLTE for demo purposes 
-<script src="dist/js/demo.js"></script>
--->
-
-	<!-- ChartJS(차트) -->
-	<script src="plugins/chart.js/Chart.min.js"></script>
-
-	<!-- fullCalendar 2.2.5 (캘린더) -->
-	<script src="plugins/moment/moment.min.js"></script>
-	<script src="plugins/fullcalendar/main.js"></script>
-	
-		<!-- jQuery -->
-	<script src="plugins/jquery/jquery.min.js"></script>
-	<!-- Bootstrap 4 -->
-	<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<!-- SweetAlert2 -->
-	<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+	<script src="dist/js/demo.js"></script>
+	-->
+	<!-- SweetAlert2 
+	<script src="plugins/sweetalert2/sweetalert2.min.js"></script>-->
 	<!-- Toastr -->
 	<script src="plugins/toastr/toastr.min.js"></script>
-	<!-- AdminLTE App -->
-	<script src="dist/js/adminlte.min.js"></script>
-	<!-- AdminLTE for demo purposes -->
-	<script src="dist/js/demo.js"></script>
-	<!-- Page specific script -->
+
+	
 
 
 </body>
@@ -292,39 +270,39 @@ var cnt=10;
 var optValue ='';
 var keywordValue='';
 
+listCall(showPage);
+
 function opt() {
 	
+	/*
 	$('#pagination').twbsPagination({
 		totalPages:null //총 페이지 수 
 		});
-	
-	
+	*/
 	  optValue = document.getElementById("opt").value;
 	  keywordValue = document.getElementById("keyword").value;
 	  showPage = 1;
 	  listCall(showPage);
+	  $('#pagination').twbsPagination('destroy');
 	  }
-
-listCall(showPage);
-
 
 
 
 function listCall(page){
 	$.ajax({
 		type:'post',
-		url:'list.ajax',
+		url:'informList.ajax',
 		data:{
 			'page':page,
 			'cnt':cnt,
 			'opt':optValue,
-			'keyword':keywordValue	
+			'keyword':keywordValue
 		},
 		dataType:'json',
 		success:function(data){
 			console.log(data);
 			console.log(data.pages);
-			listPrint(data.list);
+			listDraw(data.list);
 			
 			//총 페이지 수
 			//현재 페이지
@@ -339,13 +317,9 @@ function listCall(page){
 					if (page !=  showPage) {
 						showPage=page; // 2
 						listCall(page);
-						
 					}
 				}
-				
 			});
-					
-			
 		},	
 		error:function(e){
 			console.log(e);
@@ -354,28 +328,63 @@ function listCall(page){
 }
 
 
-
-/* function listPrint(list) {
+function listDraw(list){
 	var content = '';
-	//java.sql.Date 는 js에서 읽지 못해 밀리세컨드로 반환한다.
-	// 해결방법 1. DTO에서 Date를 String으로 반환
-	// 해결방법 2. js 에서 변환
-	list.forEach(function(dto,idx){
-		content +='<tr>';
-		content +='<td>'+dto.idx+'</td>';
-		content +='<td><a href="detail.do?idx='+dto.idx+'">'+dto.subject+'</a></td>';
-		content +='<td>'+dto.user_name+'</td>';
-		content +='<td>'+dto.bHit+'</td>';
-		var date = new Date(dto.reg_date);
-		content +='<td>'+date.toLocaleDateString('ko-KR')+'</td>'; //en-US 를 ko-KR로 바꿔준다.
-		content +='</tr>';
-	}); */
-	
-	
-/* 	$('#list').empty();
+	list.forEach(function(dto,board_id){
+		content += '<tr>';
+		content += '<td><input type="checkbox" value="'+dto.board_id+'" /></td>';
+		content += '<th><a href="employeeDetail.go?member_id='+dto.member_id+'">'+dto.member_id+'</a> </th>';
+		content += '<th><a href="informDetail.do?board_id='+dto.board_id+'">'+dto.subject+'</a></th>';
+		content += '<td>작성시간</td>';
+		content += '<th><a href="informDel.do?board_id='+dto.board_id+'">삭제</a></th>';		
+		content += '</tr>';
+	});
+	$('#list').empty();
 	$('#list').append(content);
 }
- */
+
+
+
+$('#all').click(function(e){	
+	var $chk = $('input[type="checkbox"]');
+	console.log($chk);
+	if($(this).is(':checked')){
+		$chk.prop('checked',true);
+	}else{
+		$chk.prop('checked',false);
+	}	
+});
+
+function del(){
+	
+	var checkArr = [];
+	
+	$('input[type="checkbox"]:checked').each(function(idx,item){		
+		//checkbox 에 value 를 지정하지 않으면 기본값을 on 으로 스스로 지정한다.
+		if($(this).val()!='on'){
+			//console.log(idx,$(this).val());
+			checkArr.push($(this).val());
+		}	
+	});
+	
+	console.log(checkArr);
+		
+	$.ajax({
+		type:'get',
+		url:'informDel.ajax',
+		data:{'delList':checkArr},
+		dataType:'json',
+		success:function(data){
+			location.href="/informList.go";
+		},
+		error:function(e){
+			console.log(e);
+		}		
+	});
+	
+}
+
+
 
 
 

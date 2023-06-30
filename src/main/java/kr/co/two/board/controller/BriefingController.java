@@ -31,16 +31,18 @@ public class BriefingController {
 	 * return "briefingList"; }
 	 * 
 	 * 
-	 * @PostMapping(value="/briefingList.ajax")
 	 * 
+	 * 
+	 * @PostMapping(value="/briefingList.ajax")
 	 * @ResponseBody public HashMap<String, Object> list(@RequestParam String
 	 * page,@RequestParam String cnt,
-	 * 
 	 * @RequestParam String opt,@RequestParam String keyword) {
-	 * 
 	 * 
 	 * return
 	 * service.list(Integer.parseInt(page),Integer.parseInt(cnt),opt,keyword); }
+	 * 
+	 * 
+	 * 
 	 * 
 	 * @RequestMapping(value="/briefingWrite.go") public String writeForm() {
 	 * 

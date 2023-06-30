@@ -9,10 +9,48 @@
          VALUES(#{subject}, '강경석',#{content})   
    </insert>
    
-   <select id="informList" resultType="inform">
-   	SELECT board_id, subject, member_id
-   		FROM board ORDER BY board_id DESC
+    
+	<select id="listCall" resultType="inform" parameterType="string">
+		SELECT * FROM board
+		<where>
+			<if test="keyword != null and !keyword.equals('') and opt =='name'"> member_id LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> subject LIKE CONCAT('%',#{keyword},'%')</if>
+		</where>
+		ORDER BY board_id DESC
+		LIMIT #{cnt} OFFSET #{offset}
+	</select>
+	
+	<select id="totalCount" resultType="int" parameterType="string">
+		SELECT COUNT(board_id) FROM board
+		<where>
+			<if test="keyword != null and !keyword.equals('') and opt =='name'"> member_id LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> subject LIKE CONCAT('%',#{keyword},'%')</if>
+		</where>
+	</select>
+   
+   
+   <select id="informDetail" resultType="inform">
+   	SELECT * FROM board
+   		WHERE board_id = #{board_id}
    </select>
+   
+   <select id="informUpdate" resultType="inform">
+	 SELECT * FROM board
+	  WHERE board_id = #{board_id}
+   </select>
+   
+   <update id="informUpdateDo" parameterType="hashmap">
+   	UPDATE board SET
+   		subject = #{subject}
+   		,content = #{content}
+   		WHERE board_id = #{board_id}
+   </update>
+   
+   <delete id="delete">
+   	DELETE FROM board WHERE board_id = #{board_id}
+   </delete>
+   
+
 
 
 </mapper>

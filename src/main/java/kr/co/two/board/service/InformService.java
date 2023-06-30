@@ -1,14 +1,18 @@
 package kr.co.two.board.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.two.board.dao.InformDAO;
+import kr.co.two.board.dto.BriefingDTO;
 import kr.co.two.board.dto.InformDTO;
 
 @Service
@@ -32,16 +36,88 @@ public class InformService {
 		      
 		   }
 
+//	public ModelAndView informList() {
+//		
+//		ArrayList<InformDTO> informList = dao.informList();
+//		ModelAndView mav = new ModelAndView("informList");
+//		mav.addObject("informList", informList);
+//		
+//		return mav;
+//	}
+	
+	   @Transactional
+	   public ModelAndView informDetail(String board_id) {
+	      InformDTO dto = dao.informDetail(board_id);
+	      ModelAndView mav = new ModelAndView("informDetail");
+	      mav.addObject("inform", dto);
+	      
+	      return mav;
+	   }
 
-
-
-	public ModelAndView informList() {
+	   
+	public String informUpdateDo(HashMap<String, Object> params) {
 		
-		ArrayList<InformDTO> list = dao.informList();
-		ModelAndView mav = new ModelAndView("list");
-		mav.addObject("list", list);
+		logger.info("updateDo : "+params);
+		String page = "redirect:/informDetail.do";
+		if(dao.informUpdateDo(params)>0) {
+			page = "redirect:/informDetail.do?board_id="+params.get("board_id");
+		}
 		
+		return page;
+	}
+
+	@Transactional
+	public ModelAndView informUpdate(String board_id) {
+		InformDTO dto = dao.informUpdate(board_id);
+	      ModelAndView mav = new ModelAndView("informUpdate");
+	      mav.addObject("inform", dto);
+	      
+	      return mav;
+		
+	}
+
+	public ModelAndView delete(String board_id, RedirectAttributes ratt) {
+		ModelAndView mav = new ModelAndView("redirect:/informList.go");
+		int success = dao.delete(board_id);
+		String msg = "삭제에 실패 했습니다.";
+		if(success > 0) {
+			msg = "삭제에 성공 했습니다.";
+			ratt.addFlashAttribute("msg", msg);
+		}
 		return mav;
 	}
+
+	public HashMap<String, Object> informDel(ArrayList<String> delList) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		for (String id : delList) {
+			dao.delete(id);
+		}
+		return map;
+	}
+
+	public HashMap<String, Object> listCall(int page,int cnt, String opt, String keyword) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int offset = (page-1)*cnt; 
+		
+		int total = dao.totalCount(opt,keyword); // 12
+		 // cnt = 10
+		int range = total%cnt == 0 ? total/cnt : (total/cnt)+1;
+		
+		logger.info("total :"+total);
+		logger.info("range :"+range);
+		logger.info("before page :"+page);
+		
+		page = page>range ? range : page;
+		
+		logger.info("after page :"+page);
+		
+		map.put("currPage", page);
+		map.put("pages", range);
+		ArrayList<InformDTO> list = dao.listCall(opt, keyword,cnt, offset);
+		map.put("list", list);
+		return map;
+	}
+
 
 }
