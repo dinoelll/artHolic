@@ -13,7 +13,8 @@ public class ChatDTO {
 	private String content;
 	private boolean is_read;
 	private Date send_time;
-	private boolean blind;
+	private boolean bllind;
+	private boolean is_notice;
 	
 	public int getChat_room_id() {
 		return chat_room_id;
@@ -63,12 +64,17 @@ public class ChatDTO {
 	public void setSend_time(Date send_time) {
 		this.send_time = send_time;
 	}
-	public boolean isBlind() {
-		return blind;
+	public boolean isBllind() {
+		return bllind;
 	}
-	public void setBlind(boolean blind) {
-		this.blind = blind;
+	public void setBllind(boolean bllind) {
+		this.bllind = bllind;
 	}
-	
+	public boolean isIs_notice() {
+		return is_notice;
+	}
+	public void setIs_notice(boolean is_notice) {
+		this.is_notice = is_notice;
+	}
 	
 }
