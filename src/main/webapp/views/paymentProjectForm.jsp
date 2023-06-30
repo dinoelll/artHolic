@@ -579,7 +579,7 @@
 					          
 					         <form id="demoform" action="#" method="post">
 					          <div class="card-body">
-								  <div class="row">
+								   <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
 										      <label style="font-size:27px;">결재선 선택</label>
@@ -593,11 +593,11 @@
 										        </select>
 										      </div>
 										    </div>
-										    <!-- /.form-group -->
+										   <!--  //.form-group -->
 										  </div>
-										  <!-- /.col -->
+										 <!--  /.col -->
 										</div>
-									  <!-- /.row -->
+									  <!-- /.row  -->
 									  
 									  <div class="row">
 										  <div class="col-12">
@@ -785,18 +785,24 @@
 
 /*  결재선 데이터 전송*/
 
-$("#approvers").bootstrapDualListbox({
+
+
+
+ $("#approvers").bootstrapDualListbox({
 	  // 기타 매개변수 설정
 	  infoText: false, // "Showing all {0}" 메시지 숨김
 	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
 	  moveAllLabel: '' // "Move all" 버튼 제거
 	});
+	 
 $("#referrer").bootstrapDualListbox({
 	  // 기타 매개변수 설정
 	  infoText: false, // "Showing all {0}" 메시지 숨김
 	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
 	  moveAllLabel: '' // "Move all" 버튼 제거
-	});
+	});	
+	
+	
 
 
 var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox();
