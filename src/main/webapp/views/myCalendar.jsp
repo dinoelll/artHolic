@@ -69,6 +69,72 @@
 		height: 700px;
 		text-align: center; */
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은색 배경 */
+    z-index: 999; /* 모달 창보다 낮은 z-index 값 */
+    display: none; /* 기본적으로 숨겨진 상태 */
+}
+
+/* 모달 창 스타일 */
+#modal {
+	 position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 50%; /* 모달을 수직 중앙에 위치시키기 위해 상위 요소의 중앙으로 이동 */
+	left: 50%; /* 모달을 수평 중앙에 위치시키기 위해 상위 요소의 중앙으로 이동 */
+	transform: translate(-50%, -50%); /* 모달의 중심을 기준으로 위치 조정 */
+	z-index: 9999; /* 다른 요소들보다 위로 표시하기 위해 z-index 값 설정 */
+	width: 100%;
+	 text-align-last: center;
+}
+
+
+/* 모달 폼 스타일 */
+#modal-form {
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 5px;
+	max-width: 400px;
+	text-align: center;
+}
+
+#modal-title {
+	margin-bottom: 10px;
+	width: 100%;
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+#modal-form button {
+	margin: 10px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	background-color: #3c8dbc;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+}
+
+#modal-form button:hover {
+	background-color: #357ca5;
+}
+.calendar-container {
+    width: 50%; /* Adjust the width as desired */
+}
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -98,6 +164,20 @@
 			</div>
 			<!-- /.content-header -->
 
+
+			<div id="modal" style="display: none;">
+				<!-- 모달 내부의 입력 폼 -->
+				<form id="modal-form">
+					<label for="modal-title">내용</label> <input type="text"
+						id="modal-title" name="title"> <br>
+					<button type="submit">변경</button>
+					<button type="button" id="delete">삭제</button>
+					<button type="button" onclick="closeModal()">취소</button>
+				</form>
+			</div>
+
+
+
 			<!-- Main content -->
 			<section class="content">
 				<div class="container-fluid">
@@ -116,12 +196,11 @@
 									<div class="card-body">
 										<!-- the events -->
 										<div id="external-events">
-											<div class="external-event bg-success">Lunch</div>
-											<div class="external-event bg-warning">Go home</div>
-											<div class="external-event bg-info">Do homework</div>
-											<div class="external-event bg-primary">Work on UI
-												design</div>
-											<div class="external-event bg-danger">Sleep tight</div>
+											<div class="external-event bg-success">미팅</div>
+											<div class="external-event bg-warning">회의</div>
+											<div class="external-event bg-info">출장</div>
+											<div class="external-event bg-primary">회식</div>
+											<div class="external-event bg-danger">휴가</div>
 											<div class="checkbox">
 												<label for="drop-remove"> <input type="checkbox"
 													id="drop-remove"> 일정 리스트에서 삭제하기
@@ -169,7 +248,7 @@
 							</div>
 						</div>
 						<!-- /.col -->
-						<div class="col-md-9">
+						<div class="col-md-9 calendar-container">
 							<div class="card card-primary">
 								<div class="card-body p-0">
 									<!-- THE CALENDAR -->
@@ -210,8 +289,9 @@
 	<script>
 	var calendar=null;
 	
-	 $(document).ready(function() {
+	 $(document).ready(function callList() {
 		  // 페이지 로드 시 서버에서 이벤트 데이터를 가져와서 캘린더에 표시
+		  console.log('리스트 다시 불러오기!');
 		  $.ajax({
 		    url: '/getEvent.ajax', // 이벤트 데이터를 조회하는 API 엔드포인트
 		    type: 'GET',
@@ -220,18 +300,21 @@
 		    	    var start = new Date(event.start_date);
 		    	    var end = new Date(event.end_date);
 		    	    
-		    	    // UTC 시간대와 로컬 시간대의 차이를 분 단위로 가져옵니다
+		    	     // UTC 시간대와 로컬 시간대의 차이를 분 단위로 가져옵니다
 		    	    var timezoneOffset = new Date().getTimezoneOffset();
 
 		    	    // 서버에서 받은 UTC 시간을 로컬 시간대로 조정합니다
 		    	    start.setMinutes(start.getMinutes() - timezoneOffset);
-		    	    end.setMinutes(end.getMinutes() - timezoneOffset);
-		    	    
+		    	    end.setMinutes(end.getMinutes() - timezoneOffset); 
 		    	    
 		    	    return {
 		    	      title: event.content,
 		    	      start: start,
-		    	      end: end
+		    	      end: end,
+		    	      allDay: event.allDay,
+				      backgroundColor : event.backgroundColor,
+				      borderColor : event.borderColor,
+				      id : event.id
 		    	    };
 		    	  });
 		    	  
@@ -318,53 +401,7 @@
 		    },
 		    themeSystem: 'bootstrap',
 		    // 임의의 기본 이벤트
-		   /*  events: [
-		      {
-		        title          : '하루 종일 이벤트',
-		        start          : new Date(y, m, 1),
-		        backgroundColor: '#f56954', // 빨강
-		        borderColor    : '#f56954', // 빨강
-		        allDay         : true
-		      },
-		      {
-		        title          : '긴 이벤트',
-		        start          : new Date(y, m, d - 5),
-		        end            : new Date(y, m, d - 2),
-		        backgroundColor: '#f39c12', // 노랑
-		        borderColor    : '#f39c12' // 노랑
-		      },
-		      {
-		        title          : '미팅',
-		        start          : new Date(y, m, d, 10, 30),
-		        allDay         : false,
-		        backgroundColor: '#0073b7', // 파랑
-		        borderColor    : '#0073b7' // 파랑
-		      },
-		      {
-		        title          : '점심',
-		        start          : new Date(y, m, d, 12, 0),
-		        end            : new Date(y, m, d, 14, 0),
-		        allDay         : false,
-		        backgroundColor: '#00c0ef', // 정보 (아쿠아)
-		        borderColor    : '#00c0ef' // 정보 (아쿠아)
-		      },
-		      {
-		        title          : '생일 파티',
-		        start          : new Date(y, m, d + 1, 19, 0),
-		        end            : new Date(y, m, d + 1, 22, 30),
-		        allDay         : false,
-		        backgroundColor: '#00a65a', // 성공 (녹색)
-		        borderColor    : '#00a65a' // 성공 (녹색)
-		      },
-		      {
-		        title          : 'Google에서 확인하기',
-		        start          : new Date(y, m, 28),
-		        end            : new Date(y, m, 29),
-		        url            : 'https://www.google.com/',
-		        backgroundColor: '#3c8dbc', // 주 (연한 파랑)
-		        borderColor    : '#3c8dbc' // 주 (연한 파랑)
-		      }
-		    ], */
+		
 		    editable  : true,
 		    droppable : true, // 캘린더 위로 요소를 놓을 수 있게 합니다
 		    drop      : function(info) {
@@ -375,7 +412,132 @@
 		      }
 
 		      console.log('이벤트 발생!');
-		    }
+		    },
+		    /* ---------------------------------------------------------------------------------------------- */
+		    eventClick: function(info) {
+		    	
+		    	 // 모달 창 띄우기
+		    	  showModal(info.event);
+
+		    	  // 모달 폼 전송 이벤트 리스너 등록
+		    	  $('#modal-form').on('submit', function(e) {
+		    	    e.preventDefault();
+		    	    var content = $('#modal-title').val(); // 모달 폼에서 입력한 내용 가져오기
+		    	    var id = info.event.id; // 클릭한 이벤트의 id 가져오기
+		    	    var start_date = info.event.start;
+		    	    var end_date = info.event.end;
+		    	    var allDay = info.event.allDay;
+		    	    var backgroundColor = info.event.backgroundColor;
+		    	    var borderColor = info.event.borderColor;
+		    	    
+		    	    console.log(content,id);
+
+		    	    // 서버로 데이터 전송 (업데이트 또는 삭제)
+		    	    sendEventData(id, content,start_date,end_date,allDay,backgroundColor,borderColor);
+		    	    
+		    	    // 모달 닫기
+		    	    closeModal();
+		    	  });
+		    	  
+		    	  function showModal(event) {
+			    	  // 모달 창 띄우기 및 이벤트 정보를 모달 폼에 채우기
+			    	  console.log("모달창 등장!");
+			    	  $('#modal').show();
+			    	  $('#modal-title').val(event.title);
+			    	}
+		    	  
+		    		function closeModal() {
+				    	  // 모달 창 닫기 및 모달 폼 초기화
+				    	  $('#modal').hide();
+				    	  $('#modal-form')[0].reset();
+				    	}
+
+		    		
+		    	
+				    	function sendEventData(id, content,start_date,end_date,allDay,backgroundColor,borderColor) {
+				    	  // 서버로 데이터 전송 (업데이트 또는 삭제)
+				    	  var requestData = {
+				    	    id: id,
+				    	    content: content,
+				    	    start_date:start_date,
+				    	    end_date:end_date,
+				    	    allDay:allDay,
+				    	    backgroundColor:backgroundColor,
+				    	    borderColor:borderColor
+				    	  };
+							
+				    	  // AJAX 요청 전송
+				    	   $.ajax({
+							    url: '/calendarUpdate2.ajax',
+							    method: 'POST',
+							    data: JSON.stringify(requestData),
+							    contentType: 'application/json',
+							    success: function(response) {
+							      // 요청 성공 시 처리할 코드 작성
+							      console.log('일정 업데이트 또는 삭제 성공');
+							      alert('일정이 변경되었습니다!');
+								    location.href='/mycalendar';
+							      
+							    },
+							    error: function() {
+							      // 요청 실패 시 처리할 코드 작성
+							      console.log('데이터 업데이트 또는 삭제 실패');
+							    }
+							  });    	
+				      }	  
+				    	
+				    	
+				    	
+				    	
+				    	
+				    	
+				    	
+				    	
+				    	  $('#delete').on('click', function(e) {
+					    	    e.preventDefault();
+					    	   
+					    	    var id = info.event.id; // 클릭한 이벤트의 id 가져오기
+					    	    
+					    	    
+					    	    console.log(id);
+
+					    	    // 서버로 데이터 전송 (업데이트 또는 삭제)
+					    	    deleteEvent(id);
+					    	    
+					    	    // 모달 닫기
+					    	    closeModal();
+					    	  });
+				    	
+
+				    	
+				    	 function deleteEvent(id) {
+				    		
+				    		console.log(id);
+				    		   $.ajax({
+								    url: '/eventDelete.ajax',
+								    type: 'POST',
+								    data: {id:id},
+								    /* contentType: 'application/json',  */
+								    dataType : 'json',
+								    success: function(data) {
+								      // 요청 성공 시 처리할 코드 작성
+								      console.log(data.data);
+								      alert('일정이 삭제되었습니다!');
+									    location.href='/mycalendar';
+								      
+								    },
+								    error: function() {
+								      // 요청 실패 시 처리할 코드 작성
+								      console.log('데이터 업데이트 또는 삭제 실패');
+								    }
+								  });
+				    		 
+				    		  
+				    		} 
+	
+				    	
+		    	}		    
+		    /* ---------------------------------------------------------------------------------------------- */
 		  });
 
 
@@ -441,7 +603,8 @@
 			      end_date: event.end,
 			      allDay: event.allDay,
 			      backgroundColor : event.backgroundColor,
-			      borderColor : event.borderColor
+			      borderColor : event.borderColor,
+			      id : event.id
 			      // 필요한 경우 이벤트의 다른 속성도 추가할 수 있습니다
 			    };
 			    
@@ -457,6 +620,9 @@
 				  contentType: 'application/json',
 				  success: function(response) {
 				    console.log(response);
+				    alert('일정이 등록되었습니다!');
+				    location.href='/mycalendar';
+				    calendar.render();
 				  },
 				  error: function(error) {
 					  console.log(error);
@@ -466,40 +632,38 @@
 		  /* -----------------------------------------------------------------------------------------  */
 		  
 		  
+
+
+
+
+/* const btn = document.getElementById('popupBtn');
+const modal = document.getElementById('modalWrap');
+const closeBtn = document.getElementById('closeBtn');
+
+/* btn.onclick = function() {
+	modal.style.display = 'block';
+} */
+/* closeBtn.onclick = function() {
+	modal.style.display = 'none';
+}
+
+window.onclick = function(event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+	}
+} */ 
+
+
 		  
+function closeModal() {
+	  // 모달 창 닫기 및 모달 폼 초기화
+	  $('#modal').hide();
+	  $('#modal-form')[0].reset();
+	}
+	
+
 		  
-/* 		  $(function() {
-  // 일정 데이터를 가져와서 캘린더에 표시하는 함수
-  function loadEventsFromServer() {
-    // AJAX 요청을 통해 서버로부터 일정 데이터 가져오기
-    $.ajax({
-      url: 'your_server_url', // 일정 데이터를 전달하는 API 엔드포인트 URL
-      type: 'GET',
-      success: function(response) {
-        // 일정 데이터를 성공적으로 받아왔을 때의 처리
-        var eventData = response; // 서버로부터 받은 일정 데이터
 
-        // 캘린더에 일정 데이터 설정
-        calendar.addEventSource(eventData);
-      },
-      error: function(xhr, status, error) {
-        // 일정 데이터를 가져오는 과정에서 에러 발생 시의 처리
-        console.error('일정 데이터를 가져오는 중 에러가 발생하였습니다:', error);
-      }
-    });
-  }
-
-  // 캘린더 초기화
-  var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-    // 캘린더 옵션 설정...
-  });
-
-  // 일정 데이터 가져오기
-  loadEventsFromServer();
-
-  // 캘린더 렌더링
-  calendar.render();
-}); */
 
 </script>
 
