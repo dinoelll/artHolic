@@ -5,5 +5,15 @@
 
 <mapper namespace="kr.co.two.reservation.dao.ReservationDAO">
 
+	<insert id="reservationMR" parameterType="hashmap">
+		INSERT INTO mr_reservation (member_id,room_id,date,startTime,endTime,meeting_id,team_id)
+		VALUES(#{member_id},#{room_id},#{newDate},#{startTime},#{endTime},#{meeting_id},#{team_id})
+	</insert>
+	
+	<select id="mrList" resultType="meetingRoom">
+		SELECT * FROM meeting_room
+		
+	</select>
+
 
 </mapper>
