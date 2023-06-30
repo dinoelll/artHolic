@@ -3,11 +3,12 @@
 <html lang="ko">
 
 
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Timeline</title>
+  
+
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -41,7 +42,13 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   
-  <style>
+  
+  
+  <!--  duallist-->
+<link rel="stylesheet" href="dist/css/icon_font/css/icon_font.css">
+<link rel="stylesheet" href="dist/css/dual/jquery.transfer.css">  
+
+<style>
 
 /* gnb 스타일 */
 
@@ -52,7 +59,6 @@
      align-items: center;
      width: 205px;
     height: 460px;
-    
 		
 	}
 	#paybutton{
@@ -71,7 +77,7 @@
 	    color: black;
 	    
     }
-    	#paybutton3 {
+        	#paybutton3 {
 	    margin-bottom: 10px;
 	    font-size: 16px;
 	    width: 150px;
@@ -82,9 +88,10 @@
     }
     
     
-    #ListGo{
+        #ListGo{
 	color: black;
 	}
+    
     
 	.main-sidebar {
 		background-color: #e9ddc6;
@@ -199,6 +206,13 @@
     color: transparent;
     text-shadow: 0 0 0 black;
   }
+  
+  
+          .transfer-demo {
+            width: 640px;
+            height: 400px;
+            margin: 0 auto;
+        }
 
 
 
@@ -206,6 +220,7 @@
   
   
 </head>
+
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
@@ -230,6 +245,7 @@
 	    </div>
 	    <!-- /.content-header -->
   
+ 
     
   
 <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
@@ -281,10 +297,12 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재요청</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-lg2">결재선</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">임시저장</a>
 						          	
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
+						          
 						          
 						          		
 					          		</div>	
@@ -306,9 +324,10 @@
 						
 						<section class="content2">
 							<div class="container">
+								<form action="paymentWrite.do" method="post">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
-												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">프로젝트 신청</h1>
+												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">휴가 신청</h1>
 												      <div class="row" style="margin-bottom: 50px;">
 												        
 												          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px; margin-right: 530px;">
@@ -344,22 +363,22 @@
 												            </colgroup>
 												            <tr>
 												              <th style=" width: 1%; white-space: nowrap; " rowspan="4" >결재</th>
-												              <td >기안자</td>
-												              <td >팀장</td>
+												              <td style=" width: 1%; white-space: nowrap; ">기안자</td>
+												              
 												            </tr>
 												            <tr>
 												              
 												              <td >김형준</td>
-												              <td >아무개</td>
+												              
 												            </tr>
 												            <tr>
 												              
 												              <td ></td>
-												              <td ></td>
+												              
 												            </tr>
 												             <tr>
 												              <td ></td>
-												              <td ></td>
+												              
 												            </tr>
 													    </table>
 												  </div>
@@ -376,14 +395,14 @@
 													    <tr>
 													      <th>문서 분류</th>
 													      <td>문서 분류 입력란</td>
-													      <th>프로젝트 종류</th>
+													      <th>종류</th>
 													      <td>
 													      		<div class="group">
 											                        
 											                        <select class="form-control" >
-											                          <option>주택</option>
-											                          <option>공공기관</option>
-											                          <option>상가</option>
+											                          <option>휴가</option>
+											                          <option>연차</option>
+											                          <option>반차</option>
 											                        </select>
 											                      </div>
 														</td>
@@ -404,14 +423,20 @@
 												                  <!-- /.input group -->
 												                </div>
 														</td>
-													      <th>프로젝트 리더</th>
+													      <th>반차 여부</th>
 													      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요">
-														      </td>
+														     <div class="form-check form-check-inline">
+															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning">
+															      <label class="form-check-label" for="radioMorning">오전</label>
+															    </div>
+															    <div class="form-check form-check-inline">
+															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon">
+															      <label class="form-check-label" for="radioAfternoon">오후</label>
+														    </div>
+                          								</td>
 													    </tr>
 													  </table>
 												  </div>
-												 
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  
@@ -473,10 +498,10 @@
 													  </table>
 													  
 												  </div>
-											  	
+											  	<button>전송</button>
 										  </div><!-- 그냥 감싸는 내용 div  -->
+										  </form>
 									</div><!--form container  -->	
-								</div>
      					 </section>
 					</div>
 				</div>
@@ -485,14 +510,13 @@
 		  	
 		  	
 	  </div><!--  제일큰row 부분-->	
-
+ 
   
   <!-- /.content-wrapper -->
 	
 	
       
-      
-			<!-- 모달모달!! 숨겨진 -->
+      	<!-- 모달모달!! 숨겨진 -->
 				<div class="modal fade" id="modal-lg" data-backdrop="static">
 				  <div class="modal-dialog modal-lg">
 				    <div class="modal-content">
@@ -547,13 +571,13 @@
 				</div>
 				<!-- /.modal -->
       
-      
-      <!--  결재선 모달-->
+      <!--  결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선-->
+     <!--  결재선 모달-->
       <div class="modal fade" id="modal-lg2">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">결재선 선택</h4>
+              <h4 class="modal-title">결재선</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -561,33 +585,39 @@
             <div class="modal-body">
 		              <div class="card card-default">
 					          
-				          <form id="demoform" action="#">
+					          
 					          <div class="card-body">
 								  <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
-										      <label>결재선 선택</label>
-										      <div class="dual-listbox-container">
-										        <select id="approvers" class="duallistbox" multiple="multiple" name="duallistbox_demo1[]">
-										          <option value="option1" selected >대리 김형준</option>
-										          <option value="option2">과장 아무개</option>
-										          <option value="option4"> California</option>
-										          <option value="option5">Delaware</option>
-										          <option value="option6">Tennessee</option>
-										          <option value="option7">Texas</option>
-										          <option value="option8">Washington</option>
+										      <label style="font-size:27px;">결재선 선택</label>
+										      <div>
+											        <div id="transfer1" class="transfer-demo"></div>
+											        <div id="transfer2" class="transfer-demo"></div>
+											        <div id="transfer3" class="transfer-demo"></div>
+											        <div id="transfer4" class="transfer-demo"></div>
+											    </div>
+										      <!-- <div class="dual-listbox-container">
+										        <select id="approvers" name="approvers" class="duallistbox" multiple="multiple">
+										          <option selected id="deri" name="deri" value="deri">대리 김형준</option>
+										          <option value="amugae">과장 아무개</option>
+										          <option>California</option>
+										          <option>Delaware</option>
+										          <option>Tennessee</option>
+										          <option>Texas</option>
+										          <option>Washington</option>
 										        </select>
-										      </div>
+										      </div> -->
 										    </div>
 										    <!-- /.form-group -->
 										  </div>
 										  <!-- /.col -->
 										</div>
 									  <!-- /.row -->
-									 <!--  <div class="row">
+									<!--   <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
-										      <label>참조자 선택</label>
+										      <label style="font-size:27px;">참조자 선택</label>
 										      <div class="dual-listbox-container">
 										        <select id="referrer" class="duallistbox" multiple="multiple">
 										          <option selected>대리 김형준</option>
@@ -604,18 +634,18 @@
 										  </div>
 										  /.col
 										</div>
-									  /.row -->
-								   
-              						<button type="submit" class="btn btn-default btn-block">Submit data</button>
+									  /.row
+								    -->
+              
 
 								</div>
-								</form>
+
 					        </div>
 					        <!-- /.card -->
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" id="submitButton" class="btn btn-primary">Save changes</button>            
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+				<button type="button" id="submitButton" class="btn btn-primary">요청</button>            
             </div>
           </div>
           <!-- /.modal-content -->
@@ -625,70 +655,57 @@
       <!-- /.modal -->
       
       
-      <!-- 결재 요청 모달 -->
-				<div class="modal fade" id="modal-default">
-				  <div class="modal-dialog">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div style="align-item:inline;">
-				        <div class="modal-body" style="text-align: center;">
-				          <h4 style="font-weight: 700; margin-bottom: 31px;">결재 하시겠습니까?</h4>
-				        </div>
-				        <a style="margin-left:33px; font-size:17px;">의견 남기기</a>
-				        <div style="border: 1px solid lightgray; width: 416px; height: 161px; margin-left: 43px; margin-top: 31px;">
-				          <textarea id="myTextarea" rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;" oninput="updateCharCount()"></textarea>
-				        </div>
-				        <a id="charCount" style="color: lightgray; margin-left: 400px; margin-bottom: 10px;">0/100</a>
-				        <p id="warningMsg" style="color: red; margin-left: 43px; display: none;">의견을 남겨야 요청을 완료할 수 있습니다. </p>
-				      </div>
-				      <div class="modal-footer justify-content-between">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-				        <button id="requestBtn" type="button" class="btn btn-primary" onclick="handleRequest()">요청</button>
-				      </div>
-				    </div>
-				    <!-- /.modal-content -->
-				  </div>
-				  <!-- /.modal-dialog -->
-				</div>
-				<!-- /.modal -->
-				
-				<!-- 반려 모달 -->
-					<div class="modal fade" id="modal-default2">
-					  <div class="modal-dialog">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					      </div>
-					      <div style="align-item:inline;">
-					        <div class="modal-body" style="text-align: center;">
-					          <h4 style="font-weight: 700; margin-bottom: 31px;">반려 하시겠습니까?</h4>
-					        </div>
-					        <a style="margin-left:33px; font-size:17px;">의견 남기기</a>
-					        <div style="border: 1px solid lightgray; width: 416px; height: 161px; margin-left: 43px; margin-top: 31px;">
-					          <textarea id="myTextarea2" rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;" oninput="updateCharCount2()"></textarea>
-					        </div>
-					        <a id="charCount2" style="color: lightgray; margin-left: 400px; margin-bottom: 10px;">0/100</a>
-					        <p id="warningMsg2" style="color: red; margin-left: 43px; display: none;">의견을 남겨야 요청을 완료할 수 있습니다.</p>
-					      </div>
-					      <div class="modal-footer justify-content-between">
-					        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-					        <button id="requestBtn2" type="button" class="btn btn-primary" onclick="handleRequest2()">요청</button>
-					      </div>
-					    </div>
-					    <!-- /.modal-content -->
-					  </div>
-					  <!-- /.modal-dialog -->
-					</div>
-					<!-- /.modal -->
-					      
       
       <!--  결재 요청 모달-->
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>결재 요청 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary">요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+       <!--  임시저장 모달-->
+      <div class="modal fade" id="modal-default2">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>임시저장 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary">요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+       <!--  결재 요청 모달-->
       <div class="modal fade" id="modal-default3">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -702,7 +719,7 @@
              <h4>취소 하시겠습니까?</h4>
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">아니요</button>
               <button type="button" class="btn btn-primary">예</button>
             </div>
           </div>
@@ -711,6 +728,7 @@
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+      
       
       
      
@@ -734,7 +752,8 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-</div><!--  제일 큰거-->
+</div><!--  제일큰 거-->
+
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -743,8 +762,7 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+
 
 <!-- bs-custom-file-input -->
 <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
@@ -778,12 +796,238 @@
 <script src="dist/js/demo.js"></script>
 <!-- Page specific script -->
 
+<!-- duallist  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="dist/js/jquery.transfer.js?v=0.0.6"></script>
+<script type="text/javascript">
+    var dataArray1 = [
+        {
+            "city": "Beijing",
+            "value": 132
+        },
+        {
+            "city": "Shanghai",
+            "value": 422
+        },
+        {
+            "city": "Chengdu",
+            "value": 232
+        },
+        {
+            "city": "Wuhan",
+            "value": 765
+        },
+        {
+            "city": "Tianjin",
+            "value": 876
+        },
+        {
+            "city": "Guangzhou",
+            "value": 453
+        },
+        {
+            "city": "Hongkong",
+            "value": 125
+        }
+    ];
 
+    var settings1 = {
+        "dataArray": dataArray1,
+        "itemName": "city",
+        "valueName": "value",
+        "callable": function (items) {
+            console.dir(items)
+        }
+    };
+
+    $("#transfer1").transfer(settings1);
+</script>
+
+<script>
+
+    var dataArray2 = [
+        {
+            "city": "Beijing",
+            "value": 132,
+            "disabled": true
+        },
+        {
+            "city": "Shanghai",
+            "value": 422,
+            "selected": true
+        },
+        {
+            "city": "Chengdu",
+            "value": 232
+        },
+        {
+            "city": "Wuhan",
+            "value": 765,
+            "selected": true,
+            "disabled": true
+        },
+        {
+            "city": "Tianjin",
+            "value": 876
+        },
+        {
+            "city": "Guangzhou",
+            "value": 453
+        },
+        {
+            "city": "Hongkong",
+            "value": 125
+        }
+    ];
+
+    var settings2 = {
+        "dataArray": dataArray2,
+        "itemName": "city",
+        "valueName": "value",
+        "callable": function (items) {
+            console.dir(items)
+        }
+    };
+
+    $("#transfer2").transfer(settings2);
+</script>
+
+<script>
+    var groupDataArray1 = [
+        {
+            "groupName": "China",
+            "groupData": [
+                {
+                    "city": "Beijing",
+                    "value": 122
+                },
+                {
+                    "city": "Shanghai",
+                    "value": 643
+                },
+                {
+                    "city": "Qingdao",
+                    "value": 422
+                },
+                {
+                    "city": "Tianjin",
+                    "value": 622
+                }
+            ]
+        },
+        {
+            "groupName": "Japan",
+            "groupData": [
+                {
+                    "city": "Tokyo",
+                    "value": 132
+                },
+                {
+                    "city": "Osaka",
+                    "value": 112
+                },
+                {
+                    "city": "Yokohama",
+                    "value": 191
+                }
+            ]
+        }
+    ];
+
+    var settings3 = {
+        "groupDataArray": groupDataArray1,
+        "groupItemName": "groupName",
+        "groupArrayName": "groupData",
+        "itemName": "city",
+        "valueName": "value",
+        "callable": function (items) {
+            console.dir(items)
+        }
+    };
+
+    $("#transfer3").transfer(settings3);
+</script>
+
+<script>
+var groupDataArray2 = [
+        {
+            "groupName": "China",
+            "groupData": [
+                {
+                    "city": "Beijing",
+                    "value": 122,
+                    "selected": true
+                },
+                {
+                    "city": "Shanghai",
+                    "value": 643,
+                    "disabled": true
+                },
+                {
+                    "city": "Qingdao",
+                    "value": 422
+                },
+                {
+                    "city": "Tianjin",
+                    "value": 622
+                }
+            ]
+        },
+        {
+            "groupName": "Japan",
+            "groupData": [
+                {
+                    "city": "Tokyo",
+                    "value": 132,
+                    "selected": true
+                },
+                {
+                    "city": "Osaka",
+                    "value": 112,
+                    "selected": true
+                },
+                {
+                    "city": "Yokohama",
+                    "value": 191,
+                    "selected": true
+                }
+            ]
+        }
+    ];
+
+    var settings4 = {
+        "groupDataArray": groupDataArray2,
+        "groupItemName": "groupName",
+        "groupArrayName": "groupData",
+        "itemName": "city",
+        "valueName": "value",
+        "callable": function (items) {
+            console.dir(items)
+        }
+    };
+
+    var transfer = $("#transfer4").transfer(settings4);
+    // get selected items
+    var items = transfer.getSelectedItems()
+    console.log("Manually get selected items: %o", items);
+</script>
 
 <script>
 
 
 
+/* $(document).ready(function() {
+	  $('#submitButton').click(function() {
+	    console.log('이벤트 실행됨');
+	    console.log('요청 들어옴!!!!');
+	    console.log('approvers');
+	    var formData = new FormData();
+	    formData.append('approvers', $approvers.val());
+	   
+	    console.log(formData);
+	  });
+	});
+ */
 
 $(function () {
 	  bsCustomFileInput.init();
@@ -922,7 +1166,7 @@ $(function () {
   }
   // DropzoneJS Demo Code End */
   
-$(document).ready(function() {
+/* $(document).ready(function() {
     
 
     $('#submitButton').click(function() {
@@ -944,7 +1188,7 @@ $(document).ready(function() {
         }
       });
     });
-  });
+  }); */
 
 /*결재 작성하기 모달  */
 
@@ -999,91 +1243,11 @@ function project(button) {
 	// 사용하기 버튼의 href 변경
 	    document.getElementById("paymentButton").setAttribute("href", "./paymentProjectForm.go");
 	  }	
-	  
-function restoreButtonColor() {
-	  // 버튼 클래스 복원
-	  var vacationButton = document.getElementById("vacation");
-	  vacationButton.className = "btn btn-block btn-outline-dark";
-	  
-	  var itemButton = document.getElementById("item");
-	  itemButton.className = "btn btn-block btn-outline-dark";
-	  
-	  var projectButton = document.getElementById("project");
-	  projectButton.className = "btn btn-block btn-outline-dark";
-	  
-	  $('#previewBox').empty();
-	  
-	  
-	  document.getElementById("paymentButton").removeAttribute("href");
-	  
-	}	
 
 
-/* 모달 글자수 제한  */
-function updateCharCount() {
-    var textarea = document.getElementById("myTextarea");
-    var charCount = document.getElementById("charCount");
-    var warningMsg = document.getElementById("warningMsg");
-    var textLength = textarea.value.length;
-    charCount.textContent = textLength + "/100";
-    
-    if (textLength > 100) {
-      textarea.value = textarea.value.slice(0, 100); // 글자 수 제한
-      charCount.textContent = "100/100"; // 최대 글자 수에 도달한 경우
-    }
-    
-    if (textLength > 0) {
-      warningMsg.style.display = "none"; // 의견이 작성된 경우 경고 메시지 숨김
-    }
-  }
   
-  function handleRequest() {
-    var textarea = document.getElementById("myTextarea");
-    var warningMsg = document.getElementById("warningMsg");
-    var textLength = textarea.value.length;
-    
-    if (textLength === 0) {
-      warningMsg.style.display = "block"; // 의견이 작성되지 않은 경우 경고 메시지 표시
-      return;
-    }
-    
-    // 여기에 요청 버튼을 눌렀을 때의 동작을 추가해야함.
-    // 예: AJAX 요청을 보내거나 다른 동작을 수행
-  }
-  
-  function updateCharCount2() {
-	    var textarea = document.getElementById("myTextarea2");
-	    var charCount = document.getElementById("charCount2");
-	    var warningMsg = document.getElementById("warningMsg2");
-	    var textLength = textarea.value.length;
-	    charCount.textContent = textLength + "/100";
-	    
-	    if (textLength > 100) {
-	      textarea.value = textarea.value.slice(0, 100); // 글자 수 제한
-	      charCount.textContent = "100/100"; // 최대 글자 수에 도달한 경우
-	    }
-	    
-	    if (textLength > 0) {
-	      warningMsg.style.display = "none"; // 의견이 작성된 경우 경고 메시지 숨김
-	    }
-	  }
-	  
-	  function handleRequest2() {
-	    var textarea = document.getElementById("myTextarea2");
-	    var warningMsg = document.getElementById("warningMsg2");
-	    var textLength = textarea.value.length;
-	    
-	    if (textLength === 0) {
-	      warningMsg.style.display = "block"; // 의견이 작성되지 않은 경우 경고 메시지 표시
-	      return;
-	    }
-	    
-	 // 여기에 요청 버튼을 눌렀을 때의 동작을 추가해야함.
-	    // 예: AJAX 요청을 보내거나 다른 동작을 수행
-	    
-	    
-	  }
-  
+
+
 </script>
 
 

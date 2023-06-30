@@ -3,7 +3,6 @@
 <html lang="ko">
 
 
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,7 +40,9 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   
-  <style>
+  
+  
+<style>
 
 /* gnb 스타일 */
 
@@ -52,7 +53,6 @@
      align-items: center;
      width: 205px;
     height: 460px;
-    
 		
 	}
 	#paybutton{
@@ -71,7 +71,7 @@
 	    color: black;
 	    
     }
-    	#paybutton3 {
+        	#paybutton3 {
 	    margin-bottom: 10px;
 	    font-size: 16px;
 	    width: 150px;
@@ -82,9 +82,10 @@
     }
     
     
-    #ListGo{
+        #ListGo{
 	color: black;
 	}
+    
     
 	.main-sidebar {
 		background-color: #e9ddc6;
@@ -206,6 +207,7 @@
   
   
 </head>
+
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
@@ -230,6 +232,7 @@
 	    </div>
 	    <!-- /.content-header -->
   
+ 
     
   
 <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
@@ -281,10 +284,12 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재요청</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-lg2">결재선</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">임시저장</a>
 						          	
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
+						          
 						          
 						          		
 					          		</div>	
@@ -308,7 +313,7 @@
 							<div class="container">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
-												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">프로젝트 신청</h1>
+												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">휴가 신청</h1>
 												      <div class="row" style="margin-bottom: 50px;">
 												        
 												          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px; margin-right: 530px;">
@@ -376,14 +381,14 @@
 													    <tr>
 													      <th>문서 분류</th>
 													      <td>문서 분류 입력란</td>
-													      <th>프로젝트 종류</th>
+													      <th>종류</th>
 													      <td>
 													      		<div class="group">
 											                        
 											                        <select class="form-control" >
-											                          <option>주택</option>
-											                          <option>공공기관</option>
-											                          <option>상가</option>
+											                          <option>휴가</option>
+											                          <option>연차</option>
+											                          <option>반차</option>
 											                        </select>
 											                      </div>
 														</td>
@@ -404,14 +409,20 @@
 												                  <!-- /.input group -->
 												                </div>
 														</td>
-													      <th>프로젝트 리더</th>
+													      <th>반차 여부</th>
 													      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요">
-														      </td>
+														     <div class="form-check form-check-inline">
+															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning">
+															      <label class="form-check-label" for="radioMorning">오전</label>
+															    </div>
+															    <div class="form-check form-check-inline">
+															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon">
+															      <label class="form-check-label" for="radioAfternoon">오후</label>
+														    </div>
+                          								</td>
 													    </tr>
 													  </table>
 												  </div>
-												 
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  
@@ -485,14 +496,13 @@
 		  	
 		  	
 	  </div><!--  제일큰row 부분-->	
-
+ 
   
   <!-- /.content-wrapper -->
 	
 	
       
-      
-			<!-- 모달모달!! 숨겨진 -->
+      	<!-- 모달모달!! 숨겨진 -->
 				<div class="modal fade" id="modal-lg" data-backdrop="static">
 				  <div class="modal-dialog modal-lg">
 				    <div class="modal-content">
@@ -561,21 +571,21 @@
             <div class="modal-body">
 		              <div class="card card-default">
 					          
-				          <form id="demoform" action="#">
+					          
 					          <div class="card-body">
 								  <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
 										      <label>결재선 선택</label>
 										      <div class="dual-listbox-container">
-										        <select id="approvers" class="duallistbox" multiple="multiple" name="duallistbox_demo1[]">
-										          <option value="option1" selected >대리 김형준</option>
-										          <option value="option2">과장 아무개</option>
-										          <option value="option4"> California</option>
-										          <option value="option5">Delaware</option>
-										          <option value="option6">Tennessee</option>
-										          <option value="option7">Texas</option>
-										          <option value="option8">Washington</option>
+										        <select id="approvers" class="duallistbox" multiple="multiple">
+										          <option selected>대리 김형준</option>
+										          <option>과장 아무개</option>
+										          <option>California</option>
+										          <option>Delaware</option>
+										          <option>Tennessee</option>
+										          <option>Texas</option>
+										          <option>Washington</option>
 										        </select>
 										      </div>
 										    </div>
@@ -584,7 +594,7 @@
 										  <!-- /.col -->
 										</div>
 									  <!-- /.row -->
-									 <!--  <div class="row">
+									  <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
 										      <label>참조자 선택</label>
@@ -600,16 +610,16 @@
 										        </select>
 										      </div>
 										    </div>
-										    /.form-group
+										    <!-- /.form-group -->
 										  </div>
-										  /.col
+										  <!-- /.col -->
 										</div>
-									  /.row -->
+									  <!-- /.row -->
 								   
-              						<button type="submit" class="btn btn-default btn-block">Submit data</button>
+              
 
 								</div>
-								</form>
+
 					        </div>
 					        <!-- /.card -->
             </div>
@@ -623,6 +633,7 @@
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+      
       
       
       <!-- 결재 요청 모달 -->
@@ -713,6 +724,7 @@
       <!-- /.modal -->
       
       
+      
      
      
      
@@ -734,7 +746,8 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-</div><!--  제일 큰거-->
+</div><!--  제일큰 거-->
+
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -743,8 +756,7 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+
 
 <!-- bs-custom-file-input -->
 <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
@@ -782,6 +794,12 @@
 
 <script>
 
+
+var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox();
+$("#demoform").submit(function() {
+  alert($('[name="duallistbox_demo1[]"]').val());
+  return false;
+});
 
 
 
@@ -1000,24 +1018,6 @@ function project(button) {
 	    document.getElementById("paymentButton").setAttribute("href", "./paymentProjectForm.go");
 	  }	
 	  
-function restoreButtonColor() {
-	  // 버튼 클래스 복원
-	  var vacationButton = document.getElementById("vacation");
-	  vacationButton.className = "btn btn-block btn-outline-dark";
-	  
-	  var itemButton = document.getElementById("item");
-	  itemButton.className = "btn btn-block btn-outline-dark";
-	  
-	  var projectButton = document.getElementById("project");
-	  projectButton.className = "btn btn-block btn-outline-dark";
-	  
-	  $('#previewBox').empty();
-	  
-	  
-	  document.getElementById("paymentButton").removeAttribute("href");
-	  
-	}	
-
 
 /* 모달 글자수 제한  */
 function updateCharCount() {
@@ -1083,6 +1083,7 @@ function updateCharCount() {
 	    
 	    
 	  }
+
   
 </script>
 
