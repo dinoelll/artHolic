@@ -46,15 +46,20 @@ public class ChatService {
 		map.put("send_id", dto.getSend_id());
 		map.put("content", dto.getContent());
 		map.put("is_notice", dto.isIs_notice());
+		
 		dao.chatStored(map);
+		
+		if(dto.isIs_notice()) {
+			dao.chatRoomExit(dto);
+		}
 	}
 
 	public ArrayList<ChatDTO> chatLoad(String id) {
 		return dao.chatLoad(id);
 	}
 
-	public ArrayList<MemberDTO> memberList() {
-		return dao.memberList();
+	public ArrayList<MemberDTO> memberListAll() {
+		return dao.memberListAll();
 	}
 
 	public String createChatRoom(HashMap<String, Object> map) {
@@ -69,11 +74,27 @@ public class ChatService {
 			logger.info("member_id : "+ member_id);
 			dao.insert_chat_room_info(dto.getChat_room_id(), member_id);
 		}
+		
 		return "success";
 	}
 
-	public int chatRoomExit(HashMap<String, Object> params) {
-		dao.exitMessage(params);
-		return dao.chatRoomExit(params);
+	public int chatRoomExit(ChatDTO dto) {
+		dao.exitMessage(dto);
+		return dao.chatRoomExit(dto);
+	}
+
+	public ArrayList<MemberDTO> memberList(String chat_room_id) {
+		ArrayList<ChatDTO> list = dao.chatRoomInfo(chat_room_id);
+		ArrayList<MemberDTO> listAll = dao.memberListAll();
+		
+		for(int i=0; i<list.size(); i++) {
+			for(int k=0; k<listAll.size(); k++) {
+				if(list.get(i).getMember_id().equals(listAll.get(k).getMember_id())) {
+					listAll.remove(k);
+				}
+			}
+		}
+		
+		return listAll;
 	}
 }
