@@ -52,7 +52,10 @@
 	</update>
 
 	<delete id="myFolderDelte">
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
         DELETE FROM myFolder WHERE folder_id = #{folderId}
     </delete>
     
@@ -68,7 +71,10 @@
 	<delete id="deleteFile">
         DELETE FROM file WHERE new_fileName = #{fileName}
     </delete>
+<<<<<<< HEAD
 	
 	
+=======
+>>>>>>> origin/master
 
 </mapper>

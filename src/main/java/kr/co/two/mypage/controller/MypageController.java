@@ -169,12 +169,15 @@ public class MypageController {
 		
 	}
 	
+<<<<<<< HEAD
 	
 	
 	
 	
 	
 	
+=======
+>>>>>>> origin/master
 	@RequestMapping(value="/calendarUpdate.ajax")
 	@ResponseBody
 	public String calendarUpdate(@RequestBody ArrayList<EventDataDTO> eventDataList) {
@@ -232,8 +235,11 @@ public class MypageController {
         return map;
     }
 	
+<<<<<<< HEAD
 	
 
+=======
+>>>>>>> origin/master
 	@GetMapping(value="/download.do")
 	public ResponseEntity<Resource> download(@RequestParam("ori_fileName") String oriFileName, @RequestParam("new_fileName") String newFileName) {
 
@@ -286,5 +292,8 @@ public class MypageController {
 		
 		return null;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 }

@@ -39,7 +39,10 @@ public interface MypageDAO {
 
 	int eventDelete(String id);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	int deleteFile(String fileName);
 
 
