@@ -174,7 +174,7 @@ public class MemberService {
 	}
 
 
-<<<<<<< HEAD
+
 	public void admin(String memberId, Boolean adminValue) {
 		
 		dao.admin(memberId, adminValue);
@@ -399,6 +399,4 @@ public class MemberService {
 	}
 
 
-=======
->>>>>>> origin/master
 }
