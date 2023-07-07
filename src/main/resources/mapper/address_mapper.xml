@@ -1,7 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	   
+
 <mapper namespace="kr.co.two.board.dao.AddressDAO">
+
+	<select id="adList" resultType="AddressDTO2" parameterType="hashmap">
+		SELECT  m.*,c1.code_name AS dept_name,c2.code_name AS position_name from member m JOIN code c1 ON (c1.code_id = m.dept_code) JOIN code c2 ON (c2.code_id = m.position_code) 
+		<where>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='name'">
+				AND m.name LIKE CONCAT('%',#{keyword},'%')
+			</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='position'">
+				AND c2.code_name LIKE CONCAT('%',#{keyword},'%')
+			</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='dept'">
+				AND c1.code_name LIKE CONCAT('%',#{keyword},'%')
+			</if>
+		</where>
+		ORDER BY m.member_id DESC
+		LIMIT #{cnt} OFFSET #{offset}
+
+	</select>
+
+
+
+
+	<select id="adTotalCount" resultType="int"
+		parameterType="string">
+		SELECT COUNT(member_id)
+		FROM
+		member AS m
+		
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='name'">where name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='position'">join code c on(c.code_id = m.position_code) where c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='dept'">join code c on(c.code_id = m.dept_code) where c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
+		
+	</select>
+
 
 </mapper>

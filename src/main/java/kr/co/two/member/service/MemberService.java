@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.two.member.dao.MemberDAO;
 import kr.co.two.member.dto.MemberDTO;
+import kr.co.two.reservation.dto.ReservationDTO;
 
 @Service
 public class MemberService {
@@ -158,4 +159,6 @@ public class MemberService {
 	    
 		return map; 
 	}
+
+
 }
