@@ -172,8 +172,13 @@ public class MypageController {
 		return "redirect:/myfolder";
 
 	}
+<<<<<<< HEAD
 
 	@RequestMapping(value = "/calendarUpdate.ajax")
+=======
+	
+	@RequestMapping(value="/calendarUpdate.ajax")
+>>>>>>> origin/master
 	@ResponseBody
 	public String calendarUpdate(@RequestBody ArrayList<EventDataDTO> eventDataList) {
 		logger.info("eventDataList : " + eventDataList);
@@ -206,6 +211,37 @@ public class MypageController {
 		for (EventDataDTO eventDataDTO : events) {
 			logger.info("start:" + eventDataDTO.getStart_date());
 		}
+<<<<<<< HEAD
+=======
+        
+        return events;
+    }
+    
+    @PostMapping("/eventDelete.ajax")
+    @ResponseBody
+    public HashMap<String, String> eventDelete(@RequestParam String id ) {
+        logger.info("id:"+id);
+        
+        int row = service.eventDelete(id);
+        HashMap<String, String>map = new HashMap<String, String>();
+        
+        
+        if (row ==1) {
+        	
+            map.put("data", "삭제성공");
+		}
+        
+        
+        map.put("data", "삭제실패");
+        
+        
+        
+        return map;
+    }
+	
+	@GetMapping(value="/download.do")
+	public ResponseEntity<Resource> download(@RequestParam("ori_fileName") String oriFileName, @RequestParam("new_fileName") String newFileName) {
+>>>>>>> origin/master
 
 		return events;
 	}
@@ -278,5 +314,8 @@ public class MypageController {
 
 		return null;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 }

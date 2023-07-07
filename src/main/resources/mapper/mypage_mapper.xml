@@ -51,6 +51,7 @@
       WHERE folder_id = #{folderId}
    </update>
 
+<<<<<<< HEAD
    <delete id="myFolderDelte">
       DELETE FROM myFolder WHERE folder_id = #{folderId}
    </delete>
@@ -63,6 +64,11 @@
       INSERT INTO file (folder_id, fileName, ext, newFileName)
       VALUES (#{folderId}, #{fileName}, #{ext}, #{newFileName})
    </insert>  -->
+=======
+	<delete id="myFolderDelte">
+        DELETE FROM myFolder WHERE folder_id = #{folderId}
+    </delete>
+>>>>>>> origin/master
     
     <select id="fileList" resultType="mypage">
          SELECT * FROM file WHERE folder_id = #{folderId}
@@ -76,8 +82,11 @@
    <delete id="deleteFile">
         DELETE FROM file WHERE new_fileName = #{fileName}
     </delete>
+<<<<<<< HEAD
    
    
 
+=======
+>>>>>>> origin/master
 
 </mapper>
