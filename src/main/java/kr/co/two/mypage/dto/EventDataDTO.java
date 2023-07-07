@@ -1,6 +1,7 @@
 package kr.co.two.mypage.dto;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.apache.ibatis.type.Alias;
 
@@ -8,19 +9,23 @@ import org.apache.ibatis.type.Alias;
 public class EventDataDTO {
 	
 	  private String content;
-	  private LocalDateTime start_date;
-	  private LocalDateTime end_date;
+	  
+	  
+	  private OffsetDateTime  start_date;
+	  
+	  private OffsetDateTime  end_date;
 	  private String member_id;
 	  private boolean allDay;
 	  private String backgroundColor;
 	  private String borderColor;
-	  private int id;
+	  private int indi_calendar_id;
 	  
-	public int getId() {
-		return id;
+	
+	public int getIndi_calendar_id() {
+		return indi_calendar_id;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIndi_calendar_id(int indi_calendar_id) {
+		this.indi_calendar_id = indi_calendar_id;
 	}
 	public boolean getAllDay() {
 		return allDay;
@@ -46,16 +51,11 @@ public class EventDataDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public LocalDateTime getStart_date() {
-		return start_date;
-	}
-	public void setStart_date(LocalDateTime start_date) {
-		this.start_date = start_date;
-	}
-	public LocalDateTime getEnd_date() {
+	
+	public OffsetDateTime   getEnd_date() {
 		return end_date;
 	}
-	public void setEnd_date(LocalDateTime end_date) {
+	public void setEnd_date(OffsetDateTime end_date) {
 		this.end_date = end_date;
 	}
 	public String getMember_id() {
@@ -63,6 +63,12 @@ public class EventDataDTO {
 	}
 	public void setMember_id(String member_id) {
 		this.member_id = member_id;
+	}
+	public OffsetDateTime getStart_date() {
+		return start_date;
+	}
+	public void setStart_date(OffsetDateTime start_date) {
+		this.start_date = start_date;
 	}
 	  
 	  

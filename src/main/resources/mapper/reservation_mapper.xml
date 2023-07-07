@@ -1,19 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	   
+
 
 <mapper namespace="kr.co.two.reservation.dao.ReservationDAO">
 
 	<insert id="reservationMR" parameterType="hashmap">
-		INSERT INTO mr_reservation (member_id,room_id,date,startTime,endTime,meeting_id,team_id)
-		VALUES(#{member_id},#{room_id},#{newDate},#{startTime},#{endTime},#{meeting_id},#{team_id})
+		INSERT INTO
+		mr_reservation
+		(member_id,room_id,date,startTime,endTime,meeting_id,team_member)
+		VALUES(#{member_id},#{room_id},#{date},#{startTime},#{endTime},#{meeting_id},#{team_id})
 	</insert>
-	
+
 	<select id="mrList" resultType="meetingRoom">
 		SELECT * FROM meeting_room
-		
+
 	</select>
+
+	<select id="reservationList" resultType="reservation">
+		SELECT * FROM
+		mr_reservation WHERE date=#{newDate} AND room_id=#{room_id}
+	</select>
+
+	<insert id="creatingMR" parameterType="hashmap">
+		INSERT INTO meeting_room
+		(Capacity,room_name,location,ori_file_name,new_file_name)
+		VALUES(#{Capacity},#{room_name},#{location},#{ori_file_name},#{new_file_name})
+	</insert>
+
+
+	<select id="mrList2" resultType="meetingRoom"
+		parameterType="string">
+		SELECT * FROM meeting_room
+		<where>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='mrName'"> room_name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='location'"> location LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='capacity'"> Capacity LIKE CONCAT('%',#{keyword},'%')</if>
+		</where>
+		ORDER BY room_id DESC
+		LIMIT #{cnt} OFFSET #{offset}
+	</select>
+
+	<select id="rvList" resultType="reservation"
+		parameterType="string">
+		SELECT
+		mr.*,
+		m.room_name AS room_name
+		FROM
+		mr_reservation AS mr
+		LEFT JOIN meeting_room AS m ON mr.room_id = m.room_id
+		<where>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='mrName'">
+				AND m.room_name LIKE CONCAT('%',#{keyword},'%')
+			</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='app'">
+				AND mr.member_id LIKE CONCAT('%',#{keyword},'%')
+			</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='date'">
+				AND mr.date LIKE CONCAT('%',#{keyword},'%')
+			</if>
+		</where>
+		ORDER BY mr.Reservation_id DESC
+		LIMIT #{cnt} OFFSET #{offset}
+
+	</select>
+
+
+
+
+	<select id="totalCount" resultType="int" parameterType="string">
+		SELECT COUNT(room_id) FROM meeting_room
+		<where>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='mrName'"> room_name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='location'"> location LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='capacity'"> Capacity LIKE CONCAT('%',#{keyword},'%')</if>
+		</where>
+	</select>
+
+	<select id="rvTotalCount" resultType="int"
+		parameterType="string">
+		SELECT COUNT(Reservation_id) FROM mr_reservation
+		<where>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='mrName'"> room_name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='app'"> member_id LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='date'"> date LIKE CONCAT('%',#{keyword},'%')</if>
+		</where>
+	</select>
+
+	<delete id="mrDelete">
+		DELETE FROM meeting_room WHERE room_id=#{room_id}
+	</delete>
+	
+	<delete id="rvDelete">
+		DELETE FROM mr_reservation WHERE Reservation_id=#{reservation_id}
+	</delete>
 
 
 </mapper>

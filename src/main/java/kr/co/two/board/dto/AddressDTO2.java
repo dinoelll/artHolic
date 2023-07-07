@@ -2,8 +2,7 @@ package kr.co.two.board.dto;
 
 import java.sql.Date;
 
-public class AddressDTO {
-	
+public class AddressDTO2 {
 	private String member_id;
 	private String pw;
 	private String name;
@@ -143,10 +142,4 @@ public class AddressDTO {
 		this.admin = admin;
 	}
 	
-	
-	
-	
-	
-	
-
 }

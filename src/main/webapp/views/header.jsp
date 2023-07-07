@@ -22,7 +22,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.move" class="nav-link">Home</a>
+        <a href="/main" class="nav-link">Home</a>
       </li>
       <!-- 
       <li class="nav-item d-none d-sm-inline-block">
@@ -128,7 +128,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.move" class="brand-link">
+    <a href="/main" class="brand-link">
       <img src="dist/img/logo.png" alt="AdminLTE Logo" class="logo" style="opacity: .8">
       
     </a>
@@ -304,6 +304,12 @@
                 <a href="./attendance.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>근태관리</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./MeetingRoomList.go" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>회의실관리</p>
                 </a>
               </li>
               <!-- 매출관리 삭제

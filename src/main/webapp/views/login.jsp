@@ -24,7 +24,7 @@
 		border-radius: 10px;
 		border: none;
 	}
-	button{
+	input[type="submit"]{
 		width: 330px;
 		height: 33px;
 		background: #91BDCE;
@@ -36,6 +36,20 @@
 		border: none;
 	}	
 	
+	#msg{
+		color: #f82a2aa3;
+		font-size: 12px;
+		text-align: center;
+	}
+	
+	.fade-container {
+		opacity: 0;
+		transition: opacity 1s ease-in-out;
+	}
+
+	.fade-container.fade-in {
+	 	opacity: 1;
+	}
 
 </style>
 </head>
@@ -44,63 +58,74 @@
 <div class="main-container">
 	<img src="img/Artholic.png" alt="">
 </div>
-	
+
 <div class="main-container">     
-	<table>
-	  <tr>
-	    <td><input type="text" id="id" placeholder="ID"></td>
-	  </tr>
-	  <tr>
-	    <td><input type="password" id="pw" placeholder="Password"></td>
-	  </tr>
-	  <tr>
-	    <td><div id="msg"></div></td>
-	  </tr>
-	  <tr>
-	    <th colspan="2">
-	      <button onclick="login()" id="login">Login</button>
-	    </th>
-	  </tr>
-	</table>
+	<div class="fade-container">
+	<form action="login.do" method="post" onsubmit="return validateForm()">
+		<table>
+		  	<tr>
+		    	<td><input type="text" id="id" name="id" placeholder="ID"></td>
+		  	</tr>
+		  		<tr>
+		    	<td><input type="password" id="pw" name="pw" placeholder="Password"></td>
+		  	</tr>
+		  	<tr>
+		    	<td><div id="msg"></div></td>
+		  	</tr>
+		  	<tr>
+		    	<th colspan="2">
+		      	<input type="submit" value="Login"/>
+		    	</th>
+		  </tr>
+		</table>
+	</form>
+	</div>
 </div>
-
-
 </body>
 <script>
 
-
-function login() {
-    var $id = $('#id');
-    var $pw = $('#pw');
-
-    if ($id.val() == '') {
-        $('#msg').css({'font-size': '12px','color': 'red'});
-		$('#msg').html('아이디를 입력해 주세요.');
-    } else if ($pw.val() == '') {
-        
-        $('#msg').css({'font-size': '12px','color': 'red'});
-		$('#msg').html('비밀번호를 입력해 주세요.');
-    } else {
-        $.ajax({
-            type: 'post',
-            url: 'login.ajax',
-            data: {
-                id: $id.val(),
-                pw: $pw.val()
-            },
-            dataType: 'json',
-            success: function(data) {
-                alert('로그인에 성공하였습니다.');
-            },
-            error: function(e) {
-                console.log(e);
-      
-                $('#msg').css({'font-size': '12px','color': 'red'});
-        		$('#msg').html('로그인에 실패 했습니다.\r\n 다시 시도해 주세요!');
-            }
-        });
-    }
+function validateForm() {
+	var id = document.getElementById("id").value;
+  	var pw = document.getElementById("pw").value;
+  	var msg = document.getElementById("msg");
+  
+ 	if (id === "" && pw === "") {
+    	msg.innerHTML = "아이디와 비밀번호를 입력해주세요.";
+    	return false;
+	}
+  
+  	if (id === "") {
+    	msg.innerHTML = "아이디를 입력해주세요.";
+    	return false;
+	}
+  
+	if (pw === "") {
+    	msg.innerHTML = "비밀번호를 입력해주세요.";
+    	return false;
+	}
+  
+  	return true; 
 }
 
+// 페이지 로드 시 페이드 효과 적용
+window.addEventListener("load", function() {
+  var fadeContainer = document.querySelector(".fade-container");
+  fadeContainer.classList.add("fade-in");
+  
+  var msg = "${msg}"; 
+  if (msg !== "") {
+    alert(msg);
+  }
+  
+  // 로그인 성공 시 페이지 이동
+  document.querySelector("form").addEventListener("submit", function(event) {
+    event.preventDefault(); // 폼 기본 동작 취소
+    
+    var formValid = validateForm();
+    if (formValid) {
+      window.location.href = "/main"; 
+    }
+  });
+});
 </script>
 </html>

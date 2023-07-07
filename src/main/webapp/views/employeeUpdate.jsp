@@ -92,15 +92,6 @@
 		color: white;
 	}
 	
-	#chkNotice {
-        display: inline-block;
-        font-size: 12px;
-        width: 200px;
-        height: 5px;
-        margin-left: 20px;
-        margin-bottom: 5px;
-    }
-    
 	#back {
 		border: 1px solid #91bdce;
 		border-radius: 5px; 
@@ -112,6 +103,16 @@
 		width: 100px;
 		color: white;
 	}
+	
+	#chkNotice {
+        display: inline-block;
+        font-size: 12px;
+        width: 200px;
+        height: 5px;
+        margin-left: 20px;
+        margin-bottom: 5px;
+    }
+	
 	
 </style>
 <script>
@@ -148,7 +149,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">사원정보 입력</h1>
+            <h1 class="m-0">사원정보</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -166,12 +167,12 @@
    
 	<div class="employeeWrite">
 		<div class="emplyeeInput">
-			<form action="join.do" method="post" enctype="multipart/form-data">
+			<form action="update.do" method="post" enctype="multipart/form-data">
 				<hr>
 					<ul class="list" style="list-style: none; width: 700px; margin-left: 500px;">
 						<li>
 				                <div style="flex-grow: 1; text-align: center;">
-							        <img id="profile-preview" src="img/user.png" alt="" width="200" height="200">
+							        <img id="profile-preview"  src="/photo/${member.profile_photo}" alt="" width="200" height="200">
 							    </div>
 							    <div style="flex-grow: 0;">
 							        <input type="file" name="profile" id="file-input" onchange="previewProfileImage(event)" style="border: none;">
@@ -184,66 +185,58 @@
 							        <option value="">-- 연도 --</option>
 							        <!-- 1960년부터 2023년까지의 연도 옵션 생성 -->
 							        <c:forEach var="year" begin="1960" end="2023">
-							            <option value="${year}">${year}</option>
+							             <option value="${year}" ${year == memberMap.year ? 'selected' : ''}>${year}</option>
 							        </c:forEach>
 							    </select>
 							    <select name="month">
 							        <option value="">-- 월 --</option>
 							        <!-- 1월부터 12월까지의 월 옵션 생성 -->
 							        <c:forEach var="month" begin="1" end="12">
-							            <option value="${month}">${month}</option>
+							            <option value="${month}" ${month == memberMap.month ? 'selected' : ''}>${month}</option>
 							        </c:forEach>
 							    </select>
 							    <select name="day">
 							        <option value="">-- 일 --</option>
 							        <!-- 1일부터 31일까지의 일 옵션 생성 -->
 							        <c:forEach var="day" begin="1" end="31">
-							            <option value="${day}">${day}</option>
+							            <option value="${day}" ${day == memberMap.day ? 'selected' : ''}>${day}</option>
 							        </c:forEach>
 							    </select>&nbsp;&nbsp;&nbsp;&nbsp;	
 							    
 						<li style="display:inline; padding-right: 31px">
 						    &nbsp;&nbsp;&nbsp;&nbsp;<p style="display:inline;">부서</p>&nbsp;&nbsp;
 						    <select id="dept-dropdown" name="dept_code" style="display:inline;">
-						        <option value="dept_hr">인사</option>
-						        <option value="dept_ct">시공</option>
-						        <option value="dept_dg">설계</option>
-						    </select>	
+							    <option value="dept_hr" ${member.dept_code == 'dept_hr' ? 'selected' : ''}>인사</option>
+							    <option value="dept_ct" ${member.dept_code == 'dept_ct' ? 'selected' : ''}>시공</option>
+							    <option value="dept_dg" ${member.dept_code == 'dept_dg' ? 'selected' : ''}>설계</option>
+							</select>
 						    &nbsp;&nbsp;&nbsp;&nbsp;<p style="display:inline;">직급</p>&nbsp;&nbsp;
 						    <select id="position-dropdown" name="position_code" style="display:inline;">
-						        <option value="art_06">사원</option>
-						        <option value="art_05">주임</option>
-						        <option value="art_04">대리</option>
-						        <option value="art_03">과장</option>
-						        <option value="art_02">차장</option>
-						        <option value="art_01">부장</option>
-						    </select> 	
+							    <option value="art_06" ${member.position_code == 'art_06' ? 'selected' : ''}>사원</option>
+							    <option value="art_05" ${member.position_code == 'art_05' ? 'selected' : ''}>주임</option>
+							    <option value="art_04" ${member.position_code == 'art_04' ? 'selected' : ''}>대리</option>
+							    <option value="art_03" ${member.position_code == 'art_03' ? 'selected' : ''}>과장</option>
+							    <option value="art_02" ${member.position_code == 'art_02' ? 'selected' : ''}>차장</option>
+							    <option value="art_01" ${member.position_code == 'art_01' ? 'selected' : ''}>부장</option>
+							</select>
 						</li>
 
-						<li><input type="text" name="member_id" placeholder="사번" style="border: none;"></li>
-					    <li><input type="password" id="pw" name="pw" placeholder="비밀번호" style="border: none;"></li>
-					    <li><input type="password" id="pwChk" name="pwChk" placeholder="비밀번호 확인" style="border: none;"></li>
-					   
-					   	<font id="chkNotice" size="2"></font>
-					   
-					    <li><input type="text" name="name" placeholder="이름" style="border: none;"></li>
-						
+						<li><input type="text" name="member_id" value="${member.member_id }" style="border: none; background-color: lightgray;" readonly="readonly" >
+					    <li><input type="text" name="name" value="${member.name }" style="border: none;" readonly="readonly"></li>
+						<li><input type="text" name="gender" value="${member.gender }" style="border: none; background-color: lightgray;" readonly="readonly"></li>
+	
 						<li>
-									&nbsp;&nbsp;<input type="radio" name="gender" value="남자"/>남자&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<input type="radio" name="gender" value="여자"/>여자		
+							<input type="text" id="phone" name="phone" oninput="formatPhoneNumber()" value="${member.phone }" style="border: none;">	
 						</li>
 						<li>
-							<input type="text" id="phone" name="phone" oninput="formatPhoneNumber()" placeholder="휴대폰번호" style="border: none;">	
-						</li>
-						<li>
-							<input type="text" id="tel" name="tel" oninput="formatTelNumber()" placeholder="내선번호" style="border: none;">   	
+							<input type="text" id="tel" name="tel" oninput="formatTelNumber()" value="${member.tel }" style="border: none;">   	
 						</li>
 						<li>
 						        <div style="display: inline-block; border: none; background-color: white;">
-						            <input type="text" id="emailPrefix" name="emailPrefix" placeholder="이메일" style="border: none;">
+						            <input type="text" id="emailPrefix" name="emailPrefix" value="${emailPrefix}" style="border: none;">
 						            <span>@</span>
 						            <span id="direct_email" style="display: inline-block; margin-top: 3px;">
-						                <input type="text" name="email3" id="email3" class="MS_input_txt MS_input_email" value="" size="15" maxlength="25" style="border: none;">
+						                <input type="text" name="email3" id="email3" class="MS_input_txt MS_input_email" value="${email3}" size="15" maxlength="25" style="border: none;">
 						            </span>
 						            <select id="emailDomain" name="emailDomain" style="border: 1px solid #ccc;">
 						                <option value="custom">직접 입력</option>
@@ -255,10 +248,9 @@
 						</li>
 						
 					</ul>	
-				
 				<div style="display: flex; justify-content: center; margin-left: 120px">
 				  <input type="button" value="뒤로가기" id="back" onclick="location.href ='/employeeList.go'" style="margin-right: 30px;">
-				  <input type="submit" value="등록하기">
+				  <input type="submit" value="수정하기">
 				</div>
 			</form>
    		</div>

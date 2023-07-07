@@ -26,5 +26,9 @@ public interface InformDAO {
 
 	int totalCount(String opt, String keyword);
 
+	void is_formDel(String id);
+	
+	
+
 
 }

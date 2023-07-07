@@ -54,7 +54,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>공지사항 등록</h3>
+            <h3>현장설명 게시판 수정</h3>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -62,25 +62,24 @@
 
     <!-- Main content -->
     <section class="content">
-	<form id="inform" action="/informWrite.do" method="post">
+	<form action="/briefingUpdate.do" method="post">
 		<table>
 			<tr>
 				<td>
-					<input type="text" class="subject" name="subject"/>
-		    		<input type="checkbox" name="is_form" value="1"> 필독 등록
+					<input type="text" name="subject" value="${briefing.subject}"/>
+		    		<input type="hidden" name="board_id" value="${briefing.board_id}"/>
 		    	</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="div_editor"></div>
-					<input id="content" type="hidden" name="content"/>
+					<input id="content" name="content" type="hidden" value="${briefing.content}"/>
 				</td>
 			</tr>
 			<tr>
 				<td>
-				<input style="float:right;" type="button" onclick="location.href='informList.go'" value="취소"/>
-					<input style="float:right;" type="button" onclick="save()" value="등록" />
-					
+					<input style="float:right;" type="button" onclick="location.href='redirect:/briefingDetail.do'" value="취소"/>
+					<input type="button" onclick="updateDo()" style="float:right;" value="수정" />
 				</td>
 			</tr>
 		</table>
@@ -120,18 +119,20 @@ config.file_upload_handler = function(file,callback){//file 정보, 이미지 �
 
 var editor = new RichTextEditor("#div_editor",config);
 
-function save(){
-	console.log('저장');
-	var content = editor.getHTMLCode();
-	console.log(content.length);
-	if(content.length>(4*1024*1024)){
-		alert('컨텐츠의 크기가 너무 큽니다. 이미지의 크기나 갯수를 줄여 주세요');
-	}else{
-		$('input[name="content"]').val(content);
-		$('form').submit();
-	}
-	
-	
+
+// 상세보기에서는 필요한 툴바만 노출할 예정(html 저장, 출력, pdf 저장, 코드보기)
+config.toolbar="simple";
+config.toolbar_simple="{save, print, html2pdf, code}";
+
+editor.setHTMLCode($("#content").val()); // editor 에 내용 넣기
+
+function updateDo(){
+var content = editor.getHTMLCode();
+$('input[name="content"]').val(content);
+$('form').submit();
+//editor.setReadOnly();
 }
+
+
 </script>
 </html>

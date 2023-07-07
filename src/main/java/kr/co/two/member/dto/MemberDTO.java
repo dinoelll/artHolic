@@ -7,7 +7,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("member")
 public class MemberDTO {
 
-	// member
+		// member
 		private String member_id;
 		private String pw;
 		private String name;
@@ -24,7 +24,40 @@ public class MemberDTO {
 		private String reg_id;
 		private Date modi_date;
 		private String modi_id;
+		private String gender;
 		
+		// cooper
+		private String part;
+		private String business;
+		private String cooper_id;
+		
+		public String getCooper_id() {
+			return cooper_id;
+		}
+		public void setCooper_id(String cooper_id) {
+			this.cooper_id = cooper_id;
+		}
+		public String getPart() {
+			return part;
+		}
+		public void setPart(String part) {
+			this.part = part;
+		}
+		public String getBusiness() {
+			return business;
+		}
+		public void setBusiness(String business) {
+			this.business = business;
+		}
+		
+		
+		
+		public String getGender() {
+			return gender;
+		}
+		public void setGender(String gender) {
+			this.gender = gender;
+		}
 		public String getMember_id() {
 			return member_id;
 		}

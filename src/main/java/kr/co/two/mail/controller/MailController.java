@@ -73,9 +73,24 @@ public class MailController {
 	// 메일쓰기 이동
 	@GetMapping(value="/mailWrite.go")
 	public String mailWrite() {
-		
+	
 		return "mailWrite";
 	}
+	
+	
+	@GetMapping(value="/mailWrite2.go")
+	public String mailWrite2(@RequestParam String id,@RequestParam String name,@RequestParam String dept,@RequestParam String position, Model model) {
+		if (id != null && name !=null && dept !=null && position !=null) {
+			model.addAttribute("id", id);
+			model.addAttribute("name", name);
+			model.addAttribute("dept", dept);
+			model.addAttribute("position", position);
+		}
+		logger.info(id+name+dept+position);
+		return "mailWrite";
+	}
+	
+	
 	
 	// 휴지통 이동
 	@GetMapping(value="/trashBox.go")
