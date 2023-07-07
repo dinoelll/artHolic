@@ -34,14 +34,14 @@
 		margin-left: 0px;
 	}
 	
-	#preview-button,.mailBox,.selfBox,#send,.send{
+	.mymailSend,.mailSend,#preview-button,.mailBox,.selfBox,#send,.send{
 		font-weight: bold;
   		background-color: white;
         border: 1px solid white;
         color: black;
 	}
 	
-	#preview-button:hover.mailBox:hover,.selfBox:hover,#send:hover,.send:hover {
+	.mailSend:hovor,.mymailSend:hover,#preview-button:hover.mailBox:hover,.selfBox:hover,#send:hover,.send:hover {
         border-color: rgba(233, 221, 198, 0.4);
     }
     .hidden{
@@ -106,8 +106,7 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<h4 class="modal-title">미리보기</h4>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
@@ -144,7 +143,7 @@
 							<div class="modal-footer justify-content-between">
 								<button type="button" class="btn btn-default"
 									data-dismiss="modal">수정</button>
-								<button type="button" class="btn btn-primary">보내기</button>
+								<button type="submit" class="btn btn-primary">보내기</button>
 							</div>
 						</div>
 						<!-- /.modal-content -->
@@ -155,25 +154,8 @@
 				
 				
 				
-			
-			<!-- Main content -->
-			<section class="content">
-				<div class="row1">
-				    
-					<!-- /.col -->
-					<div class="col-md-9">
-						<div class="card card-primary card-outline">
-							<div class="card-header">
-								<button id="send">보내기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<button type="button" id="preview-button"class="btn btn-default"data-toggle="modal" data-target="#modal-default">
-								미리보기</button>	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<button id="send">임시저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<button id="selfBox" class="selfBox">내게쓰기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<button id="formGnb_button" data-toggle="modal" data-target="#modal-lg2" class="send">받는이선택</button>
-							</div>
-						<!-- /.card-header -->
-					
-						<!--  받는이선택 모달-->
+				
+				<!--  받는이선택 모달-->
 						<div class="modal fade" id="modal-lg2">
 							<div class="modal-dialog modal-lg">
 								<div class="modal-content">
@@ -189,18 +171,13 @@
 												<div class="row">
 													<div class="col-12">
 														<div class="form-group">
+														
 															<label>받는이 선택</label>
 															<div class="dual-listbox-container">
+															
 																<select id="approvers" class="duallistbox" multiple="multiple" name="sendMember">
-																	<!-- <option value="1">대리 김형준</option>
-																	<option value="2">과장 아무개</option>
-																	<option value="3">California</option>
-																	<option value="4">Delaware</option>
-																	<option value="5">Tennessee</option>
-																	<option value="6">Texas</option>
-																	<option value="7">Washington</option> -->
-																	<option id="option" class="option"></option>
 																</select>
+																
 															</div>
 														</div>
 													<!-- /.form-group -->
@@ -214,14 +191,6 @@
 															<label>참조자 선택</label>
 															<div class="dual-listbox-container">
 																<select id="referrer" class="duallistbox" multiple="multiple" name="referenceMember">
-																	<!-- <option value="1">대리 김형준</option>
-																	<option value="2">과장 아무개</option>
-																	<option value="3">California</option>
-																	<option value="4">Delaware</option>
-																	<option value="5">Tennessee</option>
-																	<option value="6">Texas</option>
-																	<option value="7">Washington</option> -->
-																	<option id="option" class="option"></option>
 																</select>
 															</div>
 														</div>
@@ -236,7 +205,7 @@
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<button type="button" id="submitButton" class="btn btn-primary">Save changes</button>            
+										<button type="button" id="submitButton" class="btn btn-primary" onclick="sendList()">Save changes</button>            
 									</div>
 								</div>
 							<!-- /.modal-content -->
@@ -244,15 +213,39 @@
 							<!-- /.modal-dialog -->
 						</div>
 						<!-- /.modal -->
-						         
-						         
-						         
+			
+			<!-- Main content -->
+			<section class="content">
+				<div class="row1">
+				    
+					<!-- /.col -->
+					<div class="col-md-9">
+						<div class="card card-primary card-outline">
+						
+							<div class="card-header">
+								<div class="mailCard1">
+									<button id="send" class="mailSend" onclick="send()">보내기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<button type="button" id="preview-button"class="btn btn-default div-hidden"data-toggle="modal" data-target="#modal-default">미리보기</button>	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<button id="temp_save" class="mailSend" onclick="temp()">임시저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<button id="selfBox" class="mailSend" onclick="selfBox()">내게쓰기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<button id="formGnb_button" data-toggle="modal" data-target="#modal-lg2" class="mailSend">받는이선택</button>
+								</div>
+								
+								<div class="mailCard2 hidden">
+									<button id="save" class="mymailSend" onclick="save()">저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<button id="temp_storage" class="mymailSend" onclick="temp()">임시저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<button id="mailBox" class="mymailSend" onclick="mailBox()">메일쓰기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							 	</div>
+							</div>
+							 	
+						<!-- /.card-header -->
+						   
 						<form action="mailWrite.do" method="post" enctype="multipart/form-data" id="mailForm">
 							<div class="card-body">
-								<div class="form-group">
+								<div class="form-group" id="form-sendMember">
 									받는사람 <input class="form-control" name="sendMember" id="recipient-input" readOnly>
 								</div>
-								<div class="form-group">
+								<div class="form-group" id="form-referenceMember">
 									참조 <input class="form-control" name="referenceMember" id="cc-input" readOnly>
 								</div>
 								<div class="form-group">
@@ -276,7 +269,8 @@
 							<!-- /.card-body -->
 							<div class="card-footer">
 								<div class="float-right">
-									<button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> 보내기</button>
+									<button class="btn btn-primary" id="sendButton" type="button" onclick="send()"><i class="far fa-envelope"></i> 보내기</button>
+									<button class="btn btn-primary hidden" id="mysendButton" type="button" onclick="save()"><i class="far fa-envelope"></i> 보내기</button>
 									<button type="reset" class="btn btn-default"><i class="fas fa-times"></i> 취소</button>
 								</div>
 							</div>
@@ -287,60 +281,8 @@
 					</div>
 				<!-- /.col -->
 				</div>
-				
-				
-				
-				
-				
-				
-				<!--  내게 쓰기 -->
-		      <div class="row2 hidden">
-		          
-		        <!-- /.col -->
-		        <div class="col-md-9">
-		            <div class="card card-primary card-outline">
-		              <div class="card-header">
-						<button id="send">저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button id="send">임시저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button id="mailBox" class="mailBox">메일쓰기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					  </div>
-		              <!-- /.card-header -->
-		              <form action="myMailWrite.do" method="post" enctype="multipart/form-data" id="myMailForm">
-			              <div class="card-body">
-			                <div class="form-group">
-								제목 <input class="form-control" name="mailSubject" id="mymailSubject">
-							</div>
-							<div class="form-group" id="mymailMessage">
-										
-							</div>
-							<div class="form-group">
-								<textarea id="mycompose-textarea" class="form-control" style="height: 300px" name="mailContent"></textarea>
-							</div>
-							<div class="form-group">
-								<div class="btn btn-default btn-file">
-									<i class="fas fa-paperclip"></i> Attachment
-									<input type="file" name="attachment" multiple="multiple" id="myattachment-input">
-								</div>
-								<div id="myattachment-info"></div>
-							</div>
-			              </div>
-			          </form>
-		              <!-- /.card-body -->
-		              <div class="card-footer">
-		                <div class="float-right">
-		                	<button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> 보내기</button>
-		                 	<button type="reset" class="btn btn-default"><i class="fas fa-times"></i> 취소</button>
-		                </div>
-		              </div>
-		              <!-- /.card-footer -->
-		            </div>
-		            <!-- /.card -->
-		          </div>
-		        <!-- /.col -->
-		      </div>
 		      
-		      
-		      
+
 			<!-- /.row -->
 			</section>
 			<!-- /.content -->
@@ -372,30 +314,138 @@
 <!-- Bootstrap4 Duallistbox -->
 <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <script>
+	
+/* 	// mailCard1과 mailCard2 요소 선택
+	const mailCard1 = document.querySelector('.mailCard1');
+	const mailCard2 = document.querySelector('.mailCard2');
+	const formSendMember = document.getElementById('form-sendMember');
+	const formReferenceMember = document.getElementById('form-referenceMember');
+	//selfBox 매개변수가 있는 경우에만 클래스 속성 변경
+	if (selfBoxParam) {
+	  mailCard1.classList.remove('hidden');
+	  mailCard2.classList.add('hidden');
+	  formSendMember.classList.add('hidden');
+	  formReferenceMember.classList.add('hidden');
+	} */
+	
+	//받는사람, 참조자 option 값 가져오기
+	/* $(document).ready(function() {
+		  $.ajax({
+		    url: 'mail/setType.ajax', 
+		    type: 'post',
+		    data: {
+		    	'type':type,
+		    	'mail_id':mail_id
+		    		},
+		    dataType:'json',
+		    success: function(data) {
+		    	console.log(data);
+		    	optionPrint(data.option);
+		    },error: function(e){
+		 		console.log(e);
+		    }
+		  })
+		  
+		  function optionPrint(option){
+			  var content;
+			  if(option.length>0){
+				  
+				  option.forEach(function(item,member_id){
+					  content += '<option value="'+item.member_id+'">'+item.dept_code+'&nbsp;&nbsp;'+item.position_code+'&nbsp;&nbsp;'
+					  	+item.name+'</option>';
+				  })
+			  }else{
+				  content += '<option>선택값이 없습니다.</option>';
+			  }
+			  $('.duallistbox').empty();
+			  $('.duallistbox').append(content);
+			  //Bootstrap Duallistbox
+			  $('.duallistbox').bootstrapDualListbox();
+		  }
+	}) */
+
+	// 메일쓰기 숨기기
+	function selfBox(){
+		document.querySelector('.mailCard2').classList.remove('hidden');
+		document.querySelector('.mailCard1').classList.add('hidden');
+		document.getElementById('form-sendMember').style.display = 'none';
+	    document.getElementById('form-referenceMember').style.display = 'none';
+	    document.getElementById('sendButton').classList.add('hidden');
+	    document.getElementById('mysendButton').classList.remove('hidden');
+	    // 보낸사람, 참조자 지우기(수정필요)
+	    document.getElementById("recipient-input").value = "";
+	    document.getElementById("cc-input").value = "";
+	    var approvers = document.getElementsByClassName('approvers');
+	    while (approvers.length > 0) {
+	        approvers[0].remove();
+	    }
+	    var referrer = document.getElementsByClassName('referrer');
+	    while (referrer.length > 0) {
+	    	referrer[0].remove();
+	    }
+	}
+	
+	// 내게쓰기 숨기기
+	function mailBox(){
+		document.querySelector('.mailCard1').classList.remove('hidden');
+		document.querySelector('.mailCard2').classList.add('hidden');
+		document.getElementById('form-sendMember').style.display = 'block';
+	    document.getElementById('form-referenceMember').style.display = 'block';
+	    document.getElementById('mysendButton').classList.add('hidden');
+	    document.getElementById('sendButton').classList.remove('hidden');
+	}
+	
+	// URL에서 매개변수 추출
+	const urlParams = new URLSearchParams(window.location.search);
+	const selfBoxParam = urlParams.get('selfBox');
+	console.log(selfBoxParam);
+	
+	if (selfBoxParam) {
+	  selfBox();
+	} else {
+	  mailBox();
+	}
+	
+
+
+	
+	
+	// 받는사람, 제목, 내용 미 입력 시 메세지 (수정필요)
+	/* $(document).ready(function() {
+	    $('#mailForm').submit(function(event) {
+	        var recipientInput = $('#recipient-input').val();
+	        var mailSubject = $('#mailSubject').val();
+	        var composeTextarea = $('#compose-textarea').val();
+
+	        if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
+	            var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
+	            $('#mailMessage').html('<p class="error">' + Message + '</p>');
+	            event.preventDefault();
+	        } else {
+	            $('#mailMessage').empty(); // 문구 삭제
+	        }
+	    });
+	}); */
+
+
 	$(function () {
-		//Enable check and uncheck all functionality
 		$('.checkbox-toggle').click(function () {
 			var clicks = $(this).data('clicks')
 			if (clicks) {
-				//Uncheck all checkboxes
 				$('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
 				$('.checkbox-toggle .far.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
 			} else {
-				//Check all checkboxes
 				$('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
 				$('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
 				}
 		$(this).data('clicks', !clicks)
 		})
 	
-		//Handle starring for font awesome
 		$('.mailbox-star').click(function (e) {
 			e.preventDefault()
-			//detect type
 			var $this = $(this).find('a > i')
 			var fa    = $this.hasClass('fa')
 	
-			//Switch states
 			if (fa) {
 				$this.toggleClass('fa-star')
 				$this.toggleClass('fa-star-o')
@@ -404,17 +454,18 @@
 	})
 
 
-
-	//Bootstrap Duallistbox
-	$('.duallistbox').bootstrapDualListbox()
 	
 	$(document).ready(function () {
 	  function initializeEditor() {
 	    $('#compose-textarea').summernote();
-	    $('#mycompose-textarea').summernote();
 	  }
 	
 	  initializeEditor();
+	});
+	
+	// 
+	$('.note-editor .note-frame .card').summernote({
+		maximumFileSize: 1048576, // 1MB (1MB = 1024 * 1024 bytes)
 	});
 	
 	
@@ -449,37 +500,6 @@
 		return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 	} 
 	
-	// 내게쓰기 파일명+확장자 표시
-	document.getElementById('myattachment-input').addEventListener('change', function(e) {
-	    // 선택된 파일 가져오기
-	    var files = e.target.files;
-
-	    // 파일 정보 표시
-	    var attachmentInfo = document.getElementById('myattachment-info');
-	    attachmentInfo.innerHTML = ''; // 기존 내용 지우기
-
-	    for (var i = 0; i < files.length; i++) {
-	        var file = files[i];
-
-	        // 파일 정보 생성
-	        var fileInfo = document.createElement('p');
-	        fileInfo.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-
-	        // 파일 정보 추가
-	        attachmentInfo.appendChild(fileInfo);
-	    }
-	});
-
-	// 파일 크기 포맷팅 함수
-	function formatFileSize(bytes) {
-	    if (bytes === 0) return '0 Bytes';
-	    var k = 1024,
-	        sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'],
-	        i = Math.floor(Math.log(bytes) / Math.log(k));
-	    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-	}
-	
-	
 	
 	$(document).ready(function() {
 		$('#submitButton').click(function() {
@@ -508,9 +528,8 @@
 	
 	// 받는사람, 참조자 option 값 가져오기
 	$(document).ready(function() {
-		  // DB에서 값을 가져와서 select 요소에 동적으로 option을 추가
 		  $.ajax({
-		    url: 'mail/getOption.ajax', // DB에서 값 가져오는 API 엔드포인트
+		    url: 'mail/getOption.ajax', 
 		    type: 'get',
 		    data: {},
 		    dataType:'json',
@@ -530,28 +549,46 @@
 					  content += '<option value="'+item.member_id+'">'+item.dept_code+'&nbsp;&nbsp;'+item.position_code+'&nbsp;&nbsp;'
 					  	+item.name+'</option>';
 				  })
-				  
 			  }else{
 				  content += '<option>선택값이 없습니다.</option>';
 			  }
 			  $('.duallistbox').empty();
 			  $('.duallistbox').append(content);
+			  //Bootstrap Duallistbox
+			  $('.duallistbox').bootstrapDualListbox();
 		  }
 	})
 	
+	// 받는사람, 참조자 value 값 보내기
+	function sendList() {
+		var approvers = $('#approvers option:selected').map(function() {
+		    return this.value;
+		  }).get();
+		
+		 $('#mailForm input[name="approvers"]').remove();
+		 $('#mailForm input[name="referrer"]').remove();
+		var content ='';
+		if(approvers.length>0){
+			approvers.forEach(function(item){
+				content += '<input type="hidden" class="approvers" name="approvers" value="'+item+'">';
+			})
+			
+		}
+		
+		var referrer = $('#referrer option:selected').map(function() {
+		    return this.value;
+		  }).get();
+		var message ='';
+		if(referrer.length>0){
+			referrer.forEach(function(item){
+				message += '<input type="hidden" class="referrer" name="referrer" value="'+item+'">';
+			})
+			
+		}
+		$('#mailForm').append(content);
+		$('#mailForm').append(message);
+	};
 	
-	
-	// 내게쓰기 메일쓰기 체인지
-	$(document).ready(function() {
-		$('#selfBox').click(function() {
-			$('.row2').removeClass('hidden');
-			$('.row1').addClass('hidden');
-		});
-		$('#mailBox').click(function() {
-			$('.row1').removeClass('hidden');
-		    $('.row2').addClass('hidden');
-		});
-	});
 	
 	// 미리보기 버튼 클릭 시 이벤트 핸들러
 	document.getElementById('preview-button').addEventListener('click', function() {
@@ -577,62 +614,25 @@
 	    return element.innerHTML;
 	}
 		
-	$(document).ready(function() {
-		  // selfBox 버튼 클릭 이벤트 처리
-		  $('#selfBox').click(function() {
-		    // 원래 섹션의 값 가져오기
-		    var mailSubject = $('#mailSubject').val();
-		    var composeEditorContent = $('#compose-textarea').summernote('code');
-		    var attachmentInfo = $('#attachment-info').html();
-
-		    // 새로운 섹션에 값 설정하기
-		    $('#mymailSubject').val(mailSubject);
-		    $('#mycompose-textarea').summernote('code', composeEditorContent);
-		    $('#myattachment-info').html(attachmentInfo);
-		  });
-
-		  // mailBox 버튼 클릭 이벤트 처리
-		  $('#mailBox').click(function() {
-		    // 새로운 섹션의 값 가져오기
-		    var mymailSubject = $('#mymailSubject').val();
-		    var mycomposeEditorContent = $('#mycompose-textarea').summernote('code');
-		    var myattachmentInfo = $('#myattachment-info').html();
-
-		    // 원래 섹션에 값 설정하기
-		    $('#mailSubject').val(mymailSubject);
-		    $('#compose-textarea').summernote('code', mycomposeEditorContent);
-		    $('#attachment-info').html(myattachmentInfo);
-		  });
-		});
+	// 보내기
+	function send(){
+		$('#mailForm').append('<input type="hidden" name="type" value="send">');
+		$('#mailForm').submit();
+	}
 	
-	$(document).ready(function() {
-	    $('#mailForm').submit(function(event) {
-	        var recipientInput = $('#recipient-input').val();
-	        var mailSubject = $('#mailSubject').val();
-	        var composeTextarea = $('#compose-textarea').val();
-
-	        if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
-	            var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
-	            $('#mailMessage').html('<p class="error">' + Message + '</p>');
-	            event.preventDefault();
-	        } else {
-	            $('#mailMessage').empty(); // 문구 삭제
-	        }
-	    });
-
-	    $('#myMailForm').submit(function(event) {
-	        var mymailSubject = $('#mymailSubject').val();
-	        var mycomposeTextarea = $('#mycomposeTextarea').val();
-
-	        if (mymailSubject == "" || mycomposeTextarea == "") {
-	            var myMessage = "제목과 내용을 모두 입력해주세요.";
-	            $('#mymailMessage').html('<p class="error">' + myMessage + '</p>');
-	            event.preventDefault();
-	        } else {
-	            $('#mymailMessage').empty(); // 문구 삭제
-	        }
-	    });
-	});
+	// 저장
+	function save(){
+		$('#mailForm').append('<input type="hidden" name="type" value="save">');
+		$('#mailForm').submit();
+	}
+	
+	// 임시저장
+	function temp(){
+		$('#mailForm').append('<input type="hidden" name="type" value="temp">');
+		$('#mailForm').submit();
+	}
+	
+	
 </script>
 </body>
 </html>

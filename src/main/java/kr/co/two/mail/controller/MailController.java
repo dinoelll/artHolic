@@ -4,10 +4,20 @@ import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.FlashMap;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import kr.co.two.mail.dto.MailDTO;
 import kr.co.two.mail.service.MailService;
@@ -25,6 +38,7 @@ import kr.co.two.mail.service.MailService;
 public class MailController {
 
 	@Autowired MailService service;
+	@Value("${spring.servlet.multipart.location}") private String root;
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -77,13 +91,6 @@ public class MailController {
 		return "searchBox";
 	}
 	
-	// 내게쓰기 이동
-	@GetMapping(value="/selfBoxWrite.go")
-	public String selfBoxWrite() {
-		
-		return "selfBoxWrite";
-	}
-	
 	// 메일 상세보기 이동
 	@GetMapping(value="/mailDetail.go")
 	public String mailDetail() {
@@ -106,12 +113,17 @@ public class MailController {
 	}
 	
 	// 메일 보내기
-	@PostMapping(value="/mailWrite.do")
-	public String mailWrite(@RequestParam HashMap<String, Object> params, MultipartFile[] attachment, Model model) {
-		
-		logger.info("mail");
+	@RequestMapping(value="/mailWrite.do")
+	public String mailWrite(@RequestParam String type,@RequestParam HashMap<String, String> params, MultipartFile[] attachment,
+			@RequestParam(required = false) String approvers,@RequestParam(required = false) String referrer,RedirectAttributes redirect) {
+
+		logger.info("type: "+type);
+		logger.info("attachment: "+attachment);
 		logger.info("params:"+params);
-		return null;
+		logger.info("approvers: "+approvers);
+		logger.info("referrer: "+referrer);
+
+		return service.mailWrite(type,params,attachment,approvers,referrer,redirect);
 	}
 	
 	// 받는사람, 참조자
@@ -124,4 +136,30 @@ public class MailController {
 		return map;
 	}
 	
+	@RequestMapping(value="/mailDetail.do")
+	public String mailDetaildo(Model model,@RequestParam Map<String, Object> params,HttpServletRequest request) {
+		
+		
+		String page = "mailDetail";
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		if(flashMap != null) {
+			params=(Map<String, Object>) flashMap.get("map");
+			logger.info("params ? " + params);
+			model.addAttribute("dto", service.mailDetail(params,request));
+		}
+		
+		return page;
+	}
+	
+	@GetMapping(value="mailPhotoDownload.do")
+	public ResponseEntity<Resource> mailPhotoDownload(String path) {
+		
+		Resource body = new FileSystemResource(root+"/"+path);
+		HttpHeaders header = new HttpHeaders();
+		String fileName = "이미지"+path.substring(path.lastIndexOf("."));
+		header.add("Content-type", "application/octet-stream");
+		header.add("content-Disposition", "attatchment;fileName\""+fileName+"\"");
+		
+		return new ResponseEntity<Resource>(body,header,HttpStatus.OK);
+	}
 }

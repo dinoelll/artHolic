@@ -37,13 +37,13 @@ public interface MypageDAO {
 
 	void fileUpload(String fileName, String ext, String newFileName, int folderId);
 
-<<<<<<< HEAD
+
 	int eventDelete(String id);
 
 	
-=======
+
 	int deleteFile(String fileName);
->>>>>>> origin/master
+
 
 
 }

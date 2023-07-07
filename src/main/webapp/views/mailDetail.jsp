@@ -29,6 +29,17 @@
 	#footer{
 		margin-left: 0px;
 	}
+	
+	.forwarding,.reply,.del{
+		font-weight: bold;
+  		background-color: white;
+        border: 1px solid white;
+        color: black;
+	}
+	.mailIMG{
+		width: 250px;
+		height: 133px !important;
+	}
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -57,20 +68,71 @@
           <div class="card card-primary card-outline">
             <div class="card-header">
               <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
-              <a href="selfBoxWrite.go" class="btn btn-primary btn-sm ">내게 쓰기</a>
+              <a href="mailWrite.go?selfBox=true" class="btn btn-primary btn-sm ">내게 쓰기</a>
               <div class="card-tools">
-                <a href="mailWrite.jsp" class="btn btn-primary btn-sm ">답장</a>
-              	<a href="mailWrite.jsp" class="btn btn-primary btn-sm ">전달</a>
+				<button id="reply" class="reply" onclick="reply()">답장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="forwarding" class="Forwarding" onclick="forwarding()">전달</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="del" class="del" onclick="del()">삭제</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0">
               <div class="mailbox-read-info">
-                <h5>을지로 3가 공사현장 사진 입니다.</h5>
-                <h6>보낸 사람: 강경원
-                  <span class="mailbox-read-time float-right">2023.07.24 10:03</span></h6>
+             
+              	<div class="mailboxForm"><i class="fas fa-star text-warning"></i>제목&nbsp;&nbsp;${dto.memberdto.get(0).mailSubject}</div>
+              	<div class="mailboxForm" id="mailMember">보낸사람&nbsp;&nbsp;
+              		<c:if test="${dto.memberdto.get(0).code_group_id=='DEPT'}">
+              		${dto.memberdto.get(0).code_name}
+              		</c:if>&nbsp;
+              		<c:if test="${dto.memberdto.get(1).code_group_id=='POSITION'}">
+              		${dto.memberdto.get(1).code_name}
+              		</c:if>&nbsp;${dto.memberdto.get(0).name}
+              	</div>
+                <div class="mailboxForm" id="SendMember">받는사람&nbsp;&nbsp;
+					<c:forEach items="${dto.dto}" var="item">
+                 		<c:if test="${item.is_receiver == false}">
+	                 		${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+	                 	</c:if>
+	                 </c:forEach>
+                 </div>
+                <div class="mailboxForm" id="refferMember">참조&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                	<c:forEach items="${dto.dto}" var="item">
+                		<c:if test="${item.is_receiver == true}">
+                			${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                		</c:if>
+                	</c:forEach>
+                </div>
+                <div class="mailboxForm">${dto.dto.get(0).writeTime}</div>
+              
+                
+                  <!--<span class="mailbox-read-time float-right">2023.07.24 10:03</span></h6> -->
               </div>
-              <!-- /.mailbox-read-info -->
+              
+              <!-- /.mailbox-controls -->
+              <div class="mailbox-read-message">
+                ${dto.memberdto.get(0).mailContent}
+              </div>
+              <!-- /.mailbox-read-message -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer bg-white">
+              <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+              <c:forEach items="${dto.mailpthotoList}" var = "file">
+                <li>
+                  <span class="mailbox-attachment-icon has-img"><img src="/photo/${file.new_file_name}" alt="Attachment" class="mailIMG"></span>
+
+                  <div class="mailbox-attachment-info">
+                    <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> ${file.ori_file_name }</a>
+                        <span class="mailbox-attachment-size clearfix mt-1">
+                          <span>2.67 MB</span>
+                          <a href="mailPhotoDownload.do?path=${file.new_file_name}" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
+                        </span>
+                  </div>
+                </li>
+                </c:forEach>
+              </ul>
+            </div>
+            <!-- /.mailbox-read-info -->
               <div class="mailbox-controls with-border text-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete">
@@ -85,43 +147,6 @@
                 </div>
                 <!-- /.btn-group -->
               </div>
-              <!-- /.mailbox-controls -->
-              <div class="mailbox-read-message">
-                <p>하이</p>
-
-                <p>사진 2장 첨부요.</p>
-                  
-                <p>바이</p>
-              </div>
-              <!-- /.mailbox-read-message -->
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer bg-white">
-              <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
-                <li>
-                  <span class="mailbox-attachment-icon has-img"><img src="../../dist/img/photo1.png" alt="Attachment"></span>
-
-                  <div class="mailbox-attachment-info">
-                    <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> 사진.png</a>
-                        <span class="mailbox-attachment-size clearfix mt-1">
-                          <span>2.67 MB</span>
-                          <a href="#" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
-                        </span>
-                  </div>
-                </li>
-                <li>
-                  <span class="mailbox-attachment-icon has-img"><img src="../../dist/img/photo2.png" alt="Attachment"></span>
-
-                  <div class="mailbox-attachment-info">
-                    <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> 사진2.png</a>
-                        <span class="mailbox-attachment-size clearfix mt-1">
-                          <span>1.9 MB</span>
-                          <a href="#" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
-                        </span>
-                  </div>
-                </li>
-              </ul>
-            </div>
             <!-- /.card-footer -->
             <div class="card-footer">
             </div>
@@ -158,6 +183,7 @@
 <script src="dist/js/demo.js"></script>
 <!-- Page specific script -->
 <script>
+
   $(function () {
     //Enable check and uncheck all functionality
     $('.checkbox-toggle').click(function () {
