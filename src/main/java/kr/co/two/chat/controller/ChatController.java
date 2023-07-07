@@ -71,9 +71,11 @@ public class ChatController {
 		logger.info("dto : " + dto.getSend_id());
 		logger.info("dto : " + dto.getContent());
 		logger.info("dto : " + dto.isIs_notice());
+		
 		logger.info("template : " + template);
 		
 		service.chatStored(dto);
+		
 		template.convertAndSend("/sub/chat/"+ dto.getChat_room_id(), dto);
 	}
 	
@@ -84,11 +86,18 @@ public class ChatController {
 		return service.chatLoad(id);
 	}
 	
+	@PostMapping(value="/memberListAll.ajax")
+	@ResponseBody
+	public ArrayList<MemberDTO> memberListAll() {
+		logger.info("/memberList.ajax");
+		return service.memberListAll();
+	}
+	
 	@PostMapping(value="/memberList.ajax")
 	@ResponseBody
-	public ArrayList<MemberDTO> memberList() {
+	public ArrayList<MemberDTO> memberList(@RequestParam String chat_room_id) {
 		logger.info("/memberList.ajax");
-		return service.memberList();
+		return service.memberList(chat_room_id);
 	}
 	
 	@PostMapping(value="/createChatroom.ajax")
@@ -107,12 +116,12 @@ public class ChatController {
 		
 		return service.createChatRoom(map);
 	}
-	
+	/*
 	@PostMapping(value="/chatRoomExit.ajax")
 	@ResponseBody
 	public int chatRoomExit(@RequestParam HashMap<String, Object> params) {
 		logger.info("params : " + params);
 		return service.chatRoomExit(params);
 	}
-	
+	*/
 }
