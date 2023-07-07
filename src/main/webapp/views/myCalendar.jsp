@@ -71,19 +71,19 @@
 }
 
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은색 배경 */
-    z-index: 999; /* 모달 창보다 낮은 z-index 값 */
-    display: none; /* 기본적으로 숨겨진 상태 */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은색 배경 */
+	z-index: 999; /* 모달 창보다 낮은 z-index 값 */
+	display: none; /* 기본적으로 숨겨진 상태 */
 }
 
 /* 모달 창 스타일 */
 #modal {
-	 position: fixed;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -98,9 +98,8 @@
 	transform: translate(-50%, -50%); /* 모달의 중심을 기준으로 위치 조정 */
 	z-index: 9999; /* 다른 요소들보다 위로 표시하기 위해 z-index 값 설정 */
 	width: 100%;
-	 text-align-last: center;
+	text-align-last: center;
 }
-
 
 /* 모달 폼 스타일 */
 #modal-form {
@@ -133,8 +132,9 @@
 #modal-form button:hover {
 	background-color: #357ca5;
 }
+
 .calendar-container {
-    width: 50%; /* Adjust the width as desired */
+	width: 50%; /* Adjust the width as desired */
 }
 </style>
 </head>
@@ -315,7 +315,7 @@
 		    	      allDay: event.allDay,
 				      backgroundColor : event.backgroundColor,
 				      borderColor : event.borderColor,
-				      id : event.id
+				      id : event.indi_calendar_id
 		    	    };
 		    	  });
 		    	  
@@ -424,17 +424,17 @@
 		    	  $('#modal-form').on('submit', function(e) {
 		    	    e.preventDefault();
 		    	    var content = $('#modal-title').val(); // 모달 폼에서 입력한 내용 가져오기
-		    	    var id = info.event.id; // 클릭한 이벤트의 id 가져오기
+		    	    var indi_calendar_id = info.event.id; // 클릭한 이벤트의 id 가져오기
 		    	    var start_date = info.event.start;
 		    	    var end_date = info.event.end;
 		    	    var allDay = info.event.allDay;
 		    	    var backgroundColor = info.event.backgroundColor;
 		    	    var borderColor = info.event.borderColor;
 		    	    
-		    	    console.log(content,id);
+		    	    console.log(content,indi_calendar_id);
 
 		    	    // 서버로 데이터 전송 (업데이트 또는 삭제)
-		    	    sendEventData(id, content,start_date,end_date,allDay,backgroundColor,borderColor);
+		    	    sendEventData(indi_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor);
 		    	    
 		    	    // 모달 닫기
 		    	    closeModal();
@@ -443,6 +443,7 @@
 		    	  function showModal(event) {
 			    	  // 모달 창 띄우기 및 이벤트 정보를 모달 폼에 채우기
 			    	  console.log("모달창 등장!");
+			    	  console.log(event.id);
 			    	  $('#modal').show();
 			    	  $('#modal-title').val(event.title);
 			    	}
@@ -455,10 +456,10 @@
 
 		    		
 		    	
-				    	function sendEventData(id, content,start_date,end_date,allDay,backgroundColor,borderColor) {
+				    	function sendEventData(indi_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor) {
 				    	  // 서버로 데이터 전송 (업데이트 또는 삭제)
 				    	  var requestData = {
-				    	    id: id,
+				    		indi_calendar_id: indi_calendar_id,
 				    	    content: content,
 				    	    start_date:start_date,
 				    	    end_date:end_date,
@@ -477,7 +478,7 @@
 							      // 요청 성공 시 처리할 코드 작성
 							      console.log('일정 업데이트 또는 삭제 성공');
 							      alert('일정이 변경되었습니다!');
-								    location.href='/mycalendar';
+								  location.href='/mycalendar'; 
 							      
 							    },
 							    error: function() {
@@ -487,23 +488,18 @@
 							  });    	
 				      }	  
 				    	
-				    	
-				    	
-				    	
-				    	
-				    	
-				    	
-				    	
+	    	
 				    	  $('#delete').on('click', function(e) {
 					    	    e.preventDefault();
-					    	   
-					    	    var id = info.event.id; // 클릭한 이벤트의 id 가져오기
+					    	   console.log(info.event.id);
+					    	    
+					    	    var indi_calendar_id = info.event.id; // 클릭한 이벤트의 id 가져오기
 					    	    
 					    	    
-					    	    console.log(id);
+					    	    console.log(indi_calendar_id);
 
 					    	    // 서버로 데이터 전송 (업데이트 또는 삭제)
-					    	    deleteEvent(id);
+					    	    deleteEvent(indi_calendar_id);
 					    	    
 					    	    // 모달 닫기
 					    	    closeModal();
@@ -511,20 +507,20 @@
 				    	
 
 				    	
-				    	 function deleteEvent(id) {
+				    	 function deleteEvent(indi_calendar_id) {
 				    		
-				    		console.log(id);
+				    		console.log(indi_calendar_id);
 				    		   $.ajax({
 								    url: '/eventDelete.ajax',
 								    type: 'POST',
-								    data: {id:id},
+								    data: {indi_calendar_id : indi_calendar_id},
 								    /* contentType: 'application/json',  */
 								    dataType : 'json',
 								    success: function(data) {
 								      // 요청 성공 시 처리할 코드 작성
 								      console.log(data.data);
 								      alert('일정이 삭제되었습니다!');
-									    location.href='/mycalendar';
+									  location.href='/mycalendar'; 
 								      
 								    },
 								    error: function() {
@@ -596,17 +592,16 @@
 		  function sendEventsToServer() {
 			  var events = calendar.getEvents(); // 현재 캘린더의 이벤트 배열 가져오기
 
-			  // 서버로 전송할 데이터 구성
-			  var eventData = events.map(function(event) {
+			
+			  var eventData = events.map(function(event) {				 
 			    return {
-			      content: event.title,
-			      start_date: event.start,
-			      end_date: event.end,
-			      allDay: event.allDay,
-			      backgroundColor : event.backgroundColor,
-			      borderColor : event.borderColor,
-			      id : event.id
-			      // 필요한 경우 이벤트의 다른 속성도 추가할 수 있습니다
+			    	 content: event.title,
+			    	    start_date: event.start,
+			    	    end_date: event.end,
+			    	    allDay: event.allDay,
+			    	    backgroundColor: event.backgroundColor,
+			    	    borderColor: event.borderColor,
+			      		indi_calendar_id : event.id
 			    };
 			    
 			  });
@@ -622,7 +617,7 @@
 				  success: function(response) {
 				    console.log(response);
 				    alert('일정이 등록되었습니다!');
-				    location.href='/mycalendar';
+				    location.href='/mycalendar'; 
 				    calendar.render();
 				  },
 				  error: function(error) {
