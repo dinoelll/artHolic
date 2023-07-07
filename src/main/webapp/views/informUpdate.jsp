@@ -67,7 +67,7 @@
 			<tr>
 				<td>
 					<input type="text" name="subject" value="${inform.subject}"/>
-		    		<input type="checkbox" name="is_inform" value="1"> 필독 등록
+		    		<input type="checkbox" name="is_form" value="1"> 필독 등록
 		    		<input type="hidden" name="board_id" value="${inform.board_id}"/>
 		    	</td>
 			</tr>
@@ -131,7 +131,7 @@ function updateDo(){
 var content = editor.getHTMLCode();
 $('input[name="content"]').val(content);
 $('form').submit();
-//editor.setReadOnly();
+
 }
 
 </script>

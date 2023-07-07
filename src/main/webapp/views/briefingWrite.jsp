@@ -54,7 +54,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>공지사항 등록</h3>
+            <h3>현장설명 게시판</h3>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -62,12 +62,11 @@
 
     <!-- Main content -->
     <section class="content">
-	<form id="inform" action="/informWrite.do" method="post">
+	<form id="inform" action="/briefingWrite.do" method="post">
 		<table>
 			<tr>
 				<td>
 					<input type="text" class="subject" name="subject"/>
-		    		<input type="checkbox" name="is_form" value="1"> 필독 등록
 		    	</td>
 			</tr>
 			<tr>
@@ -78,7 +77,7 @@
 			</tr>
 			<tr>
 				<td>
-				<input style="float:right;" type="button" onclick="location.href='informList.go'" value="취소"/>
+				<input style="float:right;" type="button" onclick="location.href='briefingList.go'" value="취소"/>
 					<input style="float:right;" type="button" onclick="save()" value="등록" />
 					
 				</td>

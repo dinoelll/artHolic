@@ -128,6 +128,7 @@
 	cursor: pointer;
 }
 
+
 #modal-form button:hover {
 	background-color: #357ca5;
 }

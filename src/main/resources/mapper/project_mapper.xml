@@ -4,4 +4,32 @@
 	   
 <mapper namespace="kr.co.two.project.dao.ProjectDAO">
 
+
+	<select id="listCall" resultType="project" parameterType="string">
+		SELECT * FROM project
+		<where>
+			<if test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND name LIKE CONCAT('%',#{keyword},'%')</if>
+		</where>
+		ORDER BY board_id DESC
+		LIMIT #{cnt} OFFSET #{offset}
+	</select>
+	
+	<select id="totalCount" resultType="int" parameterType="string">
+		SELECT COUNT(board_id) FROM board
+		<where>
+		board_code = 'briefing'
+			<if test="keyword != null and !keyword.equals('') and opt =='member_id'">AND member_id LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='subject'">AND subject LIKE CONCAT('%',#{keyword},'%')</if>
+		</where>
+	</select>
+	
+	<insert id="projectWrite" parameterType="hashmap">
+      INSERT INTO project
+      (project_name, project_manager, field_manager, start_date, end_date)
+      VALUES(#{project_name},#{project_manager},#{field_manager},#{location},#{start_date},#{end_date})
+    </insert>
+
+
 </mapper>
