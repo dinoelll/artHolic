@@ -23,7 +23,6 @@
 	<insert id="chatStored" parameterType="hashmap">
 		INSERT INTO chat(send_id, chat_room_id, content, is_notice)
 		VALUES(#{send_id}, #{chat_room_id}, #{content}, #{is_notice})
-	
 	</insert>
 	
 	<select id="chatLoad" parameterType="String">
@@ -31,26 +30,31 @@
 		WHERE chat_room_id = #{id}
 	</select>
 	
-	<select id="memberList" resultType="MemberDTO">
+	<select id="memberListAll" resultType="MemberDTO">
 		SELECT * FROM member
 	</select>
 	
 	<insert id="createRoom" parameterType="ChatDTO" useGeneratedKeys="true" keyProperty="chat_room_id">
-		INSERT INTO chat_room(name,bllind) VALUES(#{name}, false)
+		INSERT INTO chat_room(name,blind) VALUES(#{name}, false)
 	</insert>
 	
 	<insert id="insert_chat_room_info">
 		INSERT INTO chat_room_info(chat_room_id, member_id, state) VALUES(#{param1}, #{param2}, 'in')
 	</insert>
 	
-	<update id="chatRoomExit" parameterType="hashmap">
+	<update id="chatRoomExit" parameterType="ChatDTO">
 		UPDATE chat_room_info SET state = 'out'
-		WHERE member_id=#{member_id}
+		WHERE member_id=#{send_id}
 		AND chat_room_id=#{chat_room_id}
 	</update>
 	
 	<insert id="exitMessage" parameterType="hashmap">
 		INSERT INTO chat(send_id, chat_room_id,content,blind,is_notice)
-		VALUES(#{member_id},#{chat_room_id}, CONCAT(#{member_id},'님이 퇴장하셨습니다.'), false, true)
+		VALUES(#{send_id},#{chat_room_id}, #{content}, false, true)
 	</insert>
+	
+	<select id="chatRoomInfo" parameterType="String" resultType="ChatDTO">
+		SELECT * FROM chat_room_info
+		WHERE chat_room_id=#{chat_room_id}
+	</select>
 </mapper>

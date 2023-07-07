@@ -1,6 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+
+<script>
+	loginChk();
+	function loginChk() {
+		var loginId = '${sessionScope.loginId}';
+		if (!loginId) {
+		window.location.href = './';
+		alert("로그인 안하면 아모고토 모타죠~?? 아모고토 모타죠~!? 접근 불가쥬?");
+		}
+	}
+</script>
+
+
  <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->

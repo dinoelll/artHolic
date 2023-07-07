@@ -7,13 +7,13 @@ import org.apache.ibatis.type.Alias;
 public class ChatDTO {
 	private int chat_room_id;
 	private String name;
-	private String id;
+	private String member_id;
 	private String send_id;
 	private String subject;
 	private String content;
 	private boolean is_read;
 	private Date send_time;
-	private boolean bllind;
+	private boolean blind;
 	private boolean is_notice;
 	
 	public int getChat_room_id() {
@@ -27,12 +27,6 @@ public class ChatDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	public String getSend_id() {
 		return send_id;
@@ -64,17 +58,24 @@ public class ChatDTO {
 	public void setSend_time(Date send_time) {
 		this.send_time = send_time;
 	}
-	public boolean isBllind() {
-		return bllind;
-	}
-	public void setBllind(boolean bllind) {
-		this.bllind = bllind;
-	}
+
 	public boolean isIs_notice() {
 		return is_notice;
 	}
 	public void setIs_notice(boolean is_notice) {
 		this.is_notice = is_notice;
+	}
+	public boolean isBlind() {
+		return blind;
+	}
+	public void setBlind(boolean blind) {
+		this.blind = blind;
+	}
+	public String getMember_id() {
+		return member_id;
+	}
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
 	
 }

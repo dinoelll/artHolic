@@ -37,6 +37,7 @@
 		width : 700px;
 		height : 100%;
 		float : left;
+		overflow : auto;
 	}
 	
 	.main-sidebar {
@@ -96,32 +97,16 @@
 					<button onclick="send_name()">이름저장</button>
 					<input type="text" id="content"/>
 					<button onclick="sendMessage()">전송</button>
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatModal" onclick="create()">채팅방 생성하기</button>
-					<button onclick="invite()">회원 초대하기</button>
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatCreateModal" onclick="create()">채팅방 생성하기</button>
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatInviteModal" onclick="invite()">초대하기</button>
 					<button onclick="chat_room_exit()">채팅방 나가기</button>
 					
 					<div id="chat_list">
 						<div id="chat_room"></div>
 						
 						
-						<div id="chat_history">
-				
-
-					<!-- Message to the right -->
-                  <div class="direct-chat-msg right">
-                    <div class="direct-chat-infos clearfix">
-                      <span class="direct-chat-name float-right">Sarah Bullock</span>
-                      <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
-                    </div>
-                    <!-- /.direct-chat-infos -->
-                    <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image">
-                    <!-- /.direct-chat-img -->
-                    <div class="direct-chat-text">
-                      You better believe it!
-                    </div>
-                    <!-- /.direct-chat-text -->
-                  </div>
-                  <!-- /.direct-chat-msg -->
+						<div id="chat_history" data-bs-spy="scroll" data-bs-target=".direct-chat-msg" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
+			
 						</div>
 						
 					</div> 
@@ -132,19 +117,19 @@
     		<!-- /.content -->
     		
     		
-    		<div class="modal fade" id="chatModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    		<div class="modal fade" id="chatCreateModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		    	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 		        	<div class="modal-content">
 		
 						<div class="user-container modal-header">
-		                	<label class="modal-title" id="staticBackdropLabel" for="nickname">대화명</label>
-		                	<span type="text" id="nickname" ></span>
+		                	<label class="modal-title" id="staticBackdropLabel-create" for="nickname">채팅방 생성</label>
+		                	<span type="text" id="nickname-create" ></span>
 		                	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		            	</div>
 		
 		
 		            	<div class="display-container modal-body" style="height: 1000px">
-		                	<div class="chatting-list">
+		                	<div class="chatting-list-create">
 								
 							</div>
 		            	</div>
@@ -153,7 +138,35 @@
 		            	<div class="input-container modal-footer">
 							<span>
 							    <input type="text" placeholder="채팅방 이름을 적어주세요" id="chat-room-name">
-							    <button type="button" id="send-button" class="send-button">추가하기</button>
+							    <button type="button" id="send-button-create" class="send-button">추가하기</button>
+							</span>
+		            	</div>
+		
+		        	</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="chatInviteModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		    	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		        	<div class="modal-content">
+		
+						<div class="user-container modal-header">
+		                	<label class="modal-title" id="staticBackdropLabel-invite" for="nickname">초대하기</label>
+		                	<span type="text" id="nickname-invite" ></span>
+		                	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		            	</div>
+		
+		
+		            	<div class="display-container modal-body" style="height: 1000px">
+		                	<div class="chatting-list-invite" data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true">
+								
+							</div>
+		            	</div>
+		
+		
+		            	<div class="input-container modal-footer">
+							<span>
+							    <button type="button" id="send-button-invite" class="send-button">추가하기</button>
 							</span>
 		            	</div>
 		
@@ -176,7 +189,74 @@
 
 
 	
-	
+	<section style="background-color: #eee;">
+  <div class="container py-5">
+
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-8 col-lg-6 col-xl-4">
+
+        <div class="card" id="chat1" style="border-radius: 15px;">
+          <div
+            class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
+            style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+            <i class="fas fa-angle-left"></i>
+            <p class="mb-0 fw-bold">Live chat</p>
+            <i class="fas fa-times"></i>
+          </div>
+          <div class="card-body">
+
+            <div class="d-flex flex-row justify-content-start mb-4">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                <p class="small mb-0">Hello and thank you for visiting MDBootstrap. Please click the video
+                  below.</p>
+              </div>
+            </div>
+
+            <div class="d-flex flex-row justify-content-end mb-4">
+              <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
+                <p class="small mb-0">Thank you, I really like your product.</p>
+              </div>
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+            </div>
+
+            <div class="d-flex flex-row justify-content-start mb-4">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div class="ms-3" style="border-radius: 15px;">
+                <div class="bg-image">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/screenshot1.webp"
+                    style="border-radius: 15px;" alt="video">
+                  <a href="#!">
+                    <div class="mask"></div>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-row justify-content-start mb-4">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                <p class="small mb-0">...</p>
+              </div>
+            </div>
+
+            <div class="form-outline">
+              <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
+              <label class="form-label" for="textAreaExample">Type your message</label>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
 	
 	
 	<!-- jQuery UI -->
@@ -236,32 +316,6 @@
 	        console.log('Connected: ' + frame);
 	        // var connid = utils.random_string(8); 8자리 랜덤생성?
 	        console.log(socket._transport.url);
-	        // 구독 설정
-	        stompClient.subscribe('/sub/chat/'+id, function (message) {
-	            console.log('Received message: ' + JSON.parse(message.body));
-	            var body = JSON.parse(message.body);
-	            var content='<div>'+body.send_id+' : '+body.content+'</div>';
-	            //$('#chat_history').append(content);
-	            $.ajax({
-	        		url:'chatStored.ajax',
-	        		type:'post',
-	        		data:id,
-	        		dataType:'json',
-	        		contentType: 'application/json; charset=utf-8',
-	        		/**/
-	        		success:function(data){
-	        			console.log(data);
-	        			$('#chat_history').html('');
-	        			
-	        			chatHistory(data);
-	        			
-	        		},
-	        		error:function(e){
-	        			console.log(e);
-	        		}
-	        	});
-	            // 메시지 처리 로직 추가
-	        });
 	    });
 	}
 	
@@ -324,25 +378,68 @@
 	function create() {
 		console.log('create() 호출');
 		$.ajax({
-			url:'memberList.ajax',
+			url:'memberListAll.ajax',
 			type:'post',
 			data:{},
 			dataType:'json',
 			success:function(data){
 				console.log(data);
-				$('.chatting-list').html('');
+				$('.chatting-list-create').html('');
+				$('.chatting-list-invite').html('');
 				var content =  '<table><tr><th><input type="checkbox" name="member_all"></th><th>이름</th><th>부서</th></tr>';
 				data.forEach(function(item) {
 					if(item.member_id == name) {
 						content+='';
 					}else {
-						content+='<tr><th><input type="checkbox" name="member_id" value="'+item.member_id+'"></th><th>'+item.member_id+'</th><th>'+item.dept_code+'</th></tr>';
+						content+='<tr><th><input type="checkbox" name="member_id" value="'+item.member_id+'" class="create_input"></th><th>'+item.member_id+'</th><th>'+item.dept_code+'</th></tr>';
 					}
 					
 				});
 				content += '</table>';
 				
-				$('.chatting-list').append(content);
+				$('.chatting-list-create').append(content);
+				
+				$('input:checkbox[name="member_all"]').change(function() {
+					console.log('member_all 체인지 이벤트');
+					if($('input:checkbox[name="member_all"]').is(':checked')) {
+						console.log('체크');
+						$('input:checkbox[name="member_id"]').prop('checked', true);
+					}else {
+						console.log('체크해제');
+						$('input:checkbox[name="member_id"]').prop('checked', false);
+					}
+				});
+				
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	function invite() {
+		console.log('invite() 호출');
+		$.ajax({
+			url:'memberList.ajax',
+			type:'post',
+			data:{chat_room_id},
+			dataType:'json',
+			success:function(data){
+				console.log(data);
+				$('.chatting-list-create').html('');
+				$('.chatting-list-invite').html('');
+				var content =  '<table><tr><th><input type="checkbox" name="member_all"></th><th>이름</th><th>부서</th></tr>';
+				data.forEach(function(item) {
+					if(item.member_id == name) {
+						content+='';
+					}else {
+						content+='<tr><th><input type="checkbox" name="member_id" value="'+item.member_id+'" class="invite_input"></th><th>'+item.member_id+'</th><th>'+item.dept_code+'</th></tr>';
+					}
+					
+				});
+				content += '</table>';
+				
+				$('.chatting-list-invite').append(content);
 				
 				$('input:checkbox[name="member_all"]').change(function() {
 					console.log('member_all 체인지 이벤트');
@@ -359,15 +456,12 @@
 				console.log(e);
 			}
 		});
-	}
-	
-	function invite() {
-		console.log('invite() 호출');
+		
 	}
 	
 	
 	
-	$('#send-button').click(function() {
+	$('#send-button-create').click(function() {
 		var member_id_array = [];
 		if($('input:checkbox[name="member_id"]:checked').length == 0) {
 			alert('한명이상 체크해주세요');
@@ -405,10 +499,50 @@
 				chatListAjax();
 			}
 		}
-			
-			
 		console.log(member_id_array);
 	});
+	
+	$('#send-button-invite').click(function() {
+		var member_id_array = [];
+		if($('input:checkbox[name="member_id"]:checked').length == 0) {
+			alert('한명이상 체크해주세요');
+		}else {
+			var chat_room_name = $('#chat-room-name').val();
+			if(chat_room_name == '') {
+				alert('채팅방 이름을 적어주세요');
+			}else {
+				$('input:checkbox[name="member_id"]').each(function() {
+					if($(this).is(":checked")==true){
+				    	console.log($(this).val());
+				    	member_id_array.push($(this).val());
+				    }
+				});
+				member_id_array.push(name);
+				
+				$.ajax({
+					url:'inviteChatroom.ajax',
+					type:'post',
+					async: false,
+					data:{
+						'member_id_array': member_id_array
+					},
+					dataType:'text',
+					success:function(data){
+						console.log(data);
+						console.log('inviteChatroom.ajax () 성공');
+					},
+					error:function(e){
+						console.log(e);
+					}
+				});
+				
+				chatListAjax();
+			}
+		}
+		console.log(member_id_array);
+	});
+	
+	
 	
 	function chatListAjax() {
 		console.log('chatListAjax() 호출');
@@ -444,8 +578,12 @@
 	            content: name+'님이 퇴장하셨습니다.',
 	            is_notice : true
 	        };
-
-	        stompClient.send("/pub/chat/sendMessage", {}, JSON.stringify(chatMessage));
+			
+	        stompClient.send("/pub/chat/sendMessage", {}, JSON.stringify(chatMessage), function() {
+	        	console.log('입장');
+		        $('#chat_history').html('');
+	        });
+	        
 		}
 	}
 </script>
