@@ -68,6 +68,5 @@
         DELETE FROM file WHERE new_fileName = #{fileName}
     </delete>
    
- 
-</mapper>
 
+</mapper>

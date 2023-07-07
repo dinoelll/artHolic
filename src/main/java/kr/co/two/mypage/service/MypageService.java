@@ -54,6 +54,7 @@ public class MypageService {
 
    }
 
+
    public List<EventDataDTO> getEvents() {
       
       return dao.getEvent();
@@ -132,10 +133,9 @@ public class MypageService {
       return dao.eventDelete(indi_calendar_id);
    }
 
+
    public int deleteFile(String fileName) {
       
       return dao.deleteFile(fileName);
    }
-
-
 }

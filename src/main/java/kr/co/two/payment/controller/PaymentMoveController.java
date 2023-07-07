@@ -36,12 +36,7 @@ public class PaymentMoveController {
 
 	}
 	
-	@RequestMapping(value = "/paymentVacationForm.go")
-	public ModelAndView home4() {
 
-		return new ModelAndView("paymentVacationForm");
-
-	}
 	@RequestMapping(value = "/paymentBuyItemForm.go")
 	public ModelAndView home5() {
 
@@ -67,6 +62,13 @@ public class PaymentMoveController {
 	public ModelAndView home9() {
 
 		return new ModelAndView("paymentProjectForm_pay");
+
+	}
+	
+	@RequestMapping(value = "/pay__mentVacationForm.go")
+	public ModelAndView home10() {
+
+		return new ModelAndView("pay__mentVacationForm");
 
 	}
 

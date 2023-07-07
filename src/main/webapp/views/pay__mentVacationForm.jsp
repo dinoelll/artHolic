@@ -592,8 +592,7 @@
 										    <div class="form-group">
 										      <label style="font-size:27px;">결재선 선택</label>
 										      <div>
-											        <div id="transfer1" class="transfer-demo"></div>
-											        <div id="transfer2" class="transfer-demo"></div>
+											      
 											        <div id="transfer3" class="transfer-demo"></div>
 											        <div id="transfer4" class="transfer-demo"></div>
 											    </div>
@@ -800,99 +799,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="dist/js/jquery.transfer.js?v=0.0.6"></script>
 <script type="text/javascript">
-    var dataArray1 = [
-        {
-            "city": "Beijing",
-            "value": 132
-        },
-        {
-            "city": "Shanghai",
-            "value": 422
-        },
-        {
-            "city": "Chengdu",
-            "value": 232
-        },
-        {
-            "city": "Wuhan",
-            "value": 765
-        },
-        {
-            "city": "Tianjin",
-            "value": 876
-        },
-        {
-            "city": "Guangzhou",
-            "value": 453
-        },
-        {
-            "city": "Hongkong",
-            "value": 125
-        }
-    ];
-
-    var settings1 = {
-        "dataArray": dataArray1,
-        "itemName": "city",
-        "valueName": "value",
-        "callable": function (items) {
-            console.dir(items)
-        }
-    };
-
-    $("#transfer1").transfer(settings1);
-</script>
-
-<script>
-
-    var dataArray2 = [
-        {
-            "city": "Beijing",
-            "value": 132,
-            "disabled": true
-        },
-        {
-            "city": "Shanghai",
-            "value": 422,
-            "selected": true
-        },
-        {
-            "city": "Chengdu",
-            "value": 232
-        },
-        {
-            "city": "Wuhan",
-            "value": 765,
-            "selected": true,
-            "disabled": true
-        },
-        {
-            "city": "Tianjin",
-            "value": 876
-        },
-        {
-            "city": "Guangzhou",
-            "value": 453
-        },
-        {
-            "city": "Hongkong",
-            "value": 125
-        }
-    ];
-
-    var settings2 = {
-        "dataArray": dataArray2,
-        "itemName": "city",
-        "valueName": "value",
-        "callable": function (items) {
-            console.dir(items)
-        }
-    };
-
-    $("#transfer2").transfer(settings2);
-</script>
-
-<script>
+   
     var groupDataArray1 = [
         {
             "groupName": "China",
