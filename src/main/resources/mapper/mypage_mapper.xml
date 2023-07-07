@@ -52,8 +52,13 @@
 	</update>
 
 	<delete id="myFolderDelte">
+<<<<<<< HEAD
 		DELETE FROM myFolder WHERE folder_id = #{folderId}
 	</delete>
+=======
+        DELETE FROM myFolder WHERE folder_id = #{folderId}
+    </delete>
+>>>>>>> origin/master
     
     <select id="fileList" resultType="mypage">
    		SELECT * FROM file WHERE folder_id = #{folderId}
@@ -67,8 +72,11 @@
 	<delete id="deleteFile">
         DELETE FROM file WHERE new_fileName = #{fileName}
     </delete>
+<<<<<<< HEAD
 	
 	
 
+=======
+>>>>>>> origin/master
 
 </mapper>
