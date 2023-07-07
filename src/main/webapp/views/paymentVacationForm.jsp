@@ -333,6 +333,9 @@
 								<form action="paymentWrite.do" method="post">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
+												    
+												    <input type="hidden"  id="form_sort" name="vacation" value="PAYMENT_VAC">
+												    
 												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">휴가 신청</h1>
 												        <div class="row" style="margin-bottom: 50px;" id="topRow">
 												      	
@@ -347,7 +350,7 @@
 																              <td>
 																				<div class="group">
 																				  <div class="input-group date" id="reservationdate" data-target-input="nearest">
-																				    <input type="date" style="background-color: transparent; border: none; box-shadow: none; outline: none; color: transparent; text-shadow: 0 0 0 gray;">
+																				    <input type="date" id="limit_date" name="limit_date" style="background-color: transparent; border: none; box-shadow: none; outline: none; color: transparent; text-shadow: 0 0 0 gray;">
 																			    </div>
 																			  </div>
 																			</td>
@@ -369,7 +372,7 @@
 																              <td style=" white-space: nowrap; ">기안자</td>
 																            </tr>
 																            <tr>
-																              <td >김형준</td>
+																              <td>김형준</td>
 																            </tr>
 																            <tr>
 																              <td ></td>
@@ -390,7 +393,7 @@
 													  
 													  <table class="my-table">
 													    <tr>
-													      <th>작성자</th>
+													      <th> 작성자</th>
 													      <td>작성자 입력란</td>
 													      <th>부서</th>
 													      <td>부서 입력란</td>
@@ -398,12 +401,14 @@
 													    
 													    <tr>
 													      <th>문서 분류</th>
-													      <td>문서 분류 입력란</td>
+													     	 <td>
+															  <input id="문서분류" value="휴가 신청" style="border: none; text-align: center;">
+															</td>
 													      <th>종류</th>
 													      <td>
 													      		<div class="group">
 											                        
-											                        <select class="form-control" >
+											                        <select class="form-control" id="vacation_kind">
 											                          <option>휴가</option>
 											                          <option>연차</option>
 											                          <option>반차</option>
@@ -429,14 +434,14 @@
 														</td>
 													      <th>반차 여부</th>
 													      <td>
-														     <div class="form-check form-check-inline">
-															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning">
+														     	<div class="form-check form-check-inline">
+															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning" value="오전">
 															      <label class="form-check-label" for="radioMorning">오전</label>
 															    </div>
 															    <div class="form-check form-check-inline">
-															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon">
+															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon" value="오후">
 															      <label class="form-check-label" for="radioAfternoon">오후</label>
-														    </div>
+														    	</div>
                           								</td>
 													    </tr>
 													  </table>
@@ -448,7 +453,7 @@
 													    <tr>
 													  	  <th>제목</th>
 														      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요">
+														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요" id="paySubject">
 														      </td>
 													    </tr>
 													  </table>
@@ -460,33 +465,30 @@
 															    <tr>
 															    	<th>내용</th>
 															      <td>
-																      <textarea rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;"></textarea>
+																      <textarea rows="10" cols="50" id="payContent" style="width: 100%; height: 100%; border: none; resize: none;"></textarea>
     															</td>
 															    </tr>
 															  </table>
 											  	</div>
 											  	<div class="row" style="margin-bottom: 50px;">
 													  <table class="my-table">
-													    <tr>
-													  	  <th>파일첨부</th>
-														      <td>
-														     	 <div class="group">
-												                    	
-												                    <div class="input-group">
-												                      <div class="custom-file">
-												                        <input type="file" class="custom-file-input" id="exampleInputFile">
-												                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-												                      </div>
-												                      <div class="input-group-append">
-												                        <span class="input-group-text">Upload</span>
-												                      </div>
-												                    </div>
-												                  </div>
-														      
-														      
-														      </td>
-													    </tr>
-													  </table>
+														  <tr>
+														    <th>파일첨부</th>
+														    <td>
+														      <div class="group">
+														        <div class="input-group">
+														          <div class="custom-file">
+														            <input type="file" class="custom-file-input" id="exampleInputFile">
+														            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+														          </div>
+														          <div class="input-group-append">
+														            <span class="input-group-text">Upload</span>
+														          </div>
+														        </div>
+														      </div>
+														    </td>
+														  </tr>
+														</table>
 												  </div>
 												  
 												  <div class="row" style="margin-bottom: 50px;">
@@ -503,7 +505,8 @@
 													  
 												  </div>
 											  	
-										  </div><!-- 그냥 감싸는 내용 div  -->
+										  	</div><!-- 그냥 감싸는 내용 div  -->
+										  </div>
 										  </form>
 									</div><!--form container  -->	
      					 </section>
@@ -559,6 +562,8 @@
 				            <div id="previewBox">
 				
 				            </div>
+				            
+				            <input type="hidden" id="temp" value="1">
 				
 				
 				          </div>
@@ -598,11 +603,12 @@
 										      <label style="font-size:27px;">결재선 선택</label>
 										      <div class="dual-listbox-container">
 										        <select id="approvers" class="duallistbox" multiple="multiple" name="duallistbox_demo1[]">
-										          <option value="대리 김형준" selected >대리 홍길동</option>
-										          <option value="과장 아무개">과장 아무개</option>
-										          <option value="차장 홍길동"> 차장 박차장</option>
-										          <option value="사장 김사장">사장 김사장</option>
+										          <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										          
 
+										          </c:forEach>
 										        </select>
 										      </div>
 										    </div>
@@ -630,8 +636,6 @@
 										  <!-- /.col -->
 										</div>
 									  <!-- /.row  -->
-								   
-              						
 
 								</div>
 					        </div>
@@ -640,7 +644,7 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-				<button type="submit" id="submitButton" class="btn btn-primary">요청</button>            
+				<button type="submit" id="submitButton" class="btn btn-primary" >요청</button>            
 				</form>
             </div>
           </div>
@@ -667,10 +671,10 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-              <button type="button" class="btn btn-primary">요청</button>
+              <button type="button" class="btn btn-primary" onclick="writeVacation()">요청</button>
             </div>
           </div>
-          <!-- /.modal-content -->
+          <!-- /.modal-content --> 
         </div>
         <!-- /.modal-dialog -->
       </div>
@@ -692,7 +696,11 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-              <button type="button" class="btn btn-primary">요청</button>
+              <button type="button" class="btn btn-primary" onclick="writeVacationTemp()">요청</button>
+              
+              
+              
+              
             </div>
           </div>
           <!-- /.modal-content -->
@@ -758,13 +766,8 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-
-
 <!-- bs-custom-file-input -->
 <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-
-
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -797,6 +800,190 @@
 <script>
 
 
+
+function writeVacation() {
+	var approversVal = $('[name="duallistbox_demo1[]"]').val();
+	console.log(approversVal);
+	
+	 var formData = new FormData();
+
+	  var fileInput = document.getElementById('exampleInputFile');
+	  var file = fileInput.files[0]; // Get the selected file
+
+	  
+	  if (file) {
+
+	  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
+		  formData.append('file', file); // Append the file to the FormData object
+	} 
+		  
+	  /*   if (file) {
+
+	  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
+		  formData.append('file', file); // Append the file to the FormData object
+	} else {
+	    // 빈 파일 객체 추가
+	    formData.append('file', new Blob(), 'empty_file');
+	  } */
+	  
+	 
+
+	  var paymentValues = [];
+	  
+	  // Other parameters
+	  var $limit_date = $('#limit_date');
+	  var $form_sort = $('#form_sort');
+	  var $vacation_kind = $('#vacation_kind');
+	  var $reservationtime = $('#reservationtime');
+	  var $paySubject = $('#paySubject');
+	  var $payContent = $('#payContent');
+	  var $radioPeriod = $('input[name="radioPeriod"]:checked');
+	  
+	   //for (var i = 0; i < approversVal.length; i++) {
+		    
+		   //var paymentValue= $('#payment'+[i]+'');
+		  //var $payment= $('#payment'+[i]+'');
+		    // payment 값을 배열에 추가
+		  
+		//}
+	 for (var i = 0; i < approversVal.length; i++) {
+	  paymentValues.push(approversVal[i]);
+		}
+	  
+	   
+
+	  var param = {
+		  payment: paymentValues,
+	  	limit_date: $limit_date.val(),
+	  	form_sort: $form_sort.val(),
+	  	vacation_kind: $vacation_kind.val(),
+	    reservationtime: $reservationtime.val(),
+	    radioPeriod: $radioPeriod.val(),
+	    paySubject: $paySubject.val(),
+	    payContent: $payContent.val()
+	    
+	   
+	  };
+		console.log(param);
+
+	  // Append other parameters to the FormData object
+	  for (var key in param) {
+		    if (param[key]) {
+		      formData.append(key, param[key]);
+		    }
+		  }
+
+	  $.ajax({
+	    type: 'POST',
+	    url: 'writeVacation.ajax',
+	    data: formData,
+	    dataType: 'json',
+	    processData: false, // Prevent jQuery from automatically processing the data
+	    contentType: false, // Prevent jQuery from automatically setting the content type
+	    success: function(data) {
+	      console.log(data);
+	      if (data.success !== undefined) {
+	        alert('전송 성공');
+	        
+	      } else {
+	        alert('전송 실패');
+	      }
+	    },
+	    error: function(e) {
+	      console.log(e);
+	      alert('전송 실패');
+	    }
+	  });
+	
+}
+
+
+// 임시저장 요청
+function writeVacationTemp() {
+	var approversVal = $('[name="duallistbox_demo1[]"]').val();
+	console.log(approversVal);
+	
+	  var fileInput = document.getElementById('exampleInputFile');
+	  var file = fileInput.files[0]; // Get the selected file
+
+	  var formData = new FormData();
+	  
+	  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
+	  if (file) {
+		  formData.append('file', file); // Append the file to the FormData object
+		}
+	  
+
+	  var paymentValues = [];
+	  
+	  // Other parameters
+	  var $limit_date = $('#limit_date');
+	  var $form_sort = $('#form_sort');
+	  var $vacation_kind = $('#vacation_kind');
+	  var $reservationtime = $('#reservationtime');
+	  var $paySubject = $('#paySubject');
+	  var $payContent = $('#payContent');
+	  var $radioPeriod = $('input[name="radioPeriod"]:checked');
+	  var $temp = $('#temp');
+	  
+	   //for (var i = 0; i < approversVal.length; i++) {
+		    
+		   //var paymentValue= $('#payment'+[i]+'');
+		  //var $payment= $('#payment'+[i]+'');
+		    // payment 값을 배열에 추가
+		  
+		//}
+	 for (var i = 0; i < approversVal.length; i++) {
+	  paymentValues.push(approversVal[i]);
+		}
+	  
+	   
+
+	  var param = {
+		  payment: paymentValues,
+	  	limit_date: $limit_date.val(),
+	  	form_sort: $form_sort.val(),
+	  	vacation_kind: $vacation_kind.val(),
+	    reservationtime: $reservationtime.val(),
+	    radioPeriod: $radioPeriod.val(),
+	    paySubject: $paySubject.val(),
+	    temp: $temp.val(),
+	    payContent: $payContent.val()
+	    
+	   
+	  };
+		console.log(param);
+
+	  // Append other parameters to the FormData object
+	  for (var key in param) {
+	    formData.append(key, param[key]);
+	  }
+
+	  $.ajax({
+	    type: 'POST',
+	    url: 'writeVacation.ajax',
+	    data: formData,
+	    dataType: 'json',
+	    processData: false, // Prevent jQuery from automatically processing the data
+	    contentType: false, // Prevent jQuery from automatically setting the content type
+	    success: function(data) {
+	      console.log(data);
+	      if (data.success !== undefined) {
+	        alert('전송 성공');
+	        
+	      } else {
+	        alert('전송 실패');
+	      }
+	    },
+	    error: function(e) {
+	      console.log(e);
+	      alert('전송 실패');
+	    }
+	  });
+	}
+ 
+
+
 /*  결재선 데이터 전송*/
 
 $("#approvers").bootstrapDualListbox({
@@ -819,6 +1006,9 @@ $("#demoform").submit(function() {
   var approversVal = $('[name="duallistbox_demo1[]"]').val();
   console.log(approversVal);
   drawList(approversVal);  
+  
+  
+  
   return false;
 });
 
@@ -857,7 +1047,7 @@ function drawList(approversVal) {
 	  content += '<tr>';
 	  content +=  '<td>' + '김형준' + '</td>';
 	  for (var i = 0; i < approversVal.length; i++) {
-	    content += '<td>' + approversVal[i] + '</td>';
+	    content += '<td id="payment'+[i]+'">' + approversVal[i] + '</td>';
 	  }
 	  content += '</tr>';
 	  
@@ -905,6 +1095,7 @@ function drawList2(referrer) {
 	  // 테이블을 어떤 엘리먼트에 추가할지 결정하고, 해당 엘리먼트에 HTML 내용을 할당
 	  
 }; 
+
 
 
 
@@ -976,7 +1167,7 @@ $(function () {
     })
 
     //Bootstrap Duallistbox
-    $('.duallistbox').bootstrapDualListbox()
+     $('.duallistbox').bootstrapDualListbox() 
 
     //Colorpicker
     $('.my-colorpicker1').colorpicker()
@@ -1044,32 +1235,9 @@ $(function () {
     myDropzone.removeAllFiles(true)
   }
   // DropzoneJS Demo Code End */
-  
-/* $(document).ready(function() {
-    
 
-    $('#submitButton').click(function() {
-      console.log('버튼이 클릭되었습니다.'); // 버튼 클릭 시 메시지 출력
-      var selectedOptions = $('#approvers').val();
-      console.log(selectedOptions); // 선택된 옵션 값 출력
 
-      $.ajax({
-        url: 'your_controller_url',
-        method: 'POST',
-        data: {
-          selectedOptions: selectedOptions
-        },
-        success: function(response) {
-          console.log('전송 완료');
-        },
-        error: function(xhr, status, error) {
-          console.error('전송 실패');
-        }
-      });
-    });
-  }); */
 
-/*결재 작성하기 모달  */
 
 function item(button) {
 	  // 버튼 클래스 변경
@@ -1124,7 +1292,6 @@ function project(button) {
 	  }	
 
 
-  
 
 
 </script>
