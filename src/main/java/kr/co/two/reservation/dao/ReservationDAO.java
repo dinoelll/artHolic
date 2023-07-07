@@ -15,4 +15,22 @@ public interface ReservationDAO {
 
 	ArrayList<MeetingRoomDTO> mrList();
 
+	ArrayList<ReservationDTO> reservationList(HashMap<String, String> param);
+
+	int creatingMR(HashMap<String, String> params);
+
+	int totalCount(String opt, String keyword);
+
+	
+
+	ArrayList<MeetingRoomDTO> mrList2(String opt, String keyword, int cnt, int offset);
+
+	int mrDelete(String mrDel);
+
+	int rvTotalCount(String opt, String keyword);
+
+	ArrayList<ReservationDTO> rvList(String opt, String keyword, int cnt, int offset);
+
+	int rvDelete(String rvDel);
+
 }

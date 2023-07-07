@@ -4,85 +4,80 @@
 
 <mapper namespace="kr.co.two.mypage.dao.MypageDAO">
 
-	<insert id="calendarUpdate" parameterType="eventdata">
-		INSERT INTO indi_calendar (content, start_date,
-		end_date,member_id,allDay,backgroundColor,borderColor,id)
-		VALUES
-		(#{content},#{start_date},#{end_date},#{member_id},#{allDay},#{backgroundColor},#{borderColor},#{id})
-		ON DUPLICATE KEY UPDATE start_date = #{start_date},end_date=#{end_date}
+   <insert id="calendarUpdate" parameterType="eventdata">
+      INSERT INTO indi_calendar (content, start_date,
+      end_date,member_id,allDay,backgroundColor,borderColor,indi_calendar_id)
+      VALUES
+      (#{content},#{start_date},#{end_date},#{member_id},#{allDay},#{backgroundColor},#{borderColor},#{indi_calendar_id})
+      ON DUPLICATE KEY UPDATE start_date = #{start_date},end_date=#{end_date}
 
-	</insert>
-	
-	<insert id="calendarUpdate2" parameterType="eventdata">
-		INSERT INTO indi_calendar (content, start_date,
-		end_date,member_id,allDay,backgroundColor,borderColor,id)
-		VALUES
-		(#{content},#{start_date},#{end_date},#{member_id},#{allDay},#{backgroundColor},#{borderColor},#{id})
-		ON DUPLICATE KEY UPDATE start_date = #{start_date},end_date=#{end_date}, content=#{content}
+   </insert>
+   
+   <insert id="calendarUpdate2" parameterType="eventdata">
+      INSERT INTO indi_calendar (content, start_date,
+      end_date,member_id,allDay,backgroundColor,borderColor,indi_calendar_id)
+      VALUES
+      (#{content},#{start_date},#{end_date},#{member_id},#{allDay},#{backgroundColor},#{borderColor},#{indi_calendar_id})
+      ON DUPLICATE KEY UPDATE start_date = #{start_date},end_date=#{end_date}, content=#{content}
 
-	</insert>
+   </insert>
 
-	<select id="getEvent" resultType="eventdata">
-		SELECT * FROM indi_calendar
-		WHERE member_id="1812001"
+   <select id="getEvent" resultType="eventdata">
+      SELECT * FROM indi_calendar
+      WHERE member_id="1812001"
 
-	</select>
-	
-	<delete id="eventDelete">
-		DELETE FROM indi_calendar WHERE id = #{id}
-	</delete>
-	
-	
+   </select>
+   
+   <delete id="eventDelete">
+      DELETE FROM indi_calendar WHERE indi_calendar_id = #{indi_calendar_id}
+   </delete>
+   
+   
 
 
-	<insert id="myFolderCreate" parameterType="java.lang.String">
-		INSERT INTO myFolder (member_id, folder_name)
-		VALUES ("1812001", #{folderName})
-	</insert>
+   <insert id="myFolderCreate" parameterType="java.lang.String">
+      INSERT INTO myFolder (member_id, folder_name)
+      VALUES ("1812001", #{folderName})
+   </insert>
 
-	<select id="folderList" resultType="mypage">
-		SELECT * FROM myFolder
-	</select>
+   <select id="folderList" resultType="mypage">
+      SELECT * FROM myFolder
+   </select>
 
-	<update id="myFolderUpdate" parameterType="map">
-		UPDATE myFolder
-		SET
-		folder_name = #{folderName}
-		WHERE folder_id = #{folderId}
-	</update>
+   <update id="myFolderUpdate" parameterType="map">
+      UPDATE myFolder
+      SET
+      folder_name = #{folderName}
+      WHERE folder_id = #{folderId}
+   </update>
 
-	<delete id="myFolderDelte">
-<<<<<<< HEAD
-		DELETE FROM myFolder WHERE folder_id = #{folderId}
-	</delete>
+   <delete id="myFolderDelte">
+      DELETE FROM myFolder WHERE folder_id = #{folderId}
+   </delete>
 
-	<select id="fileList" resultType="mypage">
-		SELECT * FROM file WHERE folder_id = #{folderId}
-	</select>
+   <!-- <select id="fileList" resultType="mypage">
+      SELECT * FROM file WHERE folder_id = #{folderId}
+   </select>
 
-	<insert id="fileUpload" parameterType="java.lang.String">
-		INSERT INTO file (folder_id, fileName, ext, newFileName)
-		VALUES (#{folderId}, #{fileName}, #{ext}, #{newFileName})
-	</insert>
-
-=======
-        DELETE FROM myFolder WHERE folder_id = #{folderId}
-    </delete>
+<insert id="fileUpload" parameterType="java.lang.String">
+      INSERT INTO file (folder_id, fileName, ext, newFileName)
+      VALUES (#{folderId}, #{fileName}, #{ext}, #{newFileName})
+   </insert>  -->
     
     <select id="fileList" resultType="mypage">
-   		SELECT * FROM file WHERE folder_id = #{folderId}
+         SELECT * FROM file WHERE folder_id = #{folderId}
     </select>
     
     <insert id="fileUpload" parameterType="java.util.Map">
-   	 	INSERT INTO file (folder_id, ori_fileName, ext, new_fileName)
-    	VALUES (${folderId}, #{fileName}, #{ext}, #{newFileName})
-	</insert>
-	
-	<delete id="deleteFile">
+          INSERT INTO file (folder_id, ori_fileName, ext, new_fileName)
+       VALUES (${folderId}, #{fileName}, #{ext}, #{newFileName})
+   </insert>
+   
+   <delete id="deleteFile">
         DELETE FROM file WHERE new_fileName = #{fileName}
     </delete>
-	
-	
->>>>>>> origin/master
+   
+   
+
 
 </mapper>

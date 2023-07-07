@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,19 +35,19 @@ public class MypageService {
 		for (EventDataDTO eventDataDTO : eventDataList) {
 			eventDataDTO.setMember_id(member_id);
 			String title = eventDataDTO.getContent();
-			LocalDateTime start = eventDataDTO.getStart_date();
-			LocalDateTime end = eventDataDTO.getEnd_date();
+			OffsetDateTime   start = eventDataDTO.getStart_date();
+			OffsetDateTime   end = eventDataDTO.getEnd_date();
 			boolean allday = eventDataDTO.getAllDay();
 			String backgroundColor = eventDataDTO.getBackgroundColor();
 			String borderColor = eventDataDTO.getBorderColor();
-			int id = eventDataDTO.getId();
-
+			int indi_calendar_id = eventDataDTO.getIndi_calendar_id();
+		
 			logger.info("title" + title);
 			logger.info("start" + start);
 			logger.info("end" + end);
 			logger.info("allday" + allday);
 			logger.info("backgroundColor" + backgroundColor);
-			logger.info("id" + id);
+			logger.info("indi_calendar_id" + indi_calendar_id);
 			
 			dao.calendarUpdate(eventDataDTO);
 		}
@@ -117,7 +118,7 @@ public class MypageService {
 		return dao.fileList(folderId);
 	}
 
-<<<<<<< HEAD
+
 	public void calendarUpdate2(EventDataDTO dto) {
 		String member_id = "1812001";
 		dto.setMember_id(member_id);
@@ -126,11 +127,11 @@ public class MypageService {
 		
 	}
 
-	public int eventDelete(String id) {
+	public int eventDelete(String indi_calendar_id) {
 		
-		return dao.eventDelete(id);
+		return dao.eventDelete(indi_calendar_id);
 	}
-=======
+
 	public int deleteFile(String fileName) {
 		
 		return dao.deleteFile(fileName);
@@ -138,6 +139,6 @@ public class MypageService {
 
 	
 	
->>>>>>> origin/master
+
 
 }

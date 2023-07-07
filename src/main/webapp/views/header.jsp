@@ -293,6 +293,12 @@
                   <p>근태관리</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="./MeetingRoomList.go" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>회의실관리</p>
+                </a>
+              </li>
               <!-- 매출관리 삭제
               <li class="nav-item">
                 <a href="pages/charts/flot.move" class="nav-link">
