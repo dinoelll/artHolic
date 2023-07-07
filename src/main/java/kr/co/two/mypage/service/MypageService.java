@@ -90,7 +90,7 @@ public class MypageService {
 	        logger.info("fileName: " + fileName);
 	 
 	        String ext = fileName.substring(fileName.lastIndexOf("."));
-			String newFileName = System.currentTimeMillis()+ext; // 시간으로 하는건 옛날 방법 요새는 해쉬 코드 사용
+			String newFileName = System.currentTimeMillis()+ext; // 해쉬 코드 사용
 			logger.info(fileName+"=>"+newFileName);
 			
 			 // MIME 유형 설정
@@ -117,7 +117,7 @@ public class MypageService {
 		return dao.fileList(folderId);
 	}
 
-<<<<<<< HEAD
+
 	public void calendarUpdate2(EventDataDTO dto) {
 		String member_id = "1812001";
 		dto.setMember_id(member_id);
@@ -130,14 +130,11 @@ public class MypageService {
 		
 		return dao.eventDelete(id);
 	}
-=======
+
 	public int deleteFile(String fileName) {
 		
 		return dao.deleteFile(fileName);
 	}
 
-	
-	
->>>>>>> origin/master
 
 }

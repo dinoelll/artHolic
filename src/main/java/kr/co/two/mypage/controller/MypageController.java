@@ -169,9 +169,7 @@ public class MypageController {
 		
 	}
 	
-<<<<<<< HEAD
-	
-	
+
 	
 	
 	
@@ -246,7 +244,7 @@ public class MypageController {
     }
 	
 	
-=======
+
 	@GetMapping(value="/download.do")
 	public ResponseEntity<Resource> download(@RequestParam("ori_fileName") String oriFileName, @RequestParam("new_fileName") String newFileName) {
 
@@ -299,6 +297,5 @@ public class MypageController {
 		
 		return null;
 	}
->>>>>>> origin/master
 
 }

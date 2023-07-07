@@ -6,37 +6,35 @@
 
 		<select id="employeeTotalList" parameterType="HashMap" resultType="member">
 			SELECT member_id, name, dept_code, position_code, admin FROM member
-			ORDER BY name DESC
+			ORDER BY reg_date DESC
 			LIMIT #{param2} OFFSET #{param3}
 		</select>
 		
 		<select id="employeeDeptTotalList" parameterType="HashMap" resultType="member">
 			SELECT member_id, name, dept_code, position_code, admin
 			FROM member WHERE dept_code LIKE CONCAT ('%',#{param3},'%')
-			ORDER BY name DESC
+			ORDER BY reg_date DESC
 			LIMIT #{param4} OFFSET #{param5}
 		</select>
 		
 		<select id="employeeNameTotalList" parameterType="HashMap" resultType="member">
 			SELECT member_id, name, dept_code, position_code, admin
 			FROM member WHERE name LIKE CONCAT ('%',#{param3},'%')
-			ORDER BY name DESC
+			ORDER BY reg_date DESC
 			LIMIT #{param4} OFFSET #{param5}
 		</select>
 		
 		<select id="employeePositionTotalList" parameterType="HashMap" resultType="member">
 			SELECT member_id, name, dept_code, position_code, admin
 			FROM member WHERE position_code LIKE CONCAT ('%',#{param3},'%')
-			ORDER BY name DESC
+			ORDER BY reg_date DESC
 			LIMIT #{param4} OFFSET #{param5}
 		</select>
-		
-		
-		
+	
 		<select id="employeeTotalListByProcess" parameterType="HashMap" resultType="member">
 			SELECT member_id, name, dept_code, position_code, admin
 			FROM member WHERE admin = #{param2}
-			ORDER BY name DESC
+			ORDER BY reg_date DESC
 			LIMIT #{param3} OFFSET #{param4}
 		</select>
 		
@@ -94,4 +92,135 @@
 		<select id="employeePositionTotalCountByProcess" parameterType="HashMap" resultType="java.lang.Integer">
 			SELECT COUNT(position_code) FROM member WHERE position_code LIKE CONCAT('%', #{param3}, '%') AND admin = #{param4}
 		</select>
+		
+		
+		
+		<update id="admin" parameterType="Map">
+			    UPDATE member SET admin = 
+			    CASE 
+			        WHEN admin = '0' THEN '1'
+			        ELSE '0'
+			    END
+			    WHERE member_id = #{memberId}
+		</update>
+		
+		<update id="changePw">
+			UPDATE member SET pw = #{pw}  WHERE member_id ='1812001' 
+		</update>
+		
+		<insert id="join" parameterType="map">
+   			INSERT INTO member(member_id,pw,name,email,tel,birthday,phone,Annual,admin,dept_code,position_code,gender,reg_id,modi_id,profile_photo)
+   			VALUES (#{params.member_id}, #{params.pw}, #{params.name}, #{email}, #{params.tel}, #{params.birthday}, #{params.phone}, '12', '0', #{params.dept_code}, #{params.position_code}, #{params.gender}, 'admin', 'admin', #{newFileName})
+   		</insert>
+   		
+   		<select id="login" resultType="member">
+	      SELECT pw FROM member WHERE member_id = #{id}
+	   </select>
+		
+		<select id="memberDetail">
+			SELECT * FROM member WHERE member_id = #{member_id}
+		</select>
+		
+		<update id="update" parameterType="map">
+			UPDATE member
+			SET
+			  <if test="params.birthday != null">
+			    birthday = #{params.birthday},
+			  </if>
+			  <if test="params.dept_code != null">
+			    dept_code = #{params.dept_code},
+			  </if>
+			  <if test="params.position_code != null">
+			    position_code = #{params.position_code},
+			  </if>
+			  <if test="params.tel != null">
+			    tel = #{params.tel},
+			  </if>
+			  <if test="params.phone != null">
+			    phone = #{params.phone},
+			  </if>
+			  <if test="params.email != null">
+			    email = #{params.email},
+			  </if>
+			  profile_photo = 
+			  <choose>
+			    <when test="newFileName != null and newFileName != ''">
+			      #{newFileName}
+			    </when>
+			    <otherwise>
+			      profile_photo
+			    </otherwise>
+			  </choose>
+			WHERE member_id = #{params.member_id}
+		</update>
+				
+		<select id="getProfileFileName" resultType="String">
+			SELECT profile_photo FROM member WHERE member_id = #{member_id}
+		</select>
+		
+		
+		<select id="companyTotalList" parameterType="HashMap" resultType="member">
+			SELECT cooper_id, part, name, tel, business FROM cooper
+			ORDER BY cooper_id DESC
+			LIMIT #{param2} OFFSET #{param3}
+		</select>
+		
+		<select id="companyNameTotalList" parameterType="HashMap" resultType="member">
+			SELECT cooper_id, part, name, tel, business
+			FROM cooper WHERE name LIKE CONCAT ('%',#{param3},'%')
+			ORDER BY cooper_id DESC
+			LIMIT #{param4} OFFSET #{param5}
+		</select>
+		
+		<select id="companyBusinessTotalList" parameterType="HashMap" resultType="member">
+			SELECT cooper_id, part, name, tel, business
+			FROM cooper WHERE business LIKE CONCAT ('%',#{param3},'%')
+			ORDER BY cooper_id DESC
+			LIMIT #{param4} OFFSET #{param5}
+		</select>
+		
+		<select id="companyTotalCount" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(cooper_id) FROM cooper
+		</select>
+		
+		<select id="companyNameTotalCount" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(name) FROM cooper WHERE name LIKE CONCAT('%', #{param3}, '%')
+		</select>
+		
+		<select id="companyBusinessTotalCount" parameterType="HashMap" resultType="java.lang.Integer">
+			SELECT COUNT(business) FROM cooper WHERE business LIKE CONCAT('%', #{param3}, '%')
+		</select>
+		
+		
+		
+		<insert id="companyWrite" parameterType="HashMap">
+			INSERT INTO cooper (part,name,tel,reg_id,modi_id,business)
+			VALUES(#{part},#{name},#{tel},'admin','admin',#{business});
+		</insert>
+		
+		<select id="companyDetail">
+			SELECT * FROM cooper WHERE cooper_id = #{cooper_id}
+		</select>
+		
+		<update id="companyUpdate" parameterType="map">
+			UPDATE cooper
+			<set>
+			  <if test="business != null">
+			    business = #{business},
+			  </if>
+			  <if test="name != null">
+			    <if test="business != null">,</if>
+			    name = #{name},
+			  </if>
+			  <if test="part != null">
+			    <if test="business != null or name != null">,</if>
+			    part = #{part},
+			  </if>
+			  <if test="tel != null">
+			    <if test="business != null or name != null or part != null">,</if>
+			    tel = #{tel}
+			  </if>
+			</set>
+		</update>
+		
 </mapper>

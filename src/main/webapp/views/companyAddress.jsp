@@ -74,13 +74,6 @@
 			color: white;
 		}
 		
-		.detail{
-			background-color: #f82a2aa3;
-			border: 1px solid #f82a2aa3;
-			font-weight: bold;
-			color: white;
-		}
-		
 		.modal-title{
 			margin-left: 170px;
 		}
@@ -116,7 +109,7 @@
 			color: white;
 		}
 		
-		#employeeJoin{
+		#companyWrite{
 			background-color: #91bdce;
 			border: 3px solid #91bdce;
 			width: 50px;
@@ -124,9 +117,29 @@
 			border-radius: 3px;
 			color: white;
 			margin-bottom: 15px;
-			margin-left: 1082px;
+			margin-left: 1210px;
 		}
 		
+		.input{
+			border: 1px solid #ccc; 
+			border-radius: 5px; 
+			padding: 5px; 
+			background-color: white;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			margin: 15px;
+			width: 450px;
+		}
+		
+		.btn-update{
+			background-color: #f82a2aa3;
+			border: 1px solid #f82a2aa3;
+			font-weight: bold;
+			color: white;			
+		    padding-bottom: 0px;
+		    padding-top: 0px;
+		    width: 58px;
+		}
 		
 		
 	</style>
@@ -144,7 +157,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">사원 관리</h1>
+            <h1 class="m-0">협력업체 연락처</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -166,36 +179,27 @@
 			<tr>
 				<td>
 					<select id="select-dropdown" name="select">
-							<option value="default">사원 정보 검색</option>
+							<option value="default">검색</option>
 							<option value="name">이름</option>
-							<option value="dept">부서</option>
-							<option value="position">직급</option>
+							<option value="business">사업자명</option>
 					</select>	
-					<select id="adminProcess">
-						<option value="default">관리자 여부</option>
-						<option value="false">사원</option>
-						<option value="true">관리자</option>
-					</select>
-					<input type="text" id="employeeSearch" placeholder="내용을 입력 해 주세요.">
+					<input type="text" id="companySearch" placeholder="내용을 입력 해 주세요.">
    					<button id="searchButton">검색</button>
 				</td>		
-					<td><input type="button" id="employeeJoin" value="등록" onclick="location.href='/join.go'"></td>
+					<td><input type="button" id="companyWrite" value="등록" data-toggle="modal" data-target="#modal-company"></td>
 			</tr>			
 		</table>
 				
 		<table id="example1" class="table table-bordered table-striped">
 			<thead>
 				<tr id="thead" style="text-align:center">
+					<th>사업자명</th>
 					<th>이름</th>
-					<th>부서</th>
-					<th>직급</th>
-					<th>사번</th>
-					<th>관리자 여부</th>
-					<th>관리자 권한</th>
-					<th>상세보기</th>
+					<th>담당</th>
+					<th colspan="2">연락처</th>
 				</tr>
 			</thead>
-			<tbody id="employeeList" style="text-align:center">
+			<tbody id="companyList" style="text-align:center">
   			<!-- 리스트가 출력될 영역 -->
 			</tbody>	
 			<tr>
@@ -212,24 +216,27 @@
   
 	</div>
 	
-				<!-- 모달창 -->
-			<div class="modal fade" id="modal-admin">
+			<!-- 협력업체 등록 모달창 -->
+			<div class="modal fade" id="modal-company">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
-			        <h4 class="modal-title">관리자 권한</h4>
-			        <!-- 폴더 id -->
-			        <span class="member_id" hidden=""></span>
+			        <h4 class="modal-title">협력업체 등록</h4>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true">&times;</span>
 			        </button>
 			      </div>
-			      <div class="modal-body">
-			        <p style="text-align: center;">관리자 권한을 <strong><span class="admin-action"></span></strong>하시겠습니까?</p>
-			      </div>
+			      	<form action="companyWrite.do">
+			      		<div class="Write">
+			      		<input type="text" class="input" name="business" id="business" placeholder="사업자명">
+			      		<input type="text" class="input"name="name" id="name" placeholder="이름">
+						<input type="text" class="input"name="part" id="part" placeholder="담당">		
+						<input type="text" class="input"name="tel" id="tel" oninput="formatPhoneNumber()" placeholder="전화번호">	 
+						</div>     	
+			      	</form>
 			      <div class="modal-footer justify-content-between">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-			        <button type="button" class="btn btn-primary btn-admin">확인</button>
+			        <button type="button" class="btn btn-primary btn-company">등록</button>
 			      </div>
 			    </div>
 			    <!-- /.modal-content -->
@@ -237,6 +244,36 @@
 			  <!-- /.modal-dialog -->
 			</div>
 			<!-- /.modal -->
+			
+			<!-- 협력업체 수정 모달창 -->
+			<div class="modal fade" id="modal-detail">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h4 class="modal-title">협력업체 수정</h4>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      	<form action="companyUpdate.do">
+			      		<div class="Write">
+			      			<input type="text" class="input" name="business" id="business2" value="">
+							<input type="text" class="input" name="name" id="name2" value="">
+							<input type="text" class="input" name="part" id="part2" value="">
+							<input type="text" class="input" name="tel" id="tel2" oninput="formatPhoneNumber()" value=""> 
+						</div>     	
+			      	</form>
+			      <div class="modal-footer justify-content-between">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+			        <button type="button" class="btn btn-primary btn-update">수정</button>
+			      </div>
+			    </div>
+			    <!-- /.modal-content -->
+			  </div>
+			  <!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
+   
    
     </section>
     <!-- /.content -->
@@ -281,15 +318,29 @@ if (msg !== "") {
 var showPage = 1;
 var searchText = 'default';
 var searchType = 'default';
-var adminProcess = 'default';
 
 listCall(showPage);
 console.log("list call");
 
+function formatPhoneNumber() {
+	  var phoneInput = document.getElementById("tel");
+	  var phoneNumber = phoneInput.value;
+
+	  phoneNumber = phoneNumber.replace(/-/g, "");
+
+	  if (phoneNumber.length > 3 && phoneNumber.length <= 7) {
+	    phoneNumber = phoneNumber.replace(/(\d{3})(\d+)/, "$1-$2");
+	  } else if (phoneNumber.length > 7) {
+	    phoneNumber = phoneNumber.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
+	  }
+
+	  phoneInput.value = phoneNumber;
+	}
+
 //검색어에 따른 출력 
 $('#searchButton').click(function(){
    //검색어 확인 
-   searchText = $('#employeeSearch').val();
+   searchText = $('#companySearch').val();
    searchType = $('#select-dropdown').val();
    console.log(searchText,searchType);
    var pagePerNum = 5;
@@ -298,13 +349,6 @@ $('#searchButton').click(function(){
    $('#pagination').twbsPagination('destroy');
 });
 
-$('#adminProcess').change(function(){
-	console.log("process change");
-	console.log(adminProcess);
-	adminProcess = $(this).val();
-   listCall(showPage);
-   $('#pagination').twbsPagination('destroy');
-});
 
 
 function listCall(page,cnt){
@@ -312,19 +356,18 @@ function listCall(page,cnt){
 	  	var cnt = 8;
 	   $.ajax({
 	      type:'post',
-	      url:'/employeeList.ajax',
+	      url:'/companyList.ajax',
 	      data:{
 	    	  'page':page,
 	    	  'searchText':searchText,
 	    	  'searchType':searchType,
 	    	  'cnt': cnt,
-	    	  'adminProcess':adminProcess
 	      },
 	      dataType:'json',           
 	      success:function(data){
 	    	 console.log("success");
 	         console.log(data);
-	         listPrint(data.employeeList);
+	         listPrint(data.companyList);
 	         
 	      // Paging Plugin (j-query의 기본기능을 가지고 만들었기 때문에  plugin)
 	         $('#pagination').twbsPagination({
@@ -352,45 +395,19 @@ function listCall(page,cnt){
 	});
 }
 	
-function listPrint(employeeList) {
+function listPrint(companyList) {
 	  console.log("listPrint Call");
 	  var content = '';
 
-	  if (employeeList && Array.isArray(employeeList) && employeeList.length > 0) {
-		  employeeList.forEach(function (item, employeeList) {
-			  
-			var detpNames = {
-					dept_hr : "인사팀",
-					dept_ct : "시공팀",
-					dept_dg : "설계팀"
-			};
-			
-			var positionNames = {
-					art_01 : "부장",
-					art_02 : "차장",
-					art_03 : "과장",
-					art_04 : "대리",
-					art_05 : "주임",
-					art_06 : "사원"
-			};
-			
-			var processNames = {
-					false : "사원",
-					true : "관리자"
-			};
-			
-			var detpName = detpNames[item.dept_code] || item.categoryCode;
-			var positionName = positionNames[item.position_code] || item.categoryCode;
-			var processName = processNames[item.admin] || item.inqProcess;
+	  if (companyList && Array.isArray(companyList) && companyList.length > 0) {
+		  companyList.forEach(function (item, companyList) {
 			
 	      content += '<tr>';
+	      content += '<td>' + item.business + '</td>';
 	      content += '<td>' + item.name + '</td>';
-	      content += '<td>' + detpName + '</td>';
-	      content += '<td>' + positionName + '</td>';
-	      content += '<td>' + item.member_id + '</td>';
-	      content += '<td>' + processName + '</td>';
-	      content += '<td><button type="button" class="btn btn-default btn-icon btn-admin ' + (item.admin ? 'btn-danger' : 'btn-primary') + '" data-toggle="modal" data-target="#modal-admin" data-id="' + item.member_id + '" data-admin="' + item.admin + '">' + (item.admin ? '권한 해제' : '권한 부여') + '</button></td>';
-	      content += '<td><button class="detail" onclick="location.href=\'/updateMember.go?member_id=' + item.member_id + '\'">상세보기</button></td>';
+	      content += '<td>' + item.part + '</td>';
+	      content += '<td>' + item.tel + '</td>';
+	      content += '<td><button type="button" class="btn btn-default btn-icon btn-detail" data-toggle="modal" data-target="#modal-detail" data-id="' + item.cooper_id + '">수정</button></td>';
 	      content += '</tr>';
 	    });
 	  } else {
@@ -399,68 +416,111 @@ function listPrint(employeeList) {
 	    content += '</tr>';
 	  }
 
-	  $('#employeeList').empty();
-	  $('#employeeList').append(content);
+	  $('#companyList').empty();
+	  $('#companyList').append(content);
 	}
-
-
-	//관리자 권한 부여 모달 열기
-	$(document).on('click', '.btn-admin', function () {
-	  var memberId = $(this).data('id');
-	  var adminValue = $(this).data('admin');
-	  console.log(memberId);
-	  $('#modal-admin').find('.member_id').text(memberId);
-	  
-	  // 설정된 권한 동작 텍스트 변경
-	  if (adminValue) {
-	    $('#modal-admin').find('.admin-action').text('해제');
-	  } else {
-	    $('#modal-admin').find('.admin-action').text('부여');
-	  }
-	  
-	  // 모달 열기
-	  $('#modal-admin').modal('show');
-	});
 	 
-	/* 관리자 권한 */
+	/* 협력업체 등록 */
 	$(document).ready(function() {
 	  // 버튼 클릭 시
-	  $('.btn-admin').click(function() {
+	  $('.btn-company').click(function() {
 	 
-	    var memberId = $('.member_id').text();
-	    var adminValue = $(this).data('admin');
-	    
-	    if (adminValue === 0) {
-	        adminValue = '1';
-	      } else {
-	        adminValue = '0';
-	      }
-	    
-		console.log(memberId,adminValue);
+		var business = $("#business").val();
+		var name = $("#name").val();
+		var part = $("#part").val();
+		var tel = $("#tel").val();
+
 	    // 서버로 요청 전송
 	    $.ajax({
 	      type: 'POST',
-	      url: '/admin.ajax',
+	      url: '/companyWrite.ajax',
 	      data: {
-	    	  memberId: memberId,
-	    	  adminValue: adminValue
+	    	  business: business,
+	    	  name: name,
+	    	  part: part,
+	    	  tel: tel
 	      },
 	      success: function(data) {
 	        // 성공 시
-	        alert('관리자 권한 처리에 성공했습니다.');
+	        alert('협력업체 등록에 성공했습니다.');
 	        location.reload(); // 페이지 새로고침
 	      },
 	      error: function(error) {
 	        // 실패 시
-	        alert('관리자 권한 처리에 실패했습니다.');
+	        alert('협력업체 등록에 실패했습니다.');
 	        console.log(error);
 	      }
 	    });
 
 	    // 모달창 닫기
-	    $('#modal-admin').modal('hide');
+	    $('#modal-company').modal('hide');
 	  });
 	});
+	
+	// 모달 창이 열릴 때 호출되는 함수
+	$('#modal-detail').on('show.bs.modal', function(event) {
+	  var button = $(event.relatedTarget); // 모달을 열기 위해 클릭한 버튼
+	  var cooper_id = button.data('id'); // 클릭한 버튼의 data-id 속성 값 (cooper_id)
+	  
+	  $.ajax({
+		    type: 'POST',
+		    url: '/companyDetail.ajax',
+		    data: {
+		        cooper_id: cooper_id
+		    },
+		    success: function(response) {
+		    	console.log('response 성공');
+		    	console.log(response.company.business);
+		        console.log(response);
+		        $('#business2').val(response.company.business);
+		        $('#name2').val(response.company.name);
+		        $('#part2').val(response.company.part);
+		        $('#tel2').val(response.company.tel);
+		        $('#modal-detail').modal('show');
+		    },
+		    error: function(error) {
+		        console.log(error);
+		    }
+		});
+	});
+	
+	/* 협력업체 수정 */
+	$(document).ready(function() {
+	  // 버튼 클릭 시
+	  $('.btn-update').click(function() {
+	 
+		var business = $("#business2").val();
+		var name = $("#name2").val();
+		var part = $("#part2").val();
+		var tel = $("#tel2").val();
+
+	    // 서버로 요청 전송
+	    $.ajax({
+	      type: 'POST',
+	      url: '/companyUpdate.ajax',
+	      data: {
+	    	  business2: business,
+	    	  name2: name,
+	    	  part2: part,
+	    	  tel2: tel
+	      },
+	      success: function(data) {
+	        // 성공 시
+	        alert('협력업체 수정에 성공했습니다.');
+	        location.reload(); // 페이지 새로고침
+	      },
+	      error: function(error) {
+	        // 실패 시
+	        alert('협력업체 수정에 실패했습니다.');
+	        console.log(error);
+	      }
+	    });
+
+	    // 모달창 닫기
+	    $('#modal-detail').modal('hide');
+	  });
+	});
+	
 </script>
 
 </html>
