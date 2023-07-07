@@ -68,16 +68,5 @@
         DELETE FROM file WHERE new_fileName = #{fileName}
     </delete>
    
-<<<<<<< HEAD
- 
-<<<<<<< HEAD
-</mapper>
-
-=======
-</mapper>
->>>>>>> origin/master
-=======
 
 </mapper>
-
->>>>>>> origin/master

@@ -30,10 +30,6 @@ public class MypageService {
    Logger logger = LoggerFactory.getLogger(getClass());
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/master
    public void calendarUpdate(ArrayList<EventDataDTO> eventDataList) {
       String member_id = "1812001";
       for (EventDataDTO eventDataDTO : eventDataList) {
@@ -55,141 +51,15 @@ public class MypageService {
          
          dao.calendarUpdate(eventDataDTO);
       }
-<<<<<<< HEAD
 
    }
-=======
-	public void calendarUpdate(ArrayList<EventDataDTO> eventDataList) {
-		String member_id = "1812001";
-		for (EventDataDTO eventDataDTO : eventDataList) {
-			eventDataDTO.setMember_id(member_id);
-			String title = eventDataDTO.getContent();
-			OffsetDateTime   start = eventDataDTO.getStart_date();
-			OffsetDateTime   end = eventDataDTO.getEnd_date();
-			boolean allday = eventDataDTO.getAllDay();
-			String backgroundColor = eventDataDTO.getBackgroundColor();
-			String borderColor = eventDataDTO.getBorderColor();
-			int indi_calendar_id = eventDataDTO.getIndi_calendar_id();
-		
-			logger.info("title" + title);
-			logger.info("start" + start);
-			logger.info("end" + end);
-			logger.info("allday" + allday);
-			logger.info("backgroundColor" + backgroundColor);
-			logger.info("indi_calendar_id" + indi_calendar_id);
-			
-			dao.calendarUpdate(eventDataDTO);
-		}
->>>>>>> origin/master
+
 
    public List<EventDataDTO> getEvents() {
       
       return dao.getEvent();
    }
 
-   
-   @Value("${spring.servlet.multipart.location}") private String root;
-
-   public void myFolderCreate(String folderName) {
-
-      dao.myFolderCreate(folderName);
-   }
-
-   public ArrayList<String> folderList() {
-      
-      return dao.folderList();
-   }
-
-   public void myFolderUpdate(String folderName, int folderId) {
-
-      dao.myFolderUpdate(folderName,folderId);
-      
-   }
-
-   public void myFolderDelete(int folderId) {
-   
-      dao.myFolderDelte(folderId);
-      
-   }
-
-   public void upload(List<MultipartFile> formData, int folderId) {
-      
-      for (MultipartFile file : formData) {
-           String fileName = file.getOriginalFilename();
-           logger.info("fileName: " + fileName);
-    
-           String ext = fileName.substring(fileName.lastIndexOf("."));
-         String newFileName = System.currentTimeMillis()+ext; // 시간으로 하는건 옛날 방법 요새는 해쉬 코드 사용
-         logger.info(fileName+"=>"+newFileName);
-         
-          // MIME 유형 설정
-           String contentType = file.getContentType();
-           if (contentType == null) {
-               // MIME 유형이 지정되지 않은 경우 기본값으로 설정
-               contentType = MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE;
-           }
-         
-         dao.fileUpload(fileName,ext,newFileName,folderId);
-     
-         try {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(root+"/"+newFileName);
-            Files.write(path, bytes);
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
-      }
-   }
-
-   public ArrayList<String> fileList(int folderId) {
-      
-      return dao.fileList(folderId);
-   }
-
-=======
-
-   }
->>>>>>> origin/master
-
-<<<<<<< HEAD
-   public void calendarUpdate2(EventDataDTO dto) {
-      String member_id = "1812001";
-      dto.setMember_id(member_id);
-      dao.calendarUpdate2(dto);
-      
-      
-   }
-
-   public int eventDelete(String indi_calendar_id) {
-      
-      return dao.eventDelete(indi_calendar_id);
-   }
-=======
-
-   public List<EventDataDTO> getEvents() {
-      
-      return dao.getEvent();
-   }
-
-<<<<<<< HEAD
-	public int eventDelete(String indi_calendar_id) {
-		
-		return dao.eventDelete(indi_calendar_id);
-	}
->>>>>>> origin/master
-
-   public int deleteFile(String fileName) {
-      
-      return dao.deleteFile(fileName);
-   }
-
-
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> origin/master
-=======
    
    @Value("${spring.servlet.multipart.location}") private String root;
 
@@ -269,5 +139,3 @@ public class MypageService {
       return dao.deleteFile(fileName);
    }
 }
-
->>>>>>> origin/master

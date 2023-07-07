@@ -34,48 +34,15 @@ public interface MypageDAO {
    void myFolderDelte(int folderId);
 
    ArrayList<String> fileList(int folder_id);
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-   void fileUpload(String fileName, String ext, String newFileName, int folderId);
-
-
-
-   int eventDelete(String indi_calendar_id);
-
-   
-
-   int deleteFile(String fileName);
-=======
-	void fileUpload(String fileName, String ext, String newFileName, int folderId);
-=======
    
    void fileUpload(String fileName, String ext, String newFileName, int folderId);
 
    int eventDelete(String indi_calendar_id);
->>>>>>> origin/master
 
    int deleteFile(String fileName);
 
-	
-
-
-
-<<<<<<< HEAD
-
->>>>>>> origin/master
-
-
-
-
-<<<<<<< HEAD
+   
 
 
 
 }
-=======
-}
->>>>>>> origin/master
-=======
-}
->>>>>>> origin/master
