@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.two.member.dao.MemberDAO;
 import kr.co.two.member.dto.MemberDTO;
+import kr.co.two.reservation.dto.ReservationDTO;
 
 @Service
 public class MemberService {
@@ -173,6 +174,7 @@ public class MemberService {
 	}
 
 
+<<<<<<< HEAD
 	public void admin(String memberId, Boolean adminValue) {
 		
 		dao.admin(memberId, adminValue);
@@ -397,4 +399,6 @@ public class MemberService {
 	}
 
 
+=======
+>>>>>>> origin/master
 }

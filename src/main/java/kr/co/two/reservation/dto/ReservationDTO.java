@@ -8,11 +8,35 @@ import org.apache.ibatis.type.Alias;
 @Alias("reservation")
 public class ReservationDTO {
 	
+	private int reservation_id;
 	private String member_id;
 	private String room_id;
+	private String room_name;
 	private Date date;
-	private LocalTime startTime; 
-	private LocalTime endTime;
+	private String startTime; 
+	private String endTime;
+	private String team_member;
+	
+	
+	
+	public String getTeam_member() {
+		return team_member;
+	}
+	public void setTeam_member(String team_member) {
+		this.team_member = team_member;
+	}
+	public String getRoom_name() {
+		return room_name;
+	}
+	public void setRoom_name(String room_name) {
+		this.room_name = room_name;
+	}
+	public int getReservation_id() {
+		return reservation_id;
+	}
+	public void setReservation_id(int reservation_id) {
+		this.reservation_id = reservation_id;
+	}
 	public String getMember_id() {
 		return member_id;
 	}
@@ -33,16 +57,16 @@ public class ReservationDTO {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public LocalTime getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(LocalTime startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
-	public LocalTime getEndTime() {
+	public String getEndTime() {
 		return endTime;
 	}
-	public void setEndTime(LocalTime endTime) {
+	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 	public String getMeeting_id() {

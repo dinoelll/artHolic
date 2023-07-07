@@ -113,6 +113,7 @@ public class MemberController {
 		service.admin(memberId,adminValue);
 	}
 	
+<<<<<<< HEAD
 	@RequestMapping(value="/changePw.ajax")
 	@ResponseBody
 	public String changePw(@RequestParam String pw) {
@@ -270,4 +271,8 @@ public class MemberController {
 		
 	}
 
+=======
+
+	
+>>>>>>> origin/master
 }
