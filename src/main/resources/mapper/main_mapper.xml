@@ -4,8 +4,6 @@
 	   
 <mapper namespace="kr.co.two.main.dao.MainDAO">
 
-	<select id="login" resultType="String">
-		SELECT pw FROM member WHERE member_id = #{id}
-	</select>
+	
 	
 </mapper>

@@ -53,41 +53,15 @@
 		margin-left: 0px;	
 	}
 	
-	.content {
-	  	display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 700px;
-		text-align: center;
+	.fade-container {
+	 	opacity: 0;
+	  	transition: opacity 1s ease-in-out;
 	}
-	
-	input[type="password"] {
-		margin-left: 30px;
-		width: 300px;
-		height: 30px;
-		border-radius: 10px;
-		border: none;
-		font-size: 12px;
-		padding-left: 5px;
+
+	.fade-container.fade-in {
+ 		opacity: 1;
 	}
-	
-	p{
-		color: gray;
-	}
-	
-	.password{
-		color: black;
-	}
-	
-	input[type="button"] {
-		color: white;
-		font-weight: bold;
-		background-color: #91bdce;
-		width: 70px;
-		border: none;
-		border-radius: 10px;
-		margin-top: 30px;
-	}
+
 
 </style>
 </head>
@@ -116,35 +90,12 @@
     
     <!-- Main content -->
 	 <section class="content">
-	   <div class="container-fluid">
+	  	<div class="container-fluid">
+			<div class="main-container fade-container">
 	    
+	    <h3>메인 페이지</h3>
 	    
-	    
-		<h2 style="margin-bottom: 150px">비밀번호 변경</h2>
-		
-		
-		<p class="password">
-		<strong>새로운 비밀번호</strong>
-		<input type="password" id="pw" placeholder="새 비밀번호를 입력 하세요."> 
-		</p>
-		
-		<p class="password">
-		<strong>새 비밀번호 확인</strong>
-		<input type="password" id="pwChk" placeholder="새 비밀번호를 한번 더 입력하세요."> 
-		</p>
-		
-		<font id="chkNotice" size="2"></font>
-		
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<p> - 8자 ~ 16자의 영문 대/소문자, 숫자, 특수기호를 사용하여 비밀번호를 조합할 수 있습니다.</p>
-		<p> 
-		- 생년월일,전화번호,사번 등 개인정보와 관련된 숫자, 연속된 숫자, 연속된 키보드 배열과 같이 쉬운 비밀번호는 <br>
-			타인이 쉽게 알아낼 수 있으니 사용을 자제 해 주세요.
-		</p>
-		<p> - 이전에 사용했던 비밀번호나 타 사이트와 다른 비밀번호를 사용하고, 비밀번호는 주기적으로 변경 해 주세요.</p>
-	    
-	    <input type="button" id="pwchange" value="변경" onclick="changePw()">
-	    
+	    	</div>
 	   </div>
 	   <!-- /.container-fluid -->
 	      
@@ -175,54 +126,11 @@
 
 <script>
 
-$(document).ready(function() {
-	  $('#pw').keyup(function() {
-	    $('#chkNotice').html('');
-	  });
+//페이지 로드 시 페이드 효과 적용
+window.addEventListener("load", function() {
+  var fadeContainer = document.querySelector(".fade-container");
+  fadeContainer.classList.add("fade-in");
+});
 
-	  $('#pwChk').keyup(function() {
-	    if ($('#pw').val() != $('#pwChk').val()) {
-	      $('#chkNotice').html('비밀번호가 일치하지 않습니다.<br><br>');
-	      $('#chkNotice').css('color', '#f82a2aa3');
-	    } else {
-	      $('#chkNotice').html('비밀번호가 일치합니다.<br><br>');
-	      $('#chkNotice').css('color', '#199894b3');
-	    }
-	  });
-	});
-
-function changePw() {
-	  var pw = $('#pw').val();
-	  var pwChk = $('#pwChk').val();
-
-	  if (pw == '') {
-	    alert('변경할 비밀번호를 입력 해 주세요.');
-	  } else if (pwChk == '') {
-	    alert('변경할 비밀번호를 한번 더 입력해 주세요.');
-	  } else if ($('#pw').val() != $('#pwChk').val()) {
-	    alert('비밀번호가 일치하지 않습니다.');
-	  } else {
-	    $.ajax({
-	      type: 'post',
-	      url: 'changePw.ajax',
-	      data: { 'pw': pw },
-	      dataType: 'json',
-	      success: function(data) {
-	        console.log(data);
-	        console.log(data.success);
-	        if (data.success == 1) {
-	          alert('비밀번호 수정이 완료되었습니다.');
-	          location.reload(); // 페이지 새로고침
-	        } else {
-	          alert('비밀번호 수정에 실패했습니다.\r\n다시 시도해 주세요.');
-	        }
-	      },
-	      error: function(e) {
-	        console.log(e);
-	        alert('오류가 발생했습니다.\r\n다시 시도해 주세요.');
-	      }
-	    });
-	  }
-	}
 </script>
 </html>

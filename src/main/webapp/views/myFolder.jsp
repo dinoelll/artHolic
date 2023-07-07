@@ -112,7 +112,7 @@
 		background: none;
 		border: none;
 		position: absolute;
-		top: 20px;
+		top: 5px;
   		right: 20px;
 	}
 	
@@ -269,6 +269,14 @@
 		margin-left: 5px;
 	}
 	
+	.btn-folder{
+		margin-top: 15px;
+	}
+	
+	.btn-upload{
+		margin-top: 15px;
+	}
+	
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -305,7 +313,7 @@
             <div class="folder-container">
               <i class="fas fa-folder folder-icon"></i>
               <h4 class="folder-title">내 폴더</h4>
-              <button type="button" class="btn btn-default btn-icon" data-toggle="modal" data-target="#modal-default">
+              <button type="button" class="btn btn-default btn-icon btn-folder" data-toggle="modal" data-target="#modal-default">
                 <i class="fas fa-plus"></i>
               </button>	
             </div>	
