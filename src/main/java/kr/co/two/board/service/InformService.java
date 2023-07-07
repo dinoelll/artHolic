@@ -2,7 +2,6 @@ package kr.co.two.board.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.two.board.dao.InformDAO;
-import kr.co.two.board.dto.BriefingDTO;
 import kr.co.two.board.dto.InformDTO;
 
 @Service
@@ -115,7 +113,15 @@ public class InformService {
 		map.put("currPage", page);
 		map.put("pages", range);
 		ArrayList<InformDTO> list = dao.listCall(opt, keyword,cnt, offset);
-		map.put("list", list);
+		map.put("informList", list);
+		return map;
+	}
+
+	public HashMap<String, Object> is_formDel(ArrayList<String> is_formList) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		for (String id : is_formList) {
+			dao.is_formDel(id);
+		}
 		return map;
 	}
 

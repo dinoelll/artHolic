@@ -1,7 +1,5 @@
 package kr.co.two.board.controller;
 
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,7 +25,7 @@ public class InformController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
-	@GetMapping(value = "informWrite.go")
+	@GetMapping(value = "/informWrite.go")
 	public String informWrite() {
 		
 		return "informWrite";
@@ -38,6 +35,7 @@ public class InformController {
 	   public ModelAndView infromWriteDo(InformDTO dto) {
 	      logger.info(dto.getSubject()+"/"+dto.getMember_id());
 	      logger.info("content size : "+dto.getContent().length());
+	      logger.info("필독 등록 : "+dto.isIs_form());
 	      return service.informWriteDo(dto);
 	   }
 	
@@ -46,6 +44,14 @@ public class InformController {
 		
 		return "informList";
 	}
+	
+	   @PostMapping(value = "/informList.ajax")
+	   @ResponseBody
+	   public HashMap<String, Object> listCall(@RequestParam String page, @RequestParam String cnt,
+				 @RequestParam String opt,@RequestParam String keyword){
+			
+			return service.listCall(Integer.parseInt(page),Integer.parseInt(cnt),opt,keyword);
+	   }
 	
 //	@GetMapping(value = "/informList.do")
 //	public ModelAndView informListDo() {
@@ -60,13 +66,19 @@ public class InformController {
 	   
 	   @GetMapping(value = "/informUpdate.go")
 	   public ModelAndView informUpdate(String board_id) {
-
+		   
 		   return service.informUpdate(board_id);
 	   }
 	   
 	   @PostMapping(value = "/informUpdate.do")
 	   public String informUpdateDo(@RequestParam HashMap<String, Object> params) {
-		   logger.info("params : "+params);
+		   logger.info("update Params : "+params);
+		   logger.info("is_form : "+ params.get("is_form"));
+		   
+		   // 필독이 null로 들어오면 0, 체크 돼면 1
+		    int isForm = (params.get("is_form") == null) ? 0 : 1;
+		    params.put("is_form", isForm);
+
 		   return service.informUpdateDo(params);
 	   }
 	   
@@ -79,16 +91,21 @@ public class InformController {
 	   @ResponseBody
 	   public HashMap<String, Object> informDel(@RequestParam(value="delList[]") ArrayList<String> delList){
 		   
-		   logger.info("왜 안돼? :"+delList);
+		   logger.info("선택 후 삭제 :"+delList);
 		   return service.informDel(delList);
 	   }
 	   
-	   @PostMapping(value = "informList.ajax")
+
+	   
+	   @GetMapping(value = "/is_formDel.ajax")
 	   @ResponseBody
-	   public HashMap<String, Object> listCall(@RequestParam String page, @RequestParam String cnt,
-				 @RequestParam String opt,@RequestParam String keyword){
-			
-			return service.listCall(Integer.parseInt(page),Integer.parseInt(cnt),opt,keyword);
+	   public HashMap<String, Object> is_formDel(@RequestParam(value="is_formList[]") ArrayList<String> is_formList){
+		   
+		   logger.info("is_formDel : "+is_formList);
+		   return service.is_formDel(is_formList);
 	   }
-	   }
+	   
+	   
+	   
+}
 

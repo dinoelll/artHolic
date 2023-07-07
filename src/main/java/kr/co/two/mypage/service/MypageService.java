@@ -139,4 +139,3 @@ public class MypageService {
       return dao.deleteFile(fileName);
    }
 }
-

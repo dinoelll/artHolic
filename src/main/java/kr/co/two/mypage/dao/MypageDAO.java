@@ -41,7 +41,7 @@ public interface MypageDAO {
 
    int deleteFile(String fileName);
 
-	
+   
 
 
 

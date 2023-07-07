@@ -11,8 +11,9 @@ public class InformDTO {
 	private String subject;
 	private String content;
 	private String member_id;
-	private boolean is_inform;
-	private Date saveTime;
+	private boolean is_form;
+	private Date writeTime;
+	private String board_code;
 	
 	
 	public String getSubject() {
@@ -33,17 +34,29 @@ public class InformDTO {
 	public void setMember_id(String member_id) {
 		this.member_id = member_id;
 	}
-	public boolean isIs_inform() {
-		return is_inform;
-	}
-	public void setIs_inform(boolean is_inform) {
-		this.is_inform = is_inform;
-	}
 	public int getBoard_id() {
 		return board_id;
 	}
 	public void setBoard_id(int board_id) {
 		this.board_id = board_id;
+	}
+	public Date getWriteTime() {
+		return writeTime;
+	}
+	public void setWriteTime(Date writeTime) {
+		this.writeTime = writeTime;
+	}
+	public String getBoard_code() {
+		return board_code;
+	}
+	public void setBoard_code(String board_code) {
+		this.board_code = board_code;
+	}
+	public boolean isIs_form() {// isIs form은 머임
+		return is_form;
+	}
+	public void setIs_form(boolean is_form) {
+		this.is_form = is_form;
 	}
 	
 	

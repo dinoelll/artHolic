@@ -8,20 +8,21 @@ import org.apache.ibatis.type.Alias;
 public class BriefingDTO {
 
 
-	private int idx;
+	private int board_id;
 	private String user_name;
 	private String content;
 	private String subject;
-	private int bHit;
-	private Date reg_date;
+	private String member_id;
+	private String board_code;
+	private Date writeTime;
 	
 	
 	
-	public int getIdx() {
-		return idx;
+	public int getBoard_id() {
+		return board_id;
 	}
-	public void setIdx(int idx) {
-		this.idx = idx;
+	public void setBoard_id(int board_id) {
+		this.board_id = board_id;
 	}
 	public String getUser_name() {
 		return user_name;
@@ -41,17 +42,23 @@ public class BriefingDTO {
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	public int getbHit() {
-		return bHit;
+	public String getMember_id() {
+		return member_id;
 	}
-	public void setbHit(int bHit) {
-		this.bHit = bHit;
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
-	public Date getReg_date() {
-		return reg_date;
+	public String getBoard_code() {
+		return board_code;
 	}
-	public void setReg_date(Date reg_date) {
-		this.reg_date = reg_date;
+	public void setBoard_code(String board_code) {
+		this.board_code = board_code;
+	}
+	public Date getWriteTime() {
+		return writeTime;
+	}
+	public void setWriteTime(Date writeTime) {
+		this.writeTime = writeTime;
 	}
 
 }

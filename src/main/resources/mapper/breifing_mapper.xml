@@ -2,22 +2,20 @@
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	   
-<mapper namespace="kr.co.two.board.dao.BreifingDAO">
+<mapper namespace="kr.co.two.board.dao.BriefingDAO">
 
-<!-- <insert id="write" parameterType="briefing">
-		INSERT INTO board(subject,member_id,content)
-		VALUES(#{subject},#{user_name},#{content})
-	</insert>
-	
-	<select id="list" resultType="board">
-		SELECT*FROM editor ORDER BY idx DESC
-	</select>
-	
+   <insert id="write" parameterType="briefing">
+      INSERT INTO board(subject, member_id, content, board_code)
+         VALUES(#{subject}, '123456',#{content}, 'briefing')   
+   </insert>
+   
+    
 	<select id="list" resultType="briefing" parameterType="string">
 		SELECT * FROM board
 		<where>
-			<if test="keyword != null and !keyword.equals('') and opt =='name'"> member_id LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> subject LIKE CONCAT('%',#{keyword},'%')</if>
+		board_code = 'briefing'
+			<if test="keyword != null and !keyword.equals('') and opt =='member_id'">AND member_id LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='subject'">AND subject LIKE CONCAT('%',#{keyword},'%')</if>
 		</where>
 		ORDER BY board_id DESC
 		LIMIT #{cnt} OFFSET #{offset}
@@ -26,25 +24,33 @@
 	<select id="totalCount" resultType="int" parameterType="string">
 		SELECT COUNT(board_id) FROM board
 		<where>
-			<if test="keyword != null and !keyword.equals('') and opt =='name'"> member_id LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> subject LIKE CONCAT('%',#{keyword},'%')</if>
+		board_code = 'briefing'
+			<if test="keyword != null and !keyword.equals('') and opt =='member_id'">AND member_id LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='subject'">AND subject LIKE CONCAT('%',#{keyword},'%')</if>
 		</where>
 	</select>
-	
-	<update id="bHit">
-		UPDATE board SET bHit = bHit+1
-		WHERE board_id = #{idx}
-	</update>
-	
-	<select id="detail" resultType="briefing">
-		SELECT*FROM board WHERE board_id = #{idx}
-	</select>
-	
-	<delete id="delete">
-		DELETE FROM board WHERE board_id=#{idx}
-	
-	</delete> 
- -->
+   
+   
+   <select id="detail" resultType="briefing">
+   	SELECT * FROM board
+   		WHERE board_id = #{board_id}
+   </select>
+   
+   <select id="briefingUpdate" resultType="briefing">
+	 SELECT * FROM board
+	  WHERE board_id = #{board_id}
+   </select>
+   
+   <update id="briefingUpdateDo" parameterType="hashmap">
+   	UPDATE board SET
+   		subject = #{subject}
+   		,content = #{content}
+   		WHERE board_id = #{board_id}
+   </update>
+   
+   <delete id="delete">
+   	DELETE FROM board WHERE board_id = #{board_id}
+   </delete>
 
 
 </mapper>
