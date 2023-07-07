@@ -52,20 +52,7 @@
 	</update>
 
 	<delete id="myFolderDelte">
-<<<<<<< HEAD
-		DELETE FROM myFolder WHERE folder_id = #{folderId}
-	</delete>
 
-	<select id="fileList" resultType="mypage">
-		SELECT * FROM file WHERE folder_id = #{folderId}
-	</select>
-
-	<insert id="fileUpload" parameterType="java.lang.String">
-		INSERT INTO file (folder_id, fileName, ext, newFileName)
-		VALUES (#{folderId}, #{fileName}, #{ext}, #{newFileName})
-	</insert>
-
-=======
         DELETE FROM myFolder WHERE folder_id = #{folderId}
     </delete>
     
@@ -83,6 +70,5 @@
     </delete>
 	
 	
->>>>>>> origin/master
 
 </mapper>

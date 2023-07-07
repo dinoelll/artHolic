@@ -5,26 +5,32 @@
 <mapper namespace="kr.co.two.board.dao.InformDAO">
 
    <insert id="informWriteDo" parameterType="inform">
-      INSERT INTO board(subject, member_id, content)
-         VALUES(#{subject}, '강경석',#{content})   
+      INSERT INTO board(subject, member_id, content, board_code, is_form)
+         VALUES(#{subject}, '123456', #{content}, 'inform', #{is_form})
    </insert>
    
     
 	<select id="listCall" resultType="inform" parameterType="string">
-		SELECT * FROM board
-		<where>
-			<if test="keyword != null and !keyword.equals('') and opt =='name'"> member_id LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> subject LIKE CONCAT('%',#{keyword},'%')</if>
-		</where>
-		ORDER BY board_id DESC
-		LIMIT #{cnt} OFFSET #{offset}
+	    SELECT * FROM board
+	    <where>
+	        board_code = 'inform'
+	        <if test="keyword != null and !keyword.equals('') and opt == 'member_id'">
+	            AND member_id LIKE CONCAT('%', #{keyword}, '%')
+	        </if>
+	        <if test="keyword != null and !keyword.equals('') and opt == 'subject'">
+	            AND subject LIKE CONCAT('%', #{keyword}, '%')
+	        </if>
+	    </where>
+	    ORDER BY CASE WHEN is_form = 1 THEN 0 ELSE 1 END, board_id DESC
+	    LIMIT #{cnt} OFFSET #{offset}
 	</select>
 	
 	<select id="totalCount" resultType="int" parameterType="string">
 		SELECT COUNT(board_id) FROM board
 		<where>
-			<if test="keyword != null and !keyword.equals('') and opt =='name'"> member_id LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> subject LIKE CONCAT('%',#{keyword},'%')</if>
+		board_code = 'inform'
+			<if test="keyword != null and !keyword.equals('') and opt =='member_id'"> AND member_id LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> AND subject LIKE CONCAT('%',#{keyword},'%')</if>
 		</where>
 	</select>
    
@@ -43,6 +49,7 @@
    	UPDATE board SET
    		subject = #{subject}
    		,content = #{content}
+   		,is_form = #{is_form}
    		WHERE board_id = #{board_id}
    </update>
    
@@ -50,7 +57,11 @@
    	DELETE FROM board WHERE board_id = #{board_id}
    </delete>
    
-
+   <update id="is_formDel" parameterType="hashmap">
+   	UPDATE board SET
+   		is_form = '0'
+   		WHERE board_id = #{id}
+   </update>
 
 
 </mapper>

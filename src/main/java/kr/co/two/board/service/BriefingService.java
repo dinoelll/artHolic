@@ -10,10 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.two.board.dao.BriefingDAO;
 import kr.co.two.board.dto.BriefingDTO;
+import kr.co.two.board.dto.InformDTO;
 
 @Service
 public class BriefingService {
@@ -31,11 +32,15 @@ public class BriefingService {
 
 
 	public HashMap<String, Object> list(int page,int cnt, String opt, String keyword) {
+
 		HashMap<String, Object>map = new HashMap<String,Object>();
-		
-	
+
 		int offset = (page-1)*cnt; 
-	
+		logger.info("page : " + page);
+		logger.info("cnt : " + cnt);
+		logger.info("opt : " + opt);
+		logger.info("keyword : " + keyword);
+		
 		int total = dao.totalCount(opt,keyword); // 12
 		 // cnt = 10
 		int range = total%cnt == 0 ? total/cnt : (total/cnt)+1;
@@ -51,51 +56,75 @@ public class BriefingService {
 		map.put("currPage", page);
 		map.put("pages", range);
 		ArrayList<BriefingDTO> list = dao.list(opt, keyword,cnt, offset);
-		map.put("list", list);
+		map.put("briefingList", list);
 		return map;
 		
 	}
 	
 	
 	
-	public ModelAndView write(BriefingDTO dto) {
-		ModelAndView mav = new ModelAndView();
-		String page = "writeForm";
-		if (dao.write(dto)>0) {
-			page ="redirect:/list.do";
-		}
-		mav.setViewName(page);
-		return mav;
-	}
+	   public ModelAndView write(BriefingDTO dto) {
+		      ModelAndView mav = new ModelAndView();
+		      String page = "briefingWrite";
+		      if(dao.write(dto)>0) {
+		         page = "redirect:/briefingList.go";
+		      }
+		      mav.setViewName(page);
+		      return mav;
+		      
+		   }
 	
 	@Transactional
-	public ModelAndView detail(String idx) {
-		BriefingDTO dto = dao.detail(idx);
+	public ModelAndView detail(String board_id) {
+		BriefingDTO dto = dao.detail(board_id);
 		
 		ModelAndView mav = new ModelAndView("briefingDetail");
-		mav.addObject("bbs", dto);
+		mav.addObject("briefing", dto);
 		
 		return mav;
 	}
 
-
-
-
-
-	public ModelAndView delete(String idx) {
-		String page = "/detail.do?idx="+idx;
-		String msg = "다시 시도해주세요";
-		ModelAndView mav = new ModelAndView();
-		if (dao.delete(idx)>0) {
-			page="list";
-			msg="게시물이 삭제되었습니다";
+	public ModelAndView delete(String board_id, RedirectAttributes ratt) {
+		ModelAndView mav = new ModelAndView("redirect:/briefingList.go");
+		int success = dao.delete(board_id);
+		String msg = "삭제에 실패 했습니다.";
+		if(success > 0) {
+			msg = "삭제에 성공 했습니다.";
+			ratt.addFlashAttribute("msg", msg);
 		}
-		mav.addObject("msg", msg);
-		mav.setViewName(page);
-		
-		
-		
 		return mav;
 	}
+
+	public HashMap<String, Object> briefingDel(ArrayList<String> delList) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		for (String id : delList) {
+			dao.delete(id);
+		}
+		return map;
+	}
+	
+	
+	public String briefingUpdateDo(HashMap<String, Object> params) {
+		
+		logger.info("updateDo : "+params);
+		String page = "redirect:/briefingDetail.do";
+		if(dao.briefingUpdateDo(params)>0) {
+			page = "redirect:/briefingDetail.do?board_id="+params.get("board_id");
+		}
+		
+		return page;
+	}
+
+	@Transactional
+	public ModelAndView briefingUpdate(String board_id) {
+		BriefingDTO dto = dao.briefingUpdate(board_id);
+	      ModelAndView mav = new ModelAndView("briefingUpdate");
+	      mav.addObject("briefing", dto);
+	      
+	      return mav;
+		
+	}
+
+
 
 }

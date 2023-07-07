@@ -34,21 +34,64 @@
 		height : 68px;
 	}
 	
+	
+	
 		input[type="text"]{
 		width: 100%;
 		border : 1px solid lightgray;
 	}
-	table{
+	 table{
 		margin: 0 auto;
 		width: 75%;
 	}
-	
-	table, td, th {
+	 
+ 	table, td, th {
 		border: 1px solid black;
 		border-collapse: collapse;
 		padding: 30px;
 		padding-bottom: 15px;
 	}
+	
+	 #updateBtn{
+         background-color: #91bdce;
+         border: 3px solid #91bdce;
+         width: 50px;
+         height: 30px;
+         border-radius: 3px;
+         color: white;
+         float: right;
+         margin-left: 3px;
+      }
+      
+      #delBtn{
+         background-color: #91bdce;
+         border: 3px solid #91bdce;
+         width: 50px;
+         height: 30px;
+         border-radius: 3px;
+         color: white;
+         float: right;
+         margin-left: 3px;
+      }
+      
+      #listBtn{
+         background-color: #91bdce;
+         border: 3px solid #91bdce;
+         width: 70px;
+         height: 30px;
+         border-radius: 3px;
+         color: white;
+         float: right;
+         margin-left: 3px;
+      }
+      
+      #footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* 기타 스타일 속성 추가 */
+}
 	
   </style>
 </head>
@@ -70,17 +113,17 @@
 
     <!-- Main content -->
     <section class="content">
-    
+   
 	<form action="/informUpdate.go" method="get">
 		<table>
          <tr>
             <td>
             <input type="hidden" value="${inform.board_id}" name="board_id" />
             	<div style="font-size:22px;"><b>${inform.subject}</b></div>
-            	<div style="margin-top: 10px;">${inform.member_id} 작성일자
-	            	<button class="btn btn-sm btn-primary" style="float:right;">수정</button>
-					<button type="button" onclick="location.href='informDel.do?board_id=${inform.board_id}'" class="btn btn-sm btn-primary" style="float:right;">삭제</button>
-					<button type="button" onclick="location.href='/informList.go'" style="float:right;" class="btn btn-sm btn-primary">리스트</button>
+            	<div style="margin-top: 10px;">${inform.member_id} &nbsp;&nbsp; ${inform.writeTime}
+	            	<button id="updateBtn" style="float:right;">수정</button>
+					<button id="delBtn" type="button" onclick="location.href='informDel.do?board_id=${inform.board_id}'" >삭제</button>
+					<button id="listBtn" type="button" onclick="location.href='/informList.go'" >리스트</button>
 					</div>
             </td>
          </tr>
@@ -92,12 +135,16 @@
 	</form>
     </section>
     <!-- /.content -->
+    <div id="footer">
+    <jsp:include page="footer.jsp"/>
+    </div>
   </div>
   <!-- /.content-wrapper -->
+  
 </div>
 
 
-<jsp:include page="footer.jsp"/>
+
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
