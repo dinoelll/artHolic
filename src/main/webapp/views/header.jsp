@@ -3,14 +3,14 @@
 
 
 <script>
-	loginChk();
+/* 	loginChk();
 	function loginChk() {
 		var loginId = '${sessionScope.loginId}';
 		if (!loginId) {
 		window.location.href = './';
 		alert("로그인 안하면 아모고토 모타죠~?? 아모고토 모타죠~!? 접근 불가쥬?");
 		}
-	}
+	} */
 </script>
 
 
