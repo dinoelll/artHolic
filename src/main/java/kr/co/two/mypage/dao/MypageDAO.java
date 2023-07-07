@@ -12,44 +12,43 @@ import kr.co.two.mypage.dto.EventDataDTO;
 public interface MypageDAO {
 
 
-	void calendarUpdate(EventDataDTO eventDataDTO);
+   void calendarUpdate(EventDataDTO eventDataDTO);
 
-	void calendarUpdate2(EventDataDTO dto);
-	
-	
-	
-	
-	
-	
-	
-	
-	List<EventDataDTO> getEvent();
+   void calendarUpdate2(EventDataDTO dto);
+   
+   
+   
+   
+   
+   
+   
+   
+   List<EventDataDTO> getEvent();
 
-	void myFolderCreate(String folderName);
+   void myFolderCreate(String folderName);
 
-	ArrayList<String> folderList();
+   ArrayList<String> folderList();
 
-	void myFolderUpdate(String folderName, int folderId);
+   void myFolderUpdate(String folderName, int folderId);
 
-	void myFolderDelte(int folderId);
+   void myFolderDelte(int folderId);
 
-	ArrayList<String> fileList(int folder_id);
+   ArrayList<String> fileList(int folder_id);
 
-	void fileUpload(String fileName, String ext, String newFileName, int folderId);
+   void fileUpload(String fileName, String ext, String newFileName, int folderId);
 
-<<<<<<< HEAD
 
-	int eventDelete(String id);
 
-	
+   int eventDelete(String indi_calendar_id);
 
-	int deleteFile(String fileName);
-=======
-	int eventDelete(String id);
+   
 
-	int deleteFile(String fileName);
+   int deleteFile(String fileName);
 
->>>>>>> origin/master
+
+
+
+
 
 
 }
