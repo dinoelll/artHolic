@@ -1,12 +1,21 @@
 package kr.co.two.member.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.two.member.dao.MemberDAO;
 import kr.co.two.member.dto.MemberDTO;
@@ -19,6 +28,10 @@ public class MemberService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
+	@Autowired PasswordEncoder encoder;
+	
+	// @Value 를 사용하여 C:/upload 위치를 root 에 담는다.
+	@Value("${spring.servlet.multipart.location}") private String root;
 
 	public HashMap<String, Object> employeeList(HashMap<String, Object> params) {
 		
@@ -152,12 +165,237 @@ public class MemberService {
 	            }
 	        }
 	    }
-
+	    
 	    
 	    map.put("employeeList", employeeList);
 	    logger.info("employeeList :"+employeeList);
 	    
 		return map; 
+	}
+
+
+
+	public void admin(String memberId, Boolean adminValue) {
+		
+		dao.admin(memberId, adminValue);
+	}
+
+
+	public int changePw(String pw) {
+		
+		return dao.changePw(pw);
+		
+	}
+
+
+	public ModelAndView join(HashMap<String, String> params, MultipartFile profile, String email) {
+		
+		logger.info("join Service");
+		
+	    String member_id = params.get("member_id");
+	    String pw = params.get("pw");
+	    
+	    logger.info("member_id :"+member_id+"/"+"pw :"+pw);
+
+		String enc_pass = encoder.encode(pw);
+		params.put("pw", enc_pass);
+		logger.info("pw :"+pw);
+		
+		String birthday = params.get("birthday");
+		logger.info("birthday :"+birthday);
+		
+		// 1. 파일명 추출
+		String fileName = profile.getOriginalFilename();
+		// 2. 새파일 생성(현재시간 + 확장자)
+		String ext = fileName.substring(fileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+ext; // 시간으로 하는건 옛날 방법 요새는 해쉬 코드 사용
+		logger.info(fileName+"=>"+newFileName);
+		
+		int success = dao.join(params,newFileName,email);
+		logger.info("success :"+success);
+		
+		// 3. 파일 저장
+		try {
+			byte[] bytes = profile.getBytes();
+			Path path = Paths.get(root+"/"+newFileName);
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String msg = "사원등록에 실패 했습니다.";
+		String page = "employeeWrite";
+		
+		if(success > 0) {
+			
+			msg ="사원등록에 성공 했습니다.";
+			page ="forward:/employeeList.go";
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(page);
+		mav.addObject("msg", msg);
+		
+		return mav;
+
+	}
+
+
+	public boolean login(String id, String pw) {
+		
+		logger.info("login Service");
+		
+		boolean success = false;
+		
+		MemberDTO memberDTO = dao.login(id);
+		if (memberDTO != null) {
+		    String enc_pw = memberDTO.getPw();
+		    success = encoder.matches(pw, enc_pw);
+		}
+		logger.info("success :"+success);
+		
+		return success;
+	}
+
+
+	public MemberDTO memberDetail(String member_id) {
+		
+		return dao.memberDetail(member_id);
+	}
+
+	public ModelAndView update(HashMap<String, String> params, MultipartFile profile, String email) {
+	    logger.info("join Service");
+
+	    String member_id = params.get("member_id");
+	    
+	    String birthday = params.get("birthday");
+	    logger.info("birthday: " + birthday);
+
+	    String newFileName = null;
+
+	    if (!profile.isEmpty()) {
+	        // 프로필 사진이 업로드된 경우
+	        String fileName = profile.getOriginalFilename();
+	        String ext = fileName.substring(fileName.lastIndexOf("."));
+	        newFileName = System.currentTimeMillis() + ext;
+	        logger.info(fileName + " => " + newFileName);
+
+	        try {
+	            byte[] bytes = profile.getBytes();
+	            Path path = Paths.get(root + "/" + newFileName);
+	            Files.write(path, bytes);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    } else {
+	        // 프로필 사진이 업로드되지 않은 경우
+	        // 기존에 저장된 프로필 사진 가져오기
+	        newFileName = dao.getProfileFileName(member_id);
+	        logger.info("newFileName :"+newFileName);
+	        
+	    }
+
+	    int success = dao.update(params, newFileName, email);
+	    logger.info("success: " + success);
+
+	    String msg = "사원정보 수정에 실패했습니다.";
+	    String page = "employeeList";
+
+	    if (success > 0) {
+	        msg = "사원정보 수정에 성공했습니다.";
+	        page = "forward:/employeeList.go";
+	    }
+
+	    ModelAndView mav = new ModelAndView();
+	    mav.setViewName(page);
+	    mav.addObject("msg", msg);
+
+	    return mav;
+	}
+
+
+	public HashMap<String, Object> companyList(HashMap<String, Object> params) {
+
+		logger.info("params :"+params);
+		
+		int page = Integer.parseInt(String.valueOf(params.get("page")));
+		int cnt = Integer.parseInt(String.valueOf(params.get("cnt")));
+				
+		String searchType = String.valueOf(params.get("searchType"));
+		String searchText = String.valueOf(params.get("searchText"));
+		
+		logger.info("page :"+page+"/"+"ctn :"+cnt+"/"+"searchType :"+searchType+"/"+"searchText :"+searchText);
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		int offset = cnt * (page-1);
+	      
+	    logger.info("offset : " + offset);
+	    
+	    int total = 0; 
+	    
+	    if (searchType.equals("default")) {
+	            // 전체 리스트를 불러옴
+	            total = dao.companyTotalCount(params);
+	            logger.info("협력업체 전체 리스트 / companyTotalCount");      
+	    } else if (searchType.equals("name")) {
+	            total = dao.companyNameTotalCount(params, searchType, searchText);
+	            logger.info("협력업체 이름 검색 리스트 / companyNameTotalCount");   	        
+	    } else if (searchType.equals("business")) {	           
+	            	total = dao.companyBusinessTotalCount(params, searchType, searchText);
+	                logger.info("협력업체 사업자명 검색 리스트 / companyBusinessTotalCount");
+	    } 
+	    
+	    int range = total%cnt  == 0 ? total/cnt : (total/cnt)+1;
+	      
+	    logger.info("총게시글 수 : "+ total);
+	    logger.info("총 페이지 수 : "+ range);
+	    
+	    page = page>range ? range:page;
+	    
+	    map.put("currPage", page);
+	    map.put("pages", range);
+	    params.put("offset", offset);
+	    
+	    ArrayList<MemberDTO> companyList = null;
+	  
+	    if (searchType.equals("default")) {
+            // 전체 리스트를 불러옴
+	    	companyList = dao.companyTotalList(params, cnt, offset);
+            logger.info("협력업체 전체 리스트 / companyTotalCount");      
+	    } else if (searchType.equals("name")) {
+	    	companyList = dao.companyNameTotalList(params, searchType, searchText, cnt, offset);
+            logger.info("협력업체 이름 검색 리스트 / companyNameTotalCount");   	        
+	    } else if (searchType.equals("business")) {	           
+	    	companyList = dao.companyBusinessTotalList(params, searchType, searchText, cnt, offset);
+        	logger.info("협력업체 사업자명 검색 리스트 / companyBusinessTotalCount");
+	    } 
+	    
+	    map.put("companyList", companyList);
+	    logger.info("companyList :"+companyList);
+	    
+		return map; 
+	}
+
+
+	public String companyWrite(HashMap<String, Object> params) {
+		
+		int success = dao.companyWrite(params);
+		logger.info("success :"+success);
+		
+		return "redirect:/companyAddress.go";
+	}
+
+
+	public MemberDTO companyDetail(String cooper_id) {
+
+		return dao.companyDetail(cooper_id);
+	}
+
+
+	public String companyupdate(HashMap<String, String> params) {
+
+		return dao.companyUpdate(params);
 	}
 
 

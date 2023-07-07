@@ -34,20 +34,14 @@ public interface MypageDAO {
    void myFolderDelte(int folderId);
 
    ArrayList<String> fileList(int folder_id);
+   
+   void fileUpload(String fileName, String ext, String newFileName, int folderId);
 
-	void fileUpload(String fileName, String ext, String newFileName, int folderId);
+   int eventDelete(String indi_calendar_id);
 
+   int deleteFile(String fileName);
 
-
-	int eventDelete(String indi_calendar_id);
-
-	
-
-	int deleteFile(String fileName);
-
-
-
-
+   
 
 
 

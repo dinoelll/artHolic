@@ -30,27 +30,30 @@ public class MypageService {
    Logger logger = LoggerFactory.getLogger(getClass());
 
 
-	public void calendarUpdate(ArrayList<EventDataDTO> eventDataList) {
-		String member_id = "1812001";
-		for (EventDataDTO eventDataDTO : eventDataList) {
-			eventDataDTO.setMember_id(member_id);
-			String title = eventDataDTO.getContent();
-			OffsetDateTime   start = eventDataDTO.getStart_date();
-			OffsetDateTime   end = eventDataDTO.getEnd_date();
-			boolean allday = eventDataDTO.getAllDay();
-			String backgroundColor = eventDataDTO.getBackgroundColor();
-			String borderColor = eventDataDTO.getBorderColor();
-			int indi_calendar_id = eventDataDTO.getIndi_calendar_id();
-		
-			logger.info("title" + title);
-			logger.info("start" + start);
-			logger.info("end" + end);
-			logger.info("allday" + allday);
-			logger.info("backgroundColor" + backgroundColor);
-			logger.info("indi_calendar_id" + indi_calendar_id);
-			
-			dao.calendarUpdate(eventDataDTO);
-		}
+   public void calendarUpdate(ArrayList<EventDataDTO> eventDataList) {
+      String member_id = "1812001";
+      for (EventDataDTO eventDataDTO : eventDataList) {
+         eventDataDTO.setMember_id(member_id);
+         String title = eventDataDTO.getContent();
+         OffsetDateTime   start = eventDataDTO.getStart_date();
+         OffsetDateTime   end = eventDataDTO.getEnd_date();
+         boolean allday = eventDataDTO.getAllDay();
+         String backgroundColor = eventDataDTO.getBackgroundColor();
+         String borderColor = eventDataDTO.getBorderColor();
+         int indi_calendar_id = eventDataDTO.getIndi_calendar_id();
+      
+         logger.info("title" + title);
+         logger.info("start" + start);
+         logger.info("end" + end);
+         logger.info("allday" + allday);
+         logger.info("backgroundColor" + backgroundColor);
+         logger.info("indi_calendar_id" + indi_calendar_id);
+         
+         dao.calendarUpdate(eventDataDTO);
+      }
+
+   }
+
 
    public List<EventDataDTO> getEvents() {
       
@@ -117,24 +120,22 @@ public class MypageService {
    }
 
 
+   public void calendarUpdate2(EventDataDTO dto) {
+      String member_id = "1812001";
+      dto.setMember_id(member_id);
+      dao.calendarUpdate2(dto);
+      
+      
+   }
 
-	public void calendarUpdate2(EventDataDTO dto) {
-		String member_id = "1812001";
-		dto.setMember_id(member_id);
-		dao.calendarUpdate2(dto);
-		
-		
-	}
+   public int eventDelete(String indi_calendar_id) {
+      
+      return dao.eventDelete(indi_calendar_id);
+   }
 
-	public int eventDelete(String indi_calendar_id) {
-		
-		return dao.eventDelete(indi_calendar_id);
-	}
 
    public int deleteFile(String fileName) {
       
       return dao.deleteFile(fileName);
    }
-
-
 }
