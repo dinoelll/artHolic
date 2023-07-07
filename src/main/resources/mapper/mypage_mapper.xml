@@ -36,39 +36,24 @@
 
 
    <insert id="myFolderCreate" parameterType="java.lang.String">
-      INSERT INTO myFolder (member_id, folder_name)
+      INSERT INTO myfolder (member_id, folder_name)
       VALUES ("1812001", #{folderName})
    </insert>
 
    <select id="folderList" resultType="mypage">
-      SELECT * FROM myFolder
+      SELECT * FROM myfolder
    </select>
 
    <update id="myFolderUpdate" parameterType="map">
-      UPDATE myFolder
+      UPDATE myfolder
       SET
       folder_name = #{folderName}
       WHERE folder_id = #{folderId}
    </update>
 
-<<<<<<< HEAD
    <delete id="myFolderDelte">
-      DELETE FROM myFolder WHERE folder_id = #{folderId}
-   </delete>
-
-   <!-- <select id="fileList" resultType="mypage">
-      SELECT * FROM file WHERE folder_id = #{folderId}
-   </select>
-
-<insert id="fileUpload" parameterType="java.lang.String">
-      INSERT INTO file (folder_id, fileName, ext, newFileName)
-      VALUES (#{folderId}, #{fileName}, #{ext}, #{newFileName})
-   </insert>  -->
-=======
-	<delete id="myFolderDelte">
         DELETE FROM myFolder WHERE folder_id = #{folderId}
     </delete>
->>>>>>> origin/master
     
     <select id="fileList" resultType="mypage">
          SELECT * FROM file WHERE folder_id = #{folderId}
@@ -82,11 +67,6 @@
    <delete id="deleteFile">
         DELETE FROM file WHERE new_fileName = #{fileName}
     </delete>
-<<<<<<< HEAD
    
-   
-
-=======
->>>>>>> origin/master
-
+ 
 </mapper>

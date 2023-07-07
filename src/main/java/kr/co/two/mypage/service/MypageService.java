@@ -118,10 +118,7 @@ public class MypageService {
 		return dao.fileList(folderId);
 	}
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 	public void calendarUpdate2(EventDataDTO dto) {
 		String member_id = "1812001";
 		dto.setMember_id(member_id);
@@ -140,11 +137,5 @@ public class MypageService {
 		return dao.deleteFile(fileName);
 	}
 
-<<<<<<< HEAD
-	
-	
 
-
-=======
->>>>>>> origin/master
 }
