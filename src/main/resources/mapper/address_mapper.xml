@@ -4,8 +4,11 @@
 
 <mapper namespace="kr.co.two.board.dao.AddressDAO">
 
-	<select id="adList" resultType="AddressDTO2" parameterType="hashmap">
-		SELECT  m.*,c1.code_name AS dept_name,c2.code_name AS position_name from member m JOIN code c1 ON (c1.code_id = m.dept_code) JOIN code c2 ON (c2.code_id = m.position_code) 
+	<select id="adList" resultType="AddressDTO2"
+		parameterType="hashmap">
+		SELECT m.*,c1.code_name AS dept_name,c2.code_name AS position_name
+		from member m JOIN code c1 ON (c1.code_id = m.dept_code) JOIN code c2
+		ON (c2.code_id = m.position_code)
 		<where>
 			<if
 				test="keyword != null and !keyword.equals('') and opt =='name'">
@@ -20,28 +23,69 @@
 				AND c1.code_name LIKE CONCAT('%',#{keyword},'%')
 			</if>
 		</where>
+		<if test="bookmark != null and !bookmark.equals('')">
+			AND m.member_id IN (SELECT bm.bookmark FROM bookmark AS bm WHERE
+			bm.member_id = #{bookmark})
+		</if>
 		ORDER BY m.member_id DESC
 		LIMIT #{cnt} OFFSET #{offset}
 
 	</select>
 
 
-
-
-	<select id="adTotalCount" resultType="int"
+<!-- 	<select id="adTotalCount" resultType="int"
 		parameterType="string">
 		SELECT COUNT(member_id)
 		FROM
-		member AS m
-		
-			<if
-				test="keyword != null and !keyword.equals('') and opt =='name'">where name LIKE CONCAT('%',#{keyword},'%')</if>
-			<if
-				test="keyword != null and !keyword.equals('') and opt =='position'">join code c on(c.code_id = m.position_code) where c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
-			<if
-				test="keyword != null and !keyword.equals('') and opt =='dept'">join code c on(c.code_id = m.dept_code) where c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
-		
+		member AS m		
+		<if test="keyword != null and !keyword.equals('') and opt =='name'">where name LIKE CONCAT('%',#{keyword},'%')</if>
+		<if
+			test="keyword != null and !keyword.equals('') and opt =='position'">join code c on(c.code_id = m.position_code) where c.code_name
+			LIKE CONCAT('%',#{keyword},'%')</if>
+		<if test="keyword != null and !keyword.equals('') and opt =='dept'">join code c on(c.code_id = m.dept_code) where c.code_name
+			LIKE CONCAT('%',#{keyword},'%')</if>
+		<where>
+		<if test="bookmark != null and !bookmark.equals('')">
+			AND m.member_id IN (SELECT bm.bookmark FROM bookmark AS bm WHERE
+			bm.member_id = #{bookmark})
+		</if>
+		</where>
+	</select> -->
+	
+	<select id="adTotalCount" resultType="int" parameterType="string">
+  SELECT COUNT(member_id)
+  FROM member AS m
+  <where>
+    <if test="keyword != null and !keyword.equals('') and opt == 'name'">
+      AND m.name LIKE CONCAT('%', #{keyword}, '%')
+    </if>
+    <if test="keyword != null and !keyword.equals('') and opt == 'position'">
+      AND m.position_code IN (SELECT code_id FROM code WHERE code_name LIKE CONCAT('%', #{keyword}, '%'))
+    </if>
+    <if test="keyword != null and !keyword.equals('') and opt == 'dept'">
+      AND m.dept_code IN (SELECT code_id FROM code WHERE code_name LIKE CONCAT('%', #{keyword}, '%'))
+    </if>
+    <if test="bookmark != null and !bookmark.equals('')">
+      AND m.member_id IN (SELECT bm.bookmark FROM bookmark AS bm WHERE bm.member_id = #{bookmark})
+    </if>
+  </where>
+</select>
+
+	<insert id="bookmark" parameterType="String">
+		INSERT INTO
+		bookmark(member_id,bookmark) VALUES(#{member_id},#{id})
+	</insert>
+
+	<select id="bmList" resultType="String">
+		SELECT bookmark FROM bookmark
+		WHERE member_id =#{member_id}
 	</select>
+
+
+	<delete id="bookmarkDel">
+		DELETE FROM bookmark WHERE member_id = #{member_id}
+		AND bookmark=#{id}
+	</delete>
 
 
 </mapper>
