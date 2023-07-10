@@ -173,7 +173,7 @@
             <td>
                <select id="opt" name="select">
                      <option value="default">프로젝트 검색</option>
-                     <option value="subject">프로젝트명</option>
+                     <option value="project_name">프로젝트명</option>
                      <option value="project_manager">프로젝트 담당자</option>
                      <option value="field_manager">현장 관리자</option>
                </select>   
@@ -194,16 +194,16 @@
                 <th>프로젝트명</th>
 				<th>프로젝트 담당자</th>
 				<th>현장 관리자</th>
-				<th>일정</th>
 				<th>담당자 연락처</th>
-				<th>진행 상태</th>
+				<th>일정</th>
+				<!-- <th>담당자 연락처</th>  -->
             </tr>
          </thead>
          <tbody id="projectList" style="text-align:center">
            <!-- 리스트가 출력될 영역 -->
          </tbody>   
          <tr>
-         <td colspan="6" id="paging">   
+         <td colspan="5" id="paging">   
             <!--    플러그인 사용   (twbsPagination)   -->
             <div class="container" >                           
                <nav aria-label="Page navigation" style="text-align:center">
@@ -241,6 +241,10 @@
                               <tr>
                                  <th>현장 관리자</th>
                                  <td><input type="text" name="field_manager" value="" /></td>
+                              </tr>
+                              <tr>
+                                 <th>담당자 연락처</th>
+                                 <td><input type="text" name="manager_phone" value="" /></td>
                               </tr>
                               <tr>
                                  <th colspan="2" style="text-align: center;"><br>프로젝트 일정</th>
@@ -301,6 +305,12 @@
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 </body>
 <script>
+
+var msg = "${msg}";
+if (msg != "") {
+	alert(msg);
+
+}
 
 var showPage = 1;
 var opt ='default';
@@ -412,9 +422,8 @@ function listDraw(projectList) {
          content += '<th><a href="projectDetail.go?project_id='+dto.project_id+'">'+dto.project_name+'</a></th>';
          content += '<th>'+dto.project_manager+'</th>';
          content += '<th>'+dto.field_manager+'</th>';
-         content += '<td>'+ dto.start_date +'~'+ dto.end_date +'</td>'; // 이거 어케하누
-         content += '<td>'+ dto.phone +'</td>';
-         content += '<td>'+ dto.project_state +'</td>';
+         content += '<td>'+ dto.manager_phone +'</td>';
+         content += '<td>'+ dto.start_date + '~' + dto.end_date +'</td>';
          content += '</tr>';
        });
 
