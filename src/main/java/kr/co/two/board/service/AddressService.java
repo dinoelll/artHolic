@@ -23,11 +23,11 @@ public class AddressService {
 	
 	
 
-	public HashMap<String, Object> adList(int page, int cnt, String opt, String keyword) {
+	public HashMap<String, Object> adList(int page, int cnt, String opt, String keyword, String bookmark) {
 	HashMap<String, Object>map = new HashMap<String,Object>();
 	int offset = (page - 1) * cnt;
 
-	int total = dao.adTotalCount(opt, keyword); // 12
+	int total = dao.adTotalCount(opt, keyword,bookmark); // 12
 	// cnt = 10
 	int range = total % cnt == 0 ? total / cnt : (total / cnt) + 1;
 
@@ -46,11 +46,36 @@ public class AddressService {
 	map2.put("keyword", keyword);
 	map2.put("cnt", cnt);
 	map2.put("offset", offset);
-	ArrayList<AddressDTO2> adList = dao.adList(map2);
+	map2.put("bookmark",bookmark);
 	
-
+	ArrayList<AddressDTO2> adList = dao.adList(map2);
 	map.put("list", adList);
+	
+	/*----------------------------------------즐겨찾기 리스트 가져오기------------------------------------------------*/
+	String member_id ="8948948";
+	ArrayList<String>bmList = new ArrayList<String>();
+	bmList = dao.bmList(member_id);
+	logger.info("bmList:"+bmList);
+	map.put("bmList", bmList);
+
+	
 	return map;
 }
+
+
+
+
+	public int bookmark(String id,String member_id) {
+		// TODO Auto-generated method stub
+		return dao.bookmark(id,member_id);
+	}
+
+
+
+
+	public int bookmarkDel(String id, String member_id) {
+		// TODO Auto-generated method stub
+		return  dao.bookmarkDel(id,member_id);
+	}
 
 }

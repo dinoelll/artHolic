@@ -29,6 +29,10 @@
 	#footer{
 		margin-left: 0px;
 	}
+	
+	.test{
+		display:inline;
+	}
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -62,10 +66,13 @@
           
         <!-- /.col -->
         <div class="col-md-9">
+        <div class="test">
+          <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
+          <a href=mailWrite.go?selfBox=true class="btn btn-primary btn-sm ">내게 쓰기</a>
+        </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
-              <a href="selfBoxWrite.go" class="btn btn-primary btn-sm ">내게 쓰기</a>
+            
               <div class="card-tools">
                 <div class="input-group input-group-sm">
                 <select name="searchFilter" id="searchFilter">
@@ -117,8 +124,11 @@
               </div>
               <div class="table-responsive mailbox-messages">
                 <table class="table table-hover table-striped">
-                  <tbody>
-                  <tr>
+
+                  <tbody id="list">
+                  
+                  
+                 <!--  <tr>
                     <td>
                       <div class="icheck-primary">
                         <input type="checkbox" value="" id="check1">
@@ -131,204 +141,9 @@
                     </td>
                     <td class="mailbox-attachment"></td>
                     <td class="mailbox-date">5 분 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check2">
-                        <label for="check2"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>밥 줘</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">28 분 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check3">
-                        <label for="check3"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b> 
-                    </td>
-                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">11 시간 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check4">
-                        <label for="check4"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">15 시간 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check5">
-                        <label for="check5"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">어제</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check6">
-                        <label for="check6"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">2 일 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check7">
-                        <label for="check7"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">2 일 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check8">
-                        <label for="check8"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">2 일 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check9">
-                        <label for="check9"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">2 일 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check10">
-                        <label for="check10"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">2 일 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check11">
-                        <label for="check11"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">4 일 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check12">
-                        <label for="check12"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">12 일 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check13">
-                        <label for="check13"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">12 일 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check14">
-                        <label for="check14"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">14 일 전</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check15">
-                        <label for="check15"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>메일 보내드립니다.</b>
-                    </td>
-                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>
-                    <td class="mailbox-date">15 일 전</td>
-                  </tr>
+                  </tr>-->
                   </tbody>
+                   
                 </table>
                 <!-- /.table -->
               </div>
@@ -367,6 +182,7 @@
 <script src="dist/js/demo.js"></script>
 <!-- Page specific script -->
 <script>
+	listCall();
   $(function () {
     //Enable check and uncheck all functionality
     $('.checkbox-toggle').click(function () {
@@ -397,6 +213,114 @@
       }
     })
   })
+  
+  function listCall(){
+	  $.ajax({
+		 type:'post'
+		 ,url:'mail/selfBox.ajax'
+		 ,data:{}
+	  	 ,success:function(data){
+			 console.log(data);
+			 listPrint(data.list);
+		 },error:function(e){
+			 console.log(e);
+		 }
+	  });
+  }
+  
+  function listPrint(list){
+	  var content = '';
+	  if(list.length>0){
+		  list.forEach(function(item,mail_id){
+			  
+			 var formId = 'mail' + mail_id;
+			 content += '<tr>';
+			 content += '<td>';
+			 content += '<form method="post" action="mailDetail.do/'+mail_id+'" id="' + formId + '">';
+			 content += '<div class="icheck-primary">';
+			 content += '<input type="checkbox" value="" id="check1">';
+			 content += '<label for="check1"></label>';
+			 content += '</div>';
+			 content += '</td>';
+			 content += '<td class="mailbox-star" id="mailSubjectForm" ><a href="#" class="toggle-favorite" data-mail-id="' + item.mail_id + '">';
+			 if (item.favorites>0){
+				 content += '<i class="fas fa-star text-warning">';
+			 }else {
+				 content += '<i class="far fa-star">';
+			 }
+			 content += '</i></a></td>';
+			 content += '<td class="mailbox-name">'+item.name+'</a></td>';
+			 content += '<td class="mailbox-subject"><a href="#" onclick="mailDetail(this)" data-mail-id="' + item.mail_id +'"><b>'+item.mailSubject+'</b></a></td>';
+			 content += '<td class="mailbox-attachment">';
+			 if (item.mail_file_id != null && item.mail_file_id !== 0) {
+			        content += '<i class="fas fa-paperclip"></i>';
+			      }
+			 content += '</td>';
+			 content += '</form>';
+			 content += '<td class="mailbox-date">'+item.writeTime+'</td>';
+			 //content += '<div class="formId"></div>'
+			 content += '</tr>';
+			 
+			 console.log(item.mail_file_id);
+		  });
+	  }
+	  $('#list').empty();
+	  $('#list').append(content);
+	  
+  }
+  
+  function mailDetail(element){
+	  var mailId = $(element).data('mail-id');
+	  console.log(mailId);
+	  var formId = $(element).closest('tr').find('form').attr('id');
+	    console.log(formId);
+	  
+	    $(element).closest('tr').find('form').append('<input type="hidden" value="'+mailId+'" name="seletedMailId">');
+	    $(element).closest('tr').find('form').append('<input type="hidden" value="save" name="type">');
+	    $(element).closest('tr').find('form').submit();
+
+  }
+  
+  $('#list').on('click', '.toggle-favorite', function (e) {
+	    e.preventDefault();
+
+	    var mailId = $(this).data('mail-id');
+	    console.log(mailId);
+	    // 현재 즐겨찾기 상태 가져오기
+	    var isFavorite = $('#mailSubjectForm i').hasClass('fas');
+	    console.log(isFavorite);
+
+	    // AJAX 요청 생성
+	    $.ajax({
+	        type: 'POST',
+	        url: 'mail/bookmark.ajax',
+	        data: {
+	            'mailId': mailId, // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
+	            'isFavorite': !isFavorite, // 현재 즐겨찾기 상태를 반대로 전환하여 서버에 전달
+	            'type' : 'self'
+	        },
+	        dataType: 'json',
+	        success: function (response) {
+	        	console.log(response.isFavorite);
+	        	
+	            // 서버로부터의 응답 처리
+	            if (response.isFavorite == true) {
+	                // 즐겨찾기 상태인 경우
+	                $(this).find('i').removeClass('far fa-star').addClass('fas fa-star text-warning');
+	            } else {
+	                // 즐겨찾기 상태가 아닌 경우
+	                $(this).find('i').removeClass('fas fa-star text-warning').addClass('far fa-star');
+	            }
+	        },
+	        error: function (error) {
+	            // 오류 처리
+	            console.log(error);
+	        }
+	    });
+	});
+  
+
+  
 </script>
 </body>
 </html>
