@@ -1,131 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	   
+      
 <mapper namespace="kr.co.two.mail.dao.MailDAO">
-<!-- 주석 테스트 -->
-	<!-- 받는이 옵션 가져오기 -->
-	<select id="mailgetOptions" resultType="mail">
-		SELECT * FROM member
-	</select>
-	
-	<!-- 메일쓰기 -->
-	<insert id="mailWrite" parameterType="mail"
-		useGeneratedKeys="true"
-		keyColumn="mail_id"
-		keyProperty="mail_id">
-		INSERT INTO mail(member_id,mailSubject,mailContent,blind,Favorites,temp)
-			VALUES("9988392",#{mailSubject},#{mailContent},false,false,
-		<choose>
-		      <when test='type == "save" or type == "send"'>
-		        false
-		      </when>
-		      <otherwise>
-		        true
-		      </otherwise>
-		</choose>
-		  )
-	</insert>
-	
-	<!-- 내게쓰기 -->
-	<insert id="savereceiverWrite" parameterType="mail">
-		INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
-			VALUES(#{mail_id},#{member_id},false,false,false,2)
-	</insert>
-	
-	<!-- 메일 첨부파일 올리기 -->
-	<insert id="mailPhotoUpload">
-		INSERT INTO mail_file (mail_id,ori_file_name,file_path,new_file_name)
-			VALUES (#{param1},#{param2},#{param3},#{param4})
-	</insert>
-	
-	<!-- 받는사람 DB 저장 -->
-	<insert id="receiverWrite" parameterType="mail">
-		INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
-			VALUES(#{mail_id},#{member_id},false,false,false,0)
-	</insert>
-	
-	<!-- 참조자 DB 저장 -->
-	<insert id="referenceMemberWrite" parameterType="mail">
-		INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
-			VALUES(#{mail_id},#{member_id},false,false,false,1)
-	</insert>
-	
-	<!-- 참조자 여부 -->
-	<select id="findMailReference" resultType="int">
-		SELECT COUNT(member_id) FROM mail_receiver WHERE mail_id=#{mail_id} AND is_receiver = 1 
-	</select>
-	
-	<!-- 메일 상세보기 (참조자,받는사람 리스트 가져오기 -->
-	<select id="mailSendDetail" resultType="mail">
-		SELECT mr.mail_id, mr.member_id, mr.is_receiver,m.name, m2.mailSubject, m2.mailContent,mr.bookmark,
-		    MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
-		    MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name
-		FROM mail_receiver mr
-		JOIN member m ON mr.member_id = m.member_id
-		JOIN mail m2 ON m2.mail_id = mr.mail_id
-		JOIN code c ON (c.code_id = m.position_code OR c.code_id = m.dept_code)
-		WHERE mr.mail_id = #{mail_id}
-		<if test='row != null and row > 0'>
-			AND mr.is_receiver IN (0, 1)
-		</if>
-		<if test='row != null and row = 0'>
-			AND mr.is_receiver = 0
-		</if>
-		GROUP BY m.name
-		ORDER BY m.name;
-	</select>
-	
-	<!-- 메일 상세보기 (보낸사람) -->
-	<select id="mailMemberDetail" resultType="mail">
-		SELECT mb.name, mb.dept_code, mb.position_code, m.*, c.code_name, c.code_group_id,m.favorites,m.mail_id
-		FROM member mb
-		RIGHT OUTER JOIN mail m ON (mb.member_id = m.member_id)
-		LEFT OUTER JOIN code c ON (c.code_id = mb.dept_code) OR (c.code_id=mb.position_code)
-		WHERE m.mail_id = #{mail_id} ORDER BY code_group_id ASC
-	</select>
-	
-	<select id="mailCheckPhoto" resultType="int">
-		SELECT COUNT(mail_file_id) FROM mail_file WHERE mail_id = #{mail_id}
-	</select>
-	
-	<select id="mailHasPhoto" resultType="mail">
-		SELECT * FROM mail_file WHERE mail_id = #{mail_id}
-	</select>
-	
-	<update id="mailFavorite">
-		UPDATE mail SET favorites = #{isFavorite} WHERE mail_id = #{mail_id}
-	</update>
-	
-	<select id="isFavoriteStatus" resultType="boolean">
-		SELECT favorites FROM mail WHERE mail_id=#{mail_id}
-	</select>
-	
-	<update id="mailbookmark">
-		UPDATE mail_receiver SET bookmark = #{isFavorite ? 1 : 0} WHERE mail_id=#{mailId} 
-		<if test='type.equals("self")'>
-		AND is_receiver = 2
-		</if>
-		
-	</update>
-	<select id="isbookmarkStatus" resultType="boolean">
-		SELECT bookmark FROM mail_receiver WHERE mail_id #{mailId} AND
-		<if test='type.equals("self")'>
-		is_receiver = 2
-		</if>
-	</select>
-	
-	<insert id="tempListUpdate">
-		INSERT INTO mail (mail_id, member_id, mailSubject, mailContent)
-		VALUES (#{mail_id},9988392, #{mailSubject}, #{mailContent})
-		ON DUPLICATE KEY UPDATE
-		    mailSubject = #{mailSubject},
-		    mailContent = #{mailContent}
-	</insert>
-	
-	<select id="mailSelfBox" resultType="mail">
-		SELECT mf.mail_file_id ,mr.*,m.*,mb.name from mail_receiver mr RIGHT OUTER JOIN mail m ON (m.mail_id = mr.mail_id) 
-		LEFT OUTER JOIN mail_file mf ON (m.mail_id= mf.mail_id)
-		LEFT OUTER JOIN member mb ON (m.member_id=mb.member_id) WHERE m.member_id = 9988392 AND is_receiver = 2 ORDER BY mr.mail_id  DESC
-	</select>
+
+   <!-- 받는이 옵션 가져오기 -->
+   <select id="mailgetOptions" resultType="mail">
+      SELECT * FROM member
+   </select>
+   
+   <!-- 메일쓰기 -->
+   <insert id="mailWrite" parameterType="mail"
+      useGeneratedKeys="true"
+      keyColumn="mail_id"
+      keyProperty="mail_id">
+      INSERT INTO mail(member_id,mailSubject,mailContent,blind,Favorites,temp)
+         VALUES("9988392",#{mailSubject},#{mailContent},false,false,
+      <choose>
+            <when test='type == "save" or type == "send"'>
+              false
+            </when>
+            <otherwise>
+              true
+            </otherwise>
+      </choose>
+        )
+   </insert>
+   
+   <!-- 내게쓰기 -->
+   <insert id="savereceiverWrite" parameterType="mail">
+      INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
+         VALUES(#{mail_id},#{member_id},false,false,false,2)
+   </insert>
+   
+   <!-- 메일 첨부파일 올리기 -->
+   <insert id="mailPhotoUpload">
+      INSERT INTO mail_file (mail_id,ori_file_name,file_path,new_file_name)
+         VALUES (#{param1},#{param2},#{param3},#{param4})
+   </insert>
+   
+   <!-- 받는사람 DB 저장 -->
+   <insert id="receiverWrite" parameterType="mail">
+      INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
+         VALUES(#{mail_id},#{member_id},false,false,false,0)
+   </insert>
+   
+   <!-- 참조자 DB 저장 -->
+   <insert id="referenceMemberWrite" parameterType="mail">
+      INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
+         VALUES(#{mail_id},#{member_id},false,false,false,1)
+   </insert>
+   
+   <!-- 참조자 여부 -->
+   <select id="findMailReference" resultType="int">
+      SELECT COUNT(member_id) FROM mail_receiver WHERE mail_id=#{mail_id} AND is_receiver = 1 
+   </select>
+   
+   <!-- 메일 상세보기 (참조자,받는사람 리스트 가져오기 -->
+   <select id="mailSendDetail" resultType="mail">
+      SELECT mr.mail_id, mr.member_id, mr.is_receiver,m.name, m2.mailSubject, m2.mailContent,mr.bookmark,
+          MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
+          MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name
+      FROM mail_receiver mr
+      JOIN member m ON mr.member_id = m.member_id
+      JOIN mail m2 ON m2.mail_id = mr.mail_id
+      JOIN code c ON (c.code_id = m.position_code OR c.code_id = m.dept_code)
+      WHERE mr.mail_id = #{mail_id}
+      <if test='row != null and row > 0'>
+         AND mr.is_receiver IN (0, 1)
+      </if>
+      <if test='row != null and row = 0'>
+         AND mr.is_receiver = 0
+      </if>
+      GROUP BY m.name
+      ORDER BY m.name;
+   </select>
+   
+   <!-- 메일 상세보기 (보낸사람) -->
+   <select id="mailMemberDetail" resultType="mail">
+      SELECT mb.name, mb.dept_code, mb.position_code, m.*, c.code_name, c.code_group_id,m.favorites,m.mail_id
+      FROM member mb
+      RIGHT OUTER JOIN mail m ON (mb.member_id = m.member_id)
+      LEFT OUTER JOIN code c ON (c.code_id = mb.dept_code) OR (c.code_id=mb.position_code)
+      WHERE m.mail_id = #{mail_id} ORDER BY code_group_id ASC
+   </select>
+   
+   <select id="mailCheckPhoto" resultType="int">
+      SELECT COUNT(mail_file_id) FROM mail_file WHERE mail_id = #{mail_id}
+   </select>
+   
+   <select id="mailHasPhoto" resultType="mail">
+      SELECT * FROM mail_file WHERE mail_id = #{mail_id}
+   </select>
+   
+   <update id="mailFavorite">
+      UPDATE mail SET favorites = #{isFavorite} WHERE mail_id = #{mail_id}
+   </update>
+   
+   <select id="isFavoriteStatus" resultType="boolean">
+      SELECT favorites FROM mail WHERE mail_id=#{mail_id}
+   </select>
+   
+   <update id="mailbookmark">
+      UPDATE mail_receiver SET bookmark = #{isFavorite ? 1 : 0} WHERE mail_id=#{mailId} 
+      <if test='type.equals("self")'>
+      AND is_receiver = 2
+      </if>
+      
+   </update>
+   <select id="isbookmarkStatus" resultType="boolean">
+      SELECT bookmark FROM mail_receiver WHERE mail_id #{mailId} AND
+      <if test='type.equals("self")'>
+      is_receiver = 2
+      </if>
+   </select>
+   
+   <insert id="tempListUpdate">
+      INSERT INTO mail (mail_id, member_id, mailSubject, mailContent)
+      VALUES (#{mail_id},9988392, #{mailSubject}, #{mailContent})
+      ON DUPLICATE KEY UPDATE
+          mailSubject = #{mailSubject},
+          mailContent = #{mailContent}
+   </insert>
+   
+   <select id="mailSelfBox" resultType="mail">
+      SELECT mf.mail_file_id ,mr.*,m.*,mb.name from mail_receiver mr RIGHT OUTER JOIN mail m ON (m.mail_id = mr.mail_id) 
+      LEFT OUTER JOIN mail_file mf ON (m.mail_id= mf.mail_id)
+      LEFT OUTER JOIN member mb ON (m.member_id=mb.member_id) WHERE m.member_id = 9988392 AND is_receiver = 2 ORDER BY mr.mail_id  DESC
+   </select>
 </mapper>
