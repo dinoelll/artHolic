@@ -29,7 +29,7 @@ public class PaymentService {
 	@Value("${spring.servlet.multipart.location}") private String root;
 
 	
-	public ModelAndView writeVacation(HashMap<String, String> params, MultipartFile[] files) {
+	public int writeVacation(HashMap<String, String> params, MultipartFile[] files) {
 	    PaymentDTO dto = new PaymentDTO();
 	    
 	    // 기본 정보 부여
@@ -49,21 +49,26 @@ public class PaymentService {
 	    String document_id = generateVacationDocumentNumber();
 	    params.put("document_id", document_id);
 	    
+	    int vacationFormSaveRow = 0;
+	    int vacationFormSaveTempRow = 0;
+	    
 	    if(params.get("temp")!=null) {
 	    	
 	    	
-	    	int vacationFormSaveTempRow =  dao.vacationFormSaveTemp(params);
+	    	vacationFormSaveTempRow =  dao.vacationFormSaveTemp(params);
 	    	 logger.info("작성폼 임시저장 업로드 완료 "+vacationFormSaveTempRow);
 	    }
 	    if(params.get("temp")==null) {
+	   
 	    	String temp = "0";
 		    params.put("temp", temp);
 	    	
-	    	 int vacationFormSaveRow =  dao.vacationFormSave(params);
-	 	    logger.info("작성폼 업로드 완료 "+vacationFormSaveRow);
-	 	    
 	    	
+	 	    
+		    vacationFormSaveRow =  dao.vacationFormSave(params);
+		    logger.info("작성폼 업로드 완료 "+vacationFormSaveRow);
 	    }
+	  
 	    
 	    
 	   
@@ -95,10 +100,25 @@ public class PaymentService {
 	        }
 	    }
 	    
-
-	    ModelAndView mav = new ModelAndView("paymentVacation");
-		/* mav.addObject("success", vacationFormSaveRow); */
-	    return mav;
+	    // 참조자 넣기
+	    for (int i = 1; i <= 4; i++) {
+	    	String referrerKey = "referrer" + i;
+	    	if (params.get(referrerKey) != null && !params.get(referrerKey).isEmpty()) {
+	            
+	            
+	            String member_id =  params.get(referrerKey);
+	            params.put("member_id", member_id);
+	            int referrerRow = dao.payment_reference(params);
+	            logger.info("참조자 변경완료 !! " + referrerRow);
+	        }
+	    	
+	   
+	    }
+	    
+	   
+	    
+	    
+	    return vacationFormSaveRow;
 	    
 	    
 	}

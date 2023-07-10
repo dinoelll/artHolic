@@ -68,7 +68,17 @@
 		member_id 
 		FROM member 
 		WHERE name= #{param1}
+		LIMIT 1
 	</select>	 
+	
+	<insert id="payment_reference" parameterType="hashmap">
+		INSERT INTO payment_reference(
+		document_id,member_id
+		)VALUES(
+		#{document_id},#{member_id}
+		)
+	</insert> 
+	
 
 
 	

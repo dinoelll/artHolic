@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,13 +32,16 @@ public class PaymentController {
 	
 	
 	@RequestMapping(value = "/payment.ajax")
+	@ResponseBody
 	public ModelAndView dualList(@RequestParam HashMap<String, String> params) {
 		logger.info("params : "+params);
 		return new ModelAndView("paymentVacationForm");
 
 	}
+	
 	@RequestMapping(value = "/writeVacation.ajax")
-	public ModelAndView writeVacation(@RequestParam HashMap<String, String> params 
+	@ResponseBody
+	public int writeVacation(@RequestParam HashMap<String, String> params 
 			,@RequestParam("file") MultipartFile[] files) {
 		logger.info("params : "+params);
 		logger.info("file : "+files);
@@ -53,14 +57,15 @@ public class PaymentController {
 		
 		
 		// 오전 오후 여부
-		String vacation_sort =  params.get("radioPeriod");
-		if(vacation_sort.equals("오전") ) {
-			params.put("vacation_sort", "0");
+		if(params.get("radioPeriod") != null) {
+			String vacation_sort =  params.get("radioPeriod");
+			if(vacation_sort.equals("오전") ) {
+				params.put("vacation_sort", "0");
+			}
+			if(vacation_sort.equals("오후") )  {
+				params.put("vacation_sort", "1");
+			}
 		}
-		if(vacation_sort.equals("오후") )  {
-			params.put("vacation_sort", "1");
-		}
-		
 		//결재선 분리
 		
 		String payment =  params.get("payment");
@@ -79,6 +84,7 @@ public class PaymentController {
 	            if (lastSpaceIndex != -1 && lastSpaceIndex < paymentValue.length() - 1) {
 	                paymentValue = paymentValue.substring(lastSpaceIndex + 1);
 	            }
+	         
 	            
 	            
 	            
@@ -89,8 +95,33 @@ public class PaymentController {
 	            params.put(paymentKey, member_id);
 	        }
 	        
+	        //참조자 분리
+    		
+    		String referrer =  params.get("referrer");
+    		
+    	        String[] referrers = referrer.split(",");
+    	        int referrerCount = referrers.length;
+
+    	        
+
+    	        for (int i = 0; i < referrerCount; i++) {
+    	            String referrerKey = "referrer" + (i + 1);
+    	            String referrerValue = referrers[i].trim();
+    	            
+    	         // 뒤에 있는 단어 추출
+    	            int lastSpaceIndex1 = referrerValue.lastIndexOf(' ');
+    	            if (lastSpaceIndex1 != -1 && lastSpaceIndex1 < referrerValue.length() - 1) {
+    	            	referrerValue = referrerValue.substring(lastSpaceIndex1 + 1);
+    	            	
+    	            	
+    	            }  
+    	          //이름으로 document_id 찾기
+    	            String member_id = service.findMemberId(referrerValue);
+    	            logger.info("member_id 찾은거..,, "+member_id);
+    	            
+    	            params.put(referrerKey, member_id);
 	        
-	        
+    	        }
 
 
 		

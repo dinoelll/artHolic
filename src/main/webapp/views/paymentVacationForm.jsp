@@ -624,10 +624,10 @@
 										      <label style="font-size:27px;">참조자 선택</label>
 										      <div class="dual-listbox-container">
 										        <select id="referrer" class="duallistbox" multiple="multiple" name="duallistbox_demo2[]">
-										          <option value="대리 김형준" selected >대리 홍길동</option>
-										          <option value="과장 아무개">과장 아무개</option>
-										          <option value="차장 홍길동"> 차장 박차장</option>
-										          <option value="사장 김사장">사장 김사장</option>
+										           <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										        </c:forEach>
 										        </select>
 										      </div>
 										    </div>
@@ -805,30 +805,33 @@ function writeVacation() {
 	var approversVal = $('[name="duallistbox_demo1[]"]').val();
 	console.log(approversVal);
 	
-	 var formData = new FormData();
+	  var referrer = $('[name="duallistbox_demo2[]"]').val();
+	 console.log(referrer);
+	 
+	 
 
 	  var fileInput = document.getElementById('exampleInputFile');
 	  var file = fileInput.files[0]; // Get the selected file
 
 	  
-	  if (file) {
 
-	  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
-		  formData.append('file', file); // Append the file to the FormData object
-	} 
-		  
-	  /*   if (file) {
+	  
+	  
+	     if (file) {
+	    	 var formData = new FormData();
 
 	  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
 		  formData.append('file', file); // Append the file to the FormData object
 	} else {
 	    // 빈 파일 객체 추가
-	    formData.append('file', new Blob(), 'empty_file');
-	  } */
+	    alert('파일을 추가해 주세요.');
+	  } 
+	  
 	  
 	 
 
 	  var paymentValues = [];
+	  var referrerValues = [];
 	  
 	  // Other parameters
 	  var $limit_date = $('#limit_date');
@@ -849,11 +852,17 @@ function writeVacation() {
 	 for (var i = 0; i < approversVal.length; i++) {
 	  paymentValues.push(approversVal[i]);
 		}
+	 
+	 
+	  for (var i = 0; i < referrer.length; i++) {
+		  referrerValues.push(referrer[i]);
+			} 
 	  
 	   
 
 	  var param = {
 		  payment: paymentValues,
+		  referrer: referrerValues,
 	  	limit_date: $limit_date.val(),
 	  	form_sort: $form_sort.val(),
 	  	vacation_kind: $vacation_kind.val(),
@@ -882,7 +891,7 @@ function writeVacation() {
 	    contentType: false, // Prevent jQuery from automatically setting the content type
 	    success: function(data) {
 	      console.log(data);
-	      if (data.success !== undefined) {
+	      if (data.success =! null) {
 	        alert('전송 성공');
 	        
 	      } else {
@@ -891,7 +900,7 @@ function writeVacation() {
 	    },
 	    error: function(e) {
 	      console.log(e);
-	      alert('전송 실패');
+	      alert('오류 발생');
 	    }
 	  });
 	
@@ -902,6 +911,9 @@ function writeVacation() {
 function writeVacationTemp() {
 	var approversVal = $('[name="duallistbox_demo1[]"]').val();
 	console.log(approversVal);
+	
+	 var referrer = $('[name="duallistbox_demo2[]"]').val();
+	 console.log(referrer);
 	
 	  var fileInput = document.getElementById('exampleInputFile');
 	  var file = fileInput.files[0]; // Get the selected file
@@ -915,6 +927,7 @@ function writeVacationTemp() {
 	  
 
 	  var paymentValues = [];
+	  var referrerValues = [];
 	  
 	  // Other parameters
 	  var $limit_date = $('#limit_date');
@@ -936,11 +949,16 @@ function writeVacationTemp() {
 	 for (var i = 0; i < approversVal.length; i++) {
 	  paymentValues.push(approversVal[i]);
 		}
+	 
+	 for (var i = 0; i < referrer.length; i++) {
+		 referrerValues.push(referrer[i]);
+			}
 	  
 	   
 
 	  var param = {
 		  payment: paymentValues,
+		  referrer: referrerValues,
 	  	limit_date: $limit_date.val(),
 	  	form_sort: $form_sort.val(),
 	  	vacation_kind: $vacation_kind.val(),
@@ -977,11 +995,13 @@ function writeVacationTemp() {
 	    },
 	    error: function(e) {
 	      console.log(e);
-	      alert('전송 실패');
+	      alert('오류 발생');
 	    }
 	  });
 	}
  
+
+//(마무리)임시저장 요청 
 
 
 /*  결재선 데이터 전송*/

@@ -26,6 +26,8 @@ public interface PaymentDAO {
 
 	int vacationFormSaveTemp(HashMap<String, String> params);
 
+	int payment_reference(HashMap<String, String> params);
+
 	
 
 	
