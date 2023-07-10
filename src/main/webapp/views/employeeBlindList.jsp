@@ -145,7 +145,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          	<h1>
+            <h1>
             <a href="/employeeList.go"  >전체 사원</a>
             |
             <a href="/employeeBlindList.go"  >비공개 사원</a>
@@ -176,15 +176,10 @@
 							<option value="dept">부서</option>
 							<option value="position">직급</option>
 					</select>	
-					<select id="adminProcess">
-						<option value="default">관리자 여부</option>
-						<option value="false">사원</option>
-						<option value="true">관리자</option>
-					</select>
+					
 					<input type="text" id="employeeSearch" placeholder="내용을 입력 해 주세요.">
    					<button id="searchButton">검색</button>
 				</td>		
-					<td><input type="button" id="employeeJoin" value="등록" onclick="location.href='/join.go'"></td>
 			</tr>			
 		</table>
 				
@@ -195,17 +190,15 @@
 					<th>부서</th>
 					<th>직급</th>
 					<th>사번</th>
-					<th>가입 날짜</th>
-					<th>관리자 여부</th>
-					<th>관리자 권한</th>
+					<th>블라인드 처리 날짜</th>
 					<th>상세보기</th>
 				</tr>
 			</thead>
-			<tbody id="employeeList" style="text-align:center">
+			<tbody id="employeeBlindList" style="text-align:center">
   			<!-- 리스트가 출력될 영역 -->
 			</tbody>	
 			<tr>
-			<td colspan="8" id="paging">	
+			<td colspan="6" id="paging">	
 				<!-- 	플러그인 사용	(twbsPagination)	-->
 				<div class="container" >									
 					<nav aria-label="Page navigation" style="text-align:center">
@@ -218,31 +211,7 @@
   
 	</div>
 	
-				<!-- 모달창 -->
-			<div class="modal fade" id="modal-admin">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h4 class="modal-title">관리자 권한</h4>
-			        <!-- 폴더 id -->
-			        <span class="member_id" hidden=""></span>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			        <p style="text-align: center;">관리자 권한을 <strong><span class="admin-action"></span></strong>하시겠습니까?</p>
-			      </div>
-			      <div class="modal-footer justify-content-between">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-			        <button type="button" class="btn btn-primary btn-admin">확인</button>
-			      </div>
-			    </div>
-			    <!-- /.modal-content -->
-			  </div>
-			  <!-- /.modal-dialog -->
-			</div>
-			<!-- /.modal -->
+		
    
     </section>
     <!-- /.content -->
@@ -287,7 +256,6 @@ if (msg !== "") {
 var showPage = 1;
 var searchText = 'default';
 var searchType = 'default';
-var adminProcess = 'default';
 
 listCall(showPage);
 console.log("list call");
@@ -304,13 +272,6 @@ $('#searchButton').click(function(){
    $('#pagination').twbsPagination('destroy');
 });
 
-$('#adminProcess').change(function(){
-	console.log("process change");
-	console.log(adminProcess);
-	adminProcess = $(this).val();
-   listCall(showPage);
-   $('#pagination').twbsPagination('destroy');
-});
 
 
 function listCall(page,cnt){
@@ -318,19 +279,18 @@ function listCall(page,cnt){
 	  	var cnt = 8;
 	   $.ajax({
 	      type:'post',
-	      url:'/employeeList.ajax',
+	      url:'/employeeBlindList.ajax',
 	      data:{
 	    	  'page':page,
 	    	  'searchText':searchText,
 	    	  'searchType':searchType,
 	    	  'cnt': cnt,
-	    	  'adminProcess':adminProcess
 	      },
 	      dataType:'json',           
 	      success:function(data){
 	    	 console.log("success");
 	         console.log(data);
-	         listPrint(data.employeeList);
+	         listPrint(data.employeeBlindList);
 	         
 	      // Paging Plugin (j-query의 기본기능을 가지고 만들었기 때문에  plugin)
 	         $('#pagination').twbsPagination({
@@ -358,12 +318,12 @@ function listCall(page,cnt){
 	});
 }
 	
-function listPrint(employeeList) {
+function listPrint(employeeBlindList) {
 	  console.log("listPrint Call");
 	  var content = '';
 
-	  if (employeeList && Array.isArray(employeeList) && employeeList.length > 0) {
-		  employeeList.forEach(function (item, employeeList) {
+	  if (employeeBlindList && Array.isArray(employeeBlindList) && employeeBlindList.length > 0) {
+		  employeeBlindList.forEach(function (item, employeeBlindList) {
 			  
 			var detpNames = {
 					dept_hr : "인사팀",
@@ -387,87 +347,26 @@ function listPrint(employeeList) {
 			
 			var detpName = detpNames[item.dept_code] || item.categoryCode;
 			var positionName = positionNames[item.position_code] || item.categoryCode;
-			var processName = processNames[item.admin] || item.inqProcess;
 			
 	      content += '<tr>';
 	      content += '<td>' + item.name + '</td>';
 	      content += '<td>' + detpName + '</td>';
 	      content += '<td>' + positionName + '</td>';
 	      content += '<td>' + item.member_id + '</td>';
-	      content += '<td>' + item.reg_date + '</td>';
-	      content += '<td>' + processName + '</td>';
-	      content += '<td><button type="button" class="btn btn-default btn-icon btn-admin ' + (item.admin ? 'btn-danger' : 'btn-primary') + '" data-toggle="modal" data-target="#modal-admin" data-id="' + item.member_id + '" data-admin="' + item.admin + '">' + (item.admin ? '권한 해제' : '권한 부여') + '</button></td>';
+	      content += '<td>' + item.modi_date + '</td>';
 	      content += '<td><button class="detail" onclick="location.href=\'/updateMember.go?member_id=' + item.member_id + '\'">상세보기</button></td>';
 	      content += '</tr>';
 	    });
 	  } else {
 	    content += '<tr>';
-	    content += '<td colspan="8" style="text-align: center;">검색한 정보가 없습니다.</td>';
+	    content += '<td colspan="6" style="text-align: center;">검색한 정보가 없습니다.</td>';
 	    content += '</tr>';
 	  }
 
-	  $('#employeeList').empty();
-	  $('#employeeList').append(content);
+	  $('#employeeBlindList').empty();
+	  $('#employeeBlindList').append(content);
 	}
-
-
-	//관리자 권한 부여 모달 열기
-	$(document).on('click', '.btn-admin', function () {
-	  var memberId = $(this).data('id');
-	  var adminValue = $(this).data('admin');
-	  console.log(memberId);
-	  $('#modal-admin').find('.member_id').text(memberId);
-	  
-	  // 설정된 권한 동작 텍스트 변경
-	  if (adminValue) {
-	    $('#modal-admin').find('.admin-action').text('해제');
-	  } else {
-	    $('#modal-admin').find('.admin-action').text('부여');
-	  }
-	  
-	  // 모달 열기
-	  $('#modal-admin').modal('show');
-	});
 	 
-	/* 관리자 권한 */
-	$(document).ready(function() {
-	  // 버튼 클릭 시
-	  $('.btn-admin').click(function() {
-	 
-	    var memberId = $('.member_id').text();
-	    var adminValue = $(this).data('admin');
-	    
-	    if (adminValue === 0) {
-	        adminValue = '1';
-	      } else {
-	        adminValue = '0';
-	      }
-	    
-		console.log(memberId,adminValue);
-	    // 서버로 요청 전송
-	    $.ajax({
-	      type: 'POST',
-	      url: '/admin.ajax',
-	      data: {
-	    	  memberId: memberId,
-	    	  adminValue: adminValue
-	      },
-	      success: function(data) {
-	        // 성공 시
-	        alert('관리자 권한 처리에 성공했습니다.');
-	        location.reload(); // 페이지 새로고침
-	      },
-	      error: function(error) {
-	        // 실패 시
-	        alert('관리자 권한 처리에 실패했습니다.');
-	        console.log(error);
-	      }
-	    });
-
-	    // 모달창 닫기
-	    $('#modal-admin').modal('hide');
-	  });
-	});
 </script>
 
 </html>

@@ -112,6 +112,10 @@
         margin-left: 20px;
         margin-bottom: 5px;
     }
+    
+    .blind{
+    	margin-left: 30px;
+    }
 	
 	
 </style>
@@ -245,6 +249,12 @@
 						                <option value="naver.com">naver.com</option>
 						            </select>
 						        </div>
+						</li>
+						<li style="text-align: center;">
+							  <select name="blind" style="display: inline-block;">
+							    <option value="false" ${member.userBlindWhether == false ? 'selected' : ''}>블라인드 미처리 상태</option>
+							    <option value="true" ${member.userBlindWhether == true ? 'selected' : ''}>블라인드 처리 상태</option>
+							  </select>
 						</li>
 						
 					</ul>	

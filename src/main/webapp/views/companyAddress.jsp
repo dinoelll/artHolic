@@ -74,6 +74,24 @@
 			color: white;
 		}
 		
+		.btn-detail{
+			background-color: #91bdce;
+			border: 1px solid #91bdce;
+			font-weight: bold;
+			color: white;
+			padding-bottom: 0px;
+    		padding-top: 0px;	
+		}
+		
+		.btn-delete{
+			background-color: #f82a2aa3;
+			border: 1px solid #f82a2aa3;
+			font-weight: bold;
+			color: white;
+			padding-bottom: 0px;
+    		padding-top: 0px;	
+		}
+		
 		.modal-title{
 			margin-left: 170px;
 		}
@@ -186,7 +204,9 @@
 					<input type="text" id="companySearch" placeholder="내용을 입력 해 주세요.">
    					<button id="searchButton">검색</button>
 				</td>		
-					<td><input type="button" id="companyWrite" value="등록" data-toggle="modal" data-target="#modal-company"></td>
+				<c:if test="${admin eq 'true'}">
+				<td><input type="button" id="companyWrite" value="등록" data-toggle="modal" data-target="#modal-company"></td>
+				</c:if>				
 			</tr>			
 		</table>
 				
@@ -257,15 +277,39 @@
 			      </div>
 			      	<form action="companyUpdate.do">
 			      		<div class="Write">
+			      			<input type="hidden" id="cooper_id2" value="">
 			      			<input type="text" class="input" name="business" id="business2" value="">
 							<input type="text" class="input" name="name" id="name2" value="">
 							<input type="text" class="input" name="part" id="part2" value="">
-							<input type="text" class="input" name="tel" id="tel2" oninput="formatPhoneNumber()" value=""> 
+							<input type="text" class="input" name="tel" id="tel2" oninput="formatPhoneNumber2()" value=""> 
 						</div>     	
 			      	</form>
 			      <div class="modal-footer justify-content-between">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 			        <button type="button" class="btn btn-primary btn-update">수정</button>
+			      </div>
+			    </div>
+			    <!-- /.modal-content -->
+			  </div>
+			  <!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
+			
+			<!-- 협력업체 삭제 모달창 -->
+			<div class="modal fade" id="modal-delete">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h4 class="modal-title">협력업체 삭제</h4>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      	<input type="hidden" id="cooper_id3" value="">
+			      	<p style="text-align: center;">연락처를 정말로 <strong>삭제</strong>하시겠습니까?</p>
+			      <div class="modal-footer justify-content-between">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+			        <button type="button" class="btn btn-primary btn-delete">삭제</button>
 			      </div>
 			    </div>
 			    <!-- /.modal-content -->
@@ -324,6 +368,21 @@ console.log("list call");
 
 function formatPhoneNumber() {
 	  var phoneInput = document.getElementById("tel");
+	  var phoneNumber = phoneInput.value;
+
+	  phoneNumber = phoneNumber.replace(/-/g, "");
+
+	  if (phoneNumber.length > 3 && phoneNumber.length <= 7) {
+	    phoneNumber = phoneNumber.replace(/(\d{3})(\d+)/, "$1-$2");
+	  } else if (phoneNumber.length > 7) {
+	    phoneNumber = phoneNumber.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
+	  }
+
+	  phoneInput.value = phoneNumber;
+	}
+	
+function formatPhoneNumber2() {
+	  var phoneInput = document.getElementById("tel2");
 	  var phoneNumber = phoneInput.value;
 
 	  phoneNumber = phoneNumber.replace(/-/g, "");
@@ -408,6 +467,7 @@ function listPrint(companyList) {
 	      content += '<td>' + item.part + '</td>';
 	      content += '<td>' + item.tel + '</td>';
 	      content += '<td><button type="button" class="btn btn-default btn-icon btn-detail" data-toggle="modal" data-target="#modal-detail" data-id="' + item.cooper_id + '">수정</button></td>';
+		  content += '<td><button type="button" class="btn btn-default btn-icon btn-delete" date-toggle="modal" date-target="#modal-delete" data-id="' + item.cooper_id + '">삭제</button></td>';      
 	      content += '</tr>';
 	    });
 	  } else {
@@ -476,6 +536,7 @@ function listPrint(companyList) {
 		        $('#name2').val(response.company.name);
 		        $('#part2').val(response.company.part);
 		        $('#tel2').val(response.company.tel);
+		        $('#cooper_id2').val(response.company.cooper_id);
 		        $('#modal-detail').modal('show');
 		    },
 		    error: function(error) {
@@ -493,7 +554,8 @@ function listPrint(companyList) {
 		var name = $("#name2").val();
 		var part = $("#part2").val();
 		var tel = $("#tel2").val();
-
+		var cooper_id = $("#cooper_id2").val();
+		
 	    // 서버로 요청 전송
 	    $.ajax({
 	      type: 'POST',
@@ -502,7 +564,8 @@ function listPrint(companyList) {
 	    	  business2: business,
 	    	  name2: name,
 	    	  part2: part,
-	    	  tel2: tel
+	    	  tel2: tel,
+	    	  cooper_id2: cooper_id
 	      },
 	      success: function(data) {
 	        // 성공 시
@@ -518,6 +581,44 @@ function listPrint(companyList) {
 
 	    // 모달창 닫기
 	    $('#modal-detail').modal('hide');
+	  });
+	});
+	
+	
+	// 협력업체 삭제
+	$(document).on('click', '.btn-delete', function() {
+	  var cooper_id = $(this).data('id');
+	  $('#modal-delete').find('#cooper_id3').val(cooper_id);
+	  $('#modal-delete').modal('show');
+	});
+
+	/* 협력업체 삭제 */
+	$(document).ready(function() {
+	  // 버튼 클릭 시
+	  $('.btn-delete').click(function() {
+	    var cooper_id = $("#cooper_id3").val();
+
+	    // 서버로 요청 전송
+	    $.ajax({
+	      type: 'POST',
+	      url: '/companyDelete.ajax',
+	      data: {
+	        cooper_id3: cooper_id
+	      },
+	      success: function(data) {
+	        // 성공 시
+	        alert('협력업체 삭제에 성공했습니다.');
+	        location.reload(); // 페이지 새로고침
+	      },
+	      error: function(error) {
+	        // 실패 시
+	        alert('협력업체 삭제에 실패했습니다.');
+	        console.log(error);
+	      }
+	    });
+
+	    // 모달창 닫기
+	    $('#modal-delete').modal('hide');
 	  });
 	});
 	

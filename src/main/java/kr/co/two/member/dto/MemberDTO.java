@@ -25,6 +25,8 @@ public class MemberDTO {
 		private Date modi_date;
 		private String modi_id;
 		private String gender;
+		private boolean userBlindWhether;
+		
 		
 		// cooper
 		private String part;
@@ -153,6 +155,13 @@ public class MemberDTO {
 		}
 		public void setModi_id(String modi_id) {
 			this.modi_id = modi_id;
+		}
+		
+		public boolean isUserBlindWhether() {
+			return userBlindWhether;
+		}
+		public void setUserBlindWhether(boolean userBlindWhether) {
+			this.userBlindWhether = userBlindWhether;
 		}
 		
 }
