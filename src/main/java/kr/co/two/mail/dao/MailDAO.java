@@ -14,42 +14,42 @@ import kr.co.two.mail.dto.MailDTO;
 @Mapper
 public interface MailDAO {
 
-	ArrayList<MailDTO> mailgetOptions();
+   ArrayList<MailDTO> mailgetOptions();
 
-	int mailWrite(MailDTO dto);
+   int mailWrite(MailDTO dto);
 
-	int mailPhotoUpload(int mail_id, String ori_file_name, String root, String new_file_name);
+   int mailPhotoUpload(int mail_id, String ori_file_name, String root, String new_file_name);
 
-	int receiverWrite(MailDTO dto);
+   int receiverWrite(MailDTO dto);
 
-	int referenceMemberWrite(MailDTO dto);
+   int referenceMemberWrite(MailDTO dto);
 
-	ArrayList<MailDTO> mailSendDetail(int mail_id,int row);
+   ArrayList<MailDTO> mailSendDetail(int mail_id,int row);
 
-	int findMailReference(int mail_id);
+   int findMailReference(int mail_id);
 
-	ArrayList<MailDTO> mailMemberDetail(int mail_id);
+   ArrayList<MailDTO> mailMemberDetail(int mail_id);
 
-	int mailCheckPhoto(int mail_id);
+   int mailCheckPhoto(int mail_id);
 
-	ArrayList<MailDTO> mailHasPhoto(int mail_id);
+   ArrayList<MailDTO> mailHasPhoto(int mail_id);
 
-	int mailTempCheck();
+   int mailTempCheck();
 
-	HashMap<String, Object> tempList(HashMap<String, Object> params);
+   HashMap<String, Object> tempList(HashMap<String, Object> params);
 
-	int mailFavorite(Integer mail_id, boolean isFavorite);
+   int mailFavorite(Integer mail_id, boolean isFavorite);
 
-	int tempListUpdate(HashMap<String, String> params);
+   int tempListUpdate(HashMap<String, String> params);
 
-	ArrayList<MailDTO> mailSelfBox();
+   ArrayList<MailDTO> mailSelfBox();
 
-	int savereceiverWrite(MailDTO dto);
+   int savereceiverWrite(MailDTO dto);
 
-	boolean isFavoriteStatus(Integer mail_id);
+   boolean isFavoriteStatus(Integer mail_id);
 
-	int mailbookmark(int mailId, Boolean isFavorite, String type);
+   int mailbookmark(int mailId, Boolean isFavorite, String type);
 
-	boolean isbookmarkStatus(int mailId, String type);
+   boolean isbookmarkStatus(int mailId, String type);
 
 }
