@@ -206,6 +206,7 @@
 	/* 예약 가능한 버튼의 스타일 */
 	background-color: #91bdce;
 	color: white;
+	border: 3px solid #91bdce;
 }
 
 .time.reserved {
@@ -213,6 +214,7 @@
 	background-color: gray;
 	color: white;
 	cursor: not-allowed;
+	border: 3px solid gray;
 }
 
 .btnBlueGreen.btnPush {
@@ -303,12 +305,12 @@
 	margin-left: 90px;
 }
 
-.room .time-buttons button {
+ .room .time-buttons button {
 	margin-right: 10px;
 	margin-bottom: 10px;
-	border: 3px solid #91bdce;
-	background-color: #91bdce;
-}
+	/* border: 3px solid #91bdce; */
+	/* background-color: #91bdce; */
+} 
 
 .room-info {
 	display: flex;
@@ -353,6 +355,9 @@ table {
 
 .m-0{
 	color:#91bdce;
+}
+.reserved{
+	background-color: gray;
 }
 
 </style>
@@ -643,8 +648,7 @@ table {
 							return function() {
 								console.log(selectedDate + '-' + selectedRoom
 										+ '-' + selectedTime);
-								var buttons = document
-										.getElementsByClassName("time");
+								var buttons = document.getElementsByClassName("time");
 								for (var j = 0; j < buttons.length; j++) {
 									buttons[j].removeAttribute("id");
 									buttons[j].style.backgroundColor = "";
@@ -761,8 +765,8 @@ table {
 					// 요청 성공 시 처리할 코드 작성
 					console.log('예약 등록 성공');
 					console.log(response.success);
-					alert('예약이 완료되었습니다\n' + '<예약정보>\n' + '회의실' + meetingName
-							+ '\n' + '날짜' + selectedDate + '\n' + '시간'
+					alert('예약이 완료되었습니다\n' + '<예약정보>\n' + '회의명 - ' +meetingName+'\n'+'참가자 - ' +meetionMember+'\n'+ '회의실 - ' + selectedRoom
+							+ '\n' + '날짜 - ' + selectedDate + '\n' + '시간 - '
 							+ startTime + '-' + endTime);
 
 					location.href = '/metingRoom.go';

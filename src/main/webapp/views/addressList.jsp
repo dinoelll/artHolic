@@ -9,6 +9,11 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
+<!-- Font Awesome CSS 파일을 추가합니다.  별 모양-->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+
 <!-- Ionicons -->
 <link rel="stylesheet"
 	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -76,8 +81,8 @@
 }
 
 .btn-danger {
-	background-color: red;
-	border: 1px solid red;
+	background-color: #f82a2aa3;
+	border: 1px solid #f82a2aa3;
 	font-weight: bold;
 	color: white;
 }
@@ -117,101 +122,60 @@
 	color: white;
 }
 
-#employeeJoin {
+#companyWrite {
 	background-color: #91bdce;
 	border: 3px solid #91bdce;
 	width: 50px;
 	height: 30px;
 	border-radius: 3px;
 	color: white;
-	float: right; /* 오른쪽으로 이동 */
-	margin-bottom: 15px
+	margin-bottom: 15px;
+	margin-left: 1210px;
 }
 
-.modal {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: none;
-	background-color: rgba(0, 0, 0, 0.4);
+.input {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 5px;
+	background-color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin: 15px;
+	width: 450px;
 }
 
-/* * {
-	  padding:0;
-	  margin:0;
-	  box-sizing: border-box;
-	} */
-/* #btnWrap {
-		width: 500px;
-		margin: 100px auto;
-	} */
-#popupBtn {
-	width: 50px;
-	height: 30px;
-	padding: 4px 4px;
-	float: right;
+.btn-update {
+	background-color: #f82a2aa3;
+	border: 1px solid #f82a2aa3;
+	font-weight: bold;
+	color: white;
+	padding-bottom: 0px;
+	padding-top: 0px;
+	width: 58px;
 }
 
-#modalWrap {
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
-	padding-top: 100px; /* Location of the box */
-	left: 0;
-	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-	display: none;
+.m-0 {
+	color: #91bdce;
 }
 
-#modalBody {
-	width: 500px;
-	height: 600px;
-	padding: 86px 53px;
-	margin: 109px auto;
-	border: 5px solid #777;
-	background-color: #fff;
+.bookmark {
+	display: inline-block;
+	background-color: transparent;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	font-size: 0;
 }
 
-.btn-default {
-	background-color: #f8f9fa;
-	border-color: #ddd;
-	color: #444;
-	float: right;
-}
-
-img {
-	vertical-align: middle;
-	border-style: none;
-	width: 150px;
-	height: 90px;
-	float: left;
-}
-
-.room p {
-	color: #333;
+.bookmark i {
 	font-size: 16px;
-	margin-top: 10px;
-	margin-right: 459px;
 }
-
-#del {
-	float: left;
+/* 
+.bookmarked {
+  background-color: yellow; /* 원하는 색상으로 설정하세요 */
 }
-
-#upload {
-	float: right;
-	background-color: blue;
-    border: 1px solid blue;
-    font-weight: bold;
-    color: white;
-}
-.m-0{
-	color:#91bdce;
-}
+*
+/
 </style>
 </head>
 
@@ -226,7 +190,9 @@ img {
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0">사내연락처</a></b></h1>
+							<h1 class="m-0">
+								사내연락처</a></b>
+							</h1>
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">
@@ -257,13 +223,11 @@ img {
 									<option value="name">이름</option>
 									<option value="position">직급</option>
 									<option value="dept">부서명</option>
-							</select> <!-- <select id="adminProcess">
-									<option value="default">관리자 여부</option>
-									<option value="false">사원</option>
-									<option value="true">관리자</option>
-							</select>  --> <input type="text" id="keyword"
-								placeholder="내용을 입력 해 주세요.">
-								<button onclick="opt()">검색</button></td>
+							</select> <select id="bookmark">
+									<option value="">전체보기</option>									
+									<option value="8948948">즐겨찾기</option>
+							</select> <input type="text" id="keyword" placeholder="내용을 입력 해 주세요.">
+								<button onclick="opt()" id="searchButton">검색</button></td>
 						</tr>
 					</table>
 					<table id="example1" class="table table-bordered table-striped">
@@ -278,8 +242,10 @@ img {
 						</colgroup>
 						<thead>
 							<tr id="thead" style="text-align: center">
-								<th><input type="checkbox" id="all" /></th>
-								<th>이름</th>								
+								<th>
+									<!-- <input type="checkbox" id="all" /> -->즐겨찾기
+								</th>
+								<th>이름</th>
 								<th>직급</th>
 								<th>부서명</th>
 								<th>연락처</th>
@@ -354,11 +320,11 @@ img {
 
 	}
 
-
 	var showPage = 1;
 	var cnt = 10;
 	var optValue = '';
 	var keywordValue = '';
+	var bookmark = '';
 
 	listCall(showPage);
 
@@ -373,7 +339,7 @@ img {
 		$('#pagination').twbsPagination('destroy');
 	}
 
-	/* $('#searchButton').click(function(){
+	/* 	 $('#searchButton').click(function(){
 	 //검색어 확인 
 	 searchText = $('#employeeSearch').val();
 	 searchType = $('#select-dropdown').val();
@@ -382,20 +348,17 @@ img {
 	 console.log('pagePerNum :'+pagePerNum);
 	 listCall(showPage,searchText, searchType, pagePerNum );
 	 $('#pagination').twbsPagination('destroy');
-	 }); 
+	 });  */
 
-
-
-	 $('#adminProcess').change(function(){
-	 console.log("process change");
-	 console.log(adminProcess);
-	 adminProcess = $(this).val();
-	 listCall(showPage);
-	 $('#pagination').twbsPagination('destroy');
-	 }); */
+	$('#bookmark').change(function() {
+		console.log("bookmark change");
+		bookmark = $(this).val();
+		console.log(bookmark);
+		listCall(showPage, bookmark);
+		$('#pagination').twbsPagination('destroy');
+	});
 
 	function listCall(page, cnt) {
-		 
 
 		var cnt = 8;
 		$.ajax({
@@ -405,14 +368,16 @@ img {
 				'page' : page,
 				'cnt' : cnt,
 				'opt' : optValue,
-				'keyword' : keywordValue
+				'keyword' : keywordValue,
+				'bookmark' : bookmark
 			},
 			dataType : 'json',
 			success : function(data) {
 				console.log("success");
 				console.log(data.pages);
 				console.log(data.list);
-				listPrint(data.list);
+				console.log(data.bmList);
+				listPrint(data.list, data.bmList);
 
 				// Paging Plugin (j-query의 기본기능을 가지고 만들었기 때문에  plugin)
 				$('#pagination').twbsPagination({
@@ -439,26 +404,34 @@ img {
 			}
 		});
 	}
-	 
-	 
 
-	function listPrint(adList) {
+	function listPrint(adList, bmList) {
 		console.log("listPrint Call");
 		var content = '';
 
 		if (adList.length > 0) {
-			adList.forEach(function(dto, idx) {
-				console.log(dto.startTime);
+			adList
+					.forEach(function(dto, idx) {
 						content += '<tr>';
-						content += '<td><input type="checkbox" value="'+dto.member_id+'"/></td>';
-						content += '<td>'+dto.name+'</td>';
+
+						var buttonClass = isBookmarked(dto.member_id, bmList) ? 'bookmark bookmarked'
+								: 'bookmark';
+						var iconClass = isBookmarked(dto.member_id, bmList) ? 'fas fa-star'
+								: 'far fa-star';
+						content += '<td><button class="' + buttonClass + '" value="' + dto.member_id + '"><i class="' + iconClass + '"></i></button></td>';
+						content += '<td>' + dto.name + '</td>';
 						content += '<td>' + dto.position_name + '</td>';
 						content += '<td>' + dto.dept_name + '</td>';
-						content += '<td>' + dto.phone + '</td>';	
-						content += '<td><a href="/mailWrite2.go?id=' + dto.member_id + '&name=' + dto.name +'&dept=' + dto.dept_name +'&position=' + dto.position_name + '">' + dto.email + '</a></td>';
-						content += '<td>' + dto.tel+ '</td>';
+						content += '<td>' + dto.phone + '</td>';
+						content += '<td><a href="/mailWrite2.go?id='
+								+ dto.member_id + '&name=' + dto.name
+								+ '&dept=' + dto.dept_name + '&position='
+								+ dto.position_name + '">' + dto.email
+								+ '</a></td>';
+						content += '<td>' + dto.tel + '</td>';
 						content += '</tr>';
 					});
+
 		} else {
 			content += '<tr>';
 			content += '<td colspan="7" style="text-align: center;">검색한 정보가 없습니다.</td>';
@@ -466,58 +439,115 @@ img {
 		}
 		$('#adList').empty();
 		$('#adList').append(content);
+
+		bookmarkClick();
 	}
 
-	$('#all').click(function(e) {
-		var $chk = $('input[type="checkbox"]');
-		console.log($chk);
-		if ($(this).is(':checked')) {
-			$chk.prop('checked', true);
-		} else {
-			$chk.prop('checked', false);
+	function isBookmarked(memberId, bmList) {
+		for (var i = 0; i < bmList.length; i++) {
+			if (bmList[i] === memberId) {
+				return true;
+			}
 		}
-	});
+		return false;
+	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-/* 	function del() {
+	function bookmarkClick() {
 
-		var checkArr = [];
+		$('.bookmark.bookmarked').click(function(e) {
+			var bookmarkValue = $(this).val();
+			console.log(bookmarkValue);
+			console.log('즐겨찾기 해제');
 
-		$('input[type="checkbox"]:checked').each(function(idx, item) {
-			if ($(this).val() != 'on') {
-				checkArr.push($(this).val());
-			}
-		});
-
-		console.log(checkArr);
-
-		$.ajax({
-			type : 'get',
-			url : 'rvDelete.ajax',
-			data : {
-				'rvDelList' : checkArr
-			},
-			dataType : 'json',
-			success : function(data) {
-				console.log(data);
-				if (data.success) {
-					alert(data.msg);
+			$.ajax({
+				type : 'post',
+				url : '/bookmarkDel.ajax',
+				data : {
+					'id' : bookmarkValue,
+				},
+				dataType : 'json',
+				success : function(data) {
+					console.log("success");
+					console.log(data.data);
+					alert('즐겨찾기가 해제되었습니다.');
 					listCall(showPage);
+					/* location.href='/address.go';	 */
+				},
+				error : function(e) {
+					console.log("Error");
 				}
-			},
-			error : function(e) {
-				console.log(e);
-			}
+			});
+
 		});
 
-	} */
+		$('.bookmark:not(.bookmarked)').click(function(e) {
+			var bookmarkValue = $(this).val();
+			console.log(bookmarkValue);
+			console.log('즐겨찾기 등록');
+			$.ajax({
+				type : 'post',
+				url : '/bookmark.ajax',
+				data : {
+					'id' : bookmarkValue,
+				},
+				dataType : 'json',
+				success : function(data) {
+					console.log("success");
+					console.log(data.data);
+					alert('즐겨찾기가 등록되었습니다.');
+					listCall(showPage);
+					/* location.href='/address.go';	 */
+				},
+				error : function(e) {
+					console.log("Error");
+				}
+			});
+
+		});
+	};
+
+	/* 	$('#all').click(function(e) {
+	 var $chk = $('input[type="checkbox"]');
+	 console.log($chk);
+	 if ($(this).is(':checked')) {
+	 $chk.prop('checked', true);
+	 } else {
+	 $chk.prop('checked', false);
+	 }
+	 }); */
+
+	/* 	function del() {
+
+	 var checkArr = [];
+
+	 $('input[type="checkbox"]:checked').each(function(idx, item) {
+	 if ($(this).val() != 'on') {
+	 checkArr.push($(this).val());
+	 }
+	 });
+
+	 console.log(checkArr);
+
+	 $.ajax({
+	 type : 'get',
+	 url : 'rvDelete.ajax',
+	 data : {
+	 'rvDelList' : checkArr
+	 },
+	 dataType : 'json',
+	 success : function(data) {
+	 console.log(data);
+	 if (data.success) {
+	 alert(data.msg);
+	 listCall(showPage);
+	 }
+	 },
+	 error : function(e) {
+	 console.log(e);
+	 }
+	 });
+
+	 } */
 
 	/*    if (employeeList && Array.isArray(employeeList) && employeeList.length > 0) {
 	      employeeList.forEach(function (item, employeeList) {

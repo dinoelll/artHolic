@@ -29,13 +29,48 @@ public class AddressController {
 	@RequestMapping(value = "/adList.ajax")
 	@ResponseBody
 	public HashMap<String, Object> adList(@RequestParam String page,@RequestParam String cnt,
-			@RequestParam String opt,@RequestParam String keyword) {
+			@RequestParam String opt,@RequestParam String keyword,@RequestParam String bookmark) {
 
 		logger.info("page : " + page);
 		logger.info("opt : " + opt);
 		logger.info("keyword : " + keyword);
+		logger.info("bookmark : " + bookmark);
 
-		return service.adList(Integer.parseInt(page),Integer.parseInt(cnt),opt,keyword);
+		return service.adList(Integer.parseInt(page),Integer.parseInt(cnt),opt,keyword,bookmark);
 	}
 	
+	
+	
+	@RequestMapping(value = "/bookmark.ajax")
+	@ResponseBody
+	public HashMap<String, String> bookmark(@RequestParam String id) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("data", "failed");
+		String member_id ="8948948";
+		int row = service.bookmark(id,member_id);
+		if (row ==1) {
+			map.put("data", id);
+		}
+		
+		return map;
+	}
+	
+	@RequestMapping(value = "/bookmarkDel.ajax")
+	@ResponseBody
+	public HashMap<String, String> bookmarkDel(@RequestParam String id) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("data", "failed");
+		String member_id ="8948948";
+		int row = service.bookmarkDel(id,member_id);
+		if (row ==1) {
+			map.put("data", id);
+		}
+		
+		return map;
+	}
+	
+	
+
+	
+
 }

@@ -65,7 +65,7 @@
           <div class="card card-primary card-outline">
             <div class="card-header">
               <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
-              <a href="selfBoxWrite.go" class="btn btn-primary btn-sm ">내게 쓰기</a>
+              <a href="mailWrite.go?selfBox=true" class="btn btn-primary btn-sm ">내게 쓰기</a>
               <div class="card-tools">
                 <div class="input-group input-group-sm">
                 <select name="searchFilter" id="searchFilter">
