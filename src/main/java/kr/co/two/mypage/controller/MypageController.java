@@ -1,11 +1,17 @@
 package kr.co.two.mypage.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,12 +71,12 @@ public class MypageController {
 
    @RequestMapping(value = "/createFolder.ajax")
    @ResponseBody
-   public String myFolderCreate(@RequestParam String folderName, HttpServletResponse response, HttpSession session) {
+   public String myFolderCreate(@RequestParam String folderName, HttpServletResponse response) {
 
       logger.info("createFolder Controller");
       logger.info("folderName" + "/" + folderName);
-      String member_id = (String) session.getAttribute("loginId");
-      service.myFolderCreate(folderName,member_id);
+
+      service.myFolderCreate(folderName);
 
       response.setHeader("Cache-Control", "no-cache");
       response.setHeader("Refresh", "0;url=/myfolder");
@@ -99,13 +105,12 @@ public class MypageController {
 
    @GetMapping(value = "/list.ajax")
    @ResponseBody
-   public HashMap<String, Object> folderList(HttpSession session) {
+   public HashMap<String, Object> folderList() {
 
       logger.info("folderList Controller");
-      String member_id = (String) session.getAttribute("loginId");
-      
+
       HashMap<String, Object> map = new HashMap<String, Object>();
-      ArrayList<String> list = service.folderList(member_id);
+      ArrayList<String> list = service.folderList();
       map.put("folder-list", list);
 
       return map;

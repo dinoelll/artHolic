@@ -132,11 +132,5 @@ window.addEventListener("load", function() {
   fadeContainer.classList.add("fade-in");
 });
 
-
-var msg = "${msg}"; 
-if (msg !== "") {
-  alert(msg);
-}
-
 </script>
 </html>

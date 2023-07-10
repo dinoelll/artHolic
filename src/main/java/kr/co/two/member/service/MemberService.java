@@ -181,12 +181,9 @@ public class MemberService {
 	}
 
 
-	public int changePw(String pw, String member_id) {
+	public int changePw(String pw) {
 		
-		logger.info("pw :"+pw+"/"+"member_id :"+member_id);
-		String enc_pass = encoder.encode(pw);
-		
-		return dao.changePw(enc_pass,member_id);
+		return dao.changePw(pw);
 		
 	}
 
@@ -244,24 +241,20 @@ public class MemberService {
 	}
 
 
-	public MemberDTO login(String id, String pw) {
-	    logger.info("login Service");
-
-	    boolean success = false;
-
-	    MemberDTO memberDTO = dao.login(id);
-	    if (memberDTO != null) {
-	        String enc_pw = memberDTO.getPw();
-	        success = encoder.matches(pw, enc_pw);
-	    }
-	    
-	    logger.info("success :" + success);
-
-	    if (success) {
-	        return memberDTO;
-	    } else {
-	        return null;
-	    }
+	public boolean login(String id, String pw) {
+		
+		logger.info("login Service");
+		
+		boolean success = false;
+		
+		MemberDTO memberDTO = dao.login(id);
+		if (memberDTO != null) {
+		    String enc_pw = memberDTO.getPw();
+		    success = encoder.matches(pw, enc_pw);
+		}
+		logger.info("success :"+success);
+		
+		return success;
 	}
 
 
@@ -270,14 +263,13 @@ public class MemberService {
 		return dao.memberDetail(member_id);
 	}
 
-	public ModelAndView update(HashMap<String, String> params, MultipartFile profile, String email, int blind) {
+	public ModelAndView update(HashMap<String, String> params, MultipartFile profile, String email) {
 	    logger.info("join Service");
 
 	    String member_id = params.get("member_id");
 	    
 	    String birthday = params.get("birthday");
 	    logger.info("birthday: " + birthday);
-	    logger.info("blind :"+blind);
 
 	    String newFileName = null;
 
@@ -303,7 +295,7 @@ public class MemberService {
 	        
 	    }
 
-	    int success = dao.update(params, newFileName, email,blind);
+	    int success = dao.update(params, newFileName, email);
 	    logger.info("success: " + success);
 
 	    String msg = "사원정보 수정에 실패했습니다.";
@@ -403,112 +395,7 @@ public class MemberService {
 
 	public String companyupdate(HashMap<String, String> params) {
 
-		int success = dao.companyUpdate(params);
-		logger.info("success :"+success);
-		return "redirect:/companyAddress.go";
-	}
-
-
-
-	public String companydelete(String cooper_id3) {
-		
-		int success = dao.companyDelete(cooper_id3);
-		logger.info("success :"+success);
-		return "redirect:/companyAddress.go";
-	}
-
-
-
-	public HashMap<String, Object> employeeBlindList(HashMap<String, Object> params) {
-		logger.info("params :"+params);
-		
-		int page = Integer.parseInt(String.valueOf(params.get("page")));
-		int cnt = Integer.parseInt(String.valueOf(params.get("cnt")));
-				
-		String searchType = String.valueOf(params.get("searchType"));
-		String searchText = String.valueOf(params.get("searchText"));
-		
-		logger.info("page :"+page+"/"+"ctn :"+cnt+"/"+"searchType :"+searchType+"/"+"searchText :"+searchText);
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		
-		int offset = cnt * (page-1);
-	      
-	    logger.info("offset : " + offset);
-	    
-	    int total = 0; 
-	    
-	    if (searchType.equals("default")) {
-	            total = dao.employeeBlindTotalCount(params);
-	            logger.info("회원 전체 리스트 / employeeTotalCount");
-	    } else if (searchType.equals("dept")) {
-	        if (!searchText.isEmpty()) {
-	            // 해당 detp_code를 포함하는 리스트를 불러옴
-            	total = dao.employeeBlindDeptTotalCount(params, searchType, searchText);
-                logger.info("회원 부서 리스트 / employeeDeptTotalCount");
-	        }
-	    } else if (searchType.equals("position")) {
-	        if (!searchText.isEmpty()) {
-	            // 해당 position 을 포함하는 리스트를 불러옴	            
-            	total = dao.employeeBlindPositionTotalCount(params, searchType, searchText);
-                logger.info("회원 직급 리스트 / employeeNameTotalCount");	             
-	        }
-	    } else if (searchType.equals("name")) {
-	        if (!searchText.isEmpty()) {
-	            // 해당 name을 포함하는 리스트를 불러옴	            
-	            	total = dao.employeeBlindNameTotalCount(params, searchType, searchText);
-	                logger.info("회원 이름 리스트 / employeeNameTotalCount");	            
-	        }
-	    }
-	    
-	    
-	    int range = total%cnt  == 0 ? total/cnt : (total/cnt)+1;
-	      
-	    logger.info("총게시글 수 : "+ total);
-	    logger.info("총 페이지 수 : "+ range);
-	    
-	    page = page>range ? range:page;
-	    
-	    map.put("currPage", page);
-	    map.put("pages", range);
-	    params.put("offset", offset);
-	    
-	    ArrayList<MemberDTO> employeeBlindList = null;
-
-	    if (searchType.equals("default")) {
-	            // 전체 리스트를 불러옴
-	        	employeeBlindList = dao.employeeBlindTotalList(params, cnt, offset);
-	            logger.info("회원 전체 리스트 / employeeTotalList");	        
-	    } else if (searchType.equals("dept")) {
-	        if (!searchText.isEmpty()) {
-	            // 해당 dpet_code를 포함하는 리스트를 불러옴
-	            	employeeBlindList = dao.employeeBlindDeptTotalList(params, searchType, searchText, cnt, offset);
-	                logger.info("회원 부서 리스트 / employeeDeptTotalList");	           
-	        }
-	    } else if (searchType.equals("name")) {
-	        if (!searchText.isEmpty()) {
-	            // 해당 name을 포함하는 리스트를 불러옴	            
-	            	employeeBlindList = dao.employeeBlindNameTotalList(params, searchType, searchText, cnt, offset);
-	                logger.info("회원 이름 리스트 / employeeNameTotalList");	            
-	        }
-	    } else if (searchType.equals("position")) {
-	        if (!searchText.isEmpty()) {
-	            // 해당 position을 포함하는 리스트를 불러옴
-	            	employeeBlindList = dao.employeeBlindPositionTotalList(params, searchType, searchText, cnt, offset);
-	                logger.info("회원 직급 리스트 / employeePositionTotalList");	            
-	        }
-	    }
-	    	    
-	    map.put("employeeBlindList", employeeBlindList);
-	    logger.info("employeeBlindList :"+employeeBlindList);
-	    
-		return map; 
-	}
-
-
-
-	public boolean isUserBlind(String id) {
-		return dao.isUserBlind(id);
+		return dao.companyUpdate(params);
 	}
 
 

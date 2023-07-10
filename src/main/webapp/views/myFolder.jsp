@@ -289,12 +289,12 @@
 	      <div class="container-fluid">
 	        <div class="row mb-2">
 	          <div class="col-sm-6">
-				<h1 class="m-0">내 문서</h1>
+			<!--<h1 class="m-0">Dashboard</h1> -->
 	          </div><!-- /.col -->
 	          <div class="col-sm-6">
 	            <ol class="breadcrumb float-sm-right">
-	              <li class="breadcrumb-item"><a href="/main">Home</a></li>
-	              <li class="breadcrumb-item active">내 문서</li>
+	              <li class="breadcrumb-item"><a href="#">Home</a></li>
+	              <li class="breadcrumb-item active">Dashboard v1</li>
 	            </ol>
 	          </div><!-- /.col -->
 	        </div><!-- /.row -->
@@ -486,37 +486,6 @@
 		      <div class="modal-footer justify-content-between">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 		        <button type="button" class="btn btn-primary btn-primary-file" id="upload-button">업로드</button>
-		      </div>
-		    </div>
-		    <!-- /.modal-content -->
-		  </div>
-		  <!-- /.modal-dialog -->
-		</div>
-		<!-- /.modal -->
-		
-		<!-- 파일 삭제 모달창 -->
-		<div class="modal fade" id="modal-fileDelete">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h4 class="modal-title">파일 삭제</h4>
-		
-		      	<!-- 폴더 id -->
-           		<span class="folder_id upload" hidden=""></span>
-           		
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-				    <input type="hidden" id="fileName" value="">
-			      	<p style="text-align: center;">파일을 정말로 <strong>삭제</strong>하시겠습니까?</p>
-			      	<br>
-					<p style="text-align: center; font-size: 20px;">*삭제된 파일는 <span style="color: red; font-weight: bolder;">복구</span>되지 않습니다.*</p>
-		      </div>
-		      <div class="modal-footer justify-content-between">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-		        <button type="button" class="btn btn-primary btn-fileDelete" >삭제</button>
 		      </div>
 		    </div>
 		    <!-- /.modal-content -->
@@ -904,15 +873,10 @@ filelistcall();
 				  
 				  $('#file-list').html(content);
 				}
-				
-			$(document).on('click', '.delete-file', function() {
-				 var fileName = $(this).closest('.file-item').data('new-file-name');
-				  $('#modal-fileDelete').find('#fileName').text(fileName); // 모달 내에 파일 이름 출력
-				  $('#modal-fileDelete').modal('show');
-				});
 			
-			$('.btn-fileDelete').on('click', function() {
-				  var fileName = $('#modal-fileDelete').find('#fileName').text();
+				$(document).on('click', '.delete-file', function() {
+				  var fileName = $(this).closest('.file-item').data('new-file-name');
+				  console.log('fileName :'+fileName);
 				  deleteFile(fileName);
 				});
 			

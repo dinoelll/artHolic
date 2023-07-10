@@ -65,7 +65,6 @@
 			background-color: #91bdce;
 			border: 1px solid #91bdce;
 			font-weight: bold;
-			color: white;
 		}
 		
 		.btn-danger{
@@ -145,16 +144,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          	<h1>
-            <a href="/employeeList.go"  >전체 사원</a>
-            |
-            <a href="/employeeBlindList.go"  >비공개 사원</a>
-            </h1>
+            <h1 class="m-0">사원 관리</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="/main">Home</a></li>
-              <li class="breadcrumb-item active">사원 관리</li>
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard v1</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -195,7 +190,6 @@
 					<th>부서</th>
 					<th>직급</th>
 					<th>사번</th>
-					<th>가입 날짜</th>
 					<th>관리자 여부</th>
 					<th>관리자 권한</th>
 					<th>상세보기</th>
@@ -205,7 +199,7 @@
   			<!-- 리스트가 출력될 영역 -->
 			</tbody>	
 			<tr>
-			<td colspan="8" id="paging">	
+			<td colspan="6" id="paging">	
 				<!-- 	플러그인 사용	(twbsPagination)	-->
 				<div class="container" >									
 					<nav aria-label="Page navigation" style="text-align:center">
@@ -394,7 +388,6 @@ function listPrint(employeeList) {
 	      content += '<td>' + detpName + '</td>';
 	      content += '<td>' + positionName + '</td>';
 	      content += '<td>' + item.member_id + '</td>';
-	      content += '<td>' + item.reg_date + '</td>';
 	      content += '<td>' + processName + '</td>';
 	      content += '<td><button type="button" class="btn btn-default btn-icon btn-admin ' + (item.admin ? 'btn-danger' : 'btn-primary') + '" data-toggle="modal" data-target="#modal-admin" data-id="' + item.member_id + '" data-admin="' + item.admin + '">' + (item.admin ? '권한 해제' : '권한 부여') + '</button></td>';
 	      content += '<td><button class="detail" onclick="location.href=\'/updateMember.go?member_id=' + item.member_id + '\'">상세보기</button></td>';
@@ -402,7 +395,7 @@ function listPrint(employeeList) {
 	    });
 	  } else {
 	    content += '<tr>';
-	    content += '<td colspan="8" style="text-align: center;">검색한 정보가 없습니다.</td>';
+	    content += '<td colspan="6" style="text-align: center;">검색한 정보가 없습니다.</td>';
 	    content += '</tr>';
 	  }
 
