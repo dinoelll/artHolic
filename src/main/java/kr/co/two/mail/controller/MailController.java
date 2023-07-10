@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,17 +79,15 @@ public class MailController {
 	}
 	
 	
-	@GetMapping(value="/mailWrite2.go")
-	public String mailWrite2(@RequestParam String id,@RequestParam String name,@RequestParam String dept,@RequestParam String position, Model model) {
-		if (id != null && name !=null && dept !=null && position !=null) {
-			model.addAttribute("id", id);
-			model.addAttribute("name", name);
-			model.addAttribute("dept", dept);
-			model.addAttribute("position", position);
-		}
-		logger.info(id+name+dept+position);
-		return "mailWrite";
-	}
+	/*
+	 * @GetMapping(value="/mailWrite2.go") public String mailWrite2(@RequestParam
+	 * String id,@RequestParam String name,@RequestParam String dept,@RequestParam
+	 * String position, Model model) { if (id != null && name !=null && dept !=null
+	 * && position !=null) { model.addAttribute("id", id);
+	 * model.addAttribute("name", name); model.addAttribute("dept", dept);
+	 * model.addAttribute("position", position); }
+	 * logger.info(id+name+dept+position); return "mailWrite"; }
+	 */
 	
 	
 	
@@ -151,21 +150,28 @@ public class MailController {
 		return map;
 	}
 	
-	@RequestMapping(value="/mailDetail.do")
-	public String mailDetaildo(Model model,@RequestParam Map<String, Object> params,HttpServletRequest request) {
-		
+	//메일 상세보기
+	@RequestMapping(value="/mailDetail.do/{mail_id}")
+	public String mailDetaildo(Model model,@PathVariable String mail_id,@RequestParam String type,@RequestParam int seletedMailId) {
 		
 		String page = "mailDetail";
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		logger.info("mail_id: "+mail_id);
+		logger.info("seletedMailId:"+seletedMailId);
+		logger.info("type: "+type);
+		
+		model.addAttribute("dto", service.mailDetail(seletedMailId,type));
+
+		/*Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if(flashMap != null) {
 			params=(Map<String, Object>) flashMap.get("map");
 			logger.info("params ? " + params);
 			model.addAttribute("dto", service.mailDetail(params,request));
-		}
+		}*/
 		
 		return page;
 	}
 	
+	//메일 상세보기 파일 다운로드
 	@GetMapping(value="mailPhotoDownload.do")
 	public ResponseEntity<Resource> mailPhotoDownload(String path) {
 		
@@ -176,5 +182,57 @@ public class MailController {
 		header.add("content-Disposition", "attatchment;fileName\""+fileName+"\"");
 		
 		return new ResponseEntity<Resource>(body,header,HttpStatus.OK);
+	}
+	
+	
+	@PostMapping(value="mail/temp.ajax")
+	@ResponseBody
+	public HashMap<String, Object> mailtempWrite(@RequestParam HashMap<String, String> params,String mail_id,
+			@RequestParam(required = false) String approvers,@RequestParam(required = false) String referrer){
+		logger.info("params: "+params);
+		logger.info("mail_id: "+mail_id);
+		logger.info("approvers"+approvers);
+		logger.info("referrer"+referrer);
+		HashMap<String, Object> mailResult = new HashMap<String, Object>();
+		
+		if (mail_id == null) {
+	        HashMap<String, Object> mailtempList = service.tempList(params);
+	        logger.info("mail_id: " + mailtempList.get("mail_id"));
+	        mailResult.put("mail_id", mailtempList.get("mail_id"));
+	    } else {
+	        service.tempListUpdate(params);
+	    }
+		// 수정필요
+		if(approvers!=null) {
+			params.put("approvers", approvers);
+			logger.info("approvers"+approvers);
+		}
+		if(referrer!=null) {
+			params.put("referrer", referrer);
+			logger.info("referrer", referrer);
+		}
+		
+		return mailResult;
+	}
+	
+	@PostMapping(value="mail/favorite.ajax")
+	@ResponseBody
+	public HashMap<String, Object> mailFavorite(@RequestParam("mailId") Integer mail_id, boolean isFavorite) {
+		logger.info("mail_id: "+mail_id+"/"+"isFavorite: "+isFavorite);
+		// 받는사람, 참조자 즐쳐작기 필요함 (수정필요)
+		return service.mailFavorite(mail_id,isFavorite);
+	}
+	
+	@RequestMapping(value="mail/selfBox.ajax")
+	@ResponseBody
+	public HashMap<String, Object> mailSelfBox(){
+		return service.mailSelfBox();
+	}
+	
+	@RequestMapping(value="mail/bookmark.ajax")
+	@ResponseBody
+	public HashMap<String, Object> mailbookmark(@RequestParam int mailId, @RequestParam Boolean isFavorite, @RequestParam String type){
+		logger.info("mailId: "+mailId+"isFavorite: "+isFavorite+"type: "+type);
+		return service.mailbookmark(mailId,isFavorite,type);
 	}
 }

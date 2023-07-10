@@ -20,6 +20,7 @@ public class MailDTO {
 	private String Favorites;
 	private boolean temp;
 	private boolean blind;
+	private String type;
 	
 	//mail_receiver
 	private boolean read_chk;
@@ -260,5 +261,11 @@ public class MailDTO {
 	}
 	public void setPosition_name(String position_name) {
 		this.position_name = position_name;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 }

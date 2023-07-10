@@ -2,6 +2,7 @@ package kr.co.two.mail.dao;
 
 import java.lang.StackWalker.Option;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
@@ -33,5 +34,22 @@ public interface MailDAO {
 
 	ArrayList<MailDTO> mailHasPhoto(int mail_id);
 
+	int mailTempCheck();
+
+	HashMap<String, Object> tempList(HashMap<String, Object> params);
+
+	int mailFavorite(Integer mail_id, boolean isFavorite);
+
+	int tempListUpdate(HashMap<String, String> params);
+
+	ArrayList<MailDTO> mailSelfBox();
+
+	int savereceiverWrite(MailDTO dto);
+
+	boolean isFavoriteStatus(Integer mail_id);
+
+	int mailbookmark(int mailId, Boolean isFavorite, String type);
+
+	boolean isbookmarkStatus(int mailId, String type);
 
 }
