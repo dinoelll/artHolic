@@ -279,7 +279,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item admin" id="adminMenu">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
