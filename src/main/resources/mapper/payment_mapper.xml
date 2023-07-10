@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	   
+      
 <mapper namespace="kr.co.two.payment.dao.PaymentDAO">
 
-	<select id="getLatestDocumentNumber" resultType="String">
+   <select id="getLatestDocumentNumber" resultType="String">
         SELECT document_id
         FROM elec_payment
-       	WHERE document_id LIKE 'vac%'
+          WHERE document_id LIKE 'vac%'
         ORDER BY document_id DESC
         LIMIT 1
     </select>
-    	
+       
     <insert id="vacationFormSave" parameterType="hashmap">
-		INSERT INTO elec_payment(
-			document_id,id,paySubject,payContent,blind,state
-			,temp,form_sort,vacation_kind,start_date,end_date,vacation_sort,limit_date
-		)VALUES(
-			#{document_id},#{id},#{paySubject},#{payContent},#{blind}
-			,#{state},#{temp},#{form_sort},#{vacation_kind},#{start_date}
-			,#{end_date},#{vacation_sort},#{limit_date}
-		)
-	</insert> 
-	
-	<insert id="vacationFormSaveTemp" parameterType="hashmap">
-		INSERT INTO elec_payment(
-			document_id,id,paySubject,payContent,blind,state
-			,temp,form_sort,vacation_kind,start_date,end_date,vacation_sort,limit_date
-		)VALUES(
-			#{document_id},#{id},#{paySubject},#{payContent},#{blind}
-			,#{state},#{temp},#{form_sort},#{vacation_kind},#{start_date}
-			,#{end_date},#{vacation_sort},#{limit_date}
-		)
-	</insert>
-	
-	
-	 <insert id="fileWrite" parameterType="String">
-		INSERT INTO elec_payment_file(
-			document_id,ori_file_name,file_path,new_file_name
-		)VALUES(
-			#{document_id},#{ori_file_name},#{file_path},#{new_file_name}
-		)
-	</insert>
-	
- 	<select id="member" resultType="payMember">
-		SELECT
+      INSERT INTO elec_payment(
+         document_id,id,paySubject,payContent,blind,state
+         ,temp,form_sort,vacation_kind,start_date,end_date,vacation_sort,limit_date
+      )VALUES(
+         #{document_id},#{id},#{paySubject},#{payContent},#{blind}
+         ,#{state},#{temp},#{form_sort},#{vacation_kind},#{start_date}
+         ,#{end_date},#{vacation_sort},#{limit_date}
+      )
+   </insert> 
+   
+   <insert id="vacationFormSaveTemp" parameterType="hashmap">
+      INSERT INTO elec_payment(
+         document_id,id,paySubject,payContent,blind,state
+         ,temp,form_sort,vacation_kind,start_date,end_date,vacation_sort,limit_date
+      )VALUES(
+         #{document_id},#{id},#{paySubject},#{payContent},#{blind}
+         ,#{state},#{temp},#{form_sort},#{vacation_kind},#{start_date}
+         ,#{end_date},#{vacation_sort},#{limit_date}
+      )
+   </insert>
+   
+   
+    <insert id="fileWrite" parameterType="String">
+      INSERT INTO elec_payment_file(
+         document_id,ori_file_name,file_path,new_file_name
+      )VALUES(
+         #{document_id},#{ori_file_name},#{file_path},#{new_file_name}
+      )
+   </insert>
+   
+    <select id="member" resultType="payMember">
+      SELECT
       m.member_id,
       m.name,
       m.profile_photo,
@@ -52,25 +52,25 @@
       FROM
       member AS m
       LEFT JOIN code AS c ON m.position_code  = c.code_id
-	</select>	 
+   </select>    
 
 
-	<insert id="paymentShip" parameterType="hashmap">
-		INSERT INTO payment_ship(
-		document_id,member_id,order_column,result,note
-		)VALUES(
-		#{document_id},#{member_id},#{order_column},#{result},#{note}
-		)
-	</insert> 
+   <insert id="paymentShip" parameterType="hashmap">
+      INSERT INTO payment_ship(
+      document_id,member_id,order_column,result,note
+      )VALUES(
+      #{document_id},#{member_id},#{order_column},#{result},#{note}
+      )
+   </insert> 
 
-	<select id="findMemberId" resultType="string">
-		SELECT
-		member_id 
-		FROM member 
-		WHERE name= #{param1}
-	</select>	 
+   <select id="findMemberId" resultType="string">
+      SELECT
+      member_id 
+      FROM member 
+      WHERE name= #{param1}
+   </select>    
 
 
-	
+   
 
 </mapper>

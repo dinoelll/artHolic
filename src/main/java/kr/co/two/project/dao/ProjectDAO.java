@@ -16,4 +16,6 @@ public interface ProjectDAO {
 
 	int projectWrite(HashMap<String, Object> params);
 
+	/* int feedWrite(ProjectDTO dto); */
+
 }
