@@ -9,27 +9,39 @@
 		SELECT * FROM project
 		<where>
 			<if test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND name LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
 		</where>
-		ORDER BY board_id DESC
+		ORDER BY project_id DESC
 		LIMIT #{cnt} OFFSET #{offset}
 	</select>
 	
 	<select id="totalCount" resultType="int" parameterType="string">
-		SELECT COUNT(board_id) FROM board
+		SELECT COUNT(project_id) FROM project
 		<where>
-		board_code = 'briefing'
-			<if test="keyword != null and !keyword.equals('') and opt =='member_id'">AND member_id LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='subject'">AND subject LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
 		</where>
 	</select>
 	
 	<insert id="projectWrite" parameterType="hashmap">
       INSERT INTO project
-      (project_name, project_manager, field_manager, start_date, end_date)
-      VALUES(#{project_name},#{project_manager},#{field_manager},#{location},#{start_date},#{end_date})
+      (project_name, project_manager, field_manager, manager_phone, start_date, end_date, member_id)
+      VALUES(#{project_name},#{project_manager},#{field_manager}, #{manager_phone},#{start_date},#{end_date},'123456')
     </insert>
+    
+<!--     <insert
+		 id="feedWrite" 
+		 parameterType="kr.co.cc.project.dto.AttachmentDTO"
+		 useGeneratedKeys="true" keyProperty="id">
+		 <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+	        SELECT UUID()
+	    </selectKey>
+		INSERT INTO
+		feed(feed_id, content, member_id, project_id)
+		VALUES(#{feed_id},#{content},#{member_id},#{project_id})
+	</insert> -->
 
 
 </mapper>

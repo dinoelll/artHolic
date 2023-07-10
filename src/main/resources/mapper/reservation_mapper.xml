@@ -86,8 +86,13 @@
 	</select>
 
 	<select id="rvTotalCount" resultType="int"
-		parameterType="string">
-		SELECT COUNT(Reservation_id) FROM mr_reservation
+		parameterType="string">		
+		SELECT
+		COUNT(Reservation_id) 
+		FROM
+		mr_reservation AS mr
+		LEFT JOIN meeting_room AS m ON mr.room_id = m.room_id
+		
 		<where>
 			<if
 				test="keyword != null and !keyword.equals('') and opt =='mrName'"> room_name LIKE CONCAT('%',#{keyword},'%')</if>
