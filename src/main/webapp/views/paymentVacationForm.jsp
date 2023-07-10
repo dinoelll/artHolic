@@ -1006,6 +1006,13 @@ function writeVacationTemp() {
 
 /*  결재선 데이터 전송*/
 
+$(document).ready(function() {
+  $('#submitButton').click(function() {
+    // 요청 버튼 클릭 시 모달 창 닫기
+    $('#modal-lg2').modal('hide');
+  });
+});
+
 $("#approvers").bootstrapDualListbox({
 	  // 기타 매개변수 설정
 	  infoText: false, // "Showing all {0}" 메시지 숨김
