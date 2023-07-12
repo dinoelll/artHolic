@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,26 +47,7 @@ public class PaymentController {
 		logger.info("params : "+params);
 		logger.info("file : "+files);
 		
-		// 기간 및 일시
-		String oriReservationtime = params.get("reservationtime");
-		String start_date =  oriReservationtime.substring(0, 10);
-		logger.info("start_date : "+start_date);
-		params.put("start_date", start_date);
-		String end_date =  oriReservationtime.substring(22, 32);
-		logger.info("end_date : "+end_date);
-		params.put("end_date", end_date);
 		
-		
-		// 오전 오후 여부
-		if(params.get("radioPeriod") != null) {
-			String vacation_sort =  params.get("radioPeriod");
-			if(vacation_sort.equals("오전") ) {
-				params.put("vacation_sort", "0");
-			}
-			if(vacation_sort.equals("오후") )  {
-				params.put("vacation_sort", "1");
-			}
-		}
 		//결재선 분리
 		
 		String payment =  params.get("payment");
@@ -132,12 +114,22 @@ public class PaymentController {
 		return service.writeVacation(params ,files);
 
 	}
-	@RequestMapping(value = "/paymentVacationForm.go")
-	public ModelAndView member() {
-
-		return service.member(); 
-
+	
+	
+	@PostMapping(value = "/paymentList.ajax")
+	@ResponseBody
+	public HashMap<String, Object> listCall(@RequestParam String page, @RequestParam String cnt,
+			@RequestParam String opt, @RequestParam String optt, @RequestParam String keyword ) {
+		
+		
+		logger.info("optt : " + optt);
+		logger.info("opt : " + opt);
+		logger.info("keyword : " + keyword);
+		logger.info("page : " + page);
+		logger.info("cnt : " + cnt);
+		return service.listCall(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword,optt);
 	}
+
 	
 	
 	

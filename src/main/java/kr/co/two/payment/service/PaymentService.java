@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.co.two.payment.dao.PaymentDAO;
 import kr.co.two.payment.dto.MemberDTO;
 import kr.co.two.payment.dto.PaymentDTO;
+import kr.co.two.project.dto.ProjectDTO;
 
 @Service
 public class PaymentService {
@@ -44,30 +45,133 @@ public class PaymentService {
 	    params.put("id", id);
 	    
 	    
+	    
 	    String form_sort =  params.get("form_sort");
 	    
-	    String document_id = generateVacationDocumentNumber();
+	    
+	    String document_id = generateVacationDocumentNumber(form_sort);
 	    params.put("document_id", document_id);
 	    
+	    
 	    int vacationFormSaveRow = 0;
+	    int buyItemFormSaveRow = 0;
+	    int projectFormSaveRow = 0;
 	    int vacationFormSaveTempRow = 0;
+	    int buyItemFormSaveTempRow = 0;
+	    int projectFormSaveTempRow = 0;
+	   
 	    
 	    if(params.get("temp")!=null) {
 	    	
-	    	
+	    	if(form_sort.equals("PAYMENT_VAC") ) {
+	    		// 기간 및 일시
+	    		String oriReservationtime = params.get("reservationtime");
+	    		String start_date =  oriReservationtime.substring(0, 10);
+	    		logger.info("start_date : "+start_date);
+	    		params.put("start_date", start_date);
+	    		String end_date =  oriReservationtime.substring(22, 32);
+	    		logger.info("end_date : "+end_date);
+	    		params.put("end_date", end_date);
+	    		
+	    		
+	    		// 오전 오후 여부
+	    		if(params.get("radioPeriod") != null) {
+	    			String vacation_sort =  params.get("radioPeriod");
+	    			if(vacation_sort.equals("오전") ) {
+	    				params.put("vacation_sort", "0");
+	    			}
+	    			if(vacation_sort.equals("오후") )  {
+	    				params.put("vacation_sort", "1");
+	    			}
+	    		}	
 	    	vacationFormSaveTempRow =  dao.vacationFormSaveTemp(params);
 	    	 logger.info("작성폼 임시저장 업로드 완료 "+vacationFormSaveTempRow);
-	    }
-	    if(params.get("temp")==null) {
+	    	}
+	    	
+	    	  if(form_sort.equals("PAYMENT_BUY")) {
+
+	    	  
+	    	  
+		    	vacationFormSaveTempRow =  dao.buyItemFormSaveTemp(params);
+		    	 logger.info("작성폼 임시저장 업로드 완료 "+vacationFormSaveTempRow);
+	    	}
+	    	if(form_sort.equals("PAYMENT_PRO")) {
+	    	
+	 		
+	    		// 기간 및 일시
+	 			String oriReservationtime = params.get("reservationtime");
+	 			String start_date =  oriReservationtime.substring(0, 10);
+	 			logger.info("start_date : "+start_date);
+	 			params.put("start_date", start_date);
+	 			String end_date =  oriReservationtime.substring(22, 32);
+	 			logger.info("end_date : "+end_date);
+	 			params.put("end_date", end_date);
+	    		
+	    		
+	    	
+		    	vacationFormSaveTempRow =  dao.projectFormSaveTemp(params);
+		    	 logger.info("작성폼 임시저장 업로드 완료 "+vacationFormSaveTempRow);
+	    	}
+	    	
+    	}
+	    if(params.get("temp")==null ) {
 	   
 	    	String temp = "0";
 		    params.put("temp", temp);
 	    	
 	    	
+	 	    if(form_sort.equals("PAYMENT_VAC")) {
+	 	    	// 기간 및 일시
+	 			String oriReservationtime = params.get("reservationtime");
+	 			String start_date =  oriReservationtime.substring(0, 10);
+	 			logger.info("start_date : "+start_date);
+	 			params.put("start_date", start_date);
+	 			String end_date =  oriReservationtime.substring(22, 32);
+	 			logger.info("end_date : "+end_date);
+	 			params.put("end_date", end_date);
+	 			
+	 			
+	 			// 오전 오후 여부
+	 			if(params.get("radioPeriod") != null) {
+	 				String vacation_sort =  params.get("radioPeriod");
+	 				if(vacation_sort.equals("오전") ) {
+	 					params.put("vacation_sort", "0");
+	 				}
+	 				if(vacation_sort.equals("오후") )  {
+	 					params.put("vacation_sort", "1");
+	 				}
+	 			}
+	 	    	
+	 	    	vacationFormSaveRow =  dao.vacationFormSave(params);
+	 	    	logger.info(" 휴가작성폼 업로드 완료 "+vacationFormSaveRow);
+	 	    }
 	 	    
-		    vacationFormSaveRow =  dao.vacationFormSave(params);
-		    logger.info("작성폼 업로드 완료 "+vacationFormSaveRow);
-	    }
+	 	   if(form_sort.equals("PAYMENT_BUY") ) {
+	 		   
+	 		   
+	 		   
+	 		   
+	 		  buyItemFormSaveRow =  dao.buyItemFormSave(params);
+	 	    	logger.info(" 비품 작성폼 업로드 완료 "+vacationFormSaveRow);
+	 	    }
+	 	  if(form_sort.equals("PAYMENT_PRO")) {
+	 		  
+	 		// 기간 및 일시
+	 			String oriReservationtime = params.get("reservationtime");
+	 			String start_date =  oriReservationtime.substring(0, 10);
+	 			logger.info("start_date : "+start_date);
+	 			params.put("start_date", start_date);
+	 			String end_date =  oriReservationtime.substring(22, 32);
+	 			logger.info("end_date : "+end_date);
+	 			params.put("end_date", end_date);
+	 		  
+	 		 projectFormSaveRow =  dao.projectFormSave(params);
+	 	    	logger.info(" 작성폼 업로드 완료 "+vacationFormSaveRow);
+	 	    }
+	 	    	
+ 	    }
+	    
+	    
 	  
 	    
 	    
@@ -176,11 +280,12 @@ public class PaymentService {
 	
 
 	// 문서번호 생성 메소드
-	private String generateVacationDocumentNumber() {
+	private String generateVacationDocumentNumber(String form_sort) {
 	    
+		
 		// 데이터베이스에서 가장 최근의 문서 번호를 조회하는 로직
 	    
-		String latestDocumentNumber = dao.getLatestDocumentNumber(); // 예시: "vac-a-0001"
+		String latestDocumentNumber = dao.getLatestDocumentNumber(form_sort); // 예시: "vac-a-0001"
 	    
 	    
 	    // 최근 문서 번호에서 알파벳, 숫자 부분을 분리
@@ -231,10 +336,56 @@ public class PaymentService {
 	  
 	  
 	  }
+	  public ModelAndView member2() {
+		  ArrayList<MemberDTO> mdto = dao.member(); 
+		  ModelAndView mav = new ModelAndView("paymentBuyItemForm"); 
+		  mav.addObject("member", mdto);
+		  logger.info("멤버 결재선 요청 내려 보냄.");
+	  
+	  return mav;
+	  
+	  
+	  }
+	  public ModelAndView member3() {
+		  ArrayList<MemberDTO> mdto = dao.member(); 
+		  ModelAndView mav = new ModelAndView("paymentProjectForm"); 
+		  mav.addObject("member", mdto);
+		  logger.info("멤버 결재선 요청 내려 보냄.");
+	  
+	  return mav;
+	  
+	  
+	  }
 
 	public String findMemberId(String paymentValue) {
 		  return dao.findMemberId(paymentValue);
 		
+	}
+	
+	
+public HashMap<String, Object> listCall(int page,int cnt, String opt, String keyword, String optt) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int offset = (page-1)*cnt; 
+		
+		int total = dao.totalCount(opt, optt, keyword); // 12
+		 // cnt = 10
+		int range = total%cnt == 0 ? total/cnt : (total/cnt)+1;
+		
+		logger.info("total :"+total);
+		logger.info("range :"+range);
+		logger.info("before page :"+page);
+		
+		page = page>range ? range : page;
+		
+		logger.info("after page :"+page);
+		
+		map.put("currPage", page);
+		map.put("pages", range);
+		ArrayList<PaymentDTO> list = dao.listCall(opt, optt, keyword,cnt, offset);
+		
+		map.put("projectList", list);
+		return map;
 	}
 	 
 

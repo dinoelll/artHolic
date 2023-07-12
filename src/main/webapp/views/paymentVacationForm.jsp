@@ -671,7 +671,7 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-              <button type="button" class="btn btn-primary" onclick="writeVacation()">요청</button>
+              <button type="button" class="btn btn-primary" onclick="writeVacation()" >요청</button>
             </div>
           </div>
           <!-- /.modal-content --> 
@@ -1005,6 +1005,7 @@ function writeVacationTemp() {
 
 
 /*  결재선 데이터 전송*/
+
 
 $("#approvers").bootstrapDualListbox({
 	  // 기타 매개변수 설정

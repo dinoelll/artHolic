@@ -1,6 +1,6 @@
 package kr.co.two.payment.dto;
 
-import java.util.Date;
+
 
 import org.apache.ibatis.type.Alias;
 
@@ -8,21 +8,31 @@ import org.apache.ibatis.type.Alias;
 public class PaymentDTO {
 	private String document_id;
 	private String id;
-	private int amount;
-	private boolean blind;
 	private String paySubject;
 	private String payContent;
+	private String form_sort;
+	private String amount;
+	private boolean blind;
 	private String state;
 	private boolean temp;
-	private Date start_date;
-	private Date end_date;
+	private String start_date;
+	private String end_date;
 	private String email;
 	private char vacation_sort;
 	private String equipment_kind;
 	private boolean is_billway;
 	private String project_kind;
 	private String project_leader;
+	private String limit_date;
+	private String code_name;
 	
+	
+	public String getForm_sort() {
+		return form_sort;
+	}
+	public void setForm_sort(String form_sort) {
+		this.form_sort = form_sort;
+	}
 	
 	public String getDocument_id() {
 		return document_id;
@@ -36,12 +46,7 @@ public class PaymentDTO {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public int getAmount() {
-		return amount;
-	}
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
+
 	public boolean isBlind() {
 		return blind;
 	}
@@ -72,18 +77,9 @@ public class PaymentDTO {
 	public void setTemp(boolean temp) {
 		this.temp = temp;
 	}
-	public Date getStart_date() {
-		return start_date;
-	}
-	public void setStart_date(Date start_date) {
-		this.start_date = start_date;
-	}
-	public Date getEnd_date() {
-		return end_date;
-	}
-	public void setEnd_date(Date end_date) {
-		this.end_date = end_date;
-	}
+
+	
+
 	public String getEmail() {
 		return email;
 	}
@@ -119,6 +115,36 @@ public class PaymentDTO {
 	}
 	public void setProject_leader(String project_leader) {
 		this.project_leader = project_leader;
+	}
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+	public String getStart_date() {
+		return start_date;
+	}
+	public void setStart_date(String start_date) {
+		this.start_date = start_date;
+	}
+	public String getEnd_date() {
+		return end_date;
+	}
+	public void setEnd_date(String end_date) {
+		this.end_date = end_date;
+	}
+	public String getLimit_date() {
+		return limit_date;
+	}
+	public void setLimit_date(String limit_date) {
+		this.limit_date = limit_date;
+	}
+	public String getCode_name() {
+		return code_name;
+	}
+	public void setCode_name(String code_name) {
+		this.code_name = code_name;
 	}
 	
 	

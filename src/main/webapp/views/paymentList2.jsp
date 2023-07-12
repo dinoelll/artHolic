@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="ko">
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 
 <head>
   <meta charset="utf-8">
@@ -21,33 +21,6 @@
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  
-  <!--  추가적으로 넣어줌-->
-  
-  <!-- Tempusdominus Bootstrap 4 -->
-<link rel="stylesheet"
-	href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-
-<!--  iCheck -->
-<link rel="stylesheet"
-	href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-
-<!-- overlayScrollbars-->
-<link rel="stylesheet"
-	href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-
-<link rel="stylesheet" href="plugins/fullcalendar/main.css">
-
-<link rel="stylesheet"
-	href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet"
-	href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-<link rel="stylesheet"
-	href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  
- <!--페이징  -->
-<script src="/js/jquery.twbsPagination.js" type="text/javascript"></script> 
-  
   
   <style>
 
@@ -174,13 +147,6 @@
 	cursor: pointer;
 	
 }
-
-#optt{
-	margin-right: 28px;
-	font-size: 20px;
-	cursor: pointer;
-	
-}
 #realForm{
 	border: 1px soild gray;
 	width: 1012px;
@@ -220,116 +186,7 @@
     
   }
   
-/*  테이블 추가 부분 */
-.main-sidebar {
-	background-color: #e9ddc6;
-}
 
-.mt-2 .nav .nav-item .nav-link p {
-	color: black;
-}
-
-.logo {
-	width: 231px;
-	height: 68px;
-}
-
-#footer {
-	margin-left: 0px;
-}
-
-
-
-.btn-danger {
-	background-color: #f82a2aa3;
-	border: 1px solid #f82a2aa3;
-	font-weight: bold;
-	color: white;
-}
-
-.modal-title {
-	margin-left: 170px;
-}
-
-.pagination {
-	margin-left: 450px;
-}
-
-#select-dropdown {
-	width: 130px;
-	height: 30px;
-	margin-bottom: 15px;
-}
-
-#adminProcess {
-	width: 110px;
-	height: 30px;
-	margin-bottom: 15px;
-}
-
-#employeeSearch {
-	width: 200px;
-	height: 30px;
-	margin-bottom: 15px
-}
-
-#searchButton {
-	background-color: #91bdce;
-	border: 3px solid #91bdce;
-	width: 50px;
-	height: 30px;
-	border-radius: 3px;
-	color: white;
-}
-
-#companyWrite {
-	background-color: #91bdce;
-	border: 3px solid #91bdce;
-	width: 50px;
-	height: 30px;
-	border-radius: 3px;
-	color: white;
-	margin-bottom: 15px;
-	margin-left: 1210px;
-}
-
-.input {
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	padding: 5px;
-	background-color: white;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	margin: 15px;
-	width: 450px;
-}
-
-.btn-update {
-	background-color: #f82a2aa3;
-	border: 1px solid #f82a2aa3;
-	font-weight: bold;
-	color: white;
-	padding-bottom: 0px;
-	padding-top: 0px;
-	width: 58px;
-}
-
-.m-0 {
-	color: #91bdce;
-}
-
-.bookmark {
-	display: inline-block;
-	background-color: transparent;
-	border: none;
-	outline: none;
-	cursor: pointer;
-	font-size: 0;
-}
-
-.bookmark i {
-	font-size: 16px;
-}
 
 
 </style>
@@ -419,10 +276,11 @@
 						          <div class="col-sm-6">
 							          <div id="formGnb2" >
 							          	<br><br>
-							          	<a class="optt" id="optt" value="전체">전체</a>
-							          	<a class="optt" id="optt" value="진행중">진행중</a>
-							          	<a class="optt" id="optt" value="반려">반려</a>
-							          	<a class="optt" id="optt" value="완료">완료</a>
+							          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">전체</a>
+							          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-lg2">진행</a>
+							          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려</a>
+							          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">완료</a>
+
 						          		</div>	
 						          </div>
 						          <div class="col-sm-6">
@@ -436,78 +294,77 @@
 								
 					<div class="card" id="paymentForm_vacation">
 						
-								<section class="content2">
-									<div class="card">
-							              <div class="card-body">
-								              	<div class="projectList">
-										              	<table>
-															<tr >
-																<td>
-																	<select id="opt" name="select">
-																			<!-- <option value="default">조건</option> -->
-																			<option value="paySubject">제목</option>
-																			<option value="code_name">결재양식</option>
-																			<option value="document_id">문서번호</option>
-																	</select> 
-																	
-																	<input type="text" id="keyword" placeholder="내용을 입력 해 주세요.">
-																		<button id="searchButton">검색</button>
-																</td>
-															</tr>
-														</table>
-								             
+						<section class="content2">
+							<div class="card">
+					              <div class="row">
+						              <div class="col-sm-12 col-md-6">
+						              	<div id="filterPay" class="dataTables_filter" style="margin-top: 20px; margin-left: 40px;">
+								                <form action="list.do">          
+							                        <select class="rounded" style="width: 82px; height: 30px;">
+							                          <option>제목</option>
+							                          <option>내용</option>
+							                          <option>제목 + 내용</option>
+							                          <option>문서번호</option>
+							                        </select>
+								              		<input class="rounded" aria-controls="example1" style="width: 218px; height: 30px;">
+								              		<button>검색</button>
+								              </form>
+							              </div>
+						              </div>
+						              <div class="col-sm-12 col-md-6">
 							              
-							              <!-- /.card-header -->
-							            
-										                <table id="example1" class="table table-bordered table-striped">
-										                  
-												                  <colgroup>
-																		<col width="10%" />
-																		<col width="7%" />
-																		<col width="23%" />
-																		<col width="8%" />
-																		<col width="5%" />
-																		<col width="7%" />
-																  </colgroup>
-												                  <thead>
-													                  <tr id="thead" style="text-align:center">
-													                    <th>기안일</th>
-													                    <th>결재양식</th>
-													                    <th>제목</th>
-													                    <th>문서번호</th>
-													                    <th>의견</th>
-													                    <th>결재 상태</th>
-													                  </tr>
-												                  </thead>
-												                  <tbody id="projectList" style="text-align:center; align-item:center; ">
-														                 
-														                 <!--  리스트 출력 영역-->
-												                 
-												                  </tbody>
-										                </table>
-									                  				<tr>
-																		<td colspan="6" id="paging">
-																			<!-- <button type="button" class="btn btn-danger" onclick="del()"
-																				id="del">취소</button> -->
-																			<div class="container">
-																				<nav aria-label="Page navigation" style="text-align: center">
-											
-																					<ul class="pagination" id="pagination"></ul>
-																				</nav>
-																			</div>
-																		</td>
-																	</tr>
-										                  
-						              		
-						              			</div><!--  adList-->
-							            	</div>
-							            </div>
-							            <!-- /.card -->
-		     					 </section>
-		     					 
-					</div><!--  div 카드 리스트 젤 큰 부분 -->
-					
-					
+						              </div>
+					              </div> 
+					              
+					              <!-- /.card-header -->
+					              <div class="card-body">
+					                <table id="example1" class="table table-bordered table-striped">
+					                  <thead>
+					                  <tr>
+					                    <th>기안일</th>
+					                    <th>결재양식</th>
+					                    <th>제목</th>
+					                    <th>문서번호</th>
+					                    <th>의견</th>
+					                    <th>결재 상태</th>
+					                  </tr>
+					                  </thead>
+					                  <tbody style="text-align:center; align-item:center; ">
+					                  <tr>
+					                    <td>2023-05-28</td>
+					                    <td>휴가신청</td>
+					                    <td> 휴가갈래요</td>
+					                    <td>GD-18-0001</td>
+					                    <td><i class="fas fa-comments"></i></td>
+					                    <td> <a class="btn btn-primary btn-sm">진행중</a></td>
+					                  </tr>
+					                  <tr>
+					                    <td>2023-05-28</td>
+					                    <td>프로젝트 신청</td>
+					                    <td> 프로젝트 건입니다. 참고....</td>
+					                    <td>GD-18-0002</td>
+					                    <td><i class="fas fa-comments"></i></td>
+					                    <td> <a class="btn btn-primary btn-sm">진행중</a></td>
+					                  </tr>
+					                  <tr>
+					                    <td>2023-05-25</td>
+					                    <td>비품신청</td>
+					                    <td> 비품신청건입니다.</td>
+					                    <td>GD-18-0003</td>
+					                    <td><i class="fas fa-comments"></i></td>
+					                    <td> <a class="btn btn-primary btn-sm">진행중</a></td>
+					                  </tr>
+					                 
+					                 
+					                  </tbody>
+					                  
+					                </table>
+					              </div>
+					              <!-- /.card-body -->
+					            </div>
+					            <!-- /.card -->
+     					 </section>
+					</div>
 				</div>
 		  	</div>	<!-- sm- 9 부분!! -->
 		  	
@@ -577,8 +434,164 @@
 				<!-- /.modal -->
       
       
-     
+      <!--  결재선 모달-->
+      <div class="modal fade" id="modal-lg2">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">결재선 선택</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+		              <div class="card card-default">
+					          
+					          
+					          <div class="card-body">
+								  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label>결재선 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="approvers" class="duallistbox" multiple="multiple">
+										          <option selected>대리 김형준</option>
+										          <option>과장 아무개</option>
+										          <option>California</option>
+										          <option>Delaware</option>
+										          <option>Tennessee</option>
+										          <option>Texas</option>
+										          <option>Washington</option>
+										        </select>
+										      </div>
+										    </div>
+										    <!-- /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row -->
+									  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label>참조자 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="referrer" class="duallistbox" multiple="multiple">
+										          <option selected>대리 김형준</option>
+										          <option>과장 아무개</option>
+										          <option>California</option>
+										          <option>Delaware</option>
+										          <option>Tennessee</option>
+										          <option>Texas</option>
+										          <option>Washington</option>
+										        </select>
+										      </div>
+										    </div>
+										    <!-- /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row -->
+								   
+              
 
+								</div>
+
+					        </div>
+					        <!-- /.card -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" id="submitButton" class="btn btn-primary">Save changes</button>            
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+      <!--  결재 요청 모달-->
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>결재 요청 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary">요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+       <!--  임시저장 모달-->
+      <div class="modal fade" id="modal-default2">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>임시저장 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary">요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+       <!--  결재 요청 모달-->
+      <div class="modal fade" id="modal-default3">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>취소 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary">요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+      
+      
+     
+     
+     
+      
+	
 	
 
   <!-- Control Sidebar -->
@@ -590,157 +603,94 @@
 <!-- ./wrapper -->
 </div>
 
- 
-  <!-- jQuery UI -->
-   <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-   
-   <!-- Bootstrap 4 -->
-   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-   <!-- overlayScrollbars -->
-   <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-   <!-- AdminLTE App -->
-   <script src="dist/js/adminlte.js"></script>
-   <!-- DataTables  & Plugins -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-
-<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-
- <footer class="main-footer">
+  <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
     
       <b>Version</b> 3.2.0
     </div>
     <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer>
+  
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+
+<!-- bs-custom-file-input -->
+<script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.move5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- Page specific script -->
+
+
 
 <script>
 
-var msg = "${msg}";
-if (msg != "") {
-	alert(msg);
 
-}
+$(function () {
+    $("#example1").DataTable({
+      "responsive": false,
+      "lengthChange": false,
+      "autoWidth": false,
+      "searching": false // 검색 기능 비활성화
+    });
+    $('#example2').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false,
+      "responsive": false
+    });
 
-var showPage = 1;
-var opt ='default';
-var optt ='default';
-var keyword ='default';
-
-listCall(showPage);
-console.log("list call");
-
-//검색어에 따른 출력 
-$('#searchButton').click(function(){
-   //검색어 확인 
-   keyword = $('#keyword').val();
-   opt = $('#opt').val();
-   console.log(keyword,opt);
-   var pagePerNum = 5;
-   console.log('pagePerNum :'+pagePerNum);
-   listCall(showPage,pagePerNum );
-   $('#pagination').twbsPagination('destroy');
-});
-
-// 위에 창에서 검색 실행
-$('.optt').click(function() {
-   // 선택된 요소에 active 클래스 추가
-   $('.optt').removeClass('active');
-   $(this).addClass('active');
-  
-   // 검색어 확인
-   
-   optt = $(this).attr('value');
-   console.log('optt :'+optt);
-   var pagePerNum = 5;
-   console.log('pagePerNum: ' + pagePerNum);
-   listCall(showPage, pagePerNum);
-   $('#pagination').twbsPagination('destroy');
-});
-
-	// 리스트 불러오기
-function listCall(page,cnt){
-   		console.log('keyword : ' + keyword);
-   		console.log('page : ' + page);
-   		console.log('cnt : ' + cnt);
-   		console.log('optt : ' + optt);
-   		console.log('opt : ' + opt);
-        var cnt = 8;
-      $.ajax({
-         type:'post',
-         url:'/paymentList.ajax',
-         data:{
-            'page':page,
-            'cnt': cnt,
-            'keyword':keyword,
-            'optt':optt,
-            'opt':opt
-         },
-         dataType:'json',           
-         success:function(data){
-           console.log("success");
-            console.log(data);
-            listDraw(data.projectList);
-            
-         // Paging Plugin (j-query의 기본기능을 가지고 만들었기 때문에  plugin)
-            $('#pagination').twbsPagination({
-            startPage:data.currPage, // 시작 페이지
-            totalPages:data.pages,// 총 페이지 수 
-            visiblePages:5,// 보여줄 페이지
-            next : '<span style="color: #91bdce;">></span>', 
-            last : '<span style="color: #91bdce;">>></span>',
-            first : '<span style="color: #91bdce;"><<</span>',
-           prev : '<span style="color: #91bdce;"><</span>',
-            onPageClick:function(event,page){ // 페이지 클릭시 동작되는 (콜백)함수
-               console.log(page,showPage);
-               if(page != showPage){
-                  showPage=page;
-                  listCall(page,cnt);
-                  
-               }
-               }
-               })
-      
-         },
-         error:function(e){
-            console.log("Error");
-         }
-   });
-}
-	
-
-
-   //리스트 작성
-function listDraw(projectList) {
-     console.log("listDraw Call");
-     var content = '';
-
-     projectList.forEach(function(dto,project_id){
-         content += '<tr>';
-         content += '<th><a href="projectDetail.go?project_id='+dto.limit_date+'">'+dto.limit_date+'</a></th>';
-         content += '<th>'+dto.code_name+'</th>';
-         content += '<th>'+dto.paySubject+'</th>';
-         content += '<td>'+ dto.document_id +'</td>';
-         content += '<td>'+ '<i class="fas fa-comments"></i>'+'</td>';
-         content += '<td><a class="btn btn-primary btn-sm">'+dto.state+'</a></td>';
-         content += '</tr>';
-       });
-
-     $('#projectList').empty();
-     $('#projectList').append(content);
-   }
-   
-
-
-
-
-
-
+    document.addEventListener("DOMContentLoaded", function() {
+      var filterPay = document.querySelector("#filterPay");
+      if (filterPay) {
+        filterPay.parentNode.removeChild(filterPay);
+      }
+    });
+    
+    document.addEventListener("DOMContentLoaded", function() {
+    	  var infoElement = document.querySelector("#example1_info");
+    	  if (infoElement) {
+    	    infoElement.parentNode.removeChild(infoElement);
+    	  }
+    	});
+  });
   
 /*결재 작성하기 모달  */
 
