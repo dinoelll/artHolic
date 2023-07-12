@@ -117,15 +117,6 @@ window.addEventListener("load", function() {
     alert(msg);
   }
   
-  // 로그인 성공 시 페이지 이동
-  document.querySelector("form").addEventListener("submit", function(event) {
-    event.preventDefault(); // 폼 기본 동작 취소
-    
-    var formValid = validateForm();
-    if (formValid) {
-      window.location.href = "/main"; 
-    }
-  });
 });
 </script>
 </html>
