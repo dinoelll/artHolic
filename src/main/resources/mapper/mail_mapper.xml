@@ -14,8 +14,8 @@
       useGeneratedKeys="true"
       keyColumn="mail_id"
       keyProperty="mail_id">
-      INSERT INTO mail(member_id,mailSubject,mailContent,blind,Favorites,temp)
-         VALUES("9988392",#{mailSubject},#{mailContent},false,false,
+      INSERT INTO mail(member_id,writeTime,mailSubject,mailContent,blind,Favorites,temp)
+         VALUES("9988392",#{writeTime},#{mailSubject},#{mailContent},false,false,
       <choose>
             <when test='type == "save" or type == "send"'>
               false
@@ -58,7 +58,7 @@
    
    <!-- 메일 상세보기 (참조자,받는사람 리스트 가져오기 -->
    <select id="mailSendDetail" resultType="mail">
-      SELECT mr.mail_id, mr.member_id, mr.is_receiver,m.name, m2.mailSubject, m2.mailContent,mr.bookmark,
+      SELECT mr.mail_id, mr.member_id, mr.is_receiver,m.name, m2.mailSubject, m2.mailContent,mr.bookmark
           MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
           MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name
       FROM mail_receiver mr
@@ -102,20 +102,20 @@
    </select>
    
    <update id="mailbookmark">
-      UPDATE mail_receiver SET bookmark = #{isFavorite ? 1 : 0} WHERE mail_id=#{mailId} 
-      <if test='type.equals("self")'>
-      AND is_receiver = 2
+      UPDATE mail_receiver SET bookmark = #{isFavorite} WHERE mail_id=#{mailId} 
+      <if test='type=="self"'>
+      AND is_receiver = '2'
       </if>
-      
    </update>
+   
    <select id="isbookmarkStatus" resultType="boolean">
-      SELECT bookmark FROM mail_receiver WHERE mail_id #{mailId} AND
-      <if test='type.equals("self")'>
-      is_receiver = 2
+      SELECT bookmark FROM mail_receiver WHERE mail_id = #{mailId} 
+      <if test='type=="self"'>
+      AND is_receiver = '2'
       </if>
    </select>
    
-   <insert id="tempListUpdate">
+   <insert id="tempListUpdate" >
       INSERT INTO mail (mail_id, member_id, mailSubject, mailContent)
       VALUES (#{mail_id},9988392, #{mailSubject}, #{mailContent})
       ON DUPLICATE KEY UPDATE
@@ -123,9 +123,173 @@
           mailContent = #{mailContent}
    </insert>
    
+   <!--  리스트 페이징 카운트 -->
+   <select id="totalCount" resultType="int">
+    <bind name="isSelf" value="type == 'self'"/>
+    <bind name="isEmptySearchText" value="(searchText == null or searchText.equals(''))"/>
+
+    SELECT COUNT(mr.mail_id) FROM mail m 
+    RIGHT OUTER JOIN mail_receiver mr ON (m.mail_id = mr.mail_id)
+    LEFT OUTER JOIN member mb ON (mb.member_id = mr.member_id) 
+    WHERE m.member_id = 9988392
+    <if test="isSelf and searchInformation == 'allMail' and isEmptySearchText">
+    	AND mr.is_receiver = 2
+    	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+        	AND mr.blind = 0
+        </if>
+        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+        </if>
+        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+        	AND mr.blind = 0 AND mr.bookmark = 1
+        </if>
+    </if> 
+    <if test="isSelf and searchInformation == 'allMail' and !(isEmptySearchText)">
+    	<if test = "searchText == 'mailSender'">
+	        AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
+	        <if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+        <if test = "searchText == 'mailRecipient'">
+        	AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
+        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+        <if test = "searchText == 'mailSubject'">
+        	AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
+        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+        <if test = "searchText == 'mailContent'">
+        	AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+        <if test = "searchText == 'mailAttachment'">
+        	AND mf.ori_file_name LIKE CONCAT('%', #{searchText}, '%')
+        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+    </if>
+	</select>
+   
+   <!-- 내게쓰기 리스트 불러오기 -->
    <select id="mailSelfBox" resultType="mail">
-      SELECT mf.mail_file_id ,mr.*,m.*,mb.name from mail_receiver mr RIGHT OUTER JOIN mail m ON (m.mail_id = mr.mail_id) 
-      LEFT OUTER JOIN mail_file mf ON (m.mail_id= mf.mail_id)
-      LEFT OUTER JOIN member mb ON (m.member_id=mb.member_id) WHERE m.member_id = 9988392 AND is_receiver = 2 ORDER BY mr.mail_id  DESC
+   	<bind name="isSelf" value="type == 'self'"/>
+    <bind name="isEmptySearchText" value="(searchText == null or searchText.equals(''))"/>
+      SELECT mr.*,m.*,mb.name FROM mail m 
+		RIGHT OUTER JOIN mail_receiver mr ON (m.mail_id = mr.mail_id)
+		LEFT OUTER JOIN member mb ON (mb.member_id = mr.member_id) 
+		WHERE m.member_id = 9988392 
+      <if test="isSelf and searchInformation == 'allMail' and isEmptySearchText">
+    	AND mr.is_receiver = 2
+    	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+        	AND mr.blind = 0
+        </if>
+        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+        </if>
+        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+        	AND mr.blind = 0 AND mr.bookmark = 1
+        </if>
+    </if> 
+    <if test="isSelf and searchInformation == 'allMail' and !(isEmptySearchText)">
+    	<if test = "searchText == 'mailSender'">
+	        AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
+	        <if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+        <if test = "searchText == 'mailRecipient'">
+        	AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
+        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+        <if test = "searchText == 'mailSubject'">
+        	AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
+        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+        <if test = "searchText == 'mailContent'">
+        	AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+        <if test = "searchText == 'mailAttachment'">
+        	AND mf.ori_file_name LIKE CONCAT('%', #{searchText}, '%')
+        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
+	        	AND mr.is_receiver = 2 AND mr.blind = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
+        	AND mr.blind = 0 AND mr.read_chk = 0
+	        </if>
+	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
+	        	AND mr.blind = 0 AND mr.bookmark = 1
+	        </if>
+        </if>
+    </if>
+    ORDER BY mr.mail_id 
    </select>
 </mapper>

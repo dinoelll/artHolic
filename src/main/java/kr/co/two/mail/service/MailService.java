@@ -6,6 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -197,10 +201,27 @@ public class MailService {
            }
        }
    }
+   
+   // 금일 날짜 가져오기
+   private Timestamp mailWriteDate() {
+	    // 현재 날짜와 시간 가져오기
+	    LocalDateTime now = LocalDateTime.now();
+
+	    // LocalDateTime을 Timestamp로 변환
+	    Timestamp writeTime = Timestamp.valueOf(now);
+	    
+
+	    // 변환된 Timestamp 반환
+	    return writeTime;
+	}
+
 
    // 메일 쓰기
    public String mailWrite(String type, HashMap<String, String> params, MultipartFile[] attachments, String approvers, String referrers, RedirectAttributes redirect) {
        MailDTO dto = createMailDTO(params);
+       Timestamp writeTime = mailWriteDate(); // 날짜 정보 가져오기
+       logger.info("writeTime: "+writeTime);
+       dto.setWriteTime(writeTime);
 
        int row = dao.mailWrite(dto);
        logger.info("mailWrite row: " + row);
@@ -336,13 +357,30 @@ public class MailService {
    }
 
    // 내게쓰기 리스트 아작스
-   public HashMap<String, Object> mailSelfBox() {
-      logger.info("아작스도착");
-      HashMap<String, Object> map = new HashMap<String, Object>();
-      ArrayList<MailDTO> list = new ArrayList<MailDTO>();
-      list = dao.mailSelfBox();
-      map.put("list", list);
-      return map;
+   public HashMap<String, Object> mailSelfBox(int page, int cnt, String searchInformation, String searchText, String mailFilter, String type, String searchMailBox) {
+		logger.info("아작스도착");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		ArrayList<MailDTO> list = new ArrayList<MailDTO>();
+		  
+		int offset = (page-1)*cnt;
+		int total = dao.totalCount(type,mailFilter,searchInformation,searchText,searchMailBox);
+		int range = total%cnt == 0?total/cnt:(total/cnt)+1;
+		  
+		logger.info("전체 게시물 수: "+total);
+		logger.info("총 페이지:" +range);
+		
+		page = page > range ? range : page;
+		
+		map.put("currPage", page);
+		map.put("pages", range);
+		/*
+		 * if(!searchInformation.equals("") && searchInformation!=null) { total =
+		 * dao.totalCount(type,searchInformation); }
+		 */
+		logger.info("total: "+total);
+		list = dao.mailSelfBox(cnt,offset,type,mailFilter,searchInformation,searchText,searchMailBox);
+		map.put("list", list);
+		return map;
    }
 
    public Object mailDetail(int seletedMailId, String type) {
