@@ -360,6 +360,7 @@ table {
 	background-color: gray;
 }
 
+
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed"
@@ -495,7 +496,7 @@ table {
 						buttons[j].style.backgroundColor = "";
 					}
 					this.id = "selected-date";
-					this.style.backgroundColor = "yellow";
+					this.style.backgroundColor = "#c2c7d0";
 					var selectedDateElement = document
 							.getElementById("selected-date");
 					showMeetingRooms(selectedDate);

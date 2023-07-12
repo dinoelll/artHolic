@@ -419,7 +419,7 @@ function listDraw(projectList) {
 
      projectList.forEach(function(dto,project_id){
          content += '<tr>';
-         content += '<th><a href="projectDetail.go?project_id='+dto.project_id+'">'+dto.project_name+'</a></th>';
+         content += '<th><a href="projectCalendar.go?project_id=' + dto.project_id + '&project_name=' + dto.project_name + '">' + dto.project_name + '</a></th>';
          content += '<th>'+dto.project_manager+'</th>';
          content += '<th>'+dto.field_manager+'</th>';
          content += '<td>'+ dto.manager_phone +'</td>';

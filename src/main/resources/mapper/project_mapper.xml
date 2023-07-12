@@ -1,47 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	   
+
 <mapper namespace="kr.co.two.project.dao.ProjectDAO">
 
 
-	<select id="listCall" resultType="project" parameterType="string">
+	<select id="listCall" resultType="project"
+		parameterType="string">
 		SELECT * FROM project
 		<where>
-			<if test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
 		</where>
 		ORDER BY project_id DESC
 		LIMIT #{cnt} OFFSET #{offset}
 	</select>
-	
+
 	<select id="totalCount" resultType="int" parameterType="string">
 		SELECT COUNT(project_id) FROM project
 		<where>
-			<if test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
-			<if test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
 		</where>
 	</select>
-	
+
+
 	<insert id="projectWrite" parameterType="hashmap">
-      INSERT INTO project
-      (project_name, project_manager, field_manager, manager_phone, start_date, end_date, member_id)
-      VALUES(#{project_name},#{project_manager},#{field_manager}, #{manager_phone},#{start_date},#{end_date},'123456')
-    </insert>
-    
-<!--     <insert
-		 id="feedWrite" 
-		 parameterType="kr.co.cc.project.dto.AttachmentDTO"
-		 useGeneratedKeys="true" keyProperty="id">
-		 <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
-	        SELECT UUID()
-	    </selectKey>
+		INSERT INTO project
+		(project_name, project_manager, field_manager, manager_phone,
+		start_date, end_date,
+		member_id)
+		VALUES(#{project_name},#{project_manager},#{field_manager},
+		#{manager_phone},#{start_date},#{end_date},'123456')
+	</insert>
+
+
+	<insert id="feedWrite" parameterType="project"
+		useGeneratedKeys="true" keyColumn="feed_id" keyProperty="feed_id">
 		INSERT INTO
-		feed(feed_id, content, member_id, project_id)
-		VALUES(#{feed_id},#{content},#{member_id},#{project_id})
-	</insert> -->
+		feed(content, project_id, member_id)
+		VALUES(#{content},#{project_id},
+		'123456')
+	</insert>
+
+
+	<insert id="archivefileWrite">
+		INSERT INTO feed_file(ori_photo_name, photo_name,
+		feed_id)
+		VALUES(#{param1}, #{param2}, #{param3})
+	</insert>
+
+
+	<select id="getAllFeed" parameterType="string"
+		resultType="hashmap">
+		select f.feed_id
+		, f.project_id
+		, (select m.name from member m where m.member_id = f.member_id) AS name
+		, f.content
+		, DATE_FORMAT(f.date,'%Y-%m-%d') as date
+		, p.feed_file_id
+		, p.ori_photo_name
+		from feed f
+		left join feed_file p on p.feed_id = f.feed_id
+		WHERE f.project_id = #{project_id}
+		order by f.feed_id ASC
+	</select>
+
+
+
+
+	<!-- 캘린더 영역 -->
+
+
+
+	<select id="getEvent" resultType="ProEventdata">
+		SELECT * FROM project_calendar
+		WHERE project_id=#{project_id}
+
+	</select>
+
+
+	<insert id="calendarUpdate" parameterType="ProEventdata">
+		INSERT INTO
+		project_calendar (content, start_date,
+		end_date,project_id,allDay,backgroundColor,borderColor,project_calendar_id)
+		VALUES
+		(#{content},#{start_date},#{end_date},#{project_id},#{allDay},#{backgroundColor},#{borderColor},#{project_calendar_id})
+		ON DUPLICATE KEY UPDATE start_date =
+		#{start_date},end_date=#{end_date}
+
+	</insert>
+
+
+	<insert id="calendarUpdate2" parameterType="ProEventdata">
+		INSERT INTO
+		project_calendar (content, start_date,
+		end_date,project_id,allDay,backgroundColor,borderColor,project_calendar_id)
+		VALUES
+		(#{content},#{start_date},#{end_date},#{project_id},#{allDay},#{backgroundColor},#{borderColor},#{project_calendar_id})
+		ON DUPLICATE KEY UPDATE start_date =
+		#{start_date},end_date=#{end_date}, content=#{content}
+
+	</insert>
+
+	<delete id="eventDelete">
+		DELETE FROM project_calendar WHERE
+		project_calendar_id =
+		#{project_calendar_id}
+	</delete>
 
 
 </mapper>

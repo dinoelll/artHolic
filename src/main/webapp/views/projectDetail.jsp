@@ -10,35 +10,40 @@
 <!-- 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
  -->
-	<!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!--  Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">	
+<!-- Ionicons -->
+<link rel="stylesheet"
+	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!--  Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
-  <!-- Font Awesome-->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  
-  <!--  iCheck -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  
-   <!-- JQVMap
+<!-- Font Awesome-->
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+
+<!-- Tempusdominus Bootstrap 4 -->
+<link rel="stylesheet"
+	href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
+<!--  iCheck -->
+<link rel="stylesheet"
+	href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+
+<!-- JQVMap
   <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
   -->
-  <!-- Theme style-->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- overlayScrollbars-->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker
+<!-- Theme style-->
+<link rel="stylesheet" href="dist/css/adminlte.min.css">
+<!-- overlayScrollbars-->
+<link rel="stylesheet"
+	href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+<!-- Daterange picker
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   -->
-  <!-- summernote 
+<!-- summernote 
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
   -->
-  <!-- fullCalendar (캘린더) -->
-  <link rel="stylesheet" href="plugins/fullcalendar/main.css">
+<!-- fullCalendar (캘린더) -->
+<link rel="stylesheet" href="plugins/fullcalendar/main.css">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <style>
 b {
@@ -92,8 +97,8 @@ table, td, th {
   box-sizing: border-box;
 } */
 /* #btnWrap {
-	width: 500px;
-	margin: 100px auto;
+   width: 500px;
+   margin: 100px auto;
 } */
 #popupBtn {
 	width: 50px;
@@ -145,301 +150,100 @@ table, td, th {
 	font-size: 17px;
 	cursor: pointer;
 }
+
+.subject {
+	color: #91bdce;
+}
+
+b {
+	color: #91bdce;
+}
+
+#project_name{
+	color:#91bdce;
+	text-align-last: center;
+}
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
+
+	<!-- Site wrapper -->
 	<div class="wrapper">
 		<jsp:include page="header.jsp" />
+
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
-			<!-- Content Wrapper. Contains page content -->
-			<div class="content-wrapper">
-				<!-- Content Header (Page header) -->
-				<div class="content-header">
-					<div class="container-fluid">
-						<div class="row mb-2">
-							<div class="col-sm-6">
-								<h1 class="m-0">프로젝트</h1>
-							</div>
-							<!-- /.col -->
-							<div class="col-sm-6">
-								<ol class="breadcrumb float-sm-right">
-									<li class="breadcrumb-item"><a href="#">Home</a></li>
-									<li class="breadcrumb-item active">Dashboard v1</li>
-								</ol>
-							</div>
-							<!-- /.col -->
+			<section class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0">
+								<a href="/projectCalendar.go?project_id=${project_id}&project_name=${project_name}"
+									class="subject">캘린더</a>|<a
+									href="/projectDetail.go?project_id=${project_id}&project_name=${project_name}"
+									class="subject"><b>피드</b></a>
+							</h1>
 						</div>
-						<!-- /.row -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item active">Project Detail</li>
+							</ol>
+						</div>
 					</div>
-					<!-- /.container-fluid -->
 				</div>
-				<!-- /.content-header -->
+				<!-- /.container-fluid -->
+			</section>
+			<h1 id="project_name">&lt; team ${project_name} &gt;</h1>
+			<!-- Main content -->
+			<section class="content">
 
+				<!-- Default box -->
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Project Detail</h3>
 
-				<!-- Main content -->
-				<section class="content">
-					<div class="container-fluid">
-						<div class="row">
+						<div class="card-tools">
 
-							<!-- /.col -->
-							<div class="col-md-9">
-								<div class="card">
-									<div class="card-header p-2">
-										<ul class="nav nav-pills">
-											<li class="nav-item"><a class="nav-link active"
-												href="#activity" data-toggle="tab">일정</a></li>
-											<li class="nav-item"><a class="nav-link"
-												href="#timeline" data-toggle="tab">피드</a></li>
-										</ul>
-									</div>
-									<!-- /.card-header -->
-									<div class="card-body">
-										<div class="tab-content">
-											<div class="active tab-pane" id="activity">
+							<a href="feedWrite.go?project_id=${project_id}"
+								class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>피드등록</a>
+							<a href="projectDel.do?project_id=${project_id}"
+								class="btn btn-danger btn-sm">삭제</a>
 
-												<!-- Main content -->
-												<section class="content">
-													<div class="container-fluid">
-														<div class="row">
-															<div class="col-md-3">
-																<div class="sticky-top mb-3">
-																	<div class="card">
-																		<div class="card-header">
-																			<h4 class="card-title">일정</h4>
-																		</div>
-																		<div class="card-body">
-																			<!-- the events -->
-																			<div id="external-events">
-																				<div class="external-event bg-success">Lunch</div>
-																				<div class="external-event bg-warning">Go home</div>
-																				<div class="external-event bg-info">Do
-																					homework</div>
-																				<div class="external-event bg-primary">Work on
-																					UI design</div>
-																				<div class="external-event bg-danger">Sleep
-																					tight</div>
-																				<div class="checkbox">
-																					<label for="drop-remove"> <input
-																						type="checkbox" id="drop-remove"> 일정 리스트에서
-																						삭제하기
-																					</label>
-																				</div>
-																			</div>
-																		</div>
-																		<!-- /.card-body -->
-																	</div>
-																	<!-- /.card -->
-																	<div class="card">
-																		<div class="card-header">
-																			<h3 class="card-title">일정 추가하기</h3>
-																		</div>
-																		<div class="card-body">
-																			<div class="btn-group"
-																				style="width: 100%; margin-bottom: 10px;">
-																				<ul class="fc-color-picker" id="color-chooser">
-																					<li><a class="text-primary" href="#"><i
-																							class="fas fa-square"></i></a></li>
-																					<li><a class="text-warning" href="#"><i
-																							class="fas fa-square"></i></a></li>
-																					<li><a class="text-success" href="#"><i
-																							class="fas fa-square"></i></a></li>
-																					<li><a class="text-danger" href="#"><i
-																							class="fas fa-square"></i></a></li>
-																					<li><a class="text-muted" href="#"><i
-																							class="fas fa-square"></i></a></li>
-																				</ul>
-																			</div>
-																			<!-- /btn-group -->
-																			<div class="input-group">
-																				<input id="new-event" type="text"
-																					class="form-control" placeholder="일정 이름을 입력해 주세요.">
-
-																				<div class="input-group-append">
-																					<button id="add-new-event" type="button"
-																						class="btn btn-primary">추가</button>
-																				</div>
-																				<!-- /btn-group -->
-																			</div>
-																			<!-- /input-group -->
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<!-- /.col -->
-															<div class="col-md-9">
-																<div class="card card-primary">
-																	<div class="card-body p-0">
-																		<!-- THE CALENDAR -->
-																		<div id="calendar"></div>
-																	</div>
-																	<!-- /.card-body -->
-																</div>
-																<!-- /.card -->
-															</div>
-															<!-- /.col -->
-														</div>
-														<!-- /.row -->
-													</div>
-													<!-- /.container-fluid -->
-												</section>
-
-
-											</div>
-
-											<div class="tab-pane" id="timeline">
-
-												<!-- Post -->
-												<div class="post">
-													<div class="user-block">
-														<img class="img-circle img-bordered-sm"
-															src="../../dist/img/user1-128x128.jpg" alt="user image">
-														<span class="username"> <a href="#">Jonathan
-																Burke Jr.</a> <a href="#" class="float-right btn-tool"><i
-																class="fas fa-times"></i></a>
-														</span> <span class="description">Shared publicly - 7:30
-															PM today</span>
-													</div>
-													<!-- /.user-block -->
-													<p>Lorem ipsum represents a long-held tradition for
-														designers, typographers and the like. Some people hate it
-														and argue for its demise, but others ignore the hate as
-														they create awesome tools to help create filler text for
-														everyone from bacon lovers to Charlie Sheen fans.</p>
-
-													<p>
-														<a href="#" class="link-black text-sm mr-2"><i
-															class="fas fa-share mr-1"></i> Share</a> <a href="#"
-															class="link-black text-sm"><i
-															class="far fa-thumbs-up mr-1"></i> Like</a> <span
-															class="float-right"> <a href="#"
-															class="link-black text-sm"> <i
-																class="far fa-comments mr-1"></i> Comments (5)
-														</a>
-														</span>
-													</p>
-
-													<input class="form-control form-control-sm" type="text"
-														placeholder="Type a comment">
-												</div>
-												<!-- /.post -->
-
-												<!-- Post -->
-												<div class="post clearfix">
-													<div class="user-block">
-														<img class="img-circle img-bordered-sm"
-															src="../../dist/img/user7-128x128.jpg" alt="User Image">
-														<span class="username"> <a href="#">Sarah Ross</a>
-															<a href="#" class="float-right btn-tool"><i
-																class="fas fa-times"></i></a>
-														</span> <span class="description">Sent you a message - 3
-															days ago</span>
-													</div>
-													<!-- /.user-block -->
-													<p>Lorem ipsum represents a long-held tradition for
-														designers, typographers and the like. Some people hate it
-														and argue for its demise, but others ignore the hate as
-														they create awesome tools to help create filler text for
-														everyone from bacon lovers to Charlie Sheen fans.</p>
-
-													<form class="form-horizontal">
-														<div class="input-group input-group-sm mb-0">
-															<input class="form-control form-control-sm"
-																placeholder="Response">
-															<div class="input-group-append">
-																<button type="submit" class="btn btn-danger">Send</button>
-															</div>
-														</div>
-													</form>
-												</div>
-												<!-- /.post -->
-
-												<!-- Post -->
-												<div class="post">
-													<div class="user-block">
-														<img class="img-circle img-bordered-sm"
-															src="../../dist/img/user6-128x128.jpg" alt="User Image">
-														<span class="username"> <a href="#">Adam Jones</a>
-															<a href="#" class="float-right btn-tool"><i
-																class="fas fa-times"></i></a>
-														</span> <span class="description">Posted 5 photos - 5 days
-															ago</span>
-													</div>
-													<!-- /.user-block -->
-													<div class="row mb-3">
-														<div class="col-sm-6">
-															<img class="img-fluid" src="../../dist/img/photo1.png"
-																alt="Photo">
-														</div>
-														<!-- /.col -->
-														<div class="col-sm-6">
-															<div class="row">
-																<div class="col-sm-6">
-																	<img class="img-fluid mb-3"
-																		src="../../dist/img/photo2.png" alt="Photo"> <img
-																		class="img-fluid" src="../../dist/img/photo3.jpg"
-																		alt="Photo">
-																</div>
-																<!-- /.col -->
-																<div class="col-sm-6">
-																	<img class="img-fluid mb-3"
-																		src="../../dist/img/photo4.jpg" alt="Photo"> <img
-																		class="img-fluid" src="../../dist/img/photo1.png"
-																		alt="Photo">
-																</div>
-																<!-- /.col -->
-															</div>
-															<!-- /.row -->
-														</div>
-														<!-- /.col -->
-													</div>
-													<!-- /.row -->
-
-													<p>
-														<a href="#" class="link-black text-sm mr-2"><i
-															class="fas fa-share mr-1"></i> Share</a> <a href="#"
-															class="link-black text-sm"><i
-															class="far fa-thumbs-up mr-1"></i> Like</a> <span
-															class="float-right"> <a href="#"
-															class="link-black text-sm"> <i
-																class="far fa-comments mr-1"></i> Comments (5)
-														</a>
-														</span>
-													</p>
-
-													<input class="form-control form-control-sm" type="text"
-														placeholder="Type a comment">
-												</div>
-												<!-- /.post -->
-
-											</div>
-											<!-- /.tab-pane -->
-										</div>
-										<!-- /.tab-content -->
-									</div>
-									<!-- /.card-body -->
-								</div>
-								<!-- /.card -->
-							</div>
-							<!-- /.col -->
+							<button type="button" class="btn btn-tool"
+								data-card-widget="collapse" title="Collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool"
+								data-card-widget="remove" title="Remove">
+								<i class="fas fa-times"></i>
+							</button>
 						</div>
-						<!-- /.row -->
 					</div>
-					<!-- /.container-fluid -->
-				</section>
 
+					<div class="card-body">
+						<div id="projectDetailContainer"></div>
+					</div>
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
 
-
-				<!-- /.content -->
-			</div>
-			<!-- /.content-wrapper -->
-
-
-
-
+			</section>
+			<!-- /.content -->
 		</div>
+		<!-- /.content-wrapper -->
+
+		<input type="hidden" id="loginId" value="${sessionScope.id }">
+
+		<!-- Control Sidebar -->
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Control sidebar content goes here -->
+		</aside>
+		<!-- /.control-sidebar -->
 	</div>
+	<!-- ./wrapper -->
+
 
 
 	<jsp:include page="footer.jsp" />
@@ -458,268 +262,89 @@ table, td, th {
 	<!-- AdminLTE App -->
 	<script src="dist/js/adminlte.js"></script>
 
-	<!-- AdminLTE for demo purposes 
-<script src="dist/js/demo.js"></script>
--->
 
-	<!-- ChartJS(차트) -->
-<!-- 	<script src="plugins/chart.js/Chart.min.js"></script> -->
 
-	<!-- fullCalendar 2.2.5 (캘린더) -->
-	<script src="plugins/moment/moment.min.js"></script>
-	<script src="plugins/fullcalendar/main.js"></script>
+
 </body>
 <script>
-$(function () {
-	
-	 var posts = []; // 게시물 데이터 배열
+	var loginId = $("#loginId").val();
+	console.log('id:' + loginId);
 
-     function addPost() {
-         var content = document.getElementById("post-content").value;
-         var date = new Date().toLocaleDateString();
+	$(document)
+			.ready(
+					function() {
+						console.log("함수 실행");
 
-         var post = {
-             header: "새 게시물",
-             content: content,
-             author: "사용자",
-             date: date
-         };
+						var project_id = "${project_id}";
+						detailAjax();
 
-         // 서버로 게시물 전송
-         
-         $.ajax({
-             url: 'uploadPeed.ajax',
-             type: 'POST',
-             data: post,
-             dataType: 'json',
-             beforeSend: function() {
-                 // 로딩 표시
-                 $('#loading').show();
-             },
-             success: function(response) {
-                 // 서버 응답 처리
-                 console.log(response); // 예시: 서버에서 반환한 응답 데이터 출력
+						function detailAjax() {
+							console.log('detailAjax() 호출');
+							$
+									.ajax({
+										url : "projectDetail.ajax?project_id="
+												+ project_id, // 서버에서 데이터를 가져올 URL
+										method : "GET",
+										async : false,
+										dataType : "json",
+										success : function(data) {
+											var container = $("#projectDetailContainer");
 
-                 // 게시물 배열에 추가
-                 posts.unshift(post);
+											$
+													.each(
+															data.feedList,
+															function(index,
+																	detail) {
+																var feed_id = detail.feed_id;
 
-                 // 타임라인 다시 렌더링
-                 renderTimeline();
+																var html = '<div class="row">';
+																html += '<div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">';
+																html += '<div class="row">';
+																html += '<div class="col-12">';
+																html += '<div class="post">';
+																html += '<div class="user-block">';
+																html += '<img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">';
+																html += '<span class="name">';
+																html += '<a href="#">'
+																		+ detail.name
+																		+ '</a>';
+																html += '</span>';
+																html += '<span class="description">'
+																		+ detail.date
+																		+ '</span>';
+																html += '</div>';
+																html += '<p>'
+																		+ detail.content
+																		+ '</p>';
+																if (detail.feed_file_id != null) {
+																	html += '<div class="mailbox-feed_file-info">';
+																	html += '<a class="mailbox-feed_file-name"><i class="fas fa-paperclip"></i> &nbsp;'
+																			+ detail.ori_photo_name
+																			+ '</a>';
+																	html += '<a href="feed_fileDownload.do?id='
+																			+ detail.feed_file_id
+																			+ '" class="btn btn-default btn-sm"><i class="fas fa-cloud-download-alt"></i></a>';
+																	html += '</div>';
 
-                 // 입력 필드 초기화
-                 document.getElementById("post-content").value = "";
+																}
+																html += '</div>';
 
-                 // 로딩 숨김
-                 $('#loading').hide();
-             },
-             error: function(error) {
-                 console.error('Error:', error);
-                 // 로딩 숨김
-                 $('#loading').hide();
-             }
-         });
-     }
+																html += '</div></div>';
+																html += '<hr>';
+																html += '</div>';
 
+																container
+																		.prepend(html);
 
-     function renderTimeline() {
-         var timeline = document.getElementById("timeline");
-         timeline.innerHTML = ""; // 기존 게시물 제거
+															});
 
-         for (var i = 0; i < posts.length; i++) {
-             var post = posts[i];
+										},
+										error : function(xhr, status, error) {
+											console.log(error);
+										}
+									});
+						}
 
-             var postElement = document.createElement("div");
-             postElement.className = "post";
-
-             var postHeader = document.createElement("div");
-             postHeader.className = "post-header";
-             postHeader.textContent = post.header;
-
-             var postContent = document.createElement("div");
-             postContent.className = "post-content";
-             postContent.textContent = post.content;
-
-             var postFooter = document.createElement("div");
-             postFooter.className = "post-footer";
-             postFooter.textContent = "작성자: " + post.author + " | 게시일: " + post.date;
-
-             postElement.appendChild(postHeader);
-             postElement.appendChild(postContent);
-             postElement.appendChild(postFooter);
-
-             timeline.appendChild(postElement);
-         }
-     }
-
-     renderTimeline(); // 초기 타임라인 렌더링
-
-	
-
-     $(function () {
-    		
- 	    /* initialize the external events
- 	     -----------------------------------------------------------------*/
- 	    function ini_events(ele) {
- 	      ele.each(function () {
- 	
- 	        // create an Event Object (https://fullcalendar.io/docs/event-object)
- 	        // it doesn't need to have a start or end
- 	        var eventObject = {
- 	          title: $.trim($(this).text()) // use the element's text as the event title
- 	        }
- 	
- 	        // store the Event Object in the DOM element so we can get to it later
- 	        $(this).data('eventObject', eventObject)
- 	
- 	        // make the event draggable using jQuery UI
- 	        $(this).draggable({
- 	          zIndex        : 1070,
- 	          revert        : true, // will cause the event to go back to its
- 	          revertDuration: 0  //  original position after the drag
- 	        })
- 	
- 	      })
- 	    }
- 	
- 	    ini_events($('#external-events div.external-event'))
- 	
- 	    /* initialize the calendar
- 	     -----------------------------------------------------------------*/
- 	    //Date for the calendar events (dummy data)
- 	    var date = new Date()
- 	    var d    = date.getDate(),
- 	        m    = date.getMonth(),
- 	        y    = date.getFullYear()
- 	
- 	    var Calendar = FullCalendar.Calendar;
- 	    var Draggable = FullCalendar.Draggable;
- 	
- 	    var containerEl = document.getElementById('external-events');
- 	    var checkbox = document.getElementById('drop-remove');
- 	    var calendarEl = document.getElementById('calendar');
- 	
- 	    // initialize the external events
- 	    // -----------------------------------------------------------------
- 	
- 	    new Draggable(containerEl, {
- 	      itemSelector: '.external-event',
- 	      eventData: function(eventEl) {
- 	        return {
- 	          title: eventEl.innerText,
- 	          backgroundColor: window.getComputedStyle( eventEl ,null).getPropertyValue('background-color'),
- 	          borderColor: window.getComputedStyle( eventEl ,null).getPropertyValue('background-color'),
- 	          textColor: window.getComputedStyle( eventEl ,null).getPropertyValue('color'),
- 	        };
- 	      }
- 	    });
- 	
- 	    var calendar = new Calendar(calendarEl, {
- 	      headerToolbar: {
- 	        left  : 'prev,next today',
- 	        center: 'title',
- 	        right : 'dayGridMonth,timeGridWeek,timeGridDay'
- 	      },
- 	      themeSystem: 'bootstrap',
- 	      //Random default events
- 	      events: [
- 	        {
- 	          title          : 'All Day Event',
- 	          start          : new Date(y, m, 1),
- 	          backgroundColor: '#f56954', //red
- 	          borderColor    : '#f56954', //red
- 	          allDay         : true
- 	        },
- 	        {
- 	          title          : 'Long Event',
- 	          start          : new Date(y, m, d - 5),
- 	          end            : new Date(y, m, d - 2),
- 	          backgroundColor: '#f39c12', //yellow
- 	          borderColor    : '#f39c12' //yellow
- 	        },
- 	        {
- 	          title          : 'Meeting',
- 	          start          : new Date(y, m, d, 10, 30),
- 	          allDay         : false,
- 	          backgroundColor: '#0073b7', //Blue
- 	          borderColor    : '#0073b7' //Blue
- 	        },
- 	        {
- 	          title          : 'Lunch',
- 	          start          : new Date(y, m, d, 12, 0),
- 	          end            : new Date(y, m, d, 14, 0),
- 	          allDay         : false,
- 	          backgroundColor: '#00c0ef', //Info (aqua)
- 	          borderColor    : '#00c0ef' //Info (aqua)
- 	        },
- 	        {
- 	          title          : 'Birthday Party',
- 	          start          : new Date(y, m, d + 1, 19, 0),
- 	          end            : new Date(y, m, d + 1, 22, 30),
- 	          allDay         : false,
- 	          backgroundColor: '#00a65a', //Success (green)
- 	          borderColor    : '#00a65a' //Success (green)
- 	        },
- 	        {
- 	          title          : 'Click for Google',
- 	          start          : new Date(y, m, 28),
- 	          end            : new Date(y, m, 29),
- 	          url            : 'https://www.google.com/',
- 	          backgroundColor: '#3c8dbc', //Primary (light-blue)
- 	          borderColor    : '#3c8dbc' //Primary (light-blue)
- 	        }
- 	      ],
- 	      editable  : true,
- 	      droppable : true, // this allows things to be dropped onto the calendar !!!
- 	      drop      : function(info) {
- 	        // is the "remove after drop" checkbox checked?
- 	        if (checkbox.checked) {
- 	          // if so, remove the element from the "Draggable Events" list
- 	          info.draggedEl.parentNode.removeChild(info.draggedEl);
- 	        }
- 	      }
- 	    });
- 	
- 	    calendar.render();
- 	    // $('#calendar').fullCalendar()
- 	
- 	    /* ADDING EVENTS */
- 	    var currColor = '#3c8dbc' //Red by default
- 	    // Color chooser button
- 	    $('#color-chooser > li > a').click(function (e) {
- 	      e.preventDefault()
- 	      // Save color
- 	      currColor = $(this).css('color')
- 	      // Add color effect to button
- 	      $('#add-new-event').css({
- 	        'background-color': currColor,
- 	        'border-color'    : currColor
- 	      })
- 	    })
- 	    $('#add-new-event').click(function (e) {
- 	      e.preventDefault()
- 	      // Get value and make sure it is not null
- 	      var val = $('#new-event').val()
- 	      if (val.length == 0) {
- 	        return
- 	      }
- 	
- 	      // Create events
- 	      var event = $('<div />')
- 	      event.css({
- 	        'background-color': currColor,
- 	        'border-color'    : currColor,
- 	        'color'           : '#fff'
- 	      }).addClass('external-event')
- 	      event.text(val)
- 	      $('#external-events').prepend(event)
- 	
- 	      // Add draggable funtionality
- 	      ini_events(event)
- 	
- 	      // Remove event from text input
- 	      $('#new-event').val('')
- 	    })
- 	  })
-
+					});
 </script>
 </html>
