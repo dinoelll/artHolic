@@ -44,14 +44,14 @@
 <script src="/js/jquery.twbsPagination.js" type="text/javascript"></script>
 
 <!-- Datetimepicker 라이브러리 불러오기 -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
 
   <!-- 부트스트랩 JavaScript 파일 불러오기 -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <script>
     $(function() {
       $("#datepicker").datepicker();
@@ -192,11 +192,11 @@
          <thead>
             <tr id="thead" style="text-align:center">
                 <th>프로젝트명</th>
-				<th>프로젝트 담당자</th>
-				<th>현장 관리자</th>
-				<th>담당자 연락처</th>
-				<th>일정</th>
-				<!-- <th>담당자 연락처</th>  -->
+            <th>프로젝트 담당자</th>
+            <th>현장 관리자</th>
+            <th>담당자 연락처</th>
+            <th>일정</th>
+            <!-- <th>담당자 연락처</th>  -->
             </tr>
          </thead>
          <tbody id="projectList" style="text-align:center">
@@ -216,7 +216,7 @@
   
    </div>
    
-			<!-- modal 창 -->
+         <!-- modal 창 -->
             <div class="modal fade" id="modal-default">
                <div class="modal-dialog">
                   <div class="modal-content">
@@ -308,7 +308,7 @@
 
 var msg = "${msg}";
 if (msg != "") {
-	alert(msg);
+   alert(msg);
 
 }
 
@@ -344,7 +344,7 @@ function save() {
  }
 
 
-	// 리스트 불러오기
+   // 리스트 불러오기
 function listCall(page,cnt){
    
         var cnt = 8;
@@ -388,29 +388,29 @@ function listCall(page,cnt){
          }
    });
 }
-	
-/* 	// 달력 DatePicker
+   
+/*    // 달력 DatePicker
 $(function() {
     $("#datepicker").datepicker();
   });
    */
    $(function() {
-		  $("#start_date").datepicker({
-		    dateFormat: "yy-mm-dd",
-		    changeMonth: true,
-		    changeYear: true,
-		    yearRange: "-100:+0"
-		  });
-		});
+        $("#start_date").datepicker({
+          dateFormat: "yy-mm-dd",
+          changeMonth: true,
+          changeYear: true,
+          yearRange: "-100:+0"
+        });
+      });
 
    $(function() {
-		  $("#end_date").datepicker({
-		    dateFormat: "yy-mm-dd",
-		    changeMonth: true,
-		    changeYear: true,
-		    yearRange: "-100:+0"
-		  });
-		});
+        $("#end_date").datepicker({
+          dateFormat: "yy-mm-dd",
+          changeMonth: true,
+          changeYear: true,
+          yearRange: "-100:+0"
+        });
+      });
    
    //리스트 작성
 function listDraw(projectList) {
@@ -419,7 +419,7 @@ function listDraw(projectList) {
 
      projectList.forEach(function(dto,project_id){
          content += '<tr>';
-         content += '<th><a href="projectDetail.go?project_id='+dto.project_id+'">'+dto.project_name+'</a></th>';
+         content += '<th><a href="projectCalendar.go?project_id=' + dto.project_id + '&project_name=' + dto.project_name + '">' + dto.project_name + '</a></th>';
          content += '<th>'+dto.project_manager+'</th>';
          content += '<th>'+dto.field_manager+'</th>';
          content += '<td>'+ dto.manager_phone +'</td>';

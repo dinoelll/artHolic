@@ -147,7 +147,7 @@ public class MemberController {
 		
 		if(service.login(id, pw)) {
 			page = "main";
-			/* session.setAttribute("loginId", id); */
+			session.setAttribute("loginId", id);
 		}else {
 			model.addAttribute("msg","Id 또는 Password를 확인 해 주세요");
 		}

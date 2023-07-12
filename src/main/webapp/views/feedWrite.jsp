@@ -54,7 +54,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>현장설명회 등록</h3>
+            <h3>피드 등록</h3>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -62,13 +62,11 @@
 
     <!-- Main content -->
     <section class="content">
-	<form id="inform" action="/briefingWrite.do" method="post">
+	<form action="/feedWrite.do" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="project_id" value="${project_id}" />
+			<!-- <input type="hidden" name="user_id" value="${user_id}" /> -->
+			<!-- <input type="hidden" name="member_id" value="${member_id}" /> -->
 		<table>
-			<tr>
-				<td>
-					<input type="text" class="subject" name="subject"/>
-		    	</td>
-			</tr>
 			<tr>
 				<td>
 					<div id="div_editor"></div>
@@ -77,7 +75,13 @@
 			</tr>
 			<tr>
 				<td>
-				<input style="float:right;" type="button" onclick="location.href='briefingList.go'" value="취소"/>
+					<i class="fas fa-paperclip"></i> 파일 첨부
+			    	<input type="file" name="attachment" multiple="multiple">
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<input style="float:right;" type="button" onclick="location.href='projectDetail.go'" value="취소"/>
 					<input style="float:right;" type="button" onclick="save()" value="등록" />
 					
 				</td>

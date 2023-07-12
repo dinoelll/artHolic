@@ -62,7 +62,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>현장설명 게시판</h3>
+            <h3>현장설명회</h3>
           </div>
         </div>
       </div><!-- /.container-fluid -->
