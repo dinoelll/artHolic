@@ -1,17 +1,13 @@
- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
 
 <style>
-	.admin {
-		display : none;
-	}
+    .admin {
+      display : none;
+   } 
 </style>
-
-
-
-
 
  <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -136,7 +132,7 @@
     
     <div class="sidebar">
      
-	 
+    
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -330,8 +326,8 @@
   
   
 <script>
-/* 	loginChk();
-	function loginChk() {
+   loginChk();
+   function loginChk() {
         var loginId = '${sessionScope.loginId}';
         var admin = '${sessionScope.admin}';
         console.log(admin);
@@ -339,12 +335,12 @@
             window.location.href = './';
             alert("로그인 해라 씨ㅏㅃ꺼.");
         } else {
-        	console.log(admin);
-        	console.log(loginId);
-        	if (admin == 'true') {
-            	console.log(admin);
+           console.log(admin);
+           console.log(loginId);
+           if (admin == 'true') {
+               console.log(admin);
                 $('#adminMenu').removeClass('admin');
             }
         }
-    } */
+    }
 </script>

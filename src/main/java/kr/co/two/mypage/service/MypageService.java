@@ -63,14 +63,14 @@ public class MypageService {
    
    @Value("${spring.servlet.multipart.location}") private String root;
 
-   public void myFolderCreate(String folderName) {
+   public void myFolderCreate(String folderName, String member_id) {
 
-      dao.myFolderCreate(folderName);
+	 dao.myFolderCreate(folderName,member_id);
    }
 
-   public ArrayList<String> folderList() {
+   public ArrayList<String> folderList(String member_id) {
       
-      return dao.folderList();
+      return dao.folderList(member_id);
    }
 
    public void myFolderUpdate(String folderName, int folderId) {

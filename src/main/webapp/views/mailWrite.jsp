@@ -35,7 +35,7 @@
    }
    
    .mymailSend,.mailSend,#preview-button,.mailBox,.selfBox,#send,.send{
-      font-weight: bold;
+        font-weight: bold;
         background-color: white;
         border: 1px solid white;
         color: black;
@@ -237,7 +237,7 @@
                            <button id="mailBox" class="mymailSend" onclick="mailBox()">메일쓰기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                          </div>
                      </div>
-                         
+                       
                   <!-- /.card-header -->
                      
                   <form action="mailWrite.do" method="post" enctype="multipart/form-data" id="mailForm">

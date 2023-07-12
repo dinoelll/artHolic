@@ -1,6 +1,5 @@
 package kr.co.two.member.controller;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,11 +45,22 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/employeeList.go")
-	public String employeeList() {
+    public String employeeList(HttpSession session,Model model) {
 		
 		logger.info("employeeList Controller");
 		
+        Boolean admin = (Boolean) session.getAttribute("admin");
+        model.addAttribute("admin", admin);
+        logger.info("admin :"+admin);
 		return "employeeList";
+	}
+	
+	@RequestMapping(value="/employeeBlindList.go")
+	public String employeeBlindList() {
+		
+		logger.info("employeeBlindList Controller");
+		
+		return "employeeBlindList";
 	}
 	
 	@RequestMapping(value="/employeeList.ajax")
@@ -60,6 +69,14 @@ public class MemberController {
 		
 		logger.info("employeeList Call Controller");
 		return service.employeeList(params);
+	}
+	
+	@RequestMapping(value="/employeeBlindList.ajax")
+	@ResponseBody
+	public HashMap<String, Object> employeeBlindListCall(@RequestParam HashMap<String,Object> params) {
+		
+		logger.info("employeeBlindList Call Controller");
+		return service.employeeBlindList(params);
 	}
 	
 	@RequestMapping(value="/join.go")
@@ -115,12 +132,14 @@ public class MemberController {
 
 	@RequestMapping(value="/changePw.ajax")
 	@ResponseBody
-	public String changePw(@RequestParam String pw) {
+    public String changePw(@RequestParam String pw, HttpSession session) {
 		
 		logger.info("changePw Controller");
 		logger.info("pw :"+pw);
 		
-		int success = service.changePw(pw);
+        String member_id = (String) session.getAttribute("loginId");
+        int success = service.changePw(pw,member_id);
+
 		logger.info("success :"+success);
 		
 		// JSON 응답 생성
@@ -144,15 +163,28 @@ public class MemberController {
 		logger.info("id :"+id+"/"+"pw :"+pw);
 		
 		String page = "login";
-		
-		if(service.login(id, pw)) {
-			page = "main";
-			session.setAttribute("loginId", id);
-		}else {
-			model.addAttribute("msg","Id 또는 Password를 확인 해 주세요");
-		}
-		return page;
-	}
+				
+		if (service.isUserBlind(id)) {
+	        model.addAttribute("msg", "계정이 비활성화 되었습니다. 관리자에게 문의해주세요.");
+	    } else {
+	        MemberDTO dto = service.login(id, pw);
+	        if (dto != null) {
+	            page = "main";
+	        session.setAttribute("loginId", id);
+            session.setAttribute("admin", dto.isAdmin());
+            logger.info("admin : " + dto.isAdmin());
+            
+	        } else {
+	        model.addAttribute("msg", "아이디 또는 비밀번호가 올바르지 않습니다. 다시 시도해주세요.");
+	        }
+	    }
+
+	    if (pw.equals("1111")) {
+	        model.addAttribute("msg", "현재 비밀번호는 임시 비밀번호입니다. 비밀번호를 변경해주세요.");
+	    }
+
+	    return page;
+ 		}
 	
 	@RequestMapping(value="/updateMember.go")
 	public String updateMember(@RequestParam String member_id, Model model) {
@@ -194,6 +226,9 @@ public class MemberController {
 		logger.info("params: " + params);
 	    logger.info("profile :"+ profile);
 	    
+        String userBlindWhether = params.get("blind");
+        int blind = userBlindWhether.equals("true") ? 1 : 0;
+	    
 	    String emailPrefix = params.get("emailPrefix");
 	    String email3 = params.get("email3");
 	    
@@ -217,13 +252,16 @@ public class MemberController {
 	        logger.error("Failed to parse birthday: " + birthdayString, e);
 	    }
 
-	    return service.update(params,profile,email);
+        return service.update(params,profile,email,blind);
 	}
 	
 	@RequestMapping(value="/companyAddress.go")
-	public String companyAddressList() {
+    public String companyAddressList(HttpSession session, Model model) {
 		
 		logger.info("companyAddress Controller");
+        Boolean admin = (Boolean) session.getAttribute("admin");
+        model.addAttribute("admin", admin);
+        logger.info("admin :"+admin);    
 		
 		return "companyAddress";
 	}
@@ -268,6 +306,15 @@ public class MemberController {
 		
 		return service.companyupdate(params);
 		
+	}
+	
+	@RequestMapping(value="/companyDelete.ajax")
+	public String companyDelete(@RequestParam String cooper_id3) {
+		
+		logger.info("companyDelete Controller");
+		logger.info("cooper_id :"+cooper_id3);
+		
+		return service.companydelete(cooper_id3);
 	}
 
 }

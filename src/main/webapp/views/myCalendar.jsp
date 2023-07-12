@@ -154,6 +154,46 @@
     border-color: #91bdce;
      color: #fff;
 }
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #4d798a;
+    border-color: #4d798a;
+}
+
+
+
+.bg-success {
+    background-color: #05b6fa!important;
+}
+.bg-warning {
+    background-color: #36d1f7!important;
+}
+.bg-info {
+    background-color: #4d798a!important;
+}
+.bg-primary {
+    background-color: #11515e!important;
+}
+.bg-danger {
+    background-color: #4f7178!important;
+}
+4f7178
+.text-primary {
+    color: #05b6fa!important;
+}
+.text-warning {
+    color: #36d1f7!important;
+}
+.text-success {
+    color: #4d798a!important;
+}
+.text-danger {
+    color: #11515e!important;
+}
+
+
+
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

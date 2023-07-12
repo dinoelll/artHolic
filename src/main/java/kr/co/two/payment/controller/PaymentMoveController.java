@@ -12,59 +12,68 @@ import kr.co.two.payment.service.PaymentService;
 @Controller
 public class PaymentMoveController {
 
-	@Autowired PaymentService service;
-	
+	@Autowired
+	PaymentService service;
+
 	Logger logger = LoggerFactory.getLogger(getClass());
+
+	@RequestMapping(value = "/paymentVacationForm.go")
+	public ModelAndView member() {
+
+		return service.member();
+
+	}
+
+	@RequestMapping(value = "/paymentBuyItemForm.go")
+	public ModelAndView member2() {
+
+		return service.member2();
+
+	}
 	
+	  @RequestMapping(value = "/paymentProjectForm.go") public ModelAndView
+	  member3() {
+	  
+	  return service.member3();
+	  
+	  }
+	 
+
 	@RequestMapping(value = "./paymentMain.go")
 	public ModelAndView home() {
 
 		return new ModelAndView("payment_home");
 
 	}
+
 	@RequestMapping(value = "/paymentMain.go")
 	public ModelAndView home2() {
 
 		return new ModelAndView("paymentMain");
 
 	}
-	
-	@RequestMapping(value = "/paymentProjectForm.go")
-	public ModelAndView home3() {
 
-		return new ModelAndView("paymentProjectForm");
-
-	}
-	
-
-	@RequestMapping(value = "/paymentBuyItemForm.go")
-	public ModelAndView home5() {
-
-		return new ModelAndView("paymentBuyItemForm");
-
-	}
-
-	
 	@RequestMapping(value = "/paymentList.go")
 	public ModelAndView home7() {
 
 		return new ModelAndView("paymentList");
 
 	}
+
 	@RequestMapping(value = "/payment.go")
 	public ModelAndView home8() {
 
 		return new ModelAndView("payment");
 
 	}
-	
+
 	@RequestMapping(value = "/paymentProjectForm_pay.go")
 	public ModelAndView home9() {
 
 		return new ModelAndView("paymentProjectForm_pay");
 
 	}
-	
+
 	@RequestMapping(value = "/pay__mentVacationForm.go")
 	public ModelAndView home10() {
 
@@ -72,9 +81,4 @@ public class PaymentMoveController {
 
 	}
 
-
-	
-	
-	
-	
 }
