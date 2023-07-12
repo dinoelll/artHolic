@@ -24,155 +24,155 @@ import kr.co.two.project.dto.ProjectEventDataDTO;
 @Service
 public class ProjectService {
 
-	@Autowired
-	ProjectDAO dao;
+   @Autowired
+   ProjectDAO dao;
 
-	Logger logger = LoggerFactory.getLogger(getClass());
+   Logger logger = LoggerFactory.getLogger(getClass());
 
-	@Value("${spring.servlet.multipart.location}")
-	private String attachmentRoot;
+   @Value("${spring.servlet.multipart.location}")
+   private String attachmentRoot;
 
-	public HashMap<String, Object> listCall(int page, int cnt, String opt, String keyword) {
+   public HashMap<String, Object> listCall(int page, int cnt, String opt, String keyword) {
 
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		int offset = (page - 1) * cnt;
+      HashMap<String, Object> map = new HashMap<String, Object>();
+      int offset = (page - 1) * cnt;
 
-		int total = dao.totalCount(opt, keyword); // 12
-		// cnt = 10
-		int range = total % cnt == 0 ? total / cnt : (total / cnt) + 1;
+      int total = dao.totalCount(opt, keyword); // 12
+      // cnt = 10
+      int range = total % cnt == 0 ? total / cnt : (total / cnt) + 1;
 
-		logger.info("total :" + total);
-		logger.info("range :" + range);
-		logger.info("before page :" + page);
+      logger.info("total :" + total);
+      logger.info("range :" + range);
+      logger.info("before page :" + page);
 
-		page = page > range ? range : page;
+      page = page > range ? range : page;
 
-		logger.info("after page :" + page);
+      logger.info("after page :" + page);
 
-		map.put("currPage", page);
-		map.put("pages", range);
-		ArrayList<ProjectDTO> list = dao.listCall(opt, keyword, cnt, offset);
-		map.put("projectList", list);
-		return map;
-	}
+      map.put("currPage", page);
+      map.put("pages", range);
+      ArrayList<ProjectDTO> list = dao.listCall(opt, keyword, cnt, offset);
+      map.put("projectList", list);
+      return map;
+   }
 
-	// 프로젝트 등록
-	public int projectWrite(HashMap<String, Object> params) {
+   // 프로젝트 등록
+   public int projectWrite(HashMap<String, Object> params) {
 
-		return dao.projectWrite(params);
-	}
+      return dao.projectWrite(params);
+   }
 
-	// 피드 작성
-	public String feedWrite(MultipartFile[] attachment, HashMap<String, String> params, Model model) {
-		// String id = (String) session.getAttribute("id");
-		String page = "redirect:/projectDetail.go";
+   // 피드 작성
+   public String feedWrite(MultipartFile[] attachment, HashMap<String, String> params, Model model) {
+      // String id = (String) session.getAttribute("id");
+      String page = "redirect:/projectDetail.go";
 
-		logger.info("attachment : " + attachment);
+      logger.info("attachment : " + attachment);
 
-		ProjectDTO dto = new ProjectDTO();
-		dto.setMember_id(params.get("member_id"));
-		dto.setContent(params.get("content"));
-		dto.setProject_id(Integer.parseInt(params.get("project_id")));
-		int row = dao.feedWrite(dto);
+      ProjectDTO dto = new ProjectDTO();
+      dto.setMember_id(params.get("member_id"));
+      dto.setContent(params.get("content"));
+      dto.setProject_id(Integer.parseInt(params.get("project_id")));
+      int row = dao.feedWrite(dto);
 
-		String feed_id = dto.getFeed_id();
-		logger.info("feed_id : " + feed_id);
+      String feed_id = dto.getFeed_id();
+      logger.info("feed_id : " + feed_id);
 
-		if (row == 1) { // 업로드된 자료실 게시물이 1이라면
+      if (row == 1) { // 업로드된 자료실 게시물이 1이라면
 
-			for (MultipartFile file : attachment) {
+         for (MultipartFile file : attachment) {
 
-				logger.info("업로드할 file 있나요? :" + !file.isEmpty());
+            logger.info("업로드할 file 있나요? :" + !file.isEmpty());
 
-				if (!file.isEmpty()) {
-					attachmentSave(feed_id, file);
-				}
+            if (!file.isEmpty()) {
+               attachmentSave(feed_id, file);
+            }
 
-				try { // 쓰레드 0.001초 지연으로 중복파일명 막자
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+            try { // 쓰레드 0.001초 지연으로 중복파일명 막자
+               Thread.sleep(1);
+            } catch (InterruptedException e) {
+               e.printStackTrace();
+            }
 
-			}
-		}
-		page = "redirect:/projectDetail.go?project_id=" + params.get("project_id");
+         }
+      }
+      page = "redirect:/projectDetail.go?project_id=" + params.get("project_id");
 
-		return page;
+      return page;
 
-	}
+   }
 
-	private void attachmentSave(String feed_id, MultipartFile file) {
+   private void attachmentSave(String feed_id, MultipartFile file) {
 
-		logger.info("!!!file : " + file);
-		// 1. 파일명 추출
-		String oriFileName = file.getOriginalFilename();
+      logger.info("!!!file : " + file);
+      // 1. 파일명 추출
+      String oriFileName = file.getOriginalFilename();
 
-		// 2. 새 파일 생성 (현재시간 + 확장자)
-		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
-		String newFileName = System.currentTimeMillis() + ext;
-		logger.info("파일 업로드 : " + oriFileName + "=>" + newFileName + "으로 변경될 예정");
+      // 2. 새 파일 생성 (현재시간 + 확장자)
+      String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
+      String newFileName = System.currentTimeMillis() + ext;
+      logger.info("파일 업로드 : " + oriFileName + "=>" + newFileName + "으로 변경될 예정");
 
-		// 3. 파일 저장
-		try {
-			byte[] bytes = file.getBytes();
-			Path path = Paths.get(attachmentRoot + "/" + newFileName);
-			Files.write(path, bytes);
-			logger.info(newFileName + " upload 디렉토리에 저장 완료 !");
+      // 3. 파일 저장
+      try {
+         byte[] bytes = file.getBytes();
+         Path path = Paths.get(attachmentRoot + "/" + newFileName);
+         Files.write(path, bytes);
+         logger.info(newFileName + " upload 디렉토리에 저장 완료 !");
 
-			dao.archivefileWrite(oriFileName, newFileName, feed_id);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+         dao.archivefileWrite(oriFileName, newFileName, feed_id);
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
 
-	}
+   }
 
-	public ArrayList<HashMap<String, String>> getAllFeed(String project_id) {
+   public ArrayList<HashMap<String, String>> getAllFeed(String project_id) {
 
-		return dao.getAllFeed(project_id);
-	}
+      return dao.getAllFeed(project_id);
+   }
 
-	
-	/*------------------------------------캘린더 영역---------------------------------------------*/
-	
-	public List<ProjectEventDataDTO> getEvents(String project_id) {
-		// TODO Auto-generated method stub
-		return dao.getEvent(project_id);
-	}
+   
+   /*------------------------------------캘린더 영역---------------------------------------------*/
+   
+   public List<ProjectEventDataDTO> getEvents(String project_id) {
+      // TODO Auto-generated method stub
+      return dao.getEvent(project_id);
+   }
 
-	public void calendarUpdate(ArrayList<ProjectEventDataDTO> eventDataList) {
+   public void calendarUpdate(ArrayList<ProjectEventDataDTO> eventDataList) {
 
-		for (ProjectEventDataDTO eventDataDTO : eventDataList) {
-			int project_id = eventDataDTO.getProject_id();
-			String title = eventDataDTO.getContent();
-			OffsetDateTime start = eventDataDTO.getStart_date();
-			OffsetDateTime end = eventDataDTO.getEnd_date();
-			boolean allday = eventDataDTO.getAllDay();
-			String backgroundColor = eventDataDTO.getBackgroundColor();
-			String borderColor = eventDataDTO.getBorderColor();
-			int project_calendar_id = eventDataDTO.getProject_calendar_id();
+      for (ProjectEventDataDTO eventDataDTO : eventDataList) {
+         int project_id = eventDataDTO.getProject_id();
+         String title = eventDataDTO.getContent();
+         OffsetDateTime start = eventDataDTO.getStart_date();
+         OffsetDateTime end = eventDataDTO.getEnd_date();
+         boolean allday = eventDataDTO.getAllDay();
+         String backgroundColor = eventDataDTO.getBackgroundColor();
+         String borderColor = eventDataDTO.getBorderColor();
+         int project_calendar_id = eventDataDTO.getProject_calendar_id();
 
-			logger.info("project_id" + project_id);
-			logger.info("title" + title);
-			logger.info("start" + start);
-			logger.info("end" + end);
-			logger.info("allday" + allday);
-			logger.info("backgroundColor" + backgroundColor);
-			logger.info("project_calendar_id" + project_calendar_id);
+         logger.info("project_id" + project_id);
+         logger.info("title" + title);
+         logger.info("start" + start);
+         logger.info("end" + end);
+         logger.info("allday" + allday);
+         logger.info("backgroundColor" + backgroundColor);
+         logger.info("project_calendar_id" + project_calendar_id);
 
-			dao.calendarUpdate(eventDataDTO);
-		}
+         dao.calendarUpdate(eventDataDTO);
+      }
 
-	}
+   }
 
-	public void calendarUpdate2(ProjectEventDataDTO requestData) {
-		dao.calendarUpdate2(requestData);
+   public void calendarUpdate2(ProjectEventDataDTO requestData) {
+      dao.calendarUpdate2(requestData);
 
-	}
+   }
 
-	public int eventDelete(String project_calendar_id) {
-		// TODO Auto-generated method stub
-		return dao.eventDelete(project_calendar_id);
-	}
+   public int eventDelete(String project_calendar_id) {
+      // TODO Auto-generated method stub
+      return dao.eventDelete(project_calendar_id);
+   }
 
 }
