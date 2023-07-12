@@ -215,6 +215,7 @@ public class MailController {
       return mailResult;
    }
    
+   // mail 즐겨찾기
    @PostMapping(value="mail/favorite.ajax")
    @ResponseBody
    public HashMap<String, Object> mailFavorite(@RequestParam("mailId") Integer mail_id, boolean isFavorite) {
@@ -223,12 +224,16 @@ public class MailController {
       return service.mailFavorite(mail_id,isFavorite);
    }
    
+   // 내게쓰기 리스트 아작스
    @RequestMapping(value="mail/selfBox.ajax")
    @ResponseBody
-   public HashMap<String, Object> mailSelfBox(){
-      return service.mailSelfBox();
+   public HashMap<String, Object> mailSelfBox(@RequestParam String page,@RequestParam String cnt, @RequestParam String searchInformation,
+		   @RequestParam String searchText,@RequestParam String mailFilter,@RequestParam String type,@RequestParam String searchMailBox){
+      logger.info("page: "+page+"/cnt: "+cnt+"/searchInformation: "+searchInformation+"/searchText: "+searchText+"/mailFilter: "+mailFilter+"/type:"+type+"/searchMailBox: "+searchMailBox);
+	   return service.mailSelfBox(Integer.parseInt(page),Integer.parseInt(cnt),searchInformation,searchText,mailFilter,type,searchMailBox);
    }
    
+   // mail receiver 즐겨찾기
    @RequestMapping(value="mail/bookmark.ajax")
    @ResponseBody
    public HashMap<String, Object> mailbookmark(@RequestParam int mailId, @RequestParam Boolean isFavorite, @RequestParam String type){

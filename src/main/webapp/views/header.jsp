@@ -4,14 +4,10 @@
 
 
 <style>
-	.admin {
+	 .admin {
 		display : none;
-	}
+	} 
 </style>
-
-
-
-
 
  <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">

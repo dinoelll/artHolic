@@ -38,11 +38,11 @@
 
    <insert id="myFolderCreate" parameterType="java.lang.String">
       INSERT INTO myfolder (member_id, folder_name)
-      VALUES ("1812001", #{folderName})
+      VALUES (#{member_id}, #{folderName})
    </insert>
 
    <select id="folderList" resultType="mypage">
-      SELECT * FROM myfolder
+	  SELECT * FROM myfolder WHERE member_id = #{member_id}
    </select>
 
    <update id="myFolderUpdate" parameterType="map">

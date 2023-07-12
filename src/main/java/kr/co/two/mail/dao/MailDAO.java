@@ -42,7 +42,7 @@ public interface MailDAO {
 
    int tempListUpdate(HashMap<String, String> params);
 
-   ArrayList<MailDTO> mailSelfBox();
+   ArrayList<MailDTO> mailSelfBox(int cnt, int offset, String type, String mailFilter, String searchInformation, String searchText, String searchMailBox);
 
    int savereceiverWrite(MailDTO dto);
 
@@ -51,5 +51,7 @@ public interface MailDAO {
    int mailbookmark(int mailId, Boolean isFavorite, String type);
 
    boolean isbookmarkStatus(int mailId, String type);
+
+   int totalCount(String type, String mailFilter, String searchInformation, String searchText, String searchMailBox);
 
 }

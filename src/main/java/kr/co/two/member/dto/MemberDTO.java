@@ -25,7 +25,14 @@ public class MemberDTO {
 		private Date modi_date;
 		private String modi_id;
 		private String gender;
+        private boolean userBlindWhether;
 		
+		public boolean isUserBlindWhether() {
+			return userBlindWhether;
+		}
+		public void setUserBlindWhether(boolean userBlindWhether) {
+			this.userBlindWhether = userBlindWhether;
+		}
 		// cooper
 		private String part;
 		private String business;
