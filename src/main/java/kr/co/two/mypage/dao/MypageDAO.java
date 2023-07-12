@@ -25,9 +25,9 @@ public interface MypageDAO {
    
    List<EventDataDTO> getEvent();
 
-   void myFolderCreate(String folderName);
+   void myFolderCreate(String folderName, String member_id);
 
-   ArrayList<String> folderList();
+   ArrayList<String> folderList(String member_id);
 
    void myFolderUpdate(String folderName, int folderId);
 

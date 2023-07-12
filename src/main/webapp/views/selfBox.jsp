@@ -6,6 +6,7 @@
   <!--  <meta name="viewport" content="width=device-width, initial-scale=1"> -->
   <title>ArtHolic</title>
 
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -14,6 +15,8 @@
   <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  
+ 
   <style>
   	.main-sidebar {
 		background-color: #e9ddc6;
@@ -32,6 +35,37 @@
 	
 	.test{
 		display:inline;
+	}
+	#forwarding,#reply,#del{
+        font-weight: bold;
+        background-color: white;
+        border: 1px solid white;
+        color: black;
+   }
+   
+   #forwarding:hover,#reply:hover,#del:hover,#mailFilter:hover{
+        border-color: rgba(233, 221, 198, 0.4);
+    }
+    #mailFilter{
+    	border-style: none;
+    	font-weight:bold;
+    	text-align: center;
+    	cursor: pointer;
+    }
+	#paging {
+	  position: fixed;
+	  bottom: 0;
+	  width: 100%;
+	  background-color: #f8f9fa;
+	  padding: 10px 0;
+	  z-index: 9999;
+	}
+	.col-md-9{
+		flex: 0 0 100%;
+    	max-width: 100%;
+	}
+	.pagination{
+		padding-left: 315px;
 	}
   </style>
 </head>
@@ -66,23 +100,34 @@
           
         <!-- /.col -->
         <div class="col-md-9">
-        <div class="test">
-          <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
-          <a href=mailWrite.go?selfBox=true class="btn btn-primary btn-sm ">내게 쓰기</a>
-        </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
-            
+	           	<div class="test">
+		          <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
+		          <a href=mailWrite.go?selfBox=true class="btn btn-primary btn-sm ">내게 쓰기</a>
+		        </div>
               <div class="card-tools">
                 <div class="input-group input-group-sm">
-                <select name="searchFilter" id="searchFilter">
-                	<option value="allMail">전체</option>
+                <select name="searchMailBox" id="searchMailBox">
+                	<option value="allBox">전체 메일</option>
+                	<option value="SendBox">보낸 메일함</option>
+                	<option value="selfBox">내게 쓴 메일함</option>
+				    <option value="inBox">받은 메일함</option>
+				    <option value="tempBox">임시 보관함</option>
+				    <option value="trashBox">휴지통</option>
+				</select>
+				
+                <select name="searchInformation" id="searchInformation">
+                	<option value="allMail">전체 검색</option>
+                	<option value="mailSender">보낸 사람</option>
+                	<option value="mailRecipient">받는 사람</option>
 				    <option value="mailSubject">제목</option>
 				    <option value="mailContent">내용</option>
+				    <option value="mailAttachment">첨부파일</option>
 				</select>
-                  <input type="text" class="form-control" placeholder="Search Mail">
-                  <div class="input-group-append">
-                    <div class="btn btn-primary">
+                  <input type="text" class="form-control" placeholder="Search Mail" id="searchInput">
+                  <div class="input-group-append" onclick="mailSearch()">
+                    <div class="btn btn-primary" >
                       <i class="fas fa-search"></i>
                     </div>
                   </div>
@@ -94,21 +139,30 @@
             <div class="card-body p-0">
               <div class="mailbox-controls">
                 <!-- Check all button -->
-                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
                 </button>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default btn-sm">
-                    <i class="far fa-trash-alt"></i>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="button" class="btn btn-default btn-sm" id="del">
+                    <i class="far fa-trash-alt"></i>&nbsp;&nbsp;삭제&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
-                  <button type="button" class="btn btn-default btn-sm">
-                    <i class="fas fa-reply"></i>
+                  <button type="button" class="btn btn-default btn-sm" id="reply">
+                    <i class="fas fa-reply"></i>&nbsp;&nbsp;답장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
-                  <button type="button" class="btn btn-default btn-sm">
-                    <i class="fas fa-share"></i>
+                  <button type="button" class="btn btn-default btn-sm" id="forwarding">
+                    <i class="fas fa-share"></i>&nbsp;&nbsp;전달 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
+                  <select id="mailFilter">
+                  	<option value="" selected disabled hidden>필터</option>
+                  	<option value="all">모든 메일</option>
+                  	<option value="unread">안읽은 메일</option>
+                  	<option value="import">중요 메일</option>
+                  	<option value="new">최신순</option>
+                  	<option value="old">오래된순</option>
+                  </select>
                 </div>
                 <!-- /.btn-group -->
-                <div class="float-right">
+                <!-- <div class="float-right">
                   1-50/200
                   <div class="btn-group">
                     <button type="button" class="btn btn-default btn-sm">
@@ -118,30 +172,22 @@
                       <i class="fas fa-chevron-right"></i>
                     </button>
                   </div>
-                  <!-- /.btn-group -->
-                </div>
+                  /.btn-group
+                </div> -->
                 <!-- /.float-right -->
               </div>
               <div class="table-responsive mailbox-messages">
                 <table class="table table-hover table-striped">
-
+				  <colgroup>
+				  	<col width=5%/>
+				  	<col width=5%/>
+				  	<col width=5%/>
+				  	<col width=15%/>
+				  	<col width=45%/>
+				  	<col width=5%/>
+				  	<col width=20%/>
+				  </colgroup>
                   <tbody id="list">
-                  
-                  
-                 <!--  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check1">
-                        <label for="check1"></label>
-                      </div>
-                    </td>
-                    <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">강경석</a></td>
-                    <td class="mailbox-subject"><b>응애</b>
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">5 분 전</td>
-                  </tr>-->
                   </tbody>
                    
                 </table>
@@ -150,8 +196,18 @@
               <!-- /.mail-box-messages -->
             </div>
 
-          </div>
+
+			
           <!-- /.card -->
+          <div id="paging">	
+			<!-- 	플러그인 사용	(twbsPagination)	-->
+			<div class="container">									
+				<nav aria-label="Page navigation" style="text-align:center">
+					<ul class="pagination" id="pagination"></ul>
+				</nav>					
+			</div>
+		  </div>
+        </div>
         </div>
         <!-- /.col -->
       </div>
@@ -178,56 +234,119 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+ <script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
+ 
 <!-- Page specific script -->
 <script>
-	listCall();
+
+var showPage = 1;
+var selectedSearchInformation = "allMail";
+var selectedMailFilter = "all";
+var selectedSearchMailBox = "allBox";
+var type = "self";
+var searchText = "";
+var cnt = 15;
+
+listCall(showPage);
   $(function () {
     //Enable check and uncheck all functionality
     $('.checkbox-toggle').click(function () {
       var clicks = $(this).data('clicks')
       if (clicks) {
         //Uncheck all checkboxes
-        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
-        $('.checkbox-toggle .far.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
+        $(this).find('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
+        $(this).find('.checkbox-toggle .far.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
       } else {
         //Check all checkboxes
-        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
-        $('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
+        $(this).find('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
+        $(this).find('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
       }
       $(this).data('clicks', !clicks)
     })
-
-    //Handle starring for font awesome
-    $('.mailbox-star').click(function (e) {
-      e.preventDefault()
-      //detect type
-      var $this = $(this).find('a > i')
-      var fa    = $this.hasClass('fa')
-
-      //Switch states
-      if (fa) {
-        $this.toggleClass('fa-star')
-        $this.toggleClass('fa-star-o')
-      }
-    })
-  })
+  }) 
   
-  function listCall(){
+	
+	
+  $('#pagePerNum').change(function(){
+		listCall(showPage);
+		$('#pagination').twbsPagination('destroy');
+	});
+  
+	//메일 검색 조건방식 선택에 따른 출력
+	$('#searchInformation').change(function(){
+		selectedSearchInformation = $(this).val();
+		console.log(selectedSearchInformation);
+	});
+	
+	// 메일함 검색 조건 방식 선택에 따른 출력
+	$('#searchInMailBox').change(function(){
+		selectedSearchInMailBox = $(this).val();
+		console.log(selectedSearchInMailBox);
+	});
+	
+	//검색어에 따른 출력
+	function mailSearch(){
+	   //검색어 확인 
+	   searchText = $('#searchInput').val();
+	   console.log(searchText);
+	   if(selectedSearchInformation !== "" && selectedSearchInMailBox != ""){
+		   listCall(showPage);
+		   $('#pagination').twbsPagination('destroy');
+	   }
+	};
+	
+	// 메일 필터 선택에 따른 출력
+	$('#mailFilter').change(function(){
+		selectedMailFilter = $(this).val();
+		console.log(selectedMailFilter);
+		if(selectedMailFilter !== ""){
+		   listCall(showPage);
+		   $('#pagination').twbsPagination('destroy');
+		}
+	});
+	
+  // 리스트 부르기
+  function listCall(page){
 	  $.ajax({
 		 type:'post'
 		 ,url:'mail/selfBox.ajax'
-		 ,data:{}
+		 ,data:{
+			 'page':page,
+			 'cnt': cnt,
+			 'searchInformation': selectedSearchInformation,
+			 'searchText': searchText,
+			 'mailFilter': selectedMailFilter,
+			 'type':type,
+			 'searchMailBox':selectedSearchMailBox
+		 },dataType: 'json'
 	  	 ,success:function(data){
 			 console.log(data);
 			 listPrint(data.list);
+			 
+			//paging plugin
+				$('#pagination').twbsPagination({
+					startPage:data.currPage, // 시작 페이지
+					totalPages:data.pages,// 총 페이지 수 
+					visiblePages:5,// 보여줄 페이지
+					next : '<span style="color: #87d1bf;">></span>', 
+					last : '<span style="color: #87d1bf;">>></span>',
+					first : '<span style="color: #87d1bf;"><<</span>',
+					prev : '<span style="color: #87d1bf;"><</span>',
+					onPageClick:function(event,page){ // 페이지 클릭시 동작되는 (콜백)함수
+					   console.log(page,showPage);
+					   if(page != showPage){
+					      showPage=page;
+					      listCall(page);
+					   }
+					}
+				});
 		 },error:function(e){
 			 console.log(e);
 		 }
 	  });
   }
   
+  // 리스트 아작스
   function listPrint(list){
 	  var content = '';
 	  if(list.length>0){
@@ -249,6 +368,7 @@
 				 content += '<i class="far fa-star">';
 			 }
 			 content += '</i></a></td>';
+			 content += '<td>'+item.read_chk+'</td>'
 			 content += '<td class="mailbox-name">'+item.name+'</a></td>';
 			 content += '<td class="mailbox-subject"><a href="#" onclick="mailDetail(this)" data-mail-id="' + item.mail_id +'"><b>'+item.mailSubject+'</b></a></td>';
 			 content += '<td class="mailbox-attachment">';
@@ -257,11 +377,13 @@
 			      }
 			 content += '</td>';
 			 content += '</form>';
-			 content += '<td class="mailbox-date">'+item.writeTime+'</td>';
+			 var timestamp = item.writeTime; // 예시: timestamp 값
+			 var date = new Date(timestamp);
+			 var formattedDateTime = date.getFullYear() + '-' + addZero(date.getMonth() + 1) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
+			 content += '<td class="mailbox-date">' + formattedDateTime + '</td>';
 			 //content += '<div class="formId"></div>'
 			 content += '</tr>';
 			 
-			 console.log(item.mail_file_id);
 		  });
 	  }
 	  $('#list').empty();
@@ -269,6 +391,7 @@
 	  
   }
   
+  // detail 에 파라메터 전달
   function mailDetail(element){
 	  var mailId = $(element).data('mail-id');
 	  console.log(mailId);
@@ -281,13 +404,15 @@
 
   }
   
+  // 즐겨찾기
   $('#list').on('click', '.toggle-favorite', function (e) {
 	    e.preventDefault();
 
 	    var mailId = $(this).data('mail-id');
+	    var mailToggle = $(this).find('i');
 	    console.log(mailId);
 	    // 현재 즐겨찾기 상태 가져오기
-	    var isFavorite = $('#mailSubjectForm i').hasClass('fas');
+	    var isFavorite = $(this).find('i').hasClass('fas');
 	    console.log(isFavorite);
 
 	    // AJAX 요청 생성
@@ -298,18 +423,17 @@
 	            'mailId': mailId, // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
 	            'isFavorite': !isFavorite, // 현재 즐겨찾기 상태를 반대로 전환하여 서버에 전달
 	            'type' : 'self'
-	        },
-	        dataType: 'json',
-	        success: function (response) {
+	        },dataType: 'json'
+	        ,success: function (response) {
 	        	console.log(response.isFavorite);
 	        	
 	            // 서버로부터의 응답 처리
 	            if (response.isFavorite == true) {
 	                // 즐겨찾기 상태인 경우
-	                $(this).find('i').removeClass('far fa-star').addClass('fas fa-star text-warning');
+	                mailToggle.removeClass('far fa-star').addClass('fas fa-star text-warning');
 	            } else {
 	                // 즐겨찾기 상태가 아닌 경우
-	                $(this).find('i').removeClass('fas fa-star text-warning').addClass('far fa-star');
+	                mailToggle.removeClass('fas fa-star text-warning').addClass('far fa-star');
 	            }
 	        },
 	        error: function (error) {
@@ -319,7 +443,10 @@
 	    });
 	});
   
-
+	//일의 자릿수가 한 자리일 경우 앞에 0을 추가하는 함수
+	  function addZero(value) {
+	    return value < 10 ? '0' + value : value;
+	  }
   
 </script>
 </body>
