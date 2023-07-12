@@ -55,7 +55,7 @@ public interface MemberDAO {
 
 	void admin(String memberId, Boolean adminValue);
 
-	int changePw(String pw);
+	int changePw(String pw, String member_id);
 
 	int join(HashMap<String, String> params, String newFileName, String email);
 
@@ -63,7 +63,7 @@ public interface MemberDAO {
 
 	MemberDTO memberDetail(String member_id);
 
-	int update(HashMap<String, String> params, String newFileName, String email);
+	int update(HashMap<String, String> params, String newFileName, String email, int blind);
 
 	String getProfileFileName(String member_id);
 
@@ -85,7 +85,30 @@ public interface MemberDAO {
 
 	MemberDTO companyDetail(String cooper_id);
 
-	String companyUpdate(HashMap<String, String> params);
+	int companyUpdate(HashMap<String, String> params);
+
+	boolean isUserBlind(String id);
+
+	ArrayList<MemberDTO> employeeBlindTotalList(HashMap<String, Object> params, int cnt, int offset);
+
+	int employeeBlindDeptTotalCount(HashMap<String, Object> params, String searchType, String searchText);
+
+	int employeeBlindTotalCount(HashMap<String, Object> params);
+
+	int employeeBlindPositionTotalCount(HashMap<String, Object> params, String searchType, String searchText);
+
+	int employeeBlindNameTotalCount(HashMap<String, Object> params, String searchType, String searchText);
+
+	ArrayList<MemberDTO> employeeBlindDeptTotalList(HashMap<String, Object> params, String searchType,
+			String searchText, int cnt, int offset);
+
+	ArrayList<MemberDTO> employeeBlindNameTotalList(HashMap<String, Object> params, String searchType,
+			String searchText, int cnt, int offset);
+
+	ArrayList<MemberDTO> employeeBlindPositionTotalList(HashMap<String, Object> params, String searchType,
+			String searchText, int cnt, int offset);
+
+	int companyDelete(String cooper_id3);
 	
 	
 	
