@@ -64,15 +64,25 @@ public class ChatService {
 
 	public String createChatRoom(HashMap<String, Object> map) {
 		ChatDTO dto = new ChatDTO();
+		HashMap<String, Object> messageMap = new HashMap<String, Object>();
 		dto.setName(String.valueOf(map.get("chat_room_name")));
 		
-		dao.createRoom(dto);
 		
+		dao.createRoom(dto);
+		String chatRoomId = String.valueOf(dto.getChat_room_id());
 		logger.info("chat_member_id : " + dto.getChat_room_id());
+		
+		messageMap.put("chat_room_id", chatRoomId);
+		messageMap.put("is_notice", true);
 		
 		for (String member_id : (ArrayList<String>) map.get("member_id_array")) {
 			logger.info("member_id : "+ member_id);
-			dao.insert_chat_room_info(dto.getChat_room_id(), member_id);
+			
+			messageMap.put("send_id", member_id);
+			messageMap.put("content", member_id+"님이 입장하셨습니다");
+			
+			dao.insert_chat_room_info(chatRoomId, member_id);
+			dao.chatStored(messageMap);
 		}
 		
 		return "success";
@@ -96,5 +106,25 @@ public class ChatService {
 		}
 		
 		return listAll;
+	}
+
+	public String inviteChatRoom(HashMap<String, Object> map) {
+		
+		String chatRoomId = String.valueOf(map.get("chat_room_id"));
+		HashMap<String, Object> messageMap = new HashMap<String, Object>();
+		
+		messageMap.put("chat_room_id", chatRoomId);
+		messageMap.put("is_notice", true);
+		
+		for (String member_id : (ArrayList<String>) map.get("member_id_array")) {
+			logger.info("member_id : "+ member_id);
+	
+			messageMap.put("send_id", member_id);
+			messageMap.put("content", member_id+"님이 입장하셨습니다");
+			
+			dao.insert_chat_room_info(chatRoomId, member_id);
+			dao.chatStored(messageMap);
+		}
+		return "success";
 	}
 }

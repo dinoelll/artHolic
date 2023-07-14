@@ -79,7 +79,7 @@ public class ChatController {
 		template.convertAndSend("/sub/chat/"+ dto.getChat_room_id(), dto);
 	}
 	
-	@PostMapping(value="/chatStored.ajax")
+	@PostMapping(value="/chatLoad.ajax")
 	@ResponseBody
 	public ArrayList<ChatDTO> chatStored(@RequestBody String id) {
 		logger.info("id : " + id);
@@ -116,12 +116,21 @@ public class ChatController {
 		
 		return service.createChatRoom(map);
 	}
-	/*
-	@PostMapping(value="/chatRoomExit.ajax")
+	
+	@PostMapping(value="/inviteChatroom.ajax")
 	@ResponseBody
-	public int chatRoomExit(@RequestParam HashMap<String, Object> params) {
-		logger.info("params : " + params);
-		return service.chatRoomExit(params);
+	public String chatRoomExit(@RequestParam(value="member_id_array[]") ArrayList<String> member_id_array,
+			@RequestParam String chat_room_id) {
+		for (String member_id : member_id_array) {
+			logger.info("member_id : " + member_id);
+		}
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("member_id_array", member_id_array);
+		map.put("chat_room_id", chat_room_id);
+		
+		template.convertAndSend("/sub/chat/"+ chat_room_id, "success");
+		return service.inviteChatRoom(map);
 	}
-	*/
+	
 }
