@@ -8,6 +8,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.two.mail.dto.MailDTO;
 import kr.co.two.project.dao.ProjectDAO;
 import kr.co.two.project.dto.ProjectDTO;
 import kr.co.two.project.dto.ProjectEventDataDTO;
@@ -63,10 +67,10 @@ public class ProjectService {
    }
 
    // 피드 작성
-   public String feedWrite(MultipartFile[] attachment, HashMap<String, String> params, Model model) {
+   public String feedWrite(MultipartFile[] attachment, HashMap<String, String> params, Model model, RedirectAttributes rttr) {
       // String id = (String) session.getAttribute("id");
-      String page = "redirect:/projectDetail.go";
-
+      //String page = "redirect:/projectDetail.go";
+	   HashMap<String , Object> map = new HashMap<String, Object>();
       logger.info("attachment : " + attachment);
 
       ProjectDTO dto = new ProjectDTO();
@@ -96,9 +100,11 @@ public class ProjectService {
 
          }
       }
-      page = "redirect:/projectDetail.go?project_id=" + params.get("project_id");
-
-      return page;
+      map.put("project_id", params.get("project_id"));
+      map.put("project_name", params.get("project_name"));
+      rttr.addFlashAttribute("map", map);
+      
+      return "redirect:/projectDetail.go?type=controller";
 
    }
 
@@ -131,6 +137,24 @@ public class ProjectService {
 
       return dao.getAllFeed(project_id);
    }
+   
+   public ArrayList<ProjectDTO> projectAddOption() {
+	      
+	      return dao.projectAddOption();
+	      
+	   }
+   
+   public String addProjectMember(HashMap<String, Object> projectInfo) {
+	   ArrayList<String> list = (ArrayList<String>) projectInfo.get("approvers");
+	   String project_id = (String) projectInfo.get("project_id");
+	   for (String member_id : list) {
+		logger.info(member_id,project_id);
+		
+		dao.addProjectMember(member_id,project_id);
+	}
+		
+		return null;
+	}
 
    
    /*------------------------------------캘린더 영역---------------------------------------------*/
@@ -174,5 +198,8 @@ public class ProjectService {
       // TODO Auto-generated method stub
       return dao.eventDelete(project_calendar_id);
    }
+
+
+
 
 }
