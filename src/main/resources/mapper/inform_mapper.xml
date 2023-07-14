@@ -6,7 +6,7 @@
 
    <insert id="informWriteDo" parameterType="inform">
       INSERT INTO board(subject, member_id, content, board_code, is_form)
-         VALUES(#{subject}, '123456', #{content}, 'inform', #{is_form})
+         VALUES(#{subject}, #{member_id}, #{content}, 'inform', #{is_form})
    </insert>
    
     

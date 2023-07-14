@@ -230,12 +230,12 @@
     </if> 
     <if test="isSelf and searchInformation == 'allMail' and !(isEmptySearchText)">
     	<if test = "searchText == 'mailSender'">
-	        AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
+	        	AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
 	        <if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
 	        	AND mr.is_receiver = 2 AND mr.blind = 0
 	        </if>
 	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
+        		AND mr.blind = 0 AND mr.read_chk = 0 
 	        </if>
 	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
 	        	AND mr.blind = 0 AND mr.bookmark = 1
@@ -277,19 +277,13 @@
 	        	AND mr.blind = 0 AND mr.bookmark = 1
 	        </if>
         </if>
-        <if test = "searchText == 'mailAttachment'">
-        	AND mf.ori_file_name LIKE CONCAT('%', #{searchText}, '%')
-        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
     </if>
-    ORDER BY mr.mail_id 
+    <if test=" !(mailFilter == 'old')">
+    	ORDER BY mr.mail_id DESC
+    </if>
+    <if test="(mailFilter == 'old')">
+    	ORDER BY mr.mail_id ASC
+    </if>
+    LIMIT #{cnt} OFFSET #{offset}
    </select>
 </mapper>
