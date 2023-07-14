@@ -170,12 +170,99 @@
 .bookmark i {
 	font-size: 16px;
 }
-/* 
-.bookmarked {
-  background-color: yellow; /* 원하는 색상으로 설정하세요 */
+
+/* #memberExp {
+	background-color: yellow;
+	width: 60%;
+	height: 150px;
+	margin-left: 400;
+} */
+.rectangle {
+	display: flex;
+	align-items: center;
+	width: 60%;
+	height: 180px;
+	background-color: #f0f0f0;
+	/* background-color: #f5f5f5;  */
+	padding: 10px;
+	margin-left: 350px;
+	border: 1px;
 }
-*
-/
+
+#text1 {
+	margin-left: 400px;
+}
+
+.rectangle img {
+	width: 150px; /* 사진 크기 조정 */
+	height: 150px;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+.info {
+	display: flex;
+	flex-direction: column;
+	margin-right: 20px;
+	margin-left: 50px;
+}
+
+.names {
+	font-weight: bold;
+	font-size: 26px;
+}
+
+.position, .department {
+	font-size: 20px;
+}
+
+.circle-container {
+	display: flex;
+	align-items: center;
+	margin-left: 150px;
+}
+
+.circle {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-right: 10px;
+}
+
+.text {
+	font-size: 12px;
+}
+
+.number {
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	background-color: #555;
+	color: #fff;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 30px;
+	margin-top: 5px;
+	font-size: 50px;
+	padding-top: 30px;
+	margin-left: 50px;
+}
+
+.text {
+	margin-left: 50px;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+select {
+	width: 80px;
+	height: 30px;
+}
+
+/* img {
+	width: 100px;
+} */
 </style>
 </head>
 
@@ -191,7 +278,7 @@
 					<div class="row mb-2">
 						<div class="col-sm-6">
 							<h1 class="m-0">
-								사내연락처</a></b>
+								근태관리</a></b>
 							</h1>
 						</div>
 						<!-- /.col -->
@@ -212,27 +299,31 @@
 			<!-- Main content -->
 			<section class="content">
 
+				<div class="rectangle">
+					<p id="text1">회원의 이름을 클릭해주세요.</p>
+
+
+				</div>
+
+
 
 				<div class="adList">
 					<!-- <button type="button" class="btn btn-default" data-toggle="modal"
 						data-target="#modal-default" id="upload">등록</button> -->
-					<table>
-						<tr>
-							<td><select id="opt" name="select">
-									<!-- <option value="default">조건</option> -->
-									<option value="name">이름</option>
-									<option value="position">직급</option>
-									<option value="dept">부서명</option>
-							</select> <select id="bookmark">
-									<option value="">전체보기</option>									
-									<option value="8948948">즐겨찾기</option>
-							</select> <input type="text" id="keyword" placeholder="내용을 입력 해 주세요.">
-								<button onclick="opt()" id="searchButton">검색</button></td>
-						</tr>
-					</table>
+
+					<div id="search">
+						<select id="opt" name="select">
+							<!-- <option value="default">조건</option> -->
+							<option value="name">이름</option>
+							<option value="position">직급</option>
+							<option value="dept">부서명</option>
+						</select> <input type="text" id="keyword" placeholder="내용을 입력 해 주세요."
+							style="margin-left: 20px; margin-right: 20px; width: 220px;">
+						<button onclick="opt()" id="searchButton">검색</button>
+					</div>
+
 					<table id="example1" class="table table-bordered table-striped">
 						<colgroup>
-							<col width="10%" />
 							<col width="10%" />
 							<col width="10%" />
 							<col width="10%" />
@@ -242,22 +333,19 @@
 						</colgroup>
 						<thead>
 							<tr id="thead" style="text-align: center">
-								<th>
-									<!-- <input type="checkbox" id="all" /> -->즐겨찾기
-								</th>
 								<th>이름</th>
 								<th>직급</th>
 								<th>부서명</th>
-								<th>연락처</th>
-								<th>이메일</th>
-								<th>내선번호</th>
+								<th>종류</th>
+								<th>시작일</th>
+								<th>종료일</th>
 							</tr>
 						</thead>
-						<tbody id="adList" style="text-align: center">
+						<tbody id="atList" style="text-align: center">
 							<!-- 리스트가 출력될 영역 -->
 						</tbody>
 						<tr>
-							<td colspan="7" id="paging">
+							<td colspan="6" id="paging">
 								<!-- <button type="button" class="btn btn-danger" onclick="del()"
 									id="del">취소</button> -->
 								<div class="container">
@@ -350,34 +438,24 @@
 	 $('#pagination').twbsPagination('destroy');
 	 });  */
 
-	$('#bookmark').change(function() {
-		console.log("bookmark change");
-		bookmark = $(this).val();
-		console.log(bookmark);
-		listCall(showPage, bookmark);
-		$('#pagination').twbsPagination('destroy');
-	});
-
 	function listCall(page, cnt) {
 
 		var cnt = 10;
 		$.ajax({
 			type : 'post',
-			url : '/adList.ajax',
+			url : '/atList.ajax',
 			data : {
 				'page' : page,
 				'cnt' : cnt,
 				'opt' : optValue,
-				'keyword' : keywordValue,
-				'bookmark' : bookmark
+				'keyword' : keywordValue
 			},
 			dataType : 'json',
 			success : function(data) {
 				console.log("success");
 				console.log(data.pages);
 				console.log(data.list);
-				console.log(data.bmList);
-				listPrint(data.list, data.bmList);
+				listPrint(data.list);
 
 				// Paging Plugin (j-query의 기본기능을 가지고 만들었기 때문에  plugin)
 				$('#pagination').twbsPagination({
@@ -405,250 +483,93 @@
 		});
 	}
 
-	function listPrint(adList, bmList) {
+	function listPrint(atList) {
 		console.log("listPrint Call");
 		var content = '';
 
-		if (adList.length > 0) {
-			adList
-					.forEach(function(dto, idx) {
-						content += '<tr>';
-
-						var buttonClass = isBookmarked(dto.member_id, bmList) ? 'bookmark bookmarked'
-								: 'bookmark';
-						var iconClass = isBookmarked(dto.member_id, bmList) ? 'fas fa-star'
-								: 'far fa-star';
-						content += '<td><button class="' + buttonClass + '" value="' + dto.member_id + '"><i class="' + iconClass + '"></i></button></td>';
-						content += '<td>' + dto.name + '</td>';
-						content += '<td>' + dto.position_name + '</td>';
-						content += '<td>' + dto.dept_name + '</td>';
-						content += '<td>' + dto.phone + '</td>';
-						content += '<td><a href="/mailWrite2.go?id='
-								+ dto.member_id + '&name=' + dto.name
-								+ '&dept=' + dto.dept_name + '&position='
-								+ dto.position_name + '">' + dto.email
-								+ '</a></td>';
-						content += '<td>' + dto.tel + '</td>';
-						content += '</tr>';
-					});
+		if (atList.length > 0) {
+			atList.forEach(function(dto, idx) {
+				content += '<tr>';
+				content += '<td><span class="name" id="' + dto.member_id + '">'
+						+ dto.name + '</span></td>';
+				content += '<td>' + dto.position_name + '</td>';
+				content += '<td>' + dto.dept_name + '</td>';
+				content += '<td>' + dto.vacation_kind + '</td>';
+				content += '<td>' + dto.start_date + '</td>';
+				content += '<td>' + dto.end_date + '</td>';
+				content += '</tr>';
+			});
 
 		} else {
 			content += '<tr>';
-			content += '<td colspan="7" style="text-align: center;">검색한 정보가 없습니다.</td>';
+			content += '<td colspan="6" style="text-align: center;">검색한 정보가 없습니다.</td>';
 			content += '</tr>';
 		}
-		$('#adList').empty();
-		$('#adList').append(content);
+		$('#atList').empty();
+		$('#atList').append(content);
 
-		bookmarkClick();
 	}
 
-	function isBookmarked(memberId, bmList) {
-		for (var i = 0; i < bmList.length; i++) {
-			if (bmList[i] === memberId) {
-				return true;
-			}
-		}
-		return false;
+	$(document).ready(function() {
+		$(document).on("click", ".name", function() {
+			var clickedId = $(this).prop('id');
+			console.log(clickedId);
+			$.ajax({
+				url : "/attendance.ajax",
+				type : "POST",
+				data : {
+					member_id : clickedId
+				},
+				dataType : "json",
+				success : function(response) {
+					console.log(response);
+					createRectangle(response.attendance);
+				},
+				error : function(xhr, status, error) {
+					console.error(error);
+				}
+			});
+		});
+	});
+
+	function createRectangle(attendance) {
+		var rectangleHTML =
+		/*   '<div class="rectangle">' + */
+		'<img id="img" src="/photo/' +
+		      attendance.profile_photo +
+		      '" />'
+				+ '<div class="info">' + '<span class="names">'
+				+ attendance.name
+				+ '</span>'
+				+ '<span class="position">'
+				+ attendance.position_name
+				+ '</span>'
+				+ '<span class="department">'
+				+ attendance.dept_name
+				+ '팀</span>'
+				+ '</div>'
+				+ '<div class="circle-container">'
+				+ '<div class="circle">'
+				+ '<span class="text">총연차</span>'
+				+ '<span class="number">'
+				+ attendance.annual
+				+ '</span>'
+				+ '</div>'
+				+ '<div class="circle">'
+				+ '<span class="text">사용연차</span>'
+				+ '<span class="number">'
+				+ attendance.useAnnual
+				+ '</span>'
+				+ '</div>'
+				+ '<div class="circle">'
+				+ '<span class="text">남은연차</span>'
+				+ '<span class="number">'
+				+ attendance.remainingAnnual
+				+ '</span>' + '</div>' + '</div>';
+		/* + '</div>'; */
+		$('.rectangle').empty();
+		$(".rectangle").append(rectangleHTML);
 	}
-
-	function bookmarkClick() {
-
-		$('.bookmark.bookmarked').click(function(e) {
-			var bookmarkValue = $(this).val();
-			console.log(bookmarkValue);
-			console.log('즐겨찾기 해제');
-
-			$.ajax({
-				type : 'post',
-				url : '/bookmarkDel.ajax',
-				data : {
-					'id' : bookmarkValue,
-				},
-				dataType : 'json',
-				success : function(data) {
-					console.log("success");
-					console.log(data.data);
-					alert('즐겨찾기가 해제되었습니다.');
-					listCall(showPage);
-					/* location.href='/address.go';	 */
-				},
-				error : function(e) {
-					console.log("Error");
-				}
-			});
-
-		});
-
-		$('.bookmark:not(.bookmarked)').click(function(e) {
-			var bookmarkValue = $(this).val();
-			console.log(bookmarkValue);
-			console.log('즐겨찾기 등록');
-			$.ajax({
-				type : 'post',
-				url : '/bookmark.ajax',
-				data : {
-					'id' : bookmarkValue,
-				},
-				dataType : 'json',
-				success : function(data) {
-					console.log("success");
-					console.log(data.data);
-					alert('즐겨찾기가 등록되었습니다.');
-					listCall(showPage);
-					/* location.href='/address.go';	 */
-				},
-				error : function(e) {
-					console.log("Error");
-				}
-			});
-
-		});
-	};
-
-	/* 	$('#all').click(function(e) {
-	 var $chk = $('input[type="checkbox"]');
-	 console.log($chk);
-	 if ($(this).is(':checked')) {
-	 $chk.prop('checked', true);
-	 } else {
-	 $chk.prop('checked', false);
-	 }
-	 }); */
-
-	/* 	function del() {
-
-	 var checkArr = [];
-
-	 $('input[type="checkbox"]:checked').each(function(idx, item) {
-	 if ($(this).val() != 'on') {
-	 checkArr.push($(this).val());
-	 }
-	 });
-
-	 console.log(checkArr);
-
-	 $.ajax({
-	 type : 'get',
-	 url : 'rvDelete.ajax',
-	 data : {
-	 'rvDelList' : checkArr
-	 },
-	 dataType : 'json',
-	 success : function(data) {
-	 console.log(data);
-	 if (data.success) {
-	 alert(data.msg);
-	 listCall(showPage);
-	 }
-	 },
-	 error : function(e) {
-	 console.log(e);
-	 }
-	 });
-
-	 } */
-
-	/*    if (employeeList && Array.isArray(employeeList) && employeeList.length > 0) {
-	      employeeList.forEach(function (item, employeeList) {
-	         
-	       var detpNames = {
-	             HRdept : "인사",
-	             CTdept : "시공",
-	             DGdept : "설계"
-	       };
-	       
-	       var positionNames = {
-	             art_01 : "사원",
-	             art_02 : "주임",
-	             art_03 : "대리",
-	             art_04 : "과장",
-	             art_05 : "차장",
-	             art_06 : "부장"
-	       };
-	       
-	       var processNames = {
-	             false : "사원",
-	             true : "관리자"
-	       };
-	       
-	       var detpName = detpNames[item.dept_code] || item.categoryCode;
-	       var positionName = positionNames[item.position_code] || item.categoryCode;
-	       var processName = processNames[item.admin] || item.inqProcess;
-	       
-	       content += '<tr>';
-	       content += '<td>' + item.name + '</td>';
-	       content += '<td>' + detpName + '</td>';
-	       content += '<td>' + positionName + '</td>';
-	       content += '<td>' + item.member_id + '</td>';
-	       content += '<td>' + processName + '</td>';
-	       content += '<td><button type="button" class="btn btn-default btn-icon btn-admin ' + (item.admin ? 'btn-danger' : 'btn-primary') + '" data-toggle="modal" data-target="#modal-admin" data-id="' + item.member_id + '" data-admin="' + item.admin + '">' + (item.admin ? '권한 해제' : '권한 부여') + '</button></td>';
-	       content += '</tr>';
-	     });
-	   } else {
-	     content += '<tr>';
-	     content += '<td colspan="6" style="text-align: center;">검색한 정보가 없습니다.</td>';
-	     content += '</tr>';
-	   } */
-
-	/* 	   
-	 //관리자 권한 부여 모달 열기
-	 $(document).on('click', '.btn-admin', function() {
-	 var memberId = $(this).data('id');
-	 var adminValue = $(this).data('admin');
-	 console.log(memberId);
-	 $('#modal-admin').find('.member_id').text(memberId);
-
-	 // 설정된 권한 동작 텍스트 변경
-	 if (adminValue) {
-	 $('#modal-admin').find('.admin-action').text('해제');
-	 } else {
-	 $('#modal-admin').find('.admin-action').text('부여');
-	 }
-
-	 // 모달 열기
-	 $('#modal-admin').modal('show');
-	 });
-
-	 /* 관리자 권한 */
-	/* $(document).ready(function() {
-		// 버튼 클릭 시
-		$('.btn-admin').click(function() {
-
-			var memberId = $('.member_id').text();
-			var adminValue = $(this).data('admin');
-
-			if (adminValue === 0) {
-				adminValue = '1';
-			} else {
-				adminValue = '0';
-			}
-
-			console.log(memberId, adminValue);
-			// 서버로 요청 전송
-			$.ajax({
-				type : 'POST',
-				url : '/admin.ajax',
-				data : {
-					memberId : memberId,
-					adminValue : adminValue
-				},
-				success : function(data) {
-					// 성공 시
-					alert('관리자 권한 처리에 성공했습니다.');
-					location.reload(); // 페이지 새로고침
-				},
-				error : function(error) {
-					// 실패 시
-					alert('관리자 권한 처리에 실패했습니다.');
-					console.log(error);
-				}
-			});
-
-			// 모달창 닫기
-			$('#modal-admin').modal('hide');
-		});
-	}); */
 </script>
 
 </html>

@@ -233,7 +233,7 @@
 			<h1 id="project_name">&lt; team ${project_name} &gt;</h1>
 
 <input type="hidden" id="project_id" value="${project_id }">
-
+<input type="hidden" id="project_name" value="${project_name }">
 
 			<div id="modal" style="display: none;">
 				<!-- 모달 내부의 입력 폼 -->
@@ -508,11 +508,12 @@
 		    	    var backgroundColor = info.event.backgroundColor;
 		    	    var borderColor = info.event.borderColor;
 		    	    var project_id = $('#project_id').val();
+		    	    var project_name = $('#project_name').val();
 		    	    
 		    	    console.log(content,project_calendar_id);
 
 		    	    // 서버로 데이터 전송 (업데이트 또는 삭제)
-		    	    sendEventData(project_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor,project_id);
+		    	    sendEventData(project_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor,project_id,project_name);
 		    	    
 		    	    // 모달 닫기
 		    	    closeModal();
@@ -534,7 +535,7 @@
 
 		    		
 		    	
-				    	function sendEventData(project_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor,project_id) {
+				    	function sendEventData(project_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor,project_id,project_name) {
 				    	  // 서버로 데이터 전송 (업데이트 또는 삭제)
 				    	  var requestData = {
 				    		project_calendar_id: project_calendar_id,
@@ -557,7 +558,7 @@
 							      // 요청 성공 시 처리할 코드 작성
 							      console.log('일정 업데이트 또는 삭제 성공');
 							      alert('일정이 변경되었습니다!');
-							      location.href='/projectCalendar.go?project_id=' + $('#project_id').val(); 
+							      location.href='/projectCalendar.go?project_id=' + $('#project_id').val()+'&project_name='+ $('#project_name').val(); 
 							      
 							    },
 							    error: function() {
@@ -599,7 +600,7 @@
 								      // 요청 성공 시 처리할 코드 작성
 								      console.log(data.data);
 								      alert('일정이 삭제되었습니다!');
-								      location.href='/projectCalendar.go?project_id=' + $('#project_id').val(); 
+								      location.href='/projectCalendar.go?project_id=' + $('#project_id').val()+'&project_name='+ $('#project_name').val(); 
 								      
 								    },
 								    error: function() {
@@ -697,7 +698,7 @@
 				  success: function(response) {
 				    console.log(response);
 				    alert('일정이 등록되었습니다!');
-				    location.href='/projectCalendar.go?project_id=' + $('#project_id').val(); 
+				    location.href='/projectCalendar.go?project_id=' + $('#project_id').val()+'&project_name='+ $('#project_name').val(); 
 				    calendar.render();
 				  },
 				  error: function(error) {
