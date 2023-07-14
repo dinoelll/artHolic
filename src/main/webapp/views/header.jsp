@@ -2,17 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
-<script>
-/* 	loginChk();
-	function loginChk() {
-		var loginId = '${sessionScope.loginId}';
-		if (!loginId) {
-		window.location.href = './';
-		alert("로그인 안하면 아모고토 모타죠~?? 아모고토 모타죠~!? 접근 불가쥬?");
-		}
-	} */
-</script>
 
+<style>
+    .admin {
+      display : none;
+   } 
+</style>
 
  <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -137,7 +132,7 @@
     
     <div class="sidebar">
      
-	 
+    
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -279,7 +274,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item admin" id="adminMenu">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
@@ -327,3 +322,25 @@
     </div>
     <!-- /.sidebar -->
   </aside>
+  
+  
+  
+<script>
+   loginChk();
+   function loginChk() {
+        var loginId = '${sessionScope.loginId}';
+        var admin = '${sessionScope.admin}';
+        console.log(admin);
+        if (!loginId) {
+            window.location.href = './';
+            alert("로그인 해라 씨ㅏㅃ꺼.");
+        } else {
+           console.log(admin);
+           console.log(loginId);
+           if (admin == 'true') {
+               console.log(admin);
+                $('#adminMenu').removeClass('admin');
+            }
+        }
+    }
+</script>

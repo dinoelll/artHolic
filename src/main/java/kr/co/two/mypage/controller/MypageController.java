@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,12 +72,12 @@ public class MypageController {
 
    @RequestMapping(value = "/createFolder.ajax")
    @ResponseBody
-   public String myFolderCreate(@RequestParam String folderName, HttpServletResponse response) {
+   public String myFolderCreate(@RequestParam String folderName, HttpServletResponse response, HttpSession session) {
 
       logger.info("createFolder Controller");
       logger.info("folderName" + "/" + folderName);
-
-      service.myFolderCreate(folderName);
+      String member_id = (String) session.getAttribute("loginId");
+      service.myFolderCreate(folderName,member_id);
 
       response.setHeader("Cache-Control", "no-cache");
       response.setHeader("Refresh", "0;url=/myfolder");
@@ -105,12 +106,12 @@ public class MypageController {
 
    @GetMapping(value = "/list.ajax")
    @ResponseBody
-   public HashMap<String, Object> folderList() {
+   public HashMap<String, Object> folderList(HttpSession session) {
 
       logger.info("folderList Controller");
-
+      String member_id = (String) session.getAttribute("loginId");
       HashMap<String, Object> map = new HashMap<String, Object>();
-      ArrayList<String> list = service.folderList();
+      ArrayList<String> list = service.folderList(member_id);
       map.put("folder-list", list);
 
       return map;
@@ -276,12 +277,5 @@ public class MypageController {
       return "redirect:/myfolder";
    }
 
-   @PostMapping(value = "/pwChange.do")
-   public String pwChange(@RequestParam String pw) {
-
-      logger.info("pw :" + pw);
-
-      return null;
-   }
 
 }

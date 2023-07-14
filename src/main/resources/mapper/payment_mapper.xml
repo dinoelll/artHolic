@@ -1,50 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	   
+      
 <mapper namespace="kr.co.two.payment.dao.PaymentDAO">
 
-	<select id="getLatestDocumentNumber" resultType="String">
+   <select id="getLatestDocumentNumber" parameterType="String" resultType="String">
         SELECT document_id
         FROM elec_payment
-       	WHERE document_id LIKE 'vac%'
+        	<where>
+        		<if test="form_sort == 'PAYMENT_VAC'">
+		           document_id LIKE 'vac%'
+        	
+        		</if>
+        		<if test="form_sort == 'PAYMENT_BUY'">
+		           document_id LIKE 'buy%'
+        	
+        		</if>
+        		<if test="form_sort == 'PAYMENT_PRO'">
+		           document_id LIKE 'pro%'
+        	
+        		</if>
+        	</where>
         ORDER BY document_id DESC
         LIMIT 1
     </select>
-    	
+       
     <insert id="vacationFormSave" parameterType="hashmap">
-		INSERT INTO elec_payment(
-			document_id,id,paySubject,payContent,blind,state
-			,temp,form_sort,vacation_kind,start_date,end_date,vacation_sort,limit_date
-		)VALUES(
-			#{document_id},#{id},#{paySubject},#{payContent},#{blind}
-			,#{state},#{temp},#{form_sort},#{vacation_kind},#{start_date}
-			,#{end_date},#{vacation_sort},#{limit_date}
-		)
-	</insert> 
-	
-	<insert id="vacationFormSaveTemp" parameterType="hashmap">
-		INSERT INTO elec_payment(
-			document_id,id,paySubject,payContent,blind,state
-			,temp,form_sort,vacation_kind,start_date,end_date,vacation_sort,limit_date
-		)VALUES(
-			#{document_id},#{id},#{paySubject},#{payContent},#{blind}
-			,#{state},#{temp},#{form_sort},#{vacation_kind},#{start_date}
-			,#{end_date},#{vacation_sort},#{limit_date}
-		)
-	</insert>
-	
-	
-	 <insert id="fileWrite" parameterType="String">
-		INSERT INTO elec_payment_file(
-			document_id,ori_file_name,file_path,new_file_name
-		)VALUES(
-			#{document_id},#{ori_file_name},#{file_path},#{new_file_name}
-		)
-	</insert>
-	
- 	<select id="member" resultType="payMember">
-		SELECT
+      INSERT INTO elec_payment(
+         document_id,id,paySubject,payContent,blind,state
+         ,temp,form_sort,vacation_kind,start_date,end_date,vacation_sort,limit_date
+      )VALUES(
+         #{document_id},#{id},#{paySubject},#{payContent},#{blind}
+         ,#{state},#{temp},#{form_sort},#{vacation_kind},#{start_date}
+         ,#{end_date},#{vacation_sort},#{limit_date}
+      )
+   </insert> 
+   
+   <insert id="buyItemFormSave" parameterType="hashmap">
+      INSERT INTO elec_payment(
+         document_id,id,paySubject,payContent,blind,state
+         ,temp,form_sort,equipment_kind,amount,limit_date
+      )VALUES(
+         #{document_id},#{id},#{paySubject},#{payContent},#{blind}
+         ,#{state},#{temp},#{form_sort},#{equipment_kind},#{amount}
+         ,#{limit_date}
+      )
+   </insert> 
+   
+   <insert id="projectFormSave" parameterType="hashmap">
+      INSERT INTO elec_payment(
+         document_id,id,paySubject,payContent,blind,state
+         ,temp,form_sort,equipment_kind,amount,limit_date
+      )VALUES(
+         #{document_id},#{id},#{paySubject},#{payContent},#{blind}
+         ,#{state},#{temp},#{form_sort},#{equipment_kind},#{amount}
+         ,#{limit_date}
+      )
+   </insert> 
+   
+   
+   <insert id="vacationFormSaveTemp" parameterType="hashmap">
+      INSERT INTO elec_payment(
+         document_id,id,paySubject,payContent,blind,state
+         ,temp,form_sort,vacation_kind,start_date,end_date,vacation_sort,limit_date
+      )VALUES(
+         #{document_id},#{id},#{paySubject},#{payContent},#{blind}
+         ,#{state},#{temp},#{form_sort},#{vacation_kind},#{start_date}
+         ,#{end_date},#{vacation_sort},#{limit_date}
+      )
+   </insert>
+   
+   <insert id="buyItemFormSaveTemp" parameterType="hashmap">
+      INSERT INTO elec_payment(
+         document_id,id,paySubject,payContent,blind,state
+         ,temp,form_sort,equipment_kind,amount,limit_date
+      )VALUES(
+         #{document_id},#{id},#{paySubject},#{payContent},#{blind}
+         ,#{state},#{temp},#{form_sort},#{equipment_kind},#{amount}
+         ,#{limit_date}
+      )
+   </insert>
+   
+   <insert id="projectFormSaveTemp" parameterType="hashmap">
+      INSERT INTO elec_payment(
+         document_id,id,paySubject,payContent,blind,state
+         ,temp,form_sort,vacation_kind,start_date,end_date,vacation_sort,limit_date
+      )VALUES(
+         #{document_id},#{id},#{paySubject},#{payContent},#{blind}
+         ,#{state},#{temp},#{form_sort},#{vacation_kind},#{start_date}
+         ,#{end_date},#{vacation_sort},#{limit_date}
+      )
+   </insert>
+   
+   
+    <insert id="fileWrite" parameterType="String">
+      INSERT INTO elec_payment_file(
+         document_id,ori_file_name,file_path,new_file_name
+      )VALUES(
+         #{document_id},#{ori_file_name},#{file_path},#{new_file_name}
+      )
+   </insert>
+   
+    <select id="member" resultType="payMember">
+      SELECT
       m.member_id,
       m.name,
       m.profile_photo,
@@ -52,25 +110,76 @@
       FROM
       member AS m
       LEFT JOIN code AS c ON m.position_code  = c.code_id
-	</select>	 
+   </select>    
 
 
-	<insert id="paymentShip" parameterType="hashmap">
-		INSERT INTO payment_ship(
-		document_id,member_id,order_column,result,note
-		)VALUES(
-		#{document_id},#{member_id},#{order_column},#{result},#{note}
-		)
-	</insert> 
+   <insert id="paymentShip" parameterType="hashmap">
+      INSERT INTO payment_ship(
+      document_id,member_id,order_column,result,note
+      )VALUES(
+      #{document_id},#{member_id},#{order_column},#{result},#{note}
+      )
+   </insert> 
+
 
 	<select id="findMemberId" resultType="string">
 		SELECT
 		member_id 
 		FROM member 
 		WHERE name= #{param1}
+		LIMIT 1
 	</select>	 
-
-
 	
+	<insert id="payment_reference" parameterType="hashmap">
+		INSERT INTO payment_reference(
+		document_id,member_id
+		)VALUES(
+		#{document_id},#{member_id}
+		)
+	</insert> 
+	
+	
+		<select id="listCall" resultType="payment" parameterType="string">
+		    SELECT 
+		    e.* ,
+		    c.code_name AS code_name
+		    FROM 
+		    elec_payment AS e
+		    LEFT JOIN code AS c ON e.form_sort  = c.code_id
+		    <where>
+		        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+		        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
+		        <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
+		    	<if test="optt == '진행중'">AND state = '진행중'</if>
+		        <if test="optt == '완료'">AND state = '완료'</if>
+		        <if test="optt == '반려'">AND state = '반려'</if>
+		    </where>
+		    ORDER BY document_id DESC
+		    LIMIT #{cnt} OFFSET #{offset}
+		</select>
+	
+		<select id="totalCount" resultType="int" parameterType="string">
+		    SELECT COUNT(document_id) FROM elec_payment
+		    <where>
+		        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'" >AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+		        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
+		            AND EXISTS (
+		                SELECT 1
+		                FROM code AS c
+		                WHERE c.code_id = elec_payment.form_sort
+		                AND c.code_name LIKE CONCAT('%',#{keyword},'%')
+		            )
+		        </if>
+		        <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
+				<if test="optt == '진행중'">AND state = '진행중'</if>
+		        <if test="optt == '완료'">AND state = '완료'</if>
+		        <if test="optt == '반려'">AND state = '반려'</if>	    
+		    </where>
+		</select>
+	
+
+
+
+   
 
 </mapper>

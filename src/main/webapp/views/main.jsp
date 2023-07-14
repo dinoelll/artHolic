@@ -61,6 +61,63 @@
 	.fade-container.fade-in {
  		opacity: 1;
 	}
+	
+	
+	
+	
+	#profile{
+		border: 1px solid blakc;
+		border-collapse:collapse;
+		background-color: #91bdce;
+		margin: 30px;
+		width: 250px;
+		height: 350px;
+	}
+	
+	#myProject{
+		border: 1px solid blakc;
+		border-collapse:collapse;
+		background-color: #91bdce;
+		margin: 30px;
+		width: 1200px;
+		height: 350px;
+	}
+	
+	#myPayment{
+		border: 1px solid blakc;
+		border-collapse:collapse;
+		background-color: #91bdce;
+		margin: 30px;
+		width: 1200px;
+		height: 350px;
+	}
+	
+	#myMail{
+		border: 1px solid blakc;
+		border-collapse:collapse;
+		background-color: #91bdce;
+		margin: 30px;
+		width: 550px;
+		height: 400px;
+	}
+	
+	#inform{
+		border: 1px solid blakc;
+		border-collapse:collapse;
+		background-color: #91bdce;
+		margin: 30px;
+		width: 550px;
+		height: 400px;
+	}
+	
+	#myCalendar{
+		border: 1px solid blakc;
+		border-collapse:collapse;
+		background-color: #91bdce;
+		margin: 30px;
+		width: 250px;
+		height: 350px;
+	}
 
 
 </style>
@@ -92,8 +149,124 @@
 	 <section class="content">
 	  	<div class="container-fluid">
 			<div class="main-container fade-container">
-	    
-	    <h3>메인 페이지</h3>
+	    <div id="main">
+		  <div class="row">
+		    <div class="col-md-4">
+		      <div id="profile">
+		        <h4>내 정보</h4>
+		        <table>
+		          <tr>
+		            <th>이름</th>
+		            <td>정재훈</td>
+		          </tr>
+		          <tr>
+		            <th>부서</th>
+		            <td>설계</td>
+		          </tr>	   
+		          <tr>
+		            <th>직급</th>
+		            <td>팀장</td>
+		          </tr>	   
+		          <tr>
+		            <th>전화번호</th>
+		            <td>010-1234-1234</td>
+		          </tr>	   
+		          <tr>
+		            <th>내선번호</th>
+		            <td>031-231-1242</td>
+		          </tr>	   
+		          <tr>
+		            <th>이메일</th>
+		            <td>test@naver.com</td>
+		          </tr>
+		        </table>
+		        <a href="./pwchange">비밀번호 변경</a>
+		      </div>
+		      <div class="col-md-4">
+		          <div id="myCalendar">
+		            <h4>캘린더</h4>
+		          </div>
+		        </div>
+		    </div>
+		    <div class="col-md-8">
+		      <div class="row">
+		        
+		        <div class="col-md-6">
+		          <div id="myProject">
+		            <h4>진행중인 프로젝트</h4>
+		            <table id="example1" class="table table-bordered table-striped">
+		              <thead>
+		                <tr>
+		                  <th>프로젝트명</th>
+		                  <th>프로젝트 담당</th>
+		                  <th>현장 관리자</th>
+		                  <th>프로젝트 일정</th>
+		                  <th>진행 상태</th>		    		
+		                </tr>
+		              </thead>
+		              <tbody id="projectList">
+		              </tbody>
+		            </table>
+		          </div>
+		        </div>
+		      </div>
+		      <div class="row">
+		        <div class="col-md-6">
+		          <div id="myPayment">
+		            <h4>내 결재함</h4>
+		            <table id="example1" class="table table-bordered table-striped">
+		              <thead>
+		                <tr>
+		                  <th>기안일</th>
+		                  <th>결재 양식</th>
+		                  <th>제목</th>
+		                  <th>문서 번호</th>
+		                  <th>결재 상태</th>		    		
+		                </tr>
+		              </thead>
+		              <tbody id="paymentList">
+		              </tbody>
+		            </table>
+		          </div>
+		        </div>
+		      </div>
+		      <div class="row">
+		        <div class="col-md-6">
+		          <div id="myMail">
+		            <h4>메일함</h4>
+		            <table id="example1" class="table table-bordered table-striped">
+		              <thead>
+		                <tr>
+		                  <th>보낸 사람</th>
+		                  <th>제목</th>
+		                  <th>보낸 일자</th>	
+		                </tr>
+		              </thead>
+		              <tbody id="mailList">
+		              </tbody>
+		            </table>
+		          </div>
+		        </div>
+		        <div class="col-md-6">
+		          <div id="inform">
+		            <h4>공지사항</h4>
+		            <table id="example1" class="table table-bordered table-striped">
+		              <thead>
+		                <tr>
+		                  <th>작성자</th>
+		                  <th>제목</th>
+		                  <th>작성 일자</th>	
+		                </tr>
+		              </thead>
+		              <tbody id="informList">
+		              </tbody>
+		            </table>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	    
 	    	</div>
 	   </div>
@@ -131,6 +304,11 @@ window.addEventListener("load", function() {
   var fadeContainer = document.querySelector(".fade-container");
   fadeContainer.classList.add("fade-in");
 });
+
+var msg = "${msg}"; 
+if (msg !== "") {
+  alert(msg);
+}
 
 </script>
 </html>

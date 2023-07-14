@@ -183,7 +183,7 @@
 	float: right;
 }
 
-img {
+#img {
 	vertical-align: middle;
 	border-style: none;
 	width: 150px;
@@ -212,11 +212,11 @@ img {
 .m-0 {
 	color: #91bdce;
 }
-a {
-    color:#91bdce;
-    text-decoration: none;
-    background-color: transparent;
-}
+ .subject {
+	color: #91bdce;
+	text-decoration: none;
+	background-color: transparent;
+} 
 </style>
 </head>
 
@@ -231,7 +231,7 @@ a {
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0"><a href="/MeetingRoomList.go">회의실 관리</a> | <b><a href="/ReservationList.go">예약 관리</a></b></h1>
+							<h1 class="m-0"><a href="/MeetingRoomList.go" class="subject">회의실 관리</a> | <b><a href="/ReservationList.go" class="subject">예약 관리</a></b></h1>
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">
@@ -268,7 +268,7 @@ a {
 									<option value="true">관리자</option>
 							</select>  --> <input type="text" id="keyword"
 								placeholder="내용을 입력 해 주세요.">
-								<button onclick="opt()">검색</button></td>
+								<button onclick="opt()" id="searchButton">검색</button></td>
 						</tr>
 					</table>
 					<table id="example1" class="table table-bordered table-striped">
@@ -511,6 +511,7 @@ a {
 			},
 			error : function(e) {
 				console.log(e);
+				
 			}
 		});
 

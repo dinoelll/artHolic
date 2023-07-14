@@ -136,6 +136,64 @@
 .calendar-container {
 	width: 50%; /* Adjust the width as desired */
 }
+
+.btn-primary {
+    background-color: #91bdce;
+    border-color: #91bdce;;
+    box-shadow: none;
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: #91bdce;
+    border-color: #91bdce;
+}
+#save{
+	float: center;
+	background-color: #91bdce;
+    border-color: #91bdce;
+     color: #fff;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #4d798a;
+    border-color: #4d798a;
+}
+
+
+
+.bg-success {
+    background-color: #05b6fa!important;
+}
+.bg-warning {
+    background-color: #36d1f7!important;
+}
+.bg-info {
+    background-color: #4d798a!important;
+}
+.bg-primary {
+    background-color: #11515e!important;
+}
+.bg-danger {
+    background-color: #4f7178!important;
+}
+4f7178
+.text-primary {
+    color: #05b6fa!important;
+}
+.text-warning {
+    color: #36d1f7!important;
+}
+.text-success {
+    color: #4d798a!important;
+}
+.text-danger {
+    color: #11515e!important;
+}
+
+
+
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -187,10 +245,11 @@
 							<div class="sticky-top mb-3">
 								<div class="card">
 									<div class="card-header">
-										<h4 class="card-title">일정</h4>
+										<!-- <h4 class="card-title">일정 </h4> -->
+										<button onclick="sendEventsToServer()" id="save" class="btn">일정 저장</button>
 									</div>
-									<button onclick="cl_ev()">이벤트 불러오기</button>
-									<button onclick="sendEventsToServer()">일정 저장</button>
+									<!-- <button onclick="cl_ev()">이벤트 불러오기</button> -->
+									
 
 
 
@@ -203,9 +262,9 @@
 											<div class="external-event bg-primary">회식</div>
 											<div class="external-event bg-danger">휴가</div>
 											<div class="checkbox">
-												<label for="drop-remove"> <input type="checkbox"
+												 <label for="drop-remove"> <input type="checkbox"
 													id="drop-remove"> 일정 리스트에서 삭제하기
-												</label>
+												</label> 
 											</div>
 										</div>
 									</div>

@@ -183,7 +183,7 @@
 	float: right;
 }
 
-img {
+#img {
 	vertical-align: middle;
 	border-style: none;
 	width: 150px;
@@ -212,11 +212,12 @@ img {
 	float: right;
 	height: 40px;
 }
-a {
-    color:#91bdce;
-    text-decoration: none;
-    background-color: transparent;
-}
+ 
+ .subject {
+	color: #91bdce;
+	text-decoration: none;
+	background-color: transparent;
+} 
 </style>
 </head>
 
@@ -232,7 +233,8 @@ a {
 					<div class="row mb-2">
 						<div class="col-sm-6">
 							<h1 class="m-0">
-								<b><a href="/MeetingRoomList.go">회의실 관리</a></b> | <a href="/ReservationList.go">예약 관리</a>
+								<b><a href="/MeetingRoomList.go" class="subject">회의실 관리</a></b> | <a
+									href="/ReservationList.go" class="subject">예약 관리</a>
 							</h1>
 						</div>
 						<!-- /.col -->
@@ -270,7 +272,7 @@ a {
 									<option value="true">관리자</option>
 							</select>  --> <input type="text" id="keyword"
 								placeholder="내용을 입력 해 주세요.">
-								<button onclick="opt()">검색</button></td>
+								<button onclick="opt()" id="searchButton">검색</button></td>
 						</tr>
 					</table>
 					<table id="example1" class="table table-bordered table-striped">
@@ -513,7 +515,7 @@ a {
 					.forEach(function(dto, idx) {
 						content += '<tr>';
 						content += '<td><input type="checkbox" value="'+dto.room_id+'"/></td>';
-						content += '<td><img src="/photo/'+dto.new_file_name+'"/></td>';
+						content += '<td><img id="img" src="/photo/'+dto.new_file_name+'"/></td>';
 						content += '<td>' + dto.room_name + '</td>';
 						content += '<td>' + dto.capacity + '</td>';
 						content += '<td>' + dto.location + '</td>';
@@ -571,6 +573,8 @@ a {
 			},
 			error : function(e) {
 				console.log(e);
+				alert('해당 회의실에 예약된 정보가 존재합니다 \n 예약정보를 삭제 후 다시 시도해주세요.');
+				console.log('삭제 실패!');
 			}
 		});
 

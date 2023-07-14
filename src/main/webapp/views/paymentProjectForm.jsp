@@ -205,6 +205,14 @@
     text-shadow: 0 0 0 black;
   }
   
+    
+          .transfer-demo {
+            width: 640px;
+            height: 400px;
+            margin: 0 auto;
+        }
+  
+  
   
     #topRow {
     margin-bottom: 50px;
@@ -323,6 +331,10 @@
 							<div class="container">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
+												    
+												    <input type="hidden"  id="form_sort" name="vacation" value="PAYMENT_PRO">
+												    
+												    
 												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">프로젝트 신청</h1>
 												      
 												      <div class="row" style="margin-bottom: 50px;" id="topRow">
@@ -338,7 +350,7 @@
 																              <td>
 																				<div class="group">
 																				  <div class="input-group date" id="reservationdate" data-target-input="nearest">
-																				    <input type="date" style="background-color: transparent; border: none; box-shadow: none; outline: none; color: transparent; text-shadow: 0 0 0 gray;">
+																				    <input type="date" id="limit_date" name="limit_date" style="background-color: transparent; border: none; box-shadow: none; outline: none; color: transparent; text-shadow: 0 0 0 gray;">
 																			    </div>
 																			  </div>
 																			</td>
@@ -390,12 +402,14 @@
 													    
 													    <tr>
 													      <th>문서 분류</th>
-													      <td>문서 분류 입력란</td>
+												     		<td>
+															  	<input id="문서분류" value="프로젝트 신청" style="border: none; text-align: center;">
+															</td>
 													      <th>프로젝트 종류</th>
 													      <td>
 													      		<div class="group">
 											                        
-											                        <select class="form-control" >
+											                        <select class="form-control" id="project_kind">
 											                          <option>주택</option>
 											                          <option>공공기관</option>
 											                          <option>상가</option>
@@ -421,7 +435,7 @@
 														</td>
 													      <th>프로젝트 리더</th>
 													      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요">
+														     	 <input type="text" id="projectLeader" class="invisible-input" placeholder="텍스트를 입력하세요">
 														      </td>
 													    </tr>
 													  </table>
@@ -507,7 +521,7 @@
 	
       
       
-			<!-- 모달모달!! 숨겨진 -->
+      	<!-- 모달모달!! 숨겨진 -->
 				<div class="modal fade" id="modal-lg" data-backdrop="static">
 				  <div class="modal-dialog modal-lg">
 				    <div class="modal-content">
@@ -546,6 +560,8 @@
 				            <div id="previewBox">
 				
 				            </div>
+				            
+				            <input type="hidden" id="temp" value="1">
 				
 				
 				          </div>
@@ -562,8 +578,8 @@
 				</div>
 				<!-- /.modal -->
       
-         <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->   <!--  결재선 모달-->
-      <!--  결재선 모달-->
+      <!--  결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선결재선-->
+     <!--  결재선 모달-->
       <div class="modal fade" id="modal-lg2">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -579,25 +595,26 @@
 					          
 					         <form id="demoform" action="#" method="post">
 					          <div class="card-body">
-								   <div class="row">
+								  <div class="row">
 										  <div class="col-12">
 										    <div class="form-group">
 										      <label style="font-size:27px;">결재선 선택</label>
 										      <div class="dual-listbox-container">
 										        <select id="approvers" class="duallistbox" multiple="multiple" name="duallistbox_demo1[]">
-										          <option value="대리 김형준" selected >대리 홍길동</option>
-										          <option value="과장 아무개">과장 아무개</option>
-										          <option value="차장 홍길동"> 차장 박차장</option>
-										          <option value="사장 김사장">사장 김사장</option>
+										          <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										          
 
+										          </c:forEach>
 										        </select>
 										      </div>
 										    </div>
-										   <!--  //.form-group -->
+										    <!-- /.form-group -->
 										  </div>
-										 <!--  /.col -->
+										  <!-- /.col -->
 										</div>
-									  <!-- /.row  -->
+									  <!-- /.row -->
 									  
 									  <div class="row">
 										  <div class="col-12">
@@ -605,10 +622,10 @@
 										      <label style="font-size:27px;">참조자 선택</label>
 										      <div class="dual-listbox-container">
 										        <select id="referrer" class="duallistbox" multiple="multiple" name="duallistbox_demo2[]">
-										          <option value="대리 김형준" selected >대리 홍길동</option>
-										          <option value="과장 아무개">과장 아무개</option>
-										          <option value="차장 홍길동"> 차장 박차장</option>
-										          <option value="사장 김사장">사장 김사장</option>
+										           <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										        </c:forEach>
 										        </select>
 										      </div>
 										    </div>
@@ -617,8 +634,6 @@
 										  <!-- /.col -->
 										</div>
 									  <!-- /.row  -->
-								   
-              						
 
 								</div>
 					        </div>
@@ -627,7 +642,7 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-				<button type="submit" id="submitButton" class="btn btn-primary">요청</button>            
+				<button type="submit" id="submitButton" class="btn btn-primary" >요청</button>            
 				</form>
             </div>
           </div>
@@ -636,6 +651,7 @@
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+      
       
       
       <!--  결재 요청 모달-->
@@ -653,10 +669,10 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-              <button type="button" class="btn btn-primary">요청</button>
+              <button type="button" class="btn btn-primary" onclick="writeVacation()" >요청</button>
             </div>
           </div>
-          <!-- /.modal-content -->
+          <!-- /.modal-content --> 
         </div>
         <!-- /.modal-dialog -->
       </div>
@@ -678,7 +694,11 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-              <button type="button" class="btn btn-primary">요청</button>
+              <button type="button" class="btn btn-primary" onclick="writeVacationTemp()">요청</button>
+              
+              
+              
+              
             </div>
           </div>
           <!-- /.modal-content -->
@@ -710,7 +730,6 @@
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
-      
       
       
       
@@ -783,26 +802,230 @@
 
 <script>
 
+function writeVacation() {
+	var approversVal = $('[name="duallistbox_demo1[]"]').val();
+	console.log(approversVal);
+	
+	  var referrer = $('[name="duallistbox_demo2[]"]').val();
+	 console.log(referrer);
+	 
+	 
+
+	  var fileInput = document.getElementById('exampleInputFile');
+	  var file = fileInput.files[0]; // Get the selected file
+
+	  
+
+	  
+	  
+	     if (file) {
+	    	 var formData = new FormData();
+
+	  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
+		  formData.append('file', file); // Append the file to the FormData object
+	} else {
+	    // 빈 파일 객체 추가
+	    alert('파일을 추가해 주세요.');
+	  } 
+	  
+	  
+	 
+
+	  var paymentValues = [];
+	  var referrerValues = [];
+	  
+	  // Other parameters
+	  var $limit_date = $('#limit_date');
+	  var $form_sort = $('#form_sort');
+	  var $project_kind = $('#project_kind');
+	  var $reservationtime = $('#reservationtime');
+	  var $paySubject = $('#paySubject');
+	  var $payContent = $('#payContent');
+	  var $projectLeader = $('#projectLeader');
+	  
+	  
+	  
+	   //for (var i = 0; i < approversVal.length; i++) {
+		    
+		   //var paymentValue= $('#payment'+[i]+'');
+		  //var $payment= $('#payment'+[i]+'');
+		    // payment 값을 배열에 추가
+		  
+		//}
+	 for (var i = 0; i < approversVal.length; i++) {
+	  paymentValues.push(approversVal[i]);
+		}
+	 
+	 
+	  for (var i = 0; i < referrer.length; i++) {
+		  referrerValues.push(referrer[i]);
+			} 
+	  
+	   
+
+	  var param = {
+		  payment: paymentValues,
+		  referrer: referrerValues,
+	  	limit_date: $limit_date.val(),
+	  	form_sort: $form_sort.val(),
+	  	project_kind: $project_kind.val(),
+	    reservationtime: $reservationtime.val(),
+	   
+	    projectLeader: $projectLeader.val(),
+	    paySubject: $paySubject.val(),
+	    payContent: $payContent.val()
+	    
+	   
+	  };
+		console.log(param);
+
+	  // Append other parameters to the FormData object
+	  for (var key in param) {
+		    if (param[key]) {
+		      formData.append(key, param[key]);
+		    }
+		  }
+
+	  $.ajax({
+	    type: 'POST',
+	    url: 'writeVacation.ajax',
+	    data: formData,
+	    dataType: 'json',
+	    processData: false, // Prevent jQuery from automatically processing the data
+	    contentType: false, // Prevent jQuery from automatically setting the content type
+	    success: function(data) {
+	      console.log(data);
+	      if (data.success =! null) {
+	        alert('전송 성공');
+	        
+	      } else {
+	        alert('전송 실패');
+	      }
+	    },
+	    error: function(e) {
+	      console.log(e);
+	      alert('오류 발생');
+	    }
+	  });
+	
+}
+
+
+// 임시저장 요청
+function writeVacationTemp() {
+	var approversVal = $('[name="duallistbox_demo1[]"]').val();
+	console.log(approversVal);
+	
+	 var referrer = $('[name="duallistbox_demo2[]"]').val();
+	 console.log(referrer);
+	
+	  var fileInput = document.getElementById('exampleInputFile');
+	  var file = fileInput.files[0]; // Get the selected file
+
+	  var formData = new FormData();
+	  
+	  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
+	  if (file) {
+		  formData.append('file', file); // Append the file to the FormData object
+		}
+	  
+
+	  var paymentValues = [];
+	  var referrerValues = [];
+	  
+	  // Other parameters
+	  var $limit_date = $('#limit_date');
+	  var $form_sort = $('#form_sort');
+	  var $project_kind = $('#project_kind');
+	  var $reservationtime = $('#reservationtime');
+	  var $paySubject = $('#paySubject');
+	  var $payContent = $('#payContent');
+	  var $projectLeader = $('#projectLeader');
+	  var $temp = $('#temp');
+	  
+	  
+	  
+	   //for (var i = 0; i < approversVal.length; i++) {
+		    
+		   //var paymentValue= $('#payment'+[i]+'');
+		  //var $payment= $('#payment'+[i]+'');
+		    // payment 값을 배열에 추가
+		  
+		//}
+	 for (var i = 0; i < approversVal.length; i++) {
+	  paymentValues.push(approversVal[i]);
+		}
+	 
+	 
+	  for (var i = 0; i < referrer.length; i++) {
+		  referrerValues.push(referrer[i]);
+			} 
+	  
+	   
+
+	  var param = {
+		  payment: paymentValues,
+		  referrer: referrerValues,
+	  	limit_date: $limit_date.val(),
+	  	form_sort: $form_sort.val(),
+	  	project_kind: $project_kind.val(),
+	    reservationtime: $reservationtime.val(),
+	    projectLeader: $projectLeader.val(),
+	    temp: $temp.val(),
+	    paySubject: $paySubject.val(),
+	    payContent: $payContent.val()
+	    
+	   
+	  };
+		console.log(param);
+
+	  // Append other parameters to the FormData object
+	  for (var key in param) {
+	    formData.append(key, param[key]);
+	  }
+
+	  $.ajax({
+	    type: 'POST',
+	    url: 'writeVacation.ajax',
+	    data: formData,
+	    dataType: 'json',
+	    processData: false, // Prevent jQuery from automatically processing the data
+	    contentType: false, // Prevent jQuery from automatically setting the content type
+	    success: function(data) {
+	      console.log(data);
+	      if (data.success =! null) {
+	        alert('전송 성공');
+	        
+	      } else {
+	        alert('전송 실패');
+	      }
+	    },
+	    error: function(e) {
+	      console.log(e);
+	      alert('오류 발생');
+	    }
+	  });
+	}
+ 
+
+//(마무리)임시저장 요청 
+
+
 /*  결재선 데이터 전송*/
 
 
-
-
- $("#approvers").bootstrapDualListbox({
+$("#approvers").bootstrapDualListbox({
 	  // 기타 매개변수 설정
 	  infoText: false, // "Showing all {0}" 메시지 숨김
 	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
 	  moveAllLabel: '' // "Move all" 버튼 제거
 	});
-	 
 $("#referrer").bootstrapDualListbox({
 	  // 기타 매개변수 설정
 	  infoText: false, // "Showing all {0}" 메시지 숨김
 	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
 	  moveAllLabel: '' // "Move all" 버튼 제거
-	});	
-	
-	
+	});
 
 
 var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox();
@@ -811,6 +1034,9 @@ $("#demoform").submit(function() {
   var approversVal = $('[name="duallistbox_demo1[]"]').val();
   console.log(approversVal);
   drawList(approversVal);  
+  
+  
+  
   return false;
 });
 
@@ -849,7 +1075,7 @@ function drawList(approversVal) {
 	  content += '<tr>';
 	  content +=  '<td>' + '김형준' + '</td>';
 	  for (var i = 0; i < approversVal.length; i++) {
-	    content += '<td>' + approversVal[i] + '</td>';
+	    content += '<td id="payment'+[i]+'">' + approversVal[i] + '</td>';
 	  }
 	  content += '</tr>';
 	  
@@ -899,8 +1125,7 @@ function drawList2(referrer) {
 }; 
 
 
- 
-/*  결재선 데이터 전송*/
+
 
 $(function () {
 	  bsCustomFileInput.init();
@@ -970,7 +1195,7 @@ $(function () {
     })
 
     //Bootstrap Duallistbox
-    $('.duallistbox').bootstrapDualListbox()
+     $('.duallistbox').bootstrapDualListbox() 
 
     //Colorpicker
     $('.my-colorpicker1').colorpicker()
@@ -1038,10 +1263,10 @@ $(function () {
     myDropzone.removeAllFiles(true)
   }
   // DropzoneJS Demo Code End */
-  
 
 
-/*결재 작성하기 모달  */
+
+
 function item(button) {
 	  // 버튼 클래스 변경
 	  $('#previewBox').empty();
@@ -1093,24 +1318,8 @@ function project(button) {
 	// 사용하기 버튼의 href 변경
 	    document.getElementById("paymentButton").setAttribute("href", "./paymentProjectForm.go");
 	  }	
-	  
-function restoreButtonColor() {
-	  // 버튼 클래스 복원
-	  var vacationButton = document.getElementById("vacation");
-	  vacationButton.className = "btn btn-block btn-outline-dark";
-	  
-	  var itemButton = document.getElementById("item");
-	  itemButton.className = "btn btn-block btn-outline-dark";
-	  
-	  var projectButton = document.getElementById("project");
-	  projectButton.className = "btn btn-block btn-outline-dark";
-	  
-	  $('#previewBox').empty();
-	  
-	  
-	  document.getElementById("paymentButton").removeAttribute("href");
-	  
-	}	
+
+
 
   
 </script>

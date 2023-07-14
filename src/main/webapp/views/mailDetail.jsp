@@ -9,37 +9,44 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="<%= request.getContextPath() %>/plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="<%= request.getContextPath() %>/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<%= request.getContextPath() %>/dist/css/adminlte.min.css">
+  <base href="<%= request.getContextPath() %>/" target="_self">
   <style>
-  	.main-sidebar {
-		background-color: #e9ddc6;
-	}
-	.mt-2 .nav .nav-item .nav-link p {
-		color : black;
-	}
-	.logo {
-		width : 231px;
-		height : 68px;
-	}
-	
-	#footer{
-		margin-left: 0px;
-	}
-	
-	.forwarding,.reply,.del{
-		font-weight: bold;
-  		background-color: white;
+     .main-sidebar {
+      background-color: #e9ddc6;
+   }
+   .mt-2 .nav .nav-item .nav-link p {
+      color : black;
+   }
+   .logo {
+      width : 231px;
+      height : 68px;
+   }
+   
+   #footer{
+      margin-left: 0px;
+   }
+   
+   .forwarding,.reply,.del{
+      font-weight: bold;
+        background-color: white;
         border: 1px solid white;
         color: black;
-	}
-	.mailIMG{
-		width: 250px;
-		height: 133px !important;
-	}
+   }
+   .mailIMG{
+      width: 250px;
+      height: 133px !important;
+   }
+   .hidden{
+       display: none;
+    }
+    #favorites{
+       font-size:36px;
+    }
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -70,39 +77,41 @@
               <a href="mailWrite.go" class="btn btn-primary btn-sm ">메일 쓰기</a>
               <a href="mailWrite.go?selfBox=true" class="btn btn-primary btn-sm ">내게 쓰기</a>
               <div class="card-tools">
-				<button id="reply" class="reply" onclick="reply()">답장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button id="forwarding" class="Forwarding" onclick="forwarding()">전달</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button id="del" class="del" onclick="del()">삭제</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="reply" class="reply" onclick="reply()">답장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="forwarding" class="Forwarding" onclick="forwarding()">전달</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="del" class="del" onclick="del()">삭제</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0">
               <div class="mailbox-read-info">
-             
-              	<div class="mailboxForm"><i class="fas fa-star text-warning"></i>제목&nbsp;&nbsp;${dto.memberdto.get(0).mailSubject}</div>
-              	<div class="mailboxForm" id="mailMember">보낸사람&nbsp;&nbsp;
-              		<c:if test="${dto.memberdto.get(0).code_group_id=='DEPT'}">
-              		${dto.memberdto.get(0).code_name}
-              		</c:if>&nbsp;
-              		<c:if test="${dto.memberdto.get(1).code_group_id=='POSITION'}">
-              		${dto.memberdto.get(1).code_name}
-              		</c:if>&nbsp;${dto.memberdto.get(0).name}
-              	</div>
+                <!-- <i class="fas fa-star text-warning"></i> -->
+                 <div class="mailboxForm"><a href="#" id="mailSubjectForm"><i class="far fa-star" id="favorites"></i></a>제목&nbsp;&nbsp;${dto.memberdto.get(0).mailSubject}</div>
+                 <div class="mailboxForm" id="mailMember">보낸사람&nbsp;&nbsp;
+                    <c:if test="${dto.memberdto.get(0).code_group_id=='DEPT'}">
+                    ${dto.memberdto.get(0).code_name}
+                    </c:if>&nbsp;
+                    <c:if test="${dto.memberdto.get(1).code_group_id=='POSITION'}">
+                    ${dto.memberdto.get(1).code_name}
+                    </c:if>&nbsp;${dto.memberdto.get(0).name}
+                 </div>
                 <div class="mailboxForm" id="SendMember">받는사람&nbsp;&nbsp;
-					<c:forEach items="${dto.dto}" var="item">
-                 		<c:if test="${item.is_receiver == false}">
-	                 		${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
-	                 	</c:if>
-	                 </c:forEach>
+               <c:forEach items="${dto.dto}" var="item">
+                       <c:if test="${item.is_receiver == false}">
+                          ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                       </c:if>
+                    </c:forEach>
                  </div>
                 <div class="mailboxForm" id="refferMember">참조&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                	<c:forEach items="${dto.dto}" var="item">
-                		<c:if test="${item.is_receiver == true}">
-                			${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
-                		</c:if>
-                	</c:forEach>
+                   <c:forEach items="${dto.dto}" var="item">
+                      <c:if test="${item.is_receiver == true}">
+                         ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                      </c:if>
+                   </c:forEach>
                 </div>
                 <div class="mailboxForm">${dto.dto.get(0).writeTime}</div>
+                <input type="hidden" value="${dto.memberdto.get(0).mail_id}" name="mail_id" id="mail_id">
+                <input type="hidden" value="${dto.memberdto.get(0).favorites}" name="favorites" id="favorites">
               
                 
                   <!--<span class="mailbox-read-time float-right">2023.07.24 10:03</span></h6> -->
@@ -184,9 +193,9 @@
 <!-- Page specific script -->
 <script>
 
-  $(function () {
+  $(document).ready(function() {
     //Enable check and uncheck all functionality
-    $('.checkbox-toggle').click(function () {
+/*    $('.checkbox-toggle').click(function () {
       var clicks = $(this).data('clicks')
       if (clicks) {
         //Uncheck all checkboxes
@@ -201,7 +210,7 @@
     })
 
     //Handle starring for font awesome
-    $('.mailbox-star').click(function (e) {
+     $('#mailSubjectForm i').click(function (e) {
       e.preventDefault()
       //detect type
       var $this = $(this).find('a > i')
@@ -209,11 +218,53 @@
 
       //Switch states
       if (fa) {
-        $this.toggleClass('fa-star')
-        $this.toggleClass('fa-star-o')
+        $(this).toggleClass('fa-star')
+        $(this).toggleClass('fa-star-o')
       }
-    })
+    }) */ 
+    
+/*     $('#mailSubjectForm').click(function (e) {
+         e.preventDefault();
+         $(this).find('i').toggleClass('far fa-star fas fa-star text-warning');
+    }); */
+    
+     $('#mailSubjectForm').click(function (e) {
+          e.preventDefault();
+
+          // 현재 즐겨찾기 상태 가져오기
+          var isFavorite = $('#mailSubjectForm i').hasClass('fas');
+          console.log(isFavorite);
+
+          // AJAX 요청 생성
+          $.ajax({
+              type: 'POST',
+              url: 'mail/favorite.ajax',
+              data: {
+                  'mailId': $('#mail_id').val(), // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
+                  'isFavorite': !isFavorite // 현재 즐겨찾기 상태를 반대로 전환하여 서버에 전달
+              },
+              dataType: 'json',
+              success: function (response) {
+                 console.log(response.isFavorite);
+                 
+                  // 서버로부터의 응답 처리
+                  if (response.isFavorite == true) {
+                      // 즐겨찾기 상태인 경우
+                      $('#mailSubjectForm i').removeClass('far fa-star').addClass('fas fa-star text-warning');
+                  } else {
+                      // 즐겨찾기 상태가 아닌 경우
+                      $('#mailSubjectForm i').removeClass('fas fa-star text-warning').addClass('far fa-star');
+                  }
+              },
+              error: function (error) {
+                  // 오류 처리
+                  console.log(error);
+              }
+          });
+      });
   })
+  
+  
 </script>
 </body>
 </html>

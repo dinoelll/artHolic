@@ -35,7 +35,7 @@
    }
    
    .mymailSend,.mailSend,#preview-button,.mailBox,.selfBox,#send,.send{
-      font-weight: bold;
+        font-weight: bold;
         background-color: white;
         border: 1px solid white;
         color: black;
@@ -237,7 +237,7 @@
                            <button id="mailBox" class="mymailSend" onclick="mailBox()">메일쓰기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                          </div>
                      </div>
-                         
+                       
                   <!-- /.card-header -->
                      
                   <form action="mailWrite.do" method="post" enctype="multipart/form-data" id="mailForm">
@@ -273,6 +273,9 @@
                            <button class="btn btn-primary hidden" id="mysendButton" type="button" onclick="save()"><i class="far fa-envelope"></i> 보내기</button>
                            <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> 취소</button>
                         </div>
+                     </div>
+                     <div class="tempList" id="tempList">
+                        
                      </div>
                   </form>
                   <!-- /.card-footer -->
@@ -314,56 +317,6 @@
 <!-- Bootstrap4 Duallistbox -->
 <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <script>
-   
-/*    // mailCard1과 mailCard2 요소 선택
-   const mailCard1 = document.querySelector('.mailCard1');
-   const mailCard2 = document.querySelector('.mailCard2');
-   const formSendMember = document.getElementById('form-sendMember');
-   const formReferenceMember = document.getElementById('form-referenceMember');
-   //selfBox 매개변수가 있는 경우에만 클래스 속성 변경
-   if (selfBoxParam) {
-     mailCard1.classList.remove('hidden');
-     mailCard2.classList.add('hidden');
-     formSendMember.classList.add('hidden');
-     formReferenceMember.classList.add('hidden');
-   } */
-   
-   //받는사람, 참조자 option 값 가져오기
-   /* $(document).ready(function() {
-        $.ajax({
-          url: 'mail/setType.ajax', 
-          type: 'post',
-          data: {
-             'type':type,
-             'mail_id':mail_id
-                },
-          dataType:'json',
-          success: function(data) {
-             console.log(data);
-             optionPrint(data.option);
-          },error: function(e){
-             console.log(e);
-          }
-        })
-        
-        function optionPrint(option){
-           var content;
-           if(option.length>0){
-              
-              option.forEach(function(item,member_id){
-                 content += '<option value="'+item.member_id+'">'+item.dept_code+'&nbsp;&nbsp;'+item.position_code+'&nbsp;&nbsp;'
-                    +item.name+'</option>';
-              })
-           }else{
-              content += '<option>선택값이 없습니다.</option>';
-           }
-           $('.duallistbox').empty();
-           $('.duallistbox').append(content);
-           //Bootstrap Duallistbox
-           $('.duallistbox').bootstrapDualListbox();
-        }
-   }) */
-
    // 메일쓰기 숨기기
    function selfBox(){
       document.querySelector('.mailCard2').classList.remove('hidden');
@@ -408,8 +361,6 @@
    
 
 
-   
-   
    // 받는사람, 제목, 내용 미 입력 시 메세지 (수정필요)
    /* $(document).ready(function() {
        $('#mailForm').submit(function(event) {
@@ -628,8 +579,36 @@
    
    // 임시저장
    function temp(){
-      $('#mailForm').append('<input type="hidden" name="type" value="temp">');
-      $('#mailForm').submit();
+      var mailId=$('#mail_id').val();
+      console.log(mailId);
+      $.ajax({
+        type:'post'
+        ,url:'mail/temp.ajax'
+        ,data:{
+           'mail_id':mailId,
+           'sendMember':$('#recipient-input').val(),
+           'referenceMember':$('#cc-input').val(),
+           'mailSubject':$('#mailSubject').val(),
+           'mailContent':$('#compose-textarea').val(),
+           'attachment':$('#attachment-input').val(),
+        }
+       ,dataType:'json'
+       ,success:function(data){
+          console.log(data);
+          tempList(data.mail_id);
+         
+       },error:function(e){
+          console.log(e);
+       }
+      });
+       
+   }
+   
+   function tempList(mail_id) {
+      var content;
+      content = '<input type="hidden" id="mail_id" name="mail_id" value="' + mail_id + '">';
+      
+      $('#tempList').append(content);
    }
    
    
