@@ -181,6 +181,10 @@
                      <option value="project_manager">프로젝트 담당자</option>
                      <option value="field_manager">현장 관리자</option>
                </select>   
+               <select id="myproject">
+					<option value="">전체보기</option>									
+					<option value="${sessionScope.loginId}">나의 프로젝트</option>
+				</select>
                <input type="text" id="keyword" placeholder="검색어를 입력하세요.">
                   <button id="searchButton">검색</button>
             </td>      
@@ -371,6 +375,8 @@ if (msg != "") {
 var showPage = 1;
 var opt ='default';
 var keyword ='default';
+var myproject='';
+var cnt='10';
 
 listCall(showPage);
 console.log("list call");
@@ -398,12 +404,23 @@ function save() {
 
     }
  }
+ 
+ 
+$('#myproject').change(function() {
+	console.log("myproject change");
+	myproject = $(this).val();
+	console.log(myproject);
+	listCall(showPage);
+	$('#pagination').twbsPagination('destroy');
+});
+
 
 
    // 리스트 불러오기
 function listCall(page,cnt){
-   
-        var cnt = 8;
+   		console.log(myproject);
+   		console.log('리스트불러와!!!!!!!!!!!');
+        var cnt = 10;
       $.ajax({
          type:'post',
          url:'/projectList.ajax',
@@ -411,7 +428,8 @@ function listCall(page,cnt){
             'page':page,
             'cnt': cnt,
             'keyword':keyword,
-            'opt':opt
+            'opt':opt,
+            'myproject':myproject
          },
          dataType:'json',           
          success:function(data){

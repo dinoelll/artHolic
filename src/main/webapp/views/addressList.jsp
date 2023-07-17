@@ -225,7 +225,7 @@
 									<option value="dept">부서명</option>
 							</select> <select id="bookmark">
 									<option value="">전체보기</option>									
-									<option value="8948948">즐겨찾기</option>
+									<option value="${sessionScope.loginId}">즐겨찾기</option>
 							</select> <input type="text" id="keyword" placeholder="내용을 입력 해 주세요.">
 								<button onclick="opt()" id="searchButton">검색</button></td>
 						</tr>

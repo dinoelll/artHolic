@@ -58,9 +58,9 @@ public class ProjectController {
    @PostMapping(value = "/projectList.ajax")
    @ResponseBody
    public HashMap<String, Object> listCall(@RequestParam String page, @RequestParam String cnt,
-         @RequestParam String opt, @RequestParam String keyword) {
-
-      return service.listCall(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword);
+         @RequestParam String opt, @RequestParam String keyword,@RequestParam String myproject) {
+	   	logger.info(myproject);
+      return service.listCall(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword,myproject);
    }
 
    @PostMapping(value = "/projectWrite.do")
@@ -83,7 +83,7 @@ public class ProjectController {
    public String projectCalendar(@RequestParam String project_id,@RequestParam String project_name, Model model) {
 
       logger.info(project_id);
-
+      logger.info(project_name);
       model.addAttribute("project_id", project_id);
       model.addAttribute("project_name", project_name);
 

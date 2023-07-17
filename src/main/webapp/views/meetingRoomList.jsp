@@ -212,12 +212,41 @@
 	float: right;
 	height: 40px;
 }
- 
- .subject {
+
+.subject {
 	color: #91bdce;
 	text-decoration: none;
 	background-color: transparent;
-} 
+}
+
+modal-content {
+	width: 500px;
+	height: 600px;
+}
+
+.modalinput {
+	width: 300px;
+}
+
+#previewImage {
+	width: 150px;
+	height: 100px;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+tr {
+	margin-bottom: 10px;
+}
+
+th, td {
+	padding: 8px;
+	border: 1px solid #ddd;
+	text-align: left;
+}
 </style>
 </head>
 
@@ -233,8 +262,8 @@
 					<div class="row mb-2">
 						<div class="col-sm-6">
 							<h1 class="m-0">
-								<b><a href="/MeetingRoomList.go" class="subject">회의실 관리</a></b> | <a
-									href="/ReservationList.go" class="subject">예약 관리</a>
+								<b><a href="/MeetingRoomList.go" class="subject">회의실 관리</a></b>
+								| <a href="/ReservationList.go" class="subject">예약 관리</a>
 							</h1>
 						</div>
 						<!-- /.col -->
@@ -300,8 +329,10 @@
 						</tbody>
 						<tr>
 							<td colspan="6" id="paging">
-								<button type="button" class="btn btn-danger" onclick="del()"
-									id="del">삭제</button>
+								<!-- <button type="button" class="btn btn-danger" onclick="del()"
+									id="del">삭제</button> -->
+								<button type="button" class="btn btn-delete" data-toggle="modal"
+									data-target="#modal-delete" id="upload">삭제</button>
 								<div class="container">
 									<nav aria-label="Page navigation" style="text-align: center">
 
@@ -334,22 +365,27 @@
 										<tr>
 											<th>회의실 이름</th>
 											<td><input type="text" name="room_name" value=""
-												placeholder="회의실 이름을 입력하세요" /></td>
+												placeholder="회의실 이름을 입력하세요" class="modalinput" /></td>
 										</tr>
 										<tr>
 											<th>수용인원</th>
 											<td><input type="text" name="Capacity" value=""
-												placeholder="수용인원을 입력하세요" /></td>
+												placeholder="수용인원을 입력하세요" class="modalinput" /></td>
 										</tr>
 										<tr>
 											<th>회의실 위치</th>
 											<td><input type="text" name="location" value=""
-												placeholder="회의실 위치를 입력하세요" /></td>
+												placeholder="회의실 위치를 입력하세요" class="modalinput" /></td>
 										</tr>
 										<tr>
 											<th>회의실 대표 이미지</th>
 											<td><input type="file" name="mrPhoto" id="mrPhoto"
-												value=""></td>
+												value="" accept="image/*"></td>
+
+										</tr>
+										<tr>
+											<th>미리보기</th>
+											<td><img id="previewImage" src="#" alt="미리보기"></td>
 										</tr>
 									</table>
 								</form>
@@ -358,6 +394,34 @@
 								<button type="button" class="btn btn-default"
 									data-dismiss="modal">닫기</button>
 								<button type="button" class="btn btn-primary" onclick="save()">등록</button>
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+				<!-- /.modal -->
+
+
+				<div class="modal fade" id="modal-delete">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">신규 회의실 등록</h4>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+
+								<p>해당 회의실을 삭제하면 복구할 수 없습니다. 정말로 삭제하시겠습니까?</p>
+							</div>
+							<div class="modal-footer justify-content-between">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">닫기</button>
+								<button type="button" class="btn btn-danger" onclick="del()"
+									id="del">삭제</button>
 							</div>
 						</div>
 						<!-- /.modal-content -->
@@ -556,29 +620,60 @@
 		});
 
 		console.log(checkArr);
-
-		$.ajax({
-			type : 'get',
-			url : 'mrDelete.ajax',
-			data : {
-				'mrDelList' : checkArr
-			},
-			dataType : 'json',
-			success : function(data) {
-				console.log(data);
-				if (data.success) {
-					alert(data.msg);
-					listCall(showPage);
+		if (checkArr.length === 0) {
+			alert('체크된 항목이 없습니다.');
+			 $('#modal-delete').modal('hide');
+		} else {
+			$.ajax({
+				type : 'get',
+				url : 'mrDelete.ajax',
+				data : {
+					'mrDelList' : checkArr
+				},
+				dataType : 'json',
+				success : function(data) {
+					console.log(data);
+					if (data.success) {
+						alert(data.msg);
+						listCall(showPage);
+						location.href='/MeetingRoomList.go';
+					}
+				},
+				error : function(e) {
+					console.log(e);
+					alert('해당 회의실에 예약된 정보가 존재합니다 \n 예약정보를 삭제 후 다시 시도해주세요.');
+					console.log('삭제 실패!');
 				}
-			},
-			error : function(e) {
-				console.log(e);
-				alert('해당 회의실에 예약된 정보가 존재합니다 \n 예약정보를 삭제 후 다시 시도해주세요.');
-				console.log('삭제 실패!');
+			});
+		}
+	}
+
+	$(document).ready(function() {
+		// 파일 선택(input type="file") 요소
+		const imageInput = $('#mrPhoto');
+		// 이미지를 표시할 태그
+		const previewImage = $('#previewImage');
+
+		// 파일 선택 이벤트 감지
+		imageInput.on('change', function() {
+			// 선택한 파일
+			const file = imageInput[0].files[0];
+
+			if (file) {
+				// FileReader 객체를 사용하여 파일을 읽습니다.
+				const reader = new FileReader();
+
+				// 파일을 읽은 후에 발생하는 이벤트
+				reader.onload = function(e) {
+					// 읽은 이미지 데이터를 미리보기로 표시
+					previewImage.attr('src', e.target.result);
+				}
+
+				// 파일을 읽습니다.
+				reader.readAsDataURL(file);
 			}
 		});
-
-	}
+	});
 
 	/*    if (employeeList && Array.isArray(employeeList) && employeeList.length > 0) {
 	      employeeList.forEach(function (item, employeeList) {
