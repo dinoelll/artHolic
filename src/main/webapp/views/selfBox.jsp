@@ -289,7 +289,7 @@ listCall(showPage);
 	   //검색어 확인 
 	   searchText = $('#searchInput').val();
 	   console.log(searchText);
-	   if(selectedSearchInformation !== "" && selectedSearchInMailBox != ""){
+	   if(selectedSearchInformation !== "" && selectedSearchMailBox != ""){
 		   listCall(showPage);
 		   $('#pagination').twbsPagination('destroy');
 	   }

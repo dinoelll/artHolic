@@ -133,7 +133,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">현장설명 게시판</h1>
+            <h1 class="m-0">현장설명회</h1>
           </div><!-- /.col -->
           <!-- 
           <div class="col-sm-6">
