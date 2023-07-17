@@ -332,23 +332,6 @@
 	font-size: 16px;
 }
 
-/* 의견 스타일 */
- .modi-date-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    color: gray;
-  }
-
-  .bottom-right-text {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin: 0;
-    color: gray;
-  }
-
 
 </style>
   
@@ -428,7 +411,7 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<h1 style="font-weight: 600;">결재 문서함</h1>
+						          	<h1 style="font-weight: 600;">수신 참조</h1>
 						          		
 					          		</div>	
 					          </div>
@@ -441,9 +424,6 @@
 							          	<a class="optt" id="optt" value="진행중">진행중</a>
 							          	<a class="optt" id="optt" value="반려">반려</a>
 							          	<a class="optt" id="optt" value="완료">완료</a>
-							          	
-							          	
-							          	
 						          		</div>	
 						          </div>
 						          <div class="col-sm-6">
@@ -598,8 +578,7 @@
 				<!-- /.modal -->
       
       
-      
-      			 <!-- 결재 의견 모달 -->
+     <!-- 결재 의견 모달 -->
 				<div class="modal fade" id="modal-default">
 					  <div class="modal-dialog">
 					    <div class="modal-content">
@@ -659,7 +638,7 @@
 					</div>
      
 
-	
+
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -669,7 +648,7 @@
 </div>
 <!-- ./wrapper -->
 </div>
- <jsp:include page="footer.jsp" />
+	 <jsp:include page="footer.jsp" />
  
   <!-- jQuery UI -->
    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -691,7 +670,7 @@
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-
+ 
 
 <script>
 
@@ -748,7 +727,7 @@ function listCall(page,cnt){
         var cnt = 8;
       $.ajax({
          type:'post',
-         url:'/paymentList.ajax',
+         url:'/paymentListTake.ajax',
          data:{
         	 'temp':temp,
             'page':page,
@@ -791,98 +770,96 @@ function listCall(page,cnt){
 	
 
 
-   //리스트 작성
+//리스트 작성
 function listDraw(projectList) {
-     console.log("listDraw Call");
-     var content = '';
+  console.log("listDraw Call");
+  var content = '';
 
-     projectList.forEach(function(dto,project_id){
-         content += '<tr>';
-         content += '<th>'+dto.limit_date+'</th>';
-         content += '<th>'+dto.code_name+'</th>';
-         content += '<th><a href="./paymentVacationForm_pay.go?document_id='+dto.document_id+'">'+dto.paySubject+'</th>';
-         content += '<td>'+ dto.document_id +'</td>';
-         content += '<td>'+ '<i class="fas fa-comments" data-toggle="modal" data-target="#modal-default" onclick="note(\''+dto.document_id+'\')"></i>'+'</td>';
-         
+  projectList.forEach(function(dto,project_id){
+      content += '<tr>';
+      content += '<th>'+dto.limit_date+'</th>';      content += '<th>'+dto.code_name+'</th>';
+      content += '<th><a href="./paymentVacationForm_pay.go?document_id='+dto.document_id+'">'+dto.paySubject+'</th>';
+      content += '<td>'+ dto.document_id +'</td>';
+      content += '<td>'+ '<i class="fas fa-comments" data-toggle="modal" data-target="#modal-default" onclick="note(\''+dto.document_id+'\')"></i>'+'</td>';
+      
 
-         if (dto.state === '진행중') {
-             content += '<td><a class="btn btn-primary btn-sm">' + dto.state + '</a></td>';
-         } else if (dto.state === '반려') {
-             content += '<td><a class="btn btn-danger btn-sm">' + dto.state + '</a></td>';
-         } else if (dto.state === '완료') {
-             content += '<td><a class="btn btn-secondary btn-sm">' + dto.state + '</a></td>';
-         }
+      if (dto.state === '진행중') {
+          content += '<td><a class="btn btn-primary btn-sm">' + dto.state + '</a></td>';
+      } else if (dto.state === '반려') {
+          content += '<td><a class="btn btn-danger btn-sm">' + dto.state + '</a></td>';
+      } else if (dto.state === '완료') {
+          content += '<td><a class="btn btn-secondary btn-sm">' + dto.state + '</a></td>';
+      }
 
-         content += '</tr>';
-     });
+      content += '</tr>';
+  });
 
-     $('#projectList').empty();
-     $('#projectList').append(content);
-   }
-   
-   
-   
+  $('#projectList').empty();
+  $('#projectList').append(content);
+}
+
+
+
 function noteSuccess(data) {
-    console.log("success");
-    console.log(data);
+ console.log("success");
+ console.log(data);
 
-    var content = '';
-    var noteArray = data.note;
+ var content = '';
+ var noteArray = data.note;
 
-    for (var i = 0; i < noteArray.length; i++) {
-        var note = noteArray[i];
+ for (var i = 0; i < noteArray.length; i++) {
+     var note = noteArray[i];
 
-        var cardColor = '';
-        if (note.result === '반려') {
-            cardColor = 'callout-Danger';
-        } else if (note.form_sort === 'PAYMENT_PRO') {
-            cardColor = 'callout-info';
-        } else if (note.result === '결재완료') {
-            cardColor = 'callout-success';
-        }
+     var cardColor = '';
+     if (note.result === '반려') {
+         cardColor = 'callout-Danger';
+     } else if (note.form_sort === 'PAYMENT_PRO') {
+         cardColor = 'callout-info';
+     } else if (note.result === '결재완료') {
+         cardColor = 'callout-success';
+     }
 
-        content += '<div class="row">';
-        content += '<div class="col-sm-1">';
-        content += '<div class="rounded-circle" style="width: 50px; height: 50px; overflow: hidden;">';
-        content += '<img class="img-fluid" src="dist/img/man_default.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">';
-        content += '</div>';
-        content += '</div>';
-        content += '<div class="col-sm-11">';
-        content += '<div class="callout ' + cardColor + '" style="margin-bottom: 10px; margin-left: 18px; width: 395px; position: relative;">';
-        content += '<p>' + note.note + '</p><br>';
+     content += '<div class="row">';
+     content += '<div class="col-sm-1">';
+     content += '<div class="rounded-circle" style="width: 50px; height: 50px; overflow: hidden;">';
+     content += '<img class="img-fluid" src="dist/img/man_default.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">';
+     content += '</div>';
+     content += '</div>';
+     content += '<div class="col-sm-11">';
+     content += '<div class="callout ' + cardColor + '" style="margin-bottom: 10px; margin-left: 18px; width: 395px; position: relative;">';
+     content += '<p>' + note.note + '</p><br>';
 
-        if (note.result === '결재완료') {
-            content += '<p style="margin-bottom: 0px;">' + note.name + ' ' + note.position + ' (승인)</p>';
-        } else if (note.result === '반려') {
-            content += '<p style="margin-bottom: 0px;">' + note.name + ' ' + note.position + ' (반려)</p>';
-        }
+     if (note.result === '결재완료') {
+         content += '<p style="margin-bottom: 0px;">' + note.name + ' ' + note.position + ' (승인)</p>';
+     } else if (note.result === '반려') {
+         content += '<p style="margin-bottom: 0px;">' + note.name + ' ' + note.position + ' (반려)</p>';
+     }
 
-        content += '<p class="bottom-right-text" style="margin-bottom: 5px; margin-right: 8px;">' + note.modi_date + '</p>';
-        content += '</div>';
-        content += '</div>';
-        content += '</div>';
-    }
+     content += '<p class="bottom-right-text" style="margin-bottom: 5px; margin-right: 8px;">' + note.modi_date + '</p>';
+     content += '</div>';
+     content += '</div>';
+     content += '</div>';
+ }
 
-    $('#modal-default .modal-body .row').remove();
-    $('#modal-default .modal-body').append(content);
+ $('#modal-default .modal-body .row').remove();
+ $('#modal-default .modal-body').append(content);
 }
 
 function note(document_id) {
-    console.log(document_id);
-    $.ajax({
-        type: 'post',
-        url: '/note.ajax',
-        data: {
-            'document_id': document_id
-        },
-        dataType: 'json',
-        success: noteSuccess,
-        error: function(e) {
-            console.log("Error");
-        }
-    });
+ console.log(document_id);
+ $.ajax({
+     type: 'post',
+     url: '/note.ajax',
+     data: {
+         'document_id': document_id
+     },
+     dataType: 'json',
+     success: noteSuccess,
+     error: function(e) {
+         console.log("Error");
+     }
+ });
 }
-
 
 
 
@@ -959,10 +936,6 @@ function restoreButtonColor() {
 	  document.getElementById("paymentButton").removeAttribute("href");
 	  
 	}	
-	
-
-	
-	
   
 </script>
 

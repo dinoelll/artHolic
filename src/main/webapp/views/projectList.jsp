@@ -192,7 +192,7 @@
             <td>
             <div>
                <input type="button" id="projectWrite" class="btn-default" data-toggle="modal" data-target="#modal-default" value="등록">
-               </div>
+            </div>
             </td>
          </tr>
          </table>
@@ -205,13 +205,14 @@
             <th>담당자 연락처</th>
             <th>일정</th>
             <th>인원 선택</th>
+            <th>삭제</th>
             </tr>
          </thead>
          <tbody id="projectList" style="text-align:center">
            <!-- 리스트가 출력될 영역 -->
          </tbody>   
          <tr>
-         <td colspan="5" id="paging">   
+         <td colspan="7" id="paging">   
             <!--    플러그인 사용   (twbsPagination)   -->
             <div class="container" >                           
                <nav aria-label="Page navigation" style="text-align:center">
@@ -224,7 +225,7 @@
   
    </div>
    
-         <!-- modal 창 -->
+         <!-- 프로젝트 등록 modal 창 -->
             <div class="modal fade" id="modal-default">
                <div class="modal-dialog">
                   <div class="modal-content">
@@ -282,6 +283,9 @@
                <!-- /.modal-dialog -->
             </div>
             <!-- /.modal -->
+            
+            
+            
             
             
             
@@ -500,6 +504,7 @@ function listDraw(projectList) {
          content += '<td>'+ dto.manager_phone +'</td>';
          content += '<td>'+ dto.start_date + '~' + dto.end_date +'</td>';
          content += '<td><button class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-lg2">인원추가</button></td>';
+         content += '<td><a href="projectDel.do?project_id='+dto.project_id+'" class="btn btn-danger btn-sm">삭제</a></td>';
          content += '</tr>';
        });
 
@@ -572,14 +577,14 @@ function sendList() {
    	   contentType : 'application/json',
 	   success: function(data) {
 		   console.log(data);
-		   alert('프로젝트 인원이 추가 되었습니다.');
+		   
 		 },error: function(e){
 		       console.log(e);
-		       alert('프로젝트 인원추가에 실패 했습니다.');
 		 }
 		
    });
  // 모달창 닫기
+ alert('프로젝트 인원이 추가 되었습니다.');
     $('#modal-lg2').modal('hide');
 }
 

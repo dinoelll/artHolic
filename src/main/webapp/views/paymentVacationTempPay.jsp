@@ -2,46 +2,46 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="ko">
 
-
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Timeline</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- AdminLTE css -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+<!-- AdminLTE css -->
+<link rel="stylesheet" href="dist/css/adminlte.min.css">
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+<!-- daterange picker -->
+<link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+<!-- Tempusdominus Bootstrap 4 -->
+<link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+<!-- BS Stepper -->
+<link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
+<!-- dropzonejs -->
+<link rel="stylesheet" href="plugins/dropzone/min/dropzone.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="dist/css/adminlte.min.css">
+<!--  duallist-->
+<link rel="stylesheet" href="dist/css/icon_font/css/icon_font.css">
+<link rel="stylesheet" href="dist/css/dual/jquery.transfer.css">
+
   
-    <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-  <!-- Toastr -->
-  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
-  
-  <!-- daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Bootstrap Color Picker -->
-  <link rel="stylesheet" href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
-  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-  <!-- Bootstrap4 Duallistbox -->
-  <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
-  <!-- BS Stepper -->
-  <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
-  <!-- dropzonejs -->
-  <link rel="stylesheet" href="plugins/dropzone/min/dropzone.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  
-  <style>
+<style>
 
 /* gnb 스타일 */
 
@@ -52,7 +52,6 @@
      align-items: center;
      width: 205px;
     height: 460px;
-    
 		
 	}
 	#paybutton{
@@ -71,7 +70,7 @@
 	    color: black;
 	    
     }
-    	#paybutton3 {
+        	#paybutton3 {
 	    margin-bottom: 10px;
 	    font-size: 16px;
 	    width: 150px;
@@ -82,9 +81,10 @@
     }
     
     
-    #ListGo{
+        #ListGo{
 	color: black;
 	}
+    
     
 	.main-sidebar {
 		background-color: #e9ddc6;
@@ -205,11 +205,11 @@
     justify-content: space-between;
 }
 
-
 </style>
   
   
 </head>
+
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
@@ -234,6 +234,7 @@
 	    </div>
 	    <!-- /.content-header -->
   
+ 
     
   
 <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
@@ -285,9 +286,10 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재하기</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려하기</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재요청</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-lg2">결재선</a>
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
+						          
 						          
 						          		
 					          		</div>	
@@ -300,7 +302,6 @@
 					          </div>
 					        </div>
 					      </div><!-- /.container-fluid -->
-					      
 	
               
 					      
@@ -311,10 +312,9 @@
 							<div class="container">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
-												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">프로젝트 신청</h1>
-												      <div class="row" style="margin-bottom: 50px;" id="topRow">
-												        
-												         				<div class="left-table" style="border :1px soild black;">
+												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">휴가 신청</h1>
+													      <div class="row" style="margin-bottom: 50px;" id="topRow">
+													          				<div class="left-table" style="border :1px soild black;">
 																	          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px;  ">
 																	            <colgroup>
 																	              <col style="width: 30%;">
@@ -334,9 +334,10 @@
 																	            </tr>
 																	          </table>
 																	        </div>
-												        
-												       
-												         				 <div class="right-table" style="border :1px soild black;">
+													          
+													        
+													       
+													          			 <div class="right-table" style="border :1px soild black;">
 																	        
 																       		<div id="list" class="right" >
 																	          <table class="my-table" style="width: auto; table-layout: fixed; ">
@@ -359,7 +360,8 @@
 																		    </div>
 																		
 																		</div>
-												  </div>
+												 			 </div>
+												  
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  <table class="my-table">
@@ -373,43 +375,53 @@
 													    <tr>
 													      <th>문서 분류</th>
 													      <td>${form.code_name}</td>
-													      <th>프로젝트 종류</th>
+													      <th>종류</th>
 													      <td>
 													      		<div class="group">
+											                        
 											                        <select class="form-control">
-																	   <c:if test="${form.project_kind eq '주택'}"> 
-																	    <option selected>주택</option>
+																	   <c:if test="${form.vacation_kind eq '휴가'}"> 
+																	    <option selected>휴가</option>
 																	  </c:if>
-																	  <c:if test="${form.project_kind eq '공공기관'}">
-																	    <option selected>공공기관</option>
+																	  <c:if test="${form.vacation_kind eq '연차'}">
+																	    <option selected>연차</option>
 																	  </c:if>
-																	  <c:if test="${form.project_kind eq '상가'}">
-																	    <option selected>상가</option>
+																	  <c:if test="${form.vacation_kind eq '반차'}">
+																	    <option selected>반차</option>
 																	  </c:if> 
 																	</select>
-											                        
-											                      </div>
+																</div>	
 														</td>
 													    </tr>
 													    
 													    <tr>
-													     <th>기간 및 일시</th>
+													      <th>기간 및 일시</th>
 													      <td style="justify-content: center; ">
 													      		 <div class="group">
+												                  
+												
 												                  <div class="input-group"  style="justify-content: space-around;">
 												                    ${form.start_date}~${form.end_date}
 												                  </div>
 												                  <!-- /.input group -->
 												                </div>
 														</td>
-													      <th>프로젝트 리더</th>
+													      <th>반차 여부</th>
 													      <td>
-														     	 <input type="text" class="invisible-input" value="${form.project_leader}">
-														      </td>
+														    <div class="form-check form-check-inline">
+																  <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning"
+																    <c:if test="${form.vacation_sort eq '0'}">checked</c:if>/>
+																  <label class="form-check-label" for="radioMorning">오전</label>
+																</div>
+																<div class="form-check form-check-inline">
+																  <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon" 
+																    <c:if test="${form.vacation_sort eq '1'}">checked</c:if>/>
+																  <label class="form-check-label" for="radioAfternoon">오후</label>
+															</div>
+                          								</td>
 													    </tr>
 													  </table>
 												  </div>
-												 
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  
@@ -461,7 +473,7 @@
 												  <div class="row" style="margin-bottom: 50px;">
 													  
 													  
-													  <table class="my-table" id="referrer">
+													   <table class="my-table" id="referrer">
 													    <tr>
 													  	  <th style="background-color:white">참조자</th>
 														      <td>
@@ -483,14 +495,13 @@
 		  	
 		  	
 	  </div><!--  제일큰row 부분-->	
-
+ 
   
   <!-- /.content-wrapper -->
 	
 	
       
-      
-			<!-- 모달모달!! 숨겨진 -->
+      	<!-- 모달모달!! 숨겨진 -->
 				<div class="modal fade" id="modal-lg" data-backdrop="static">
 				  <div class="modal-dialog modal-lg">
 				    <div class="modal-content">
@@ -547,71 +558,110 @@
       
       
       
+      <!--  결재 요청 모달-->
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>결재 요청 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary" onclick="writeVacation()" >요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content --> 
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
       
-      <!-- 결재 요청 모달 -->
-				<div class="modal fade" id="modal-default">
-				  <div class="modal-dialog">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div style="align-item:inline;">
-				        <div class="modal-body" style="text-align: center;">
-				          <h4 style="font-weight: 700; margin-bottom: 31px;">결재 하시겠습니까?</h4>
-				        </div>
-				        <a style="margin-left:33px; font-size:17px;">의견 남기기</a>
-				        <div style="border: 1px solid lightgray; width: 416px; height: 161px; margin-left: 43px; margin-top: 31px;">
-				          <textarea id="myTextarea" rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;" oninput="updateCharCount()"></textarea>
-				        </div>
-				        <a id="charCount" style="color: lightgray; margin-left: 400px; margin-bottom: 10px;">0/100</a>
-				        <p id="warningMsg" style="color: red; margin-left: 43px; display: none;">의견을 남겨야 요청을 완료할 수 있습니다. </p>
-				      </div>
-				      <div class="modal-footer justify-content-between">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-				        <button id="requestBtn" type="button" class="btn btn-primary" onclick="handleRequest()">요청</button>
-				      </div>
-				    </div>
-				    <!-- /.modal-content -->
-				  </div>
-				  <!-- /.modal-dialog -->
-				</div>
-				<!-- /.modal -->
-				
-				<!-- 반려 모달 -->
-					<div class="modal fade" id="modal-default2">
-					  <div class="modal-dialog">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					      </div>
-					      <div style="align-item:inline;">
-					        <div class="modal-body" style="text-align: center;">
-					          <h4 style="font-weight: 700; margin-bottom: 31px;">반려 하시겠습니까?</h4>
+      
+      <!--  결재선 모달-->
+      <div class="modal fade" id="modal-lg2">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">결재선</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+		              <div class="card card-default">
+					          
+					          
+					         <form id="demoform" action="#" method="post">
+					          <div class="card-body">
+								  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label style="font-size:27px;">결재선 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="approvers" class="duallistbox" multiple="multiple" name="duallistbox_demo1[]">
+										          <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										          
+
+										          </c:forEach>
+										        </select>
+										      </div>
+										    </div>
+										    <!-- /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row -->
+									  
+									  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label style="font-size:27px;">참조자 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="referrer" class="duallistbox" multiple="multiple" name="duallistbox_demo2[]">
+										           <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										        </c:forEach>
+										        </select>
+										      </div>
+										    </div>
+										   <!--  /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row  -->
+
+								</div>
 					        </div>
-					        <a style="margin-left:33px; font-size:17px;">의견 남기기</a>
-					        <div style="border: 1px solid lightgray; width: 416px; height: 161px; margin-left: 43px; margin-top: 31px;">
-					          <textarea id="myTextarea2" rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;" oninput="updateCharCount2()"></textarea>
-					        </div>
-					        <a id="charCount2" style="color: lightgray; margin-left: 400px; margin-bottom: 10px;">0/100</a>
-					        <p id="warningMsg2" style="color: red; margin-left: 43px; display: none;">의견을 남겨야 요청을 완료할 수 있습니다.</p>
-					      </div>
-					      <div class="modal-footer justify-content-between">
-					        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-					        <button id="requestBtn2" type="button" class="btn btn-primary" onclick="handleRequest2()">요청</button>
-					      </div>
-					    </div>
-					    <!-- /.modal-content -->
-					  </div>
-					  <!-- /.modal-dialog -->
-					</div>
-					<!-- /.modal -->
+					        <!-- /.card -->
+					        
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+				<button type="submit" id="submitButton" class="btn btn-primary" >요청</button>            
+				</form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+      
+      
 					      
       
-      <!--  결재 요청 모달-->
+      <!--  결재 취소 모달-->
       <div class="modal fade" id="modal-default3">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -636,13 +686,14 @@
       <!-- /.modal -->
       
       
+      
      
      
      
       
 	
 	
- <jsp:include page="footer.jsp" />
+   <jsp:include page="footer.jsp" />
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -651,31 +702,17 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-</div><!--  제일 큰거-->
+</div><!--  제일큰 거-->
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-
 <!-- bs-custom-file-input -->
 <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-
-
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 -->
 <script src="plugins/select2/js/select2.full.min.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
 <script src="plugins/moment/moment.min.js"></script>
 <script src="plugins/inputmask/jquery.inputmask.min.js"></script>
@@ -689,16 +726,13 @@
 <script src="plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <!-- dropzonejs -->
 <script src="plugins/dropzone/min/dropzone.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<!-- Your other custom scripts -->
 <!-- Page specific script -->
-
+<!-- Bootstrap4 Duallistbox -->
+<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 
 
 <script>
-
 
 
 $(document).ready(function() {
@@ -715,7 +749,7 @@ $(document).ready(function() {
             drawList(data.payList);
             /* drawList2(data.referrer); */
             if (data.success != null) {
-            	
+                
             } else {
                 
             }
@@ -789,28 +823,122 @@ $(document).ready(function() {
 		  $('#list').html(content);
 		}
 	
-	/* 
+
+ /*  결재선 데이터 전송*/
+
+
+	 $("#approvers").bootstrapDualListbox({
+	 	  // 기타 매개변수 설정
+	 	  infoText: false, // "Showing all {0}" 메시지 숨김
+	 	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
+	 	  moveAllLabel: '' // "Move all" 버튼 제거
+	 	});
+	 $("#referrer").bootstrapDualListbox({
+	 	  // 기타 매개변수 설정
+	 	  infoText: false, // "Showing all {0}" 메시지 숨김
+	 	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
+	 	  moveAllLabel: '' // "Move all" 버튼 제거
+	 	});
+
+
+	 var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox();
+	 $("#demoform").submit(function() {
+	   
+	   var approversVal = $('[name="duallistbox_demo1[]"]').val();
+	   console.log(approversVal);
+	   drawList(approversVal);  
+	   
+	   
+	   
+	   return false;
+	 });
+
+
+	 var demo1 = $('select[name="duallistbox_demo2[]"]').bootstrapDualListbox();
+	 $("#demoform").submit(function() {
+	   
+	   var referrer = $('[name="duallistbox_demo2[]"]').val();
+	   console.log(referrer);
+	   drawList2(referrer);  
+	   return false;
+	 });
+
+
+
+
+
+/* 
+	 function drawList(approversVal) {
+	 	var nameValue = document.getElementById('formName').textContent;
+	 	approversVal.forEach(function(item,idx){
+	 		console.log(item,idx)
+	 		
+	 		});
+	 	 
+	 	  var content = '<table class="my-table" style="width: auto; table-layout: fixed;">';
+
+
+	 	  content += '<tr>';
+	 	  content += '<th style=" white-space: nowrap;" rowspan="' + (approversVal.length + 3) + '">결재</th>';
+	 	  content += '<td style=" white-space: nowrap;">기안자</td>';
+	 	  for (var i = 0; i < approversVal.length; i++) {
+	 	    content += '<td style=" white-space: nowrap;">결재자</td>';
+	 	  }
+	 	  content += '</tr>';
+
+	 	  content += '<tr>';
+	 	  content += '<td>' + nameValue + '</td>';
+	 	  for (var i = 0; i < approversVal.length; i++) {
+	 	    content += '<td id="payment'+[i]+'">' + approversVal[i] + '</td>';
+	 	  }
+	 	  content += '</tr>';
+	 	  
+	 	  content += '<tr>';
+	 	  content += '<td>' + '</td>';
+	 	  for (var i = 0; i < approversVal.length; i++) {
+	 	    content += '<td>' + '</td>';
+	 	  }
+	 	  content += '</tr>';
+	 	  
+	 	  content += '<tr>';
+	 	  content += '<td>' + '</td>';
+	 	  for (var i = 0; i < approversVal.length; i++) {
+	 	    content += '<td>' + '</td>';
+	 	  }
+	 	  content += '</tr>';
+
+
+	 	  content += '</table>';
+
+	 	  
+	 	  $('#list').html(content);
+	 	  // 테이블을 어떤 엘리먼트에 추가할지 결정하고, 해당 엘리먼트에 HTML 내용을 할당
+	 	  
+	 };
+
 	 function drawList2(referrer) {
-		  referrer.forEach(function(item, idx) {
-		    console.log(item, idx);
-		  });
-
-		  var content2 = '<table class="my-table">';
-		  content2 += '<tr>';
-		  content2 += '<th style="background-color:white">참조자</th>';
-		  content2 += '<td>';
-		  referrer.forEach(function(item, idx) {
-		    content2 += '<input type="text" class="invisible-input" value="' + item.name + '">';
-		  });
-		  content2 += '<td>';
-		  content2 += '<tr>';
-		  content2 += '</table>';
-
-		  $('#referrer').html(content2);
-		};
-	
-	 
-	 */
+	 	referrer.forEach(function(item,idx){
+	 		console.log(item,idx)
+	 		
+	 		});
+	 		var content2 = '<table class="my-table">'
+	 		
+	 		content2 += '<tr>';
+	 		content2 += '<th style="background-color:white">참조자</th>';
+	 		content2 += '<td>';
+	 		content2 += '<input type="text" class="invisible-input" value="'+referrer+'">';
+	 		content2 += '<td>';
+	 		content2 += '<tr>';
+	 		content2 += '</table>';
+	 	 
+	 	  
+	 	  
+	 	  $('#referrer').html(content2);
+	 	  // 테이블을 어떤 엘리먼트에 추가할지 결정하고, 해당 엘리먼트에 HTML 내용을 할당
+	 	  
+	 }; 
+ */
+	 // (끝)결재선, 참조자
 
 
 
@@ -822,6 +950,111 @@ $(function () {
  $(function () {
 	  bsCustomFileInput.init();
 	});
+
+
+
+ function writeVacation() {
+ 	  var approversVal = $('[name="duallistbox_demo1[]"]').val();
+ 	  console.log(approversVal);
+
+ 	  var referrer = $('[name="duallistbox_demo2[]"]').val();
+ 	  console.log(referrer);
+
+ 	  var fileInput = document.getElementById('exampleInputFile');
+ 	  var file = fileInput.files[0]; // Get the selected file
+
+ 	  if (!file) {
+ 	    alert('파일을 추가해 주세요.');
+ 	    return; // 파일이 없으면 함수 종료
+ 	  }
+
+ 	  var paymentValues = [];
+ 	  var referrerValues = [];
+
+ 	  // Other parameters
+ 	  var $limit_date = $('#limit_date');
+ 	  var $form_sort = $('#form_sort');
+ 	  var $vacation_kind = $('#vacation_kind');
+ 	  var $reservationtime = $('#reservationtime');
+ 	  var $paySubject = $('#paySubject');
+ 	  var $payContent = $('#payContent');
+ 	  var $radioPeriod = $('input[name="radioPeriod"]:checked');
+
+ 	  for (var i = 0; i < approversVal.length; i++) {
+ 	    paymentValues.push(approversVal[i]);
+ 	  }
+
+ 	  for (var i = 0; i < referrer.length; i++) {
+ 	    referrerValues.push(referrer[i]);
+ 	  }
+
+ 	  var param = {
+ 	    payment: paymentValues,
+ 	    referrer: referrerValues,
+ 	    limit_date: $limit_date.val(),
+ 	    form_sort: $form_sort.val(),
+ 	    vacation_kind: $vacation_kind.val(),
+ 	    reservationtime: $reservationtime.val(),
+ 	    radioPeriod: $radioPeriod.val(),
+ 	    paySubject: $paySubject.val(),
+ 	    payContent: $payContent.val()
+ 	  };
+
+ 	  console.log(param);
+
+ 	  // 작성 여부 확인
+ 	  if (!param.limit_date || !param.paySubject || !param.payContent) {
+ 	    if (!param.limit_date) {
+ 	      alert('기안일을 선택해주세요.');
+ 	    } else if (!param.paySubject) {
+ 	      alert('제목을 작성해주세요.');
+ 	    } else if (!param.payContent) {
+ 	      alert('내용을 추가해주세요.');
+ 	    } else {
+ 	      alert('작성되지 않은 항목이 있습니다.');
+ 	    }
+ 	    return; // 작성되지 않은 항목이 있으면 함수 종료
+ 	  }
+ 	  
+ 	  // 결재자 여부 확인
+ 	  
+ 	    if (paymentValues.length === 0) {
+ 	    alert('결재자를 한 명 이상 추가해 주세요.');
+ 	    return; // 함수 종료
+ 	  }
+
+ 	  var formData = new FormData();
+
+ 	  // Append other parameters to the FormData object
+ 	  for (var key in param) {
+ 	    if (param[key]) {
+ 	      formData.append(key, param[key]);
+ 	    }
+ 	  }
+
+ 	  formData.append('file', file); // Append the file to the FormData object
+
+ 	  $.ajax({
+ 	    type: 'POST',
+ 	    url: 'writeVacation.ajax',
+ 	    data: formData,
+ 	    dataType: 'json',
+ 	    processData: false, // Prevent jQuery from automatically processing the data
+ 	    contentType: false, // Prevent jQuery from automatically setting the content type
+ 	    success: function(data) {
+ 	      console.log(data);
+ 	      if (data.success !== undefined) {
+ 	        alert('요청이 완료되었습니다.');
+ 	      } else {
+ 	        alert('요청이 완료되었습니다.');
+ 	      }
+ 	    },
+ 	    error: function(e) {
+ 	      console.log(e);
+ 	      alert('오류 발생');
+ 	    }
+ 	  });
+ }
 
 
 
@@ -923,7 +1156,7 @@ function updateCharCount() {
         success: function(data) {
             console.log(data);
             if (data.success != null) {
-            	alert('결재 완료');
+            	alert('전송 성공');
             	location.href ='./';
             } else {
                 
@@ -982,7 +1215,7 @@ function updateCharCount() {
 	        success: function(data) {
 	            console.log(data);
 	            if (data.success != null) {
-	            	alert('반려 완료');
+	            	alert('전송 성공');
 	            	location.href ='./';
 	            } else {
 	                
@@ -997,6 +1230,137 @@ function updateCharCount() {
 	    
 	  }
 
+		
+	  $(function () {
+	      //Initialize Select2 Elements
+	      $('.select2').select2()
+
+	      //Initialize Select2 Elements
+	      $('.select2bs4').select2({
+	        theme: 'bootstrap4'
+	      })
+
+	      //Datemask dd/mm/yyyy
+	      $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+	      //Datemask2 mm/dd/yyyy
+	      $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+	      //Money Euro
+	      $('[data-mask]').inputmask()
+
+	      //Date picker
+	      $('#reservationdate').datetimepicker({
+	          format: 'L'
+	      });
+
+	      //Date and time picker
+	      $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
+
+	      //Date range picker
+	      $('#reservation').daterangepicker()
+	      //Date range picker with time picker
+	      $('#reservationtime').daterangepicker({
+	        timePicker: true,
+	        timePickerIncrement: 30,
+	        locale: {
+	          format: 'MM/DD/YYYY hh:mm A'
+	        }
+	      })
+	      //Date range as a button
+	      $('#daterange-btn').daterangepicker(
+	        {
+	          ranges   : {
+	            'Today'       : [moment(), moment()],
+	            'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	            'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+	            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	            'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+	            'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	          },
+	          startDate: moment().subtract(29, 'days'),
+	          endDate  : moment()
+	        },
+	        function (start, end) {
+	          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+	        }
+	      )
+
+	      //Timepicker
+	      $('#timepicker').datetimepicker({
+	        format: 'LT'
+	      })
+
+	     
+
+	      //Colorpicker
+	      $('.my-colorpicker1').colorpicker()
+	      //color picker with addon
+	      $('.my-colorpicker2').colorpicker()
+
+	      $('.my-colorpicker2').on('colorpickerChange', function(event) {
+	        $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+	      })
+	    })
+	    // BS-Stepper Init
+	    document.addEventListener('DOMContentLoaded', function () {
+	      window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+	    })
+
+	    // DropzoneJS Demo Code Start
+	    Dropzone.autoDiscover = false
+
+	    // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+	    var previewNode = document.querySelector("#template")
+	    previewNode.id = ""
+	    var previewTemplate = previewNode.parentNode.innerHTML
+	    previewNode.parentNode.removeChild(previewNode)
+
+	    var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+	      url: "/target-url", // Set the url
+	      thumbnailWidth: 80,
+	      thumbnailHeight: 80,
+	      parallelUploads: 20,
+	      previewTemplate: previewTemplate,
+	      autoQueue: false, // Make sure the files aren't queued until manually added
+	      previewsContainer: "#previews", // Define the container to display the previews
+	      clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+	    })
+
+	    myDropzone.on("addedfile", function(file) {
+	      // Hookup the start button
+	      file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
+	    })
+
+	    // Update the total progress bar
+	    myDropzone.on("totaluploadprogress", function(progress) {
+	      document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+	    })
+
+	    myDropzone.on("sending", function(file) {
+	      // Show the total progress bar when upload starts
+	      document.querySelector("#total-progress").style.opacity = "1"
+	      // And disable the start button
+	      file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
+	    })
+
+	    // Hide the total progress bar when nothing's uploading anymore
+	    myDropzone.on("queuecomplete", function(progress) {
+	      document.querySelector("#total-progress").style.opacity = "0"
+	    })
+
+	    // Setup the buttons for all transfers
+	    // The "add files" button doesn't need to be setup because the config
+	    // `clickable` has already been specified.
+	    document.querySelector("#actions .start").onclick = function() {
+	      myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+	    }
+	    document.querySelector("#actions .cancel").onclick = function() {
+	      myDropzone.removeAllFiles(true)
+	    }
+	    // DropzoneJS Demo Code End */
+
+	  
+  
+	  
 </script>
 
 

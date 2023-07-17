@@ -2,6 +2,8 @@ package kr.co.two.payment.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,7 @@ public class PaymentController {
 	@RequestMapping(value = "/writeVacation.ajax")
 	@ResponseBody
 	public int writeVacation(@RequestParam HashMap<String, String> params 
-			,@RequestParam("file") MultipartFile[] files) {
+			,@RequestParam("file") MultipartFile[] files, HttpSession session ) {
 		logger.info("params : "+params);
 		logger.info("file : "+files);
 		
@@ -111,7 +113,7 @@ public class PaymentController {
 		
 		
 		
-		return service.writeVacation(params ,files);
+		return service.writeVacation(params ,files, session);
 
 	}
 	
@@ -119,7 +121,7 @@ public class PaymentController {
 	@PostMapping(value = "/paymentList.ajax")
 	@ResponseBody
 	public HashMap<String, Object> listCall(@RequestParam String page, @RequestParam String cnt,
-			@RequestParam String opt, @RequestParam String optt, @RequestParam String keyword ) {
+			@RequestParam String opt, @RequestParam String optt, @RequestParam String keyword, @RequestParam boolean temp, HttpSession session ) {
 		
 		
 		logger.info("optt : " + optt);
@@ -127,7 +129,100 @@ public class PaymentController {
 		logger.info("keyword : " + keyword);
 		logger.info("page : " + page);
 		logger.info("cnt : " + cnt);
-		return service.listCall(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword,optt);
+		logger.info("temp : " + temp);
+		
+		String member_id = (String) session.getAttribute("loginId");
+		
+		return service.listCall(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword,optt , temp,member_id);
+	}
+	
+	@PostMapping(value = "/paymentListPay.ajax")
+	@ResponseBody
+	public HashMap<String, Object> listCallPay(@RequestParam String page, @RequestParam String cnt,
+			@RequestParam String opt, @RequestParam String optt, @RequestParam String keyword, HttpSession session) {
+		
+		
+		logger.info("optt : " + optt);
+		logger.info("opt : " + opt);
+		logger.info("keyword : " + keyword);
+		logger.info("page : " + page);
+		logger.info("cnt : " + cnt);
+		String member_id = (String) session.getAttribute("loginId");
+		
+		
+		
+		return service.listCallPay(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword,optt, member_id );
+	}
+	
+	@PostMapping(value = "/paymentListDone.ajax")
+	@ResponseBody
+	public HashMap<String, Object> listCallDone(@RequestParam String page, @RequestParam String cnt,
+			@RequestParam String opt, @RequestParam String optt, @RequestParam String keyword, HttpSession session ) {
+		
+		
+		logger.info("optt : " + optt);
+		logger.info("opt : " + opt);
+		logger.info("keyword : " + keyword);
+		logger.info("page : " + page);
+		logger.info("cnt : " + cnt);
+		String member_id = (String) session.getAttribute("loginId");
+		
+		return service.listCallDone(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword,optt , member_id  );
+	}
+	
+	
+	@PostMapping(value = "/paymentListTake.ajax")
+	@ResponseBody
+	public HashMap<String, Object> paymentListTake(@RequestParam String page, @RequestParam String cnt,
+			@RequestParam String opt, @RequestParam String optt, @RequestParam String keyword, HttpSession session ) {
+		
+		
+		logger.info("optt : " + optt);
+		logger.info("opt : " + opt);
+		logger.info("keyword : " + keyword);
+		logger.info("page : " + page);
+		logger.info("cnt : " + cnt);
+		String member_id = (String) session.getAttribute("loginId");
+		
+		return service.paymentListTake(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword,optt , member_id  );
+	}
+	
+	@PostMapping(value = "/payList.ajax")
+	@ResponseBody
+	public HashMap<String, Object> payList(@RequestParam String document_id) {
+		logger.info(document_id);
+		
+		
+		return service.payListCall(document_id );
+	}
+	
+	@PostMapping(value = "/payRequest.ajax")
+	@ResponseBody
+	public int payRequest(@RequestParam String document_id, @RequestParam String note, HttpSession session) {
+		logger.info(document_id);
+		
+		String member_id =  (String) session.getAttribute("loginId");
+		
+		return service.payRequest(document_id, note, member_id );
+	}
+	
+	@PostMapping(value = "/payRefuse.ajax")
+	@ResponseBody
+	public int payRefuse(@RequestParam String document_id, @RequestParam String note, HttpSession session) {
+		logger.info(document_id);
+		
+		String member_id =  (String) session.getAttribute("loginId");
+		
+		return service.payRefuse(document_id, note, member_id );
+	}
+	
+	@RequestMapping(value = "/note.ajax")
+	@ResponseBody
+	public HashMap<String, Object> dualList(HttpSession session, @RequestParam String document_id) {
+	
+		logger.info("note.ajax!요청 들어옴!");
+		return service.note(session, document_id);
+
 	}
 
 	

@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="ko">
 
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +14,7 @@
   <!-- AdminLTE css -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   
-    <!-- SweetAlert2 -->
+  <!-- SweetAlert2 -->
   <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
@@ -37,10 +36,7 @@
   <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
   <!-- dropzonejs -->
   <link rel="stylesheet" href="plugins/dropzone/min/dropzone.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  
-  
+</head>
   
 <style>
 
@@ -201,7 +197,10 @@
     text-shadow: 0 0 0 black;
   }
 
-
+#topRow {
+    margin-bottom: 50px;
+    justify-content: space-between;
+}
 
 </style>
   
@@ -256,15 +255,15 @@
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton2" onclick="toggleDocumentTree()">결재 생산함</button>
 						      <div id="documentTree" ><!-- style="display: none;" -->
 						        <p><a href="./paymentList.go" id="ListGo">결재 문서함</a></p>
-						        <p>임시저장</p>
+						        <p><a href="./paymentListTemp.go" id="ListGo">결재 임시저장</a></p>
 						      </div>
 						    </div>
 						    <div>
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton3" onclick="toggleInboxTree()">결재 수신함</button>
 						      <div id="inboxTree"><!--  style="display: none;" -->
-						        <p>결재하기</p>
-						        <p>결재내역</p>
-						        <p>수신참조</p>
+						        <p><a href="./paymentListPay.go" id="ListGo"> 결재하기</a></p>
+						        <p><a href="./paymentListDone.go" id="ListGo"> 결재내역</a></p>
+						        <p><a href="./paymentListTake.go" id="ListGo">수신참조</a></p>
 						      </div>
 						    </div>
 						  </div>
@@ -284,10 +283,8 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재요청</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-lg2">결재선</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">임시저장</a>
-						          	
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재하기</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려하기</a>
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
 						          
 						          
@@ -314,111 +311,111 @@
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
 												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">휴가 신청</h1>
-												      <div class="row" style="margin-bottom: 50px;">
-												        
-												          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px; margin-right: 530px;">
-												            <colgroup>
-												              <col style="width: 30%;">
-												              <col style="width: 70%;">
-												            </colgroup>
-												            <tr>
-												              <th style="width: 1%; white-space: nowrap; vertical-align: middle;">기안일</th>
-												              <td>
-																<div class="group">
-																  <div class="input-group date" id="reservationdate" data-target-input="nearest">
-																    <input type="date" style="background-color: transparent; border: none; box-shadow: none; outline: none; color: transparent; text-shadow: 0 0 0 gray;">
-																   
-																      
-																    </div>
-																  </div>
-																</div>
-															</td>
-												            </tr>
-												            <tr>
-												              <th style=" width: 1%; white-space: nowrap; ">문서번호</th>
-												              <td >문서번호 입력란</td>
-												            </tr>
-												          </table>
-												        
-												       
-												          <table class="my-table" style="width: auto; table-layout: fixed;">
-												            <colgroup>
-												              <col style="width: 15%;">
-												              <col style="width: 42.5%;">
-												              <col style="width: 42.5%;">
-												            </colgroup>
-												            <tr>
-												              <th style=" width: 1%; white-space: nowrap; " rowspan="4" >결재</th>
-												              <td >기안자</td>
-												              <td >팀장</td>
-												            </tr>
-												            <tr>
-												              
-												              <td >김형준</td>
-												              <td >아무개</td>
-												            </tr>
-												            <tr>
-												              
-												              <td ></td>
-												              <td ></td>
-												            </tr>
-												             <tr>
-												              <td ></td>
-												              <td ></td>
-												            </tr>
-													    </table>
-												  </div>
+													      <div class="row" style="margin-bottom: 50px;" id="topRow">
+													          				<div class="left-table" style="border :1px soild black;">
+																	          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px;  ">
+																	            <colgroup>
+																	              <col style="width: 30%;">
+																	              <col style="width: 70%;">
+																	            </colgroup>
+																	            <tr>
+																	              <th style="width: 1%; white-space: nowrap; vertical-align: middle;">기안일</th>
+																	              <td>
+																					<div class="group">
+																					  ${form.limit_date}
+																				  </div>
+																				</td>
+																	            </tr>
+																	            <tr>
+																	              <th style=" width: 1%; white-space: nowrap; ">문서번호</th>
+																	              <td id="document_id">${form.document_id}</td>
+																	            </tr>
+																	          </table>
+																	        </div>
+													          
+													        
+													       
+													          			 <div class="right-table" style="border :1px soild black;">
+																	        
+																       		<div id="list" class="right" >
+																	          <table class="my-table" style="width: auto; table-layout: fixed; ">
+					
+																	            <tr>
+																	              <th style=" white-space: nowrap; " rowspan="4" >결재</th>
+																	              <td style=" white-space: nowrap; ">기안자</td>
+																	            </tr>
+																	            <tr>
+																	              <td></td>
+																	            </tr>
+																	            <tr>
+																	              <td ></td>
+																	            </tr>
+																	             <tr>
+																	              <td ></td>
+																	            </tr>
+																	            
+																		    </table>
+																		    </div>
+																		
+																		</div>
+												 			 </div>
+												  
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  <table class="my-table">
 													    <tr>
 													      <th>작성자</th>
-													      <td>작성자 입력란</td>
+													      <td id="formName">${form.name}</td>
 													      <th>부서</th>
-													      <td>부서 입력란</td>
+													      <td>${form.dept_name}</td>
 													    </tr>
 													    
 													    <tr>
 													      <th>문서 분류</th>
-													      <td>문서 분류 입력란</td>
+													      <td>${form.code_name}</td>
 													      <th>종류</th>
 													      <td>
 													      		<div class="group">
 											                        
-											                        <select class="form-control" >
-											                          <option>휴가</option>
-											                          <option>연차</option>
-											                          <option>반차</option>
-											                        </select>
-											                      </div>
+											                        <select class="form-control">
+																	   <c:if test="${form.vacation_kind eq '휴가'}"> 
+																	    <option selected>휴가</option>
+																	  </c:if>
+																	  <c:if test="${form.vacation_kind eq '연차'}">
+																	    <option selected>연차</option>
+																	  </c:if>
+																	  <c:if test="${form.vacation_kind eq '반차'}">
+																	    <option selected>반차</option>
+																	  </c:if> 
+																	</select>
+																</div>	
 														</td>
 													    </tr>
 													    
 													    <tr>
 													      <th>기간 및 일시</th>
-													      <td>
+													      <td style="justify-content: center; ">
 													      		 <div class="group">
 												                  
 												
-												                  <div class="input-group" >
-												                    <div class="input-group-prepend">
-												                      <span class="input-group-text"><i class="far fa-clock"></i></span>
-												                    </div>
-												                    <input type="text" class="form-control float-right" id="reservationtime">
+												                  <div class="input-group"  style="justify-content: space-around;">
+												                    ${form.start_date}~${form.end_date}
 												                  </div>
 												                  <!-- /.input group -->
 												                </div>
 														</td>
 													      <th>반차 여부</th>
 													      <td>
-														     <div class="form-check form-check-inline">
-															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning">
-															      <label class="form-check-label" for="radioMorning">오전</label>
-															    </div>
-															    <div class="form-check form-check-inline">
-															      <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon">
-															      <label class="form-check-label" for="radioAfternoon">오후</label>
-														    </div>
+														    <div class="form-check form-check-inline">
+																  <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning"
+																    <c:if test="${form.vacation_sort eq '0'}">checked</c:if>/>
+																  <label class="form-check-label" for="radioMorning">오전</label>
+																</div>
+																<div class="form-check form-check-inline">
+																  <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon" 
+																    <c:if test="${form.vacation_sort eq '1'}">checked</c:if>/>
+																  <label class="form-check-label" for="radioAfternoon">오후</label>
+															</div>
                           								</td>
 													    </tr>
 													  </table>
@@ -430,7 +427,7 @@
 													    <tr>
 													  	  <th>제목</th>
 														      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요">
+														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요" value="${form.paySubject}">
 														      </td>
 													    </tr>
 													  </table>
@@ -442,7 +439,7 @@
 															    <tr>
 															    	<th>내용</th>
 															      <td>
-																      <textarea rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;"></textarea>
+																      <textarea rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;">${form.payContent}</textarea>
     															</td>
 															    </tr>
 															  </table>
@@ -457,10 +454,10 @@
 												                    <div class="input-group">
 												                      <div class="custom-file">
 												                        <input type="file" class="custom-file-input" id="exampleInputFile">
-												                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+												                        <label class="custom-file-label" for="exampleInputFile">${form.ori_file_name }</label>
 												                      </div>
 												                      <div class="input-group-append">
-												                        <span class="input-group-text">Upload</span>
+												                        <span class="input-group-text">download</span>
 												                      </div>
 												                    </div>
 												                  </div>
@@ -474,11 +471,11 @@
 												  <div class="row" style="margin-bottom: 50px;">
 													  
 													  
-													  <table class="my-table">
+													   <table class="my-table" id="referrer">
 													    <tr>
 													  	  <th style="background-color:white">참조자</th>
 														      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요">
+														     	 <input type="text" class="invisible-input" value="">
 														      </td>
 													    </tr>
 													  </table>
@@ -558,81 +555,6 @@
 				<!-- /.modal -->
       
       
-      <!--  결재선 모달-->
-      <div class="modal fade" id="modal-lg2">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">결재선 선택</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-		              <div class="card card-default">
-					          
-					          
-					          <div class="card-body">
-								  <div class="row">
-										  <div class="col-12">
-										    <div class="form-group">
-										      <label>결재선 선택</label>
-										      <div class="dual-listbox-container">
-										        <select id="approvers" class="duallistbox" multiple="multiple">
-										          <option selected>대리 김형준</option>
-										          <option>과장 아무개</option>
-										          <option>California</option>
-										          <option>Delaware</option>
-										          <option>Tennessee</option>
-										          <option>Texas</option>
-										          <option>Washington</option>
-										        </select>
-										      </div>
-										    </div>
-										    <!-- /.form-group -->
-										  </div>
-										  <!-- /.col -->
-										</div>
-									  <!-- /.row -->
-									  <div class="row">
-										  <div class="col-12">
-										    <div class="form-group">
-										      <label>참조자 선택</label>
-										      <div class="dual-listbox-container">
-										        <select id="referrer" class="duallistbox" multiple="multiple">
-										          <option selected>대리 김형준</option>
-										          <option>과장 아무개</option>
-										          <option>California</option>
-										          <option>Delaware</option>
-										          <option>Tennessee</option>
-										          <option>Texas</option>
-										          <option>Washington</option>
-										        </select>
-										      </div>
-										    </div>
-										    <!-- /.form-group -->
-										  </div>
-										  <!-- /.col -->
-										</div>
-									  <!-- /.row -->
-								   
-              
-
-								</div>
-
-					        </div>
-					        <!-- /.card -->
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" id="submitButton" class="btn btn-primary">Save changes</button>            
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
       
       
       
@@ -731,13 +653,7 @@
       
 	
 	
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-    
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+   <jsp:include page="footer.jsp" />
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -747,7 +663,6 @@
 </div>
 <!-- ./wrapper -->
 </div><!--  제일큰 거-->
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -756,21 +671,10 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-
-
 <!-- bs-custom-file-input -->
 <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-
-
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 -->
 <script src="plugins/select2/js/select2.full.min.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
 <script src="plugins/moment/moment.min.js"></script>
 <script src="plugins/inputmask/jquery.inputmask.min.js"></script>
@@ -784,22 +688,123 @@
 <script src="plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <!-- dropzonejs -->
 <script src="plugins/dropzone/min/dropzone.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 <!-- Page specific script -->
-
+<!-- Your other custom scripts -->
 
 
 <script>
 
 
-var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox();
-$("#demoform").submit(function() {
-  alert($('[name="duallistbox_demo1[]"]').val());
-  return false;
+$(document).ready(function() {
+    var document_id = $('#document_id').text();
+    console.log('document_id :' + document_id );
+	
+    $.ajax({
+        type: 'POST',
+        url: 'payList.ajax',
+        data: { document_id: document_id },
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            drawList(data.payList);
+            /* drawList2(data.referrer); */
+            if (data.success != null) {
+                
+            } else {
+                
+            }
+        },
+        error: function(e) {
+            console.log(e);
+            alert('오류 발생');
+        }
+    });
 });
+
+
+
+	 
+	 function drawList(approversVal) {
+		  var nameValue = document.getElementById('formName').textContent;
+
+		  var content = '<table class="my-table" style="width: auto; table-layout: fixed;">';
+
+		  content += '<tr>';
+		  content += '<th style=" white-space: nowrap;" rowspan="' + (approversVal.length + 3) + '">결재</th>';
+		  content += '<td style=" white-space: nowrap;">기안자</td>';
+		  for (var i = 0; i < approversVal.length; i++) {
+		    content += '<td style=" white-space: nowrap;">결재자</td>';
+		  }
+		  content += '</tr>';
+
+		  if (Array.isArray(approversVal) && approversVal.length > 0) {
+		    content += '<tr>';
+		    content += '<td>' + nameValue + '</td>';
+		    for (var i = 0; i < approversVal.length; i++) {
+		      var noteValue = approversVal[i].note;
+		      content += '<td>' + approversVal[i].code_name + ' ' + approversVal[i].name + '</td>';
+		    }
+		    content += '</tr>';
+
+		    content += '<tr>';
+		    content += '<td>' + '신청' + '</td>';
+		    for (var i = 0; i < approversVal.length; i++) {
+		      var noteValue = approversVal[i].note;
+		      content += '<td>' + (noteValue !== null ? '승인' : '') + '</td>';
+		    }
+		    content += '</tr>';
+
+		    content += '<tr>';
+		    content += '<td>' + approversVal[0].reg_date + '</td>';
+		    for (var i = 0; i < approversVal.length; i++) {
+		      var noteValue = approversVal[i].note;
+		      content += '<td>' + (noteValue !== null ? approversVal[i].modi_date : '') + '</td>';
+		    }
+		    content += '</tr>';
+		  } else {
+		    content += '<tr>';
+		    content += '<td>' + nameValue + '</td>';
+		    content += '<td></td>';
+		    content += '</tr>';
+
+		    content += '<tr>';
+		    content += '<td>' + '신청' + '</td>';
+		    content += '<td></td>';
+		    content += '</tr>';
+
+		    content += '<tr>';
+		    content += '<td></td>';
+		    content += '<td></td>';
+		    content += '</tr>';
+		  }
+
+		  content += '</table>';
+
+		  $('#list').html(content);
+		}
+	
+	/* 
+	 function drawList2(referrer) {
+		  referrer.forEach(function(item, idx) {
+		    console.log(item, idx);
+		  });
+
+		  var content2 = '<table class="my-table">';
+		  content2 += '<tr>';
+		  content2 += '<th style="background-color:white">참조자</th>';
+		  content2 += '<td>';
+		  referrer.forEach(function(item, idx) {
+		    content2 += '<input type="text" class="invisible-input" value="' + item.name + '">';
+		  });
+		  content2 += '<td>';
+		  content2 += '<tr>';
+		  content2 += '</table>';
+
+		  $('#referrer').html(content2);
+		};
+	
+	 
+	 */
 
 
 
@@ -811,160 +816,8 @@ $(function () {
  $(function () {
 	  bsCustomFileInput.init();
 	});
-	
-$(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
 
-    //Initialize Select2 Elements
-    $('.select2bs4').select2({
-      theme: 'bootstrap4'
-    })
 
-    //Datemask dd/mm/yyyy
-    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-    //Datemask2 mm/dd/yyyy
-    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
-    //Money Euro
-    $('[data-mask]').inputmask()
-
-    //Date picker
-    $('#reservationdate').datetimepicker({
-        format: 'L'
-    });
-
-    //Date and time picker
-    $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
-
-    //Date range picker
-    $('#reservation').daterangepicker()
-    //Date range picker with time picker
-    $('#reservationtime').daterangepicker({
-      timePicker: true,
-      timePickerIncrement: 30,
-      locale: {
-        format: 'MM/DD/YYYY hh:mm A'
-      }
-    })
-    //Date range as a button
-    $('#daterange-btn').daterangepicker(
-      {
-        ranges   : {
-          'Today'       : [moment(), moment()],
-          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-          'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        },
-        startDate: moment().subtract(29, 'days'),
-        endDate  : moment()
-      },
-      function (start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-      }
-    )
-
-    //Timepicker
-    $('#timepicker').datetimepicker({
-      format: 'LT'
-    })
-
-    //Bootstrap Duallistbox
-    $('.duallistbox').bootstrapDualListbox()
-
-    //Colorpicker
-    $('.my-colorpicker1').colorpicker()
-    //color picker with addon
-    $('.my-colorpicker2').colorpicker()
-
-    $('.my-colorpicker2').on('colorpickerChange', function(event) {
-      $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
-    })
-  })
-  // BS-Stepper Init
-  document.addEventListener('DOMContentLoaded', function () {
-    window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-  })
-
-  // DropzoneJS Demo Code Start
-  Dropzone.autoDiscover = false
-
-  // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-  var previewNode = document.querySelector("#template")
-  previewNode.id = ""
-  var previewTemplate = previewNode.parentNode.innerHTML
-  previewNode.parentNode.removeChild(previewNode)
-
-  var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-    url: "/target-url", // Set the url
-    thumbnailWidth: 80,
-    thumbnailHeight: 80,
-    parallelUploads: 20,
-    previewTemplate: previewTemplate,
-    autoQueue: false, // Make sure the files aren't queued until manually added
-    previewsContainer: "#previews", // Define the container to display the previews
-    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-  })
-
-  myDropzone.on("addedfile", function(file) {
-    // Hookup the start button
-    file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
-  })
-
-  // Update the total progress bar
-  myDropzone.on("totaluploadprogress", function(progress) {
-    document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
-  })
-
-  myDropzone.on("sending", function(file) {
-    // Show the total progress bar when upload starts
-    document.querySelector("#total-progress").style.opacity = "1"
-    // And disable the start button
-    file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
-  })
-
-  // Hide the total progress bar when nothing's uploading anymore
-  myDropzone.on("queuecomplete", function(progress) {
-    document.querySelector("#total-progress").style.opacity = "0"
-  })
-
-  // Setup the buttons for all transfers
-  // The "add files" button doesn't need to be setup because the config
-  // `clickable` has already been specified.
-  document.querySelector("#actions .start").onclick = function() {
-    myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
-  }
-  document.querySelector("#actions .cancel").onclick = function() {
-    myDropzone.removeAllFiles(true)
-  }
-  // DropzoneJS Demo Code End */
-  
-$(document).ready(function() {
-    
-
-    $('#submitButton').click(function() {
-      console.log('버튼이 클릭되었습니다.'); // 버튼 클릭 시 메시지 출력
-      var selectedOptions = $('#approvers').val();
-      console.log(selectedOptions); // 선택된 옵션 값 출력
-
-      $.ajax({
-        url: 'your_controller_url',
-        method: 'POST',
-        data: {
-          selectedOptions: selectedOptions
-        },
-        success: function(response) {
-          console.log('전송 완료');
-        },
-        error: function(xhr, status, error) {
-          console.error('전송 실패');
-        }
-      });
-    });
-  });
-
-/*결재 작성하기 모달  */
 
 function item(button) {
 	  // 버튼 클래스 변경
@@ -1047,8 +900,34 @@ function updateCharCount() {
       return;
     }
     
-    // 여기에 요청 버튼을 눌렀을 때의 동작을 추가해야함.
-    // 예: AJAX 요청을 보내거나 다른 동작을 수행
+    var document_id = $('#document_id').text();
+    console.log('document_id :' + document_id );
+    var note = $('#myTextarea').val();
+    console.log('note :' + note );
+    
+    // 결재하기
+    $.ajax({
+        type: 'POST',
+        url: 'payRequest.ajax',
+        data: { 
+        	document_id: document_id ,
+        	note : note
+        },
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            if (data.success != null) {
+            	alert('전송 성공');
+            	location.href ='./';
+            } else {
+                
+            }
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+    
   }
   
   function updateCharCount2() {
@@ -1069,6 +948,8 @@ function updateCharCount() {
 	  }
 	  
 	  function handleRequest2() {
+		   
+		  
 	    var textarea = document.getElementById("myTextarea2");
 	    var warningMsg = document.getElementById("warningMsg2");
 	    var textLength = textarea.value.length;
@@ -1078,9 +959,35 @@ function updateCharCount() {
 	      return;
 	    }
 	    
-	 // 여기에 요청 버튼을 눌렀을 때의 동작을 추가해야함.
-	    // 예: AJAX 요청을 보내거나 다른 동작을 수행
+	    // 반려하기
+	    var document_id = $('#document_id').text();
+	    console.log('document_id :' + document_id );
+	    var note = $('#myTextarea2').val();
+	    console.log('note :' + note );
 	    
+	    $.ajax({
+	        type: 'POST',
+	        url: 'payRefuse.ajax',
+	        data: { 
+	        	document_id: document_id ,
+	        	note : note
+	        },
+	        dataType: 'json',
+	        success: function(data) {
+	            console.log(data);
+	            if (data.success != null) {
+	            	alert('전송 성공');
+	            	location.href ='./';
+	            } else {
+	                
+	            }
+	        },
+	        error: function(e) {
+	            console.log(e);
+	        }
+	    });
+	
+
 	    
 	  }
 

@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import kr.co.two.payment.dao.PaymentDAO;
 import kr.co.two.payment.dto.MemberDTO;
+import kr.co.two.payment.dto.PayListDTO;
 import kr.co.two.payment.dto.PaymentDTO;
 import kr.co.two.project.dto.ProjectDTO;
 
@@ -30,7 +34,7 @@ public class PaymentService {
 	@Value("${spring.servlet.multipart.location}") private String root;
 
 	
-	public int writeVacation(HashMap<String, String> params, MultipartFile[] files) {
+	public int writeVacation(HashMap<String, String> params, MultipartFile[] files, HttpSession session) {
 	    PaymentDTO dto = new PaymentDTO();
 	    
 	    // 기본 정보 부여
@@ -41,8 +45,10 @@ public class PaymentService {
 	    
 	    
 	    //임시로 저장하기 위해서 이름 부여
-	    String id = "나경영";
+	    String id = (String) session.getAttribute("loginId");
 	    params.put("id", id);
+	    
+	    
 	    
 	    
 	    
@@ -170,11 +176,7 @@ public class PaymentService {
 	 	    }
 	 	    	
  	    }
-	    
-	    
-	  
-	    
-	    
+
 	   
     	// 파일 업로드 작업
 	    
@@ -326,8 +328,9 @@ public class PaymentService {
 	}
 
 	
-	  public ModelAndView member() {
-		  ArrayList<MemberDTO> mdto = dao.member(); 
+	  public ModelAndView member(HttpSession session) {
+		  String member_id = (String) session.getAttribute("loginId");
+		  ArrayList<MemberDTO> mdto = dao.member(member_id); 
 		  ModelAndView mav = new ModelAndView("paymentVacationForm"); 
 		  mav.addObject("member", mdto);
 		  logger.info("멤버 결재선 요청 내려 보냄.");
@@ -336,8 +339,9 @@ public class PaymentService {
 	  
 	  
 	  }
-	  public ModelAndView member2() {
-		  ArrayList<MemberDTO> mdto = dao.member(); 
+	  public ModelAndView member2(HttpSession session) {
+		  String member_id = (String) session.getAttribute("loginId");
+		  ArrayList<MemberDTO> mdto = dao.member(member_id); 
 		  ModelAndView mav = new ModelAndView("paymentBuyItemForm"); 
 		  mav.addObject("member", mdto);
 		  logger.info("멤버 결재선 요청 내려 보냄.");
@@ -346,8 +350,9 @@ public class PaymentService {
 	  
 	  
 	  }
-	  public ModelAndView member3() {
-		  ArrayList<MemberDTO> mdto = dao.member(); 
+	  public ModelAndView member3(HttpSession session) {
+		  String member_id = (String) session.getAttribute("loginId");
+		  ArrayList<MemberDTO> mdto = dao.member(member_id); 
 		  ModelAndView mav = new ModelAndView("paymentProjectForm"); 
 		  mav.addObject("member", mdto);
 		  logger.info("멤버 결재선 요청 내려 보냄.");
@@ -363,12 +368,22 @@ public class PaymentService {
 	}
 	
 	
-public HashMap<String, Object> listCall(int page,int cnt, String opt, String keyword, String optt) {
+public HashMap<String, Object> listCall(int page,int cnt, String opt, String keyword, String optt, boolean temp, String member_id) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		int offset = (page-1)*cnt; 
 		
-		int total = dao.totalCount(opt, optt, keyword); // 12
+		ArrayList<PaymentDTO> list = new ArrayList<PaymentDTO>();
+		
+		int offset = (page-1)*cnt; 
+		int total = 0;
+		
+		if(temp == true) {
+			total = dao.totalCountTemp(opt, optt, keyword,temp,member_id); // 12
+			
+		}else {
+			
+			total = dao.totalCount(opt, optt, keyword,member_id); // 12
+		}
 		 // cnt = 10
 		int range = total%cnt == 0 ? total/cnt : (total/cnt)+1;
 		
@@ -382,11 +397,291 @@ public HashMap<String, Object> listCall(int page,int cnt, String opt, String key
 		
 		map.put("currPage", page);
 		map.put("pages", range);
-		ArrayList<PaymentDTO> list = dao.listCall(opt, optt, keyword,cnt, offset);
+		if(temp == true) {
+			 list = dao.listCallTemp(opt, optt, keyword,cnt, offset,temp,member_id);
+			
+		}else {
+			
+			
+			list = dao.listCall(opt, optt, keyword,cnt, offset,member_id);
+		}
+		
 		
 		map.put("projectList", list);
 		return map;
 	}
+
+public HashMap<String, Object> listCallDone(int page, int cnt, String opt, String keyword, String optt, String member_id) {
+HashMap<String, Object> map = new HashMap<String, Object>();
+	
+	ArrayList<PaymentDTO> list = new ArrayList<PaymentDTO>();
+	
+	int offset = (page-1)*cnt; 
+	int total = 0;
+	
+	
+		total = dao.totalCountDone(opt, optt, keyword, member_id); // 12
+	
+	 // cnt = 10
+	int range = total%cnt == 0 ? total/cnt : (total/cnt)+1;
+	
+	logger.info("total :"+total);
+	logger.info("range :"+range);
+	logger.info("before page :"+page);
+	
+	page = page>range ? range : page;
+	
+	logger.info("after page :"+page);
+	
+	map.put("currPage", page);
+	map.put("pages", range);
+	
+		list = dao.listCallDone(opt, optt, keyword,cnt, offset, member_id);
+	
+	
+	
+	map.put("projectList", list);
+	return map;
+}
+		public HashMap<String, Object> paymentListTake(int page, int cnt, String opt, String keyword, String optt,
+				String member_id) {
+			
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			
+			ArrayList<PaymentDTO> list = new ArrayList<PaymentDTO>();
+			
+			int offset = (page-1)*cnt; 
+			int total = 0;
+			
+			
+				total = dao.totalCountTake(opt, optt, keyword, member_id); // 12
+			
+			 // cnt = 10
+			int range = total%cnt == 0 ? total/cnt : (total/cnt)+1;
+			
+			logger.info("total :"+total);
+			logger.info("range :"+range);
+			logger.info("before page :"+page);
+			
+			page = page>range ? range : page;
+			
+			logger.info("after page :"+page);
+			
+			map.put("currPage", page);
+			map.put("pages", range);
+			
+				list = dao.listCallTake(opt, optt, keyword,cnt, offset, member_id);
+			
+			
+			
+			map.put("projectList", list);
+			return map;
+		}
+
+
+public HashMap<String, Object> listCallPay(int page, int cnt, String opt, String keyword, String optt, String member_id) {
+	HashMap<String, Object> map = new HashMap<String, Object>();
+	
+	ArrayList<PaymentDTO> list = new ArrayList<PaymentDTO>();
+	
+	int offset = (page-1)*cnt; 
+	int total = 0;
+	
+	
+		total = dao.totalCountPay(opt, optt, keyword, member_id); // 12
+	
+	 // cnt = 10
+	int range = total%cnt == 0 ? total/cnt : (total/cnt)+1;
+	
+	logger.info("total :"+total);
+	logger.info("range :"+range);
+	logger.info("before page :"+page);
+	
+	page = page>range ? range : page;
+	
+	logger.info("after page :"+page);
+	
+	map.put("currPage", page);
+	map.put("pages", range);
+	
+		list = dao.listCallPay(opt, optt, keyword,cnt, offset, member_id);
+	
+	
+	
+	map.put("projectList", list);
+	return map;
+}
+
+public ModelAndView vacationForm(HttpSession session, String document_id, boolean temp) {
+	
+	String id = (String) session.getAttribute("loginId");
+	String FormKind = document_id.substring(0, 3); // 앞의 3글자 추출
+	PaymentDTO dto = new PaymentDTO();
+	ModelAndView mav = new ModelAndView();
+	
+	ArrayList<MemberDTO> mdto = new ArrayList<MemberDTO>();
+
+	
+	if(FormKind.equals("vac")) {
+		
+		dto = dao.vacationForm(id, document_id );
+		mav = new ModelAndView("paymentVacationForm_pay");
+	}
+	if(FormKind.equals("buy")) {
+		dto = dao.buyItemForm(id, document_id );
+		mav = new ModelAndView("paymentBuyItemForm_pay");
+			
+		}
+	if(FormKind.equals("pro")) {
+		dto = dao.projectForm(id, document_id );
+		mav = new ModelAndView("paymentProjectForm_pay");
+		
+	}
+	
+	if(temp == true) {
+		logger.info("임시저장 값으로 들어옴!");
+		if(FormKind.equals("vac")) {
+			
+			String member_id = (String) session.getAttribute("loginId");
+			   mdto = dao.member(member_id); 
+			   
+			  mav.addObject("member", mdto);
+			  logger.info("멤버 결재선 요청 내려 보냄.");
+			
+			
+			dto = dao.vacationForm(id, document_id );
+			mav = new ModelAndView("paymentVacationTempPay");
+		}
+		if(FormKind.equals("buy")) {
+			
+			String member_id = (String) session.getAttribute("loginId");
+			   mdto = dao.member(member_id); 
+			   
+			  mav.addObject("member", mdto);
+			  logger.info("멤버 결재선 요청 내려 보냄.");
+			
+			dto = dao.buyItemForm(id, document_id );
+			mav = new ModelAndView("paymentBuyItemTempPay");
+				
+			}
+		if(FormKind.equals("pro")) {
+			
+			String member_id = (String) session.getAttribute("loginId");
+			   mdto = dao.member(member_id); 
+			   
+			  mav.addObject("member", mdto);
+			  logger.info("멤버 결재선 요청 내려 보냄.");
+			
+			dto = dao.projectForm(id, document_id );
+			mav = new ModelAndView("paymentProjectTempPay");
+			
+		}
+		
+		
+	}
+	
+	
+	
+	mav.addObject("form", dto);
+	
+	return mav;
+}
+
+public HashMap<String, Object> payListCall(String document_id) {
+	HashMap<String, Object> map = new HashMap<String, Object>();
+	
+	ArrayList<PayListDTO> payList = dao.payListCall(document_id);
+	
+	ArrayList<PayListDTO> referrer = dao.payReferrerCall(document_id);
+	
+	map.put("payList", payList);
+	map.put("referrer", referrer);
+	
+	return map;
+}
+
+public int payRequest(String document_id, String note, String member_id) {
+	
+	//결재하기
+	int payRequestInt = dao.payRequest(document_id, note, member_id);
+	logger.info("payRequestInt: "+payRequestInt);
+	
+	// 결재 전부다 완료되면 완료로 바꾸기
+	int payEndInt = dao.payEnd(document_id, note, member_id);
+	
+	
+	
+	
+	
+	
+	return payRequestInt;
+}
+
+public int payRefuse(String document_id, String note, String member_id) {
+	
+	int payRefuseInt = dao.payRefuse(document_id, note, member_id);
+	logger.info("payRefuseInt: "+payRefuseInt);
+	
+	int paymentRefuseInt = dao.paymentRefuse(document_id, note, member_id);
+	logger.info("paymentRefuseInt: "+paymentRefuseInt);
+	
+	
+	
+	return paymentRefuseInt;
+}
+
+public ModelAndView main(HttpSession session) {
+	
+	ModelAndView mav = new ModelAndView("paymentMain");
+	String id = (String) session.getAttribute("loginId");
+
+
+	ArrayList<PaymentDTO> dtoTimeline = new ArrayList<PaymentDTO>();
+	ArrayList<PaymentDTO> dtoRefuse = new ArrayList<PaymentDTO>();
+	ArrayList<PaymentDTO> dtoEnd = new ArrayList<PaymentDTO>();
+	
+	
+	
+	
+	dtoTimeline = dao.mainTimeline(id);
+	
+	mav.addObject("timeline", dtoTimeline);
+	
+	 dtoRefuse = dao.mainRefuse(id);
+	
+	mav.addObject("refuse", dtoRefuse);
+	
+	dtoEnd = dao.mainEnd(id);
+	
+	mav.addObject("end", dtoEnd);
+	
+	return mav;
+}
+
+public HashMap<String, Object> note(HttpSession session, String document_id) {
+	HashMap<String, Object> mav = new HashMap<String, Object>();
+	String id = (String) session.getAttribute("loginId");
+
+
+
+	ArrayList<PaymentDTO> note = new ArrayList<PaymentDTO>();
+
+	
+	
+	
+	note = dao.note(id, document_id);
+	
+	mav.put("note", note);
+	
+
+	
+	return mav;
+}
+
+
+
+
 	 
 
 	

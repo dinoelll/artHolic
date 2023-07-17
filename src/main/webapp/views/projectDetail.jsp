@@ -207,8 +207,8 @@ b {
 
                      <a href="feedWrite.go?project_id=${project_id}&project_name=${project_name}"
                         class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>피드등록</a>
-                     <a href="projectDel.do?project_id=${project_id}"
-                        class="btn btn-danger btn-sm">삭제</a>
+                     <!--  <a href="projectDel.do?project_id=${project_id}"
+                        class="btn btn-danger btn-sm">삭제</a> -->
 
                      <button type="button" class="btn btn-tool"
                         data-card-widget="collapse" title="Collapse">
@@ -309,6 +309,7 @@ b {
                                                 html += '</div>';
                                                 html += '<p>'+ detail.content + '</p>';
                                                 if (detail.feed_file_id != null) {
+                                                	
                                                    html += '<div class="mailbox-feed_file-info">';
                                                    html += '<a class="mailbox-feed_file-name"><i class="fas fa-paperclip"></i> &nbsp;'
                                                          + detail.ori_photo_name
@@ -317,8 +318,9 @@ b {
                                                          + detail.photo_name
                                                          + '" class="btn btn-default btn-sm"><i class="fas fa-cloud-download-alt"></i></a>';
                                                    html += '</div>';
-
                                                 }
+                                                html += '<a href="feedUpdate.go?feed_id=' + feed_id + '&feed_file_id=' + detail.feed_file_id + '&project_id=' + detail.project_id + '&project_name=' + detail.project_name + '" class="btn btn-sm btn-primary">수정</a>'
+                                                html += '<a href="feedDel.do?feed_id=' + feed_id + '&feed_file_id=' + detail.feed_file_id + '&project_id=' + detail.project_id + '&project_name=' + detail.project_name + '" class="btn btn-danger btn-sm">삭제</a>';
                                                 html += '</div>';
 
                                                 html += '</div></div>';

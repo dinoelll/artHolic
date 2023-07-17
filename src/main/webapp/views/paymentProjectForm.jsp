@@ -279,15 +279,15 @@
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton2" onclick="toggleDocumentTree()">결재 생산함</button>
 						      <div id="documentTree" ><!-- style="display: none;" -->
 						        <p><a href="./paymentList.go" id="ListGo">결재 문서함</a></p>
-						        <p>임시저장</p>
+						        <p><a href="./paymentListTemp.go" id="ListGo">결재 임시저장</a></p>
 						      </div>
 						    </div>
 						    <div>
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton3" onclick="toggleInboxTree()">결재 수신함</button>
 						      <div id="inboxTree"><!--  style="display: none;" -->
-						        <p>결재하기</p>
-						        <p>결재내역</p>
-						        <p>수신참조</p>
+						        <p><a href="./paymentListPay.go" id="ListGo"> 결재하기</a></p>
+						        <p><a href="./paymentListDone.go" id="ListGo"> 결재내역</a></p>
+						        <p><a href="./paymentListTake.go" id="ListGo">수신참조</a></p>
 						      </div>
 						    </div>
 						  </div>
@@ -372,7 +372,7 @@
 																              <td style=" white-space: nowrap; ">기안자</td>
 																            </tr>
 																            <tr>
-																              <td >김형준</td>
+																              <td >${sessionScope.name}</td>
 																            </tr>
 																            <tr>
 																              <td ></td>
@@ -395,7 +395,7 @@
 													  <table class="my-table">
 													    <tr>
 													      <th>작성자</th>
-													      <td>작성자 입력란</td>
+													     <td id="formName">${sessionScope.name}</td>
 													      <th>부서</th>
 													      <td>부서 입력란</td>
 													    </tr>
@@ -422,8 +422,6 @@
 													      <th>기간 및 일시</th>
 													      <td>
 													      		 <div class="group">
-												                  
-												
 												                  <div class="input-group" >
 												                    <div class="input-group-prepend">
 												                      <span class="input-group-text"><i class="far fa-clock"></i></span>
@@ -435,7 +433,7 @@
 														</td>
 													      <th>프로젝트 리더</th>
 													      <td>
-														     	 <input type="text" id="projectLeader" class="invisible-input" placeholder="텍스트를 입력하세요">
+														     	 <input type="text" id="project_leader" class="invisible-input" placeholder="텍스트를 입력하세요">
 														      </td>
 													    </tr>
 													  </table>
@@ -448,7 +446,7 @@
 													    <tr>
 													  	  <th>제목</th>
 														      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요">
+														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요" id="paySubject">
 														      </td>
 													    </tr>
 													  </table>
@@ -460,7 +458,7 @@
 															    <tr>
 															    	<th>내용</th>
 															      <td>
-																      <textarea rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;"></textarea>
+																      <textarea rows="10" cols="50" id="payContent" style="width: 100%; height: 100%; border: none; resize: none;"></textarea>
     															</td>
 															    </tr>
 															  </table>
@@ -739,13 +737,7 @@
       
 	
 	
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-    
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+    <jsp:include page="footer.jsp" />
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -814,10 +806,7 @@ function writeVacation() {
 	  var fileInput = document.getElementById('exampleInputFile');
 	  var file = fileInput.files[0]; // Get the selected file
 
-	  
 
-	  
-	  
 	     if (file) {
 	    	 var formData = new FormData();
 
@@ -827,7 +816,6 @@ function writeVacation() {
 	    // 빈 파일 객체 추가
 	    alert('파일을 추가해 주세요.');
 	  } 
-	  
 	  
 	 
 
@@ -841,7 +829,7 @@ function writeVacation() {
 	  var $reservationtime = $('#reservationtime');
 	  var $paySubject = $('#paySubject');
 	  var $payContent = $('#payContent');
-	  var $projectLeader = $('#projectLeader');
+	  var $project_leader = $('#project_leader');
 	  
 	  
 	  
@@ -870,14 +858,33 @@ function writeVacation() {
 	  	form_sort: $form_sort.val(),
 	  	project_kind: $project_kind.val(),
 	    reservationtime: $reservationtime.val(),
-	   
-	    projectLeader: $projectLeader.val(),
+	    project_leader: $project_leader.val(),
 	    paySubject: $paySubject.val(),
 	    payContent: $payContent.val()
-	    
-	   
 	  };
 		console.log(param);
+		
+
+		  // 작성 여부 확인
+		  if (!param.limit_date || !param.paySubject || !param.payContent) {
+		    if (!param.limit_date) {
+		      alert('기안일을 선택해주세요.');
+		    } else if (!param.paySubject) {
+		      alert('제목을 작성해주세요.');
+		    } else if (!param.payContent) {
+		      alert('내용을 추가해주세요.');
+		    } else {
+		      alert('작성되지 않은 항목이 있습니다.');
+		    }
+		    return; // 작성되지 않은 항목이 있으면 함수 종료
+		  }
+		  
+		  // 결재자 여부 확인
+		  
+		    if (paymentValues.length === 0) {
+		    alert('결재자를 한 명 이상 추가해 주세요.');
+		    return; // 함수 종료
+		  }
 
 	  // Append other parameters to the FormData object
 	  for (var key in param) {
@@ -978,6 +985,28 @@ function writeVacationTemp() {
 	   
 	  };
 		console.log(param);
+		
+
+		  // 작성 여부 확인
+		  if (!param.limit_date || !param.paySubject || !param.payContent) {
+		    if (!param.limit_date) {
+		      alert('기안일을 선택해주세요.');
+		    } else if (!param.paySubject) {
+		      alert('제목을 작성해주세요.');
+		    } else if (!param.payContent) {
+		      alert('내용을 추가해주세요.');
+		    } else {
+		      alert('작성되지 않은 항목이 있습니다.');
+		    }
+		    return; // 작성되지 않은 항목이 있으면 함수 종료
+		  }
+		  
+		  // 결재자 여부 확인
+		  
+		    if (paymentValues.length === 0) {
+		    alert('결재자를 한 명 이상 추가해 주세요.');
+		    return; // 함수 종료
+		  }
 
 	  // Append other parameters to the FormData object
 	  for (var key in param) {
@@ -1056,6 +1085,7 @@ $("#demoform").submit(function() {
 
 
 function drawList(approversVal) {
+	var nameValue = document.getElementById('formName').textContent;
 	approversVal.forEach(function(item,idx){
 		console.log(item,idx)
 		
@@ -1073,7 +1103,7 @@ function drawList(approversVal) {
 	  content += '</tr>';
 
 	  content += '<tr>';
-	  content +=  '<td>' + '김형준' + '</td>';
+	  ccontent += '<td>' + nameValue + '</td>';
 	  for (var i = 0; i < approversVal.length; i++) {
 	    content += '<td id="payment'+[i]+'">' + approversVal[i] + '</td>';
 	  }
