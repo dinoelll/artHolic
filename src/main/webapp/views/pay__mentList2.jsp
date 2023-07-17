@@ -186,116 +186,7 @@
     
   }
   
-/*  테이블 추가 부분 */
-.main-sidebar {
-	background-color: #e9ddc6;
-}
 
-.mt-2 .nav .nav-item .nav-link p {
-	color: black;
-}
-
-.logo {
-	width: 231px;
-	height: 68px;
-}
-
-#footer {
-	margin-left: 0px;
-}
-
-
-
-.btn-danger {
-	background-color: #f82a2aa3;
-	border: 1px solid #f82a2aa3;
-	font-weight: bold;
-	color: white;
-}
-
-.modal-title {
-	margin-left: 170px;
-}
-
-.pagination {
-	margin-left: 450px;
-}
-
-#select-dropdown {
-	width: 130px;
-	height: 30px;
-	margin-bottom: 15px;
-}
-
-#adminProcess {
-	width: 110px;
-	height: 30px;
-	margin-bottom: 15px;
-}
-
-#employeeSearch {
-	width: 200px;
-	height: 30px;
-	margin-bottom: 15px
-}
-
-#searchButton {
-	background-color: #91bdce;
-	border: 3px solid #91bdce;
-	width: 50px;
-	height: 30px;
-	border-radius: 3px;
-	color: white;
-}
-
-#companyWrite {
-	background-color: #91bdce;
-	border: 3px solid #91bdce;
-	width: 50px;
-	height: 30px;
-	border-radius: 3px;
-	color: white;
-	margin-bottom: 15px;
-	margin-left: 1210px;
-}
-
-.input {
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	padding: 5px;
-	background-color: white;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	margin: 15px;
-	width: 450px;
-}
-
-.btn-update {
-	background-color: #f82a2aa3;
-	border: 1px solid #f82a2aa3;
-	font-weight: bold;
-	color: white;
-	padding-bottom: 0px;
-	padding-top: 0px;
-	width: 58px;
-}
-
-.m-0 {
-	color: #91bdce;
-}
-
-.bookmark {
-	display: inline-block;
-	background-color: transparent;
-	border: none;
-	outline: none;
-	cursor: pointer;
-	font-size: 0;
-}
-
-.bookmark i {
-	font-size: 16px;
-}
 
 
 </style>
@@ -403,61 +294,77 @@
 								
 					<div class="card" id="paymentForm_vacation">
 						
-								<section class="content2">
-									<div class="card">
-							              <div class="row">
-								              <div class="col-sm-12 col-md-6">
-								              	
-										              	<table>
-															<tr>
-																<td>
-																	<select id="opt" name="select">
-																			<!-- <option value="default">조건</option> -->
-																			<option value="name">이름</option>
-																			<option value="position">직급</option>
-																			<option value="dept">부서명</option>
-																	</select> 
-																	
-																	<input type="text" id="keyword" placeholder="내용을 입력 해 주세요.">
-																		<button onclick="opt()" id="searchButton">검색</button>
-																</td>
-															</tr>
-														</table>
-								              </div>
-								              <div class="col-sm-12 col-md-6">
-									              
-								              </div>
-							              </div> 
-							              
-							              <!-- /.card-header -->
-							              <div class="card-body">
-							                <table id="example1" class="table table-bordered table-striped">
-							                  <thead>
-								                  <tr id="thead">
-								                    <th>기안일</th>
-								                    <th>결재양식</th>
-								                    <th>제목</th>
-								                    <th>문서번호</th>
-								                    <th>의견</th>
-								                    <th>결재 상태</th>
-								                  </tr>
-							                  </thead>
-							                  <tbody id="adList" style="text-align:center; align-item:center; ">
-									                 
-									                 
-							                 
-							                  </tbody>
-							                  
-							                </table>
+						<section class="content2">
+							<div class="card">
+					              <div class="row">
+						              <div class="col-sm-12 col-md-6">
+						              	<div id="filterPay" class="dataTables_filter" style="margin-top: 20px; margin-left: 40px;">
+								                <form action="list.do">          
+							                        <select class="rounded" style="width: 82px; height: 30px;">
+							                          <option>제목</option>
+							                          <option>내용</option>
+							                          <option>제목 + 내용</option>
+							                          <option>문서번호</option>
+							                        </select>
+								              		<input class="rounded" aria-controls="example1" style="width: 218px; height: 30px;">
+								              		<button>검색</button>
+								              </form>
 							              </div>
-							              <!-- /.card-body -->
-							            </div>
-							            <!-- /.card -->
-		     					 </section>
-		     					 
-					</div><!--  div 카드 리스트 젤 큰 부분 -->
-					
-					
+						              </div>
+						              <div class="col-sm-12 col-md-6">
+							              
+						              </div>
+					              </div> 
+					              
+					              <!-- /.card-header -->
+					              <div class="card-body">
+					                <table id="example1" class="table table-bordered table-striped">
+					                  <thead>
+					                  <tr>
+					                    <th>기안일</th>
+					                    <th>결재양식</th>
+					                    <th>제목</th>
+					                    <th>문서번호</th>
+					                    <th>의견</th>
+					                    <th>결재 상태</th>
+					                  </tr>
+					                  </thead>
+					                  <tbody style="text-align:center; align-item:center; ">
+					                  <tr>
+					                    <td>2023-05-28</td>
+					                    <td>휴가신청</td>
+					                    <td> 휴가갈래요</td>
+					                    <td>GD-18-0001</td>
+					                    <td><i class="fas fa-comments"></i></td>
+					                    <td> <a class="btn btn-primary btn-sm">진행중</a></td>
+					                  </tr>
+					                  <tr>
+					                    <td>2023-05-28</td>
+					                    <td>프로젝트 신청</td>
+					                    <td> 프로젝트 건입니다. 참고....</td>
+					                    <td>GD-18-0002</td>
+					                    <td><i class="fas fa-comments"></i></td>
+					                    <td> <a class="btn btn-primary btn-sm">진행중</a></td>
+					                  </tr>
+					                  <tr>
+					                    <td>2023-05-25</td>
+					                    <td>비품신청</td>
+					                    <td> 비품신청건입니다.</td>
+					                    <td>GD-18-0003</td>
+					                    <td><i class="fas fa-comments"></i></td>
+					                    <td> <a class="btn btn-primary btn-sm">진행중</a></td>
+					                  </tr>
+					                 
+					                 
+					                  </tbody>
+					                  
+					                </table>
+					              </div>
+					              <!-- /.card-body -->
+					            </div>
+					            <!-- /.card -->
+     					 </section>
+					</div>
 				</div>
 		  	</div>	<!-- sm- 9 부분!! -->
 		  	
@@ -527,8 +434,164 @@
 				<!-- /.modal -->
       
       
-     
+      <!--  결재선 모달-->
+      <div class="modal fade" id="modal-lg2">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">결재선 선택</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+		              <div class="card card-default">
+					          
+					          
+					          <div class="card-body">
+								  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label>결재선 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="approvers" class="duallistbox" multiple="multiple">
+										          <option selected>대리 김형준</option>
+										          <option>과장 아무개</option>
+										          <option>California</option>
+										          <option>Delaware</option>
+										          <option>Tennessee</option>
+										          <option>Texas</option>
+										          <option>Washington</option>
+										        </select>
+										      </div>
+										    </div>
+										    <!-- /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row -->
+									  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label>참조자 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="referrer" class="duallistbox" multiple="multiple">
+										          <option selected>대리 김형준</option>
+										          <option>과장 아무개</option>
+										          <option>California</option>
+										          <option>Delaware</option>
+										          <option>Tennessee</option>
+										          <option>Texas</option>
+										          <option>Washington</option>
+										        </select>
+										      </div>
+										    </div>
+										    <!-- /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row -->
+								   
+              
 
+								</div>
+
+					        </div>
+					        <!-- /.card -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" id="submitButton" class="btn btn-primary">Save changes</button>            
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+      <!--  결재 요청 모달-->
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>결재 요청 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary">요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+       <!--  임시저장 모달-->
+      <div class="modal fade" id="modal-default2">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>임시저장 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary">요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+       <!--  결재 요청 모달-->
+      <div class="modal fade" id="modal-default3">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>취소 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary">요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+      
+      
+     
+     
+     
+      
+	
 	
 
   <!-- Control Sidebar -->
@@ -595,10 +658,6 @@
 
 
 <script>
-
-
-
-
 
 
 $(function () {

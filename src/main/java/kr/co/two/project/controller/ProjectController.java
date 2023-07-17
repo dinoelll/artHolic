@@ -231,6 +231,55 @@ public class ProjectController {
 		 	return service.addProjectMember(projectInfo); 
 		 
 		  }
+	     
+	     @RequestMapping(value = "/feedDel.do")
+	     public String feedDel(@RequestParam String feed_id, @RequestParam String feed_file_id,
+	    		 @RequestParam String project_id, @RequestParam String project_name, RedirectAttributes rttr) {
+	    	 
+	    	 logger.info("피드 삭제 : "+ feed_id, feed_file_id,project_id,project_name);
+	    	 service.feedDel(feed_id, feed_file_id);
+	    	 
+	    	 HashMap<String, Object> map = new HashMap<String, Object>();
+	    	 map.put("project_id", project_id);
+	    	 map.put("project_name", project_name);
+	    	 
+	    	 rttr.addFlashAttribute("map",map);
+
+	    	 return "redirect:/projectDetail.go?type=controller";
+	     }
+	     
+		   @GetMapping(value = "/feedUpdate.go")
+		   public ModelAndView feedUpdate(@RequestParam String feed_id, @RequestParam String feed_file_id,
+		    		 @RequestParam String project_id, @RequestParam String project_name) {
+
+			   return service.feedUpdate(feed_id, feed_file_id,project_id,project_name);
+		   }
+		   
+		   @PostMapping(value = "/feedUpdate.do")
+		   public String feedUpdateDo(@RequestParam String feed_id, @RequestParam String feed_file_id,
+				   @RequestParam String content, @RequestParam String project_id, @RequestParam String project_name, 
+				   RedirectAttributes rttr) {
+			   
+			   logger.info("피드 수정 : "+ feed_id, feed_file_id,project_id,project_name);
+			   service.feedUpdateDo(feed_id, feed_file_id,content);
+			   
+			   HashMap<String, Object> map = new HashMap<String, Object>();
+		    	 map.put("project_id", project_id);
+		    	 map.put("project_name", project_name);
+		    	 
+		    	 rttr.addFlashAttribute("map",map);
+			   
+			   
+			   return "redirect:/projectDetail.go?type=controller";
+		   }
+		   
+		   
+		   @RequestMapping(value = "/projectDel.do")
+		   public String projectDel(@RequestParam String project_id) {
+			   logger.info("프로젝트 삭제 : "+ project_id);
+			   service.projectDel(project_id);
+			   return "redirect:/projectList.go";
+		   }
 	
 	
 	

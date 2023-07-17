@@ -28,6 +28,17 @@ public interface ProjectDAO {
 
    ArrayList<String> addPorjectMember(ArrayList<String> approvers);
    
+   void fileDel(String feed_file_id);
+
+   void feedDel(String feed_id);
+   
+   ProjectDTO feedUpdate(String feed_id, String feed_file_id, String project_id, String project_name);
+   
+   void feedUpdateDo(String feed_id, String feed_file_id, String content);
+   
+   void projectDel(String project_id);
+   
+   
    
 
    
@@ -43,5 +54,5 @@ public interface ProjectDAO {
 
    void addProjectMember(String member_id, String project_id);
 
-
+   
 }

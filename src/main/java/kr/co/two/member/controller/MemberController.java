@@ -169,9 +169,14 @@ public class MemberController {
 	    } else {
 	        MemberDTO dto = service.login(id, pw);
 	        if (dto != null) {
+
+	            String name = dto.getName();
+
 	            page = "redirect:/main";
+
 	        session.setAttribute("loginId", id);
             session.setAttribute("admin", dto.isAdmin());
+            session.setAttribute("name", name);
             logger.info("admin : " + dto.isAdmin());
             
 	        } else {

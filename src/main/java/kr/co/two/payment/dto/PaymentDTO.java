@@ -18,14 +18,29 @@ public class PaymentDTO {
 	private String start_date;
 	private String end_date;
 	private String email;
-	private char vacation_sort;
+	private String vacation_sort;
 	private String equipment_kind;
 	private boolean is_billway;
 	private String project_kind;
 	private String project_leader;
 	private String limit_date;
 	private String code_name;
+	private String name;
+	private String position;
+	private String vacation_kind;
+	private String dept_name;
+	private String ori_file_name;
+	private String note;
+	private String result;
+	private String modi_date;
+	private String shipMember_id;
+	private String payment_ship_id;
+	private String referMember_id;
+	private String refer;
+	private String order_column;
+	private String form;
 	
+
 	
 	public String getForm_sort() {
 		return form_sort;
@@ -86,12 +101,7 @@ public class PaymentDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public char getVacation_sort() {
-		return vacation_sort;
-	}
-	public void setVacation_sort(char vacation_sort) {
-		this.vacation_sort = vacation_sort;
-	}
+
 	public String getEquipment_kind() {
 		return equipment_kind;
 	}
@@ -145,6 +155,98 @@ public class PaymentDTO {
 	}
 	public void setCode_name(String code_name) {
 		this.code_name = code_name;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	public String getVacation_sort() {
+		return vacation_sort;
+	}
+	public void setVacation_sort(String vacation_sort) {
+		this.vacation_sort = vacation_sort;
+	}
+	public String getVacation_kind() {
+		return vacation_kind;
+	}
+	public void setVacation_kind(String vacation_kind) {
+		this.vacation_kind = vacation_kind;
+	}
+	public String getDept_name() {
+		return dept_name;
+	}
+	public void setDept_name(String dept_name) {
+		this.dept_name = dept_name;
+	}
+	public String getOri_file_name() {
+		return ori_file_name;
+	}
+	public void setOri_file_name(String ori_file_name) {
+		this.ori_file_name = ori_file_name;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
+	public String getModi_date() {
+		return modi_date;
+	}
+	public void setModi_date(String modi_date) {
+		this.modi_date = modi_date;
+	}
+
+	public String getPayment_ship_id() {
+		return payment_ship_id;
+	}
+	public void setPayment_ship_id(String payment_ship_id) {
+		this.payment_ship_id = payment_ship_id;
+	}
+
+	public String getRefer() {
+		return refer;
+	}
+	public void setRefer(String refer) {
+		this.refer = refer;
+	}
+	public String getOrder_column() {
+		return order_column;
+	}
+	public void setOrder_column(String order_column) {
+		this.order_column = order_column;
+	}
+	public String getShipMember_id() {
+		return shipMember_id;
+	}
+	public void setShipMember_id(String shipMember_id) {
+		this.shipMember_id = shipMember_id;
+	}
+	public String getReferMember_id() {
+		return referMember_id;
+	}
+	public void setReferMember_id(String referMember_id) {
+		this.referMember_id = referMember_id;
+	}
+	public String getForm() {
+		return form;
+	}
+	public void setForm(String form) {
+		this.form = form;
 	}
 	
 	

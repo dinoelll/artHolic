@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -155,6 +156,35 @@ public class ProjectService {
 		
 		return null;
 	}
+   
+   
+   public void feedDel(String feed_id, String feed_file_id) {
+	   dao.fileDel(feed_file_id);
+		dao.feedDel(feed_id);
+		
+	}
+   
+   @Transactional
+   public ModelAndView feedUpdate(String feed_id, String feed_file_id, String project_id, String project_name) {
+		ProjectDTO dto = dao.feedUpdate(feed_id,feed_file_id,project_id,project_name);
+		ModelAndView mav = new ModelAndView("feedUpdate");
+	    mav.addObject("feed", dto);
+	    
+	    return mav;
+	}
+   
+   public void feedUpdateDo(String feed_id, String feed_file_id, String content) {
+		dao.feedUpdateDo(feed_id,feed_file_id,content);
+		
+	}
+   
+   public void projectDel(String project_id) {
+		dao.projectDel(project_id);
+		
+	}
+   
+
+   
 
    
    /*------------------------------------캘린더 영역---------------------------------------------*/
@@ -198,6 +228,12 @@ public class ProjectService {
       // TODO Auto-generated method stub
       return dao.eventDelete(project_calendar_id);
    }
+
+
+
+
+
+
 
 
 

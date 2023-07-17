@@ -332,23 +332,6 @@
 	font-size: 16px;
 }
 
-/* 의견 스타일 */
- .modi-date-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    color: gray;
-  }
-
-  .bottom-right-text {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin: 0;
-    color: gray;
-  }
-
 
 </style>
   
@@ -428,7 +411,7 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<h1 style="font-weight: 600;">결재 문서함</h1>
+						          	<h1 style="font-weight: 600;">임시 저장함</h1>
 						          		
 					          		</div>	
 					          </div>
@@ -441,9 +424,6 @@
 							          	<a class="optt" id="optt" value="진행중">진행중</a>
 							          	<a class="optt" id="optt" value="반려">반려</a>
 							          	<a class="optt" id="optt" value="완료">완료</a>
-							          	
-							          	
-							          	
 						          		</div>	
 						          </div>
 						          <div class="col-sm-6">
@@ -598,8 +578,7 @@
 				<!-- /.modal -->
       
       
-      
-      			 <!-- 결재 의견 모달 -->
+     			 <!-- 결재 의견 모달 -->
 				<div class="modal fade" id="modal-default">
 					  <div class="modal-dialog">
 					    <div class="modal-content">
@@ -657,7 +636,6 @@
 					    </div>
 					  </div>
 					</div>
-     
 
 	
 
@@ -691,7 +669,7 @@
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-
+ 
 
 <script>
 
@@ -705,7 +683,7 @@ var showPage = 1;
 var opt ='default';
 var optt ='default';
 var keyword ='default';
-var temp = 0 ;
+var temp= 1;
 
 listCall(showPage);
 console.log("list call");
@@ -798,9 +776,8 @@ function listDraw(projectList) {
 
      projectList.forEach(function(dto,project_id){
          content += '<tr>';
-         content += '<th>'+dto.limit_date+'</th>';
-         content += '<th>'+dto.code_name+'</th>';
-         content += '<th><a href="./paymentVacationForm_pay.go?document_id='+dto.document_id+'">'+dto.paySubject+'</th>';
+         content += '<th>'+dto.limit_date+'</th>';         content += '<th>'+dto.code_name+'</th>';
+         content += '<th><a href="./paymentVacationForm_pay.go?document_id='+dto.document_id+'&temp='+dto.temp+'">'+dto.paySubject+'</th>';
          content += '<td>'+ dto.document_id +'</td>';
          content += '<td>'+ '<i class="fas fa-comments" data-toggle="modal" data-target="#modal-default" onclick="note(\''+dto.document_id+'\')"></i>'+'</td>';
          
@@ -820,8 +797,10 @@ function listDraw(projectList) {
      $('#projectList').append(content);
    }
    
-   
-   
+
+
+
+
 function noteSuccess(data) {
     console.log("success");
     console.log(data);
@@ -882,7 +861,6 @@ function note(document_id) {
         }
     });
 }
-
 
 
 
@@ -959,10 +937,6 @@ function restoreButtonColor() {
 	  document.getElementById("paymentButton").removeAttribute("href");
 	  
 	}	
-	
-
-	
-	
   
 </script>
 
