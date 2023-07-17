@@ -113,7 +113,7 @@
                      <div class="modal-body" id="preview">
                         <table>
                            <tr>
-                              <th>보낸사람: </th> 
+                              <th>보낸사람:</th>
                               <td>&nbsp;&nbsp;&nbsp;<span id="preview-sender"></span></td>
                            </tr>
                            <tr>
@@ -243,27 +243,59 @@
                   <form action="mailWrite.do" method="post" enctype="multipart/form-data" id="mailForm">
                      <div class="card-body">
                         <div class="form-group" id="form-sendMember">
-                           받는사람 <input class="form-control" name="sendMember" id="recipient-input" readOnly>
+                           받는사람
+                           <c:if test="${set=='reply'}">
+                           	<input class="form-control" value="${model.memberdto.get(0).dept_name}&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}" name="sendMember" id="recipient-input" readOnly>
+                        	</c:if> 
+                        	<c:if test="${set=='forwarding' }">
+                        		<input class="form-control" value="" name="sendMember" id="recipient-input" readOnly>
+                        	</c:if>
                         </div>
                         <div class="form-group" id="form-referenceMember">
                            참조 <input class="form-control" name="referenceMember" id="cc-input" readOnly>
                         </div>
                         <div class="form-group">
-                           제목 <c:if test="${model.memberdto.get(0).temp == true}">
-                           		<input class="form-control" name="mailSubject" id="mailSubject" value="${model.memberdto.get(0).mailSubject}">
-                           </c:if> 
-                           <c:if test="${model.memberdto.get(0).temp == false}">
-                           <input class="form-control" name="mailSubject" id="mailSubject">
+                           제목 ${set }
+                           <c:if test="${set=='reply'}">
+                           	<input class="form-control" name="mailSubject" id="mailSubject" value="Re: ${model.dto.get(0).mailSubject}">
+                           	</c:if>
+                           <c:if test="${set=='forwarding' }">
+                           	<input class="form-control" name="mailSubject" id="mailSubject" value="PW: ${model.dto.get(0).mailSubject}">
                            </c:if>
                         </div>
                         <div class="form-group" id="mailMessage">
                            
                         </div>
                         <div class="form-group">
-                           <textarea id="compose-textarea" class="form-control" style="height: 300px" name="mailContent">
-                           <c:if test="${model.memberdto.get(0).temp == true}">
-                           		${model.memberdto.get(0).mailContent}
-                           </c:if>
+                           <textarea id="compose-textarea" class="form-control" style="height: 300px" name="mailContent">	
+                           <br/>
+                           <br/>
+                           -----Original Message-----
+                           <br/>
+                 <p>subject&nbsp;&nbsp;: ${model.dto.get(0).mailSubject}</p>
+                 <p>From&nbsp;&nbsp;:${model.memberdto.get(0).dept_name}&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}</p>
+                 <p>To&nbsp;&nbsp;:
+               <c:forEach items="${model.dto}" var="item">
+                       <c:if test="${item.is_receiver == 0 || item.is_receiver == 2}">
+                          ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                       </c:if>
+                    </c:forEach>
+                    </p>
+                <p>cc:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <c:forEach items="${model.dto}" var="item">
+                      <c:if test="${item.is_receiver == 1}">
+                         ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                      </c:if>
+                   </c:forEach>
+                   </p>
+               <p>Sent:&nbsp;&nbsp;${model.memberdto.get(0).writeTime}</p>
+                <p>content:&nbsp;&nbsp;${model.memberdto.get(0).mailContent}</p>
+                <p>
+				file :
+              <c:forEach items="${model.mailpthotoList}" var = "file">
+              		${file.ori_file_name }
+                </c:forEach>
+                </p>
                            </textarea>
                         </div>
                         <div class="form-group">
@@ -271,13 +303,7 @@
                               <i class="fas fa-paperclip"></i> Attachment
                               <input type="file" name="attachment" multiple="multiple" id="attachment-input">
                            </div>
-                           <div id="attachment-info">
-                           <c:if test="${model.memberdto.get(0).temp == true}">
-                           <c:forEach items="${model.mailpthotoList}" var = "file">
-			              		${file.ori_file_name }
-			                </c:forEach>
-			                </c:if>
-			                </div>
+                           <div id="attachment-info"></div>
                         </div>
                      </div>
                      <!-- /.card-body -->
@@ -289,7 +315,9 @@
                         </div>
                      </div>
                      <div class="tempList" id="tempList">
-                        
+                     	<c:if test="${set=='reply'}">
+                        <input type="hidden" class="approvers" name="approvers" value="${model.memberdto.get(0).member_id}">
+                        </c:if>
                      </div>
                   </form>
                   <!-- /.card-footer -->
@@ -677,6 +705,7 @@
       
       $('#tempList').append(content);
    }
+
    
    
 </script>

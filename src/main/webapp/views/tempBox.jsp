@@ -83,7 +83,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 id="title">내게 쓴 메일함</h1>
+            <h1 id="title">임시보관함</h1>
           </div>
           <!--  
           <div class="col-sm-6">
@@ -243,7 +243,7 @@ var showPage = 1;
 var selectedSearchInformation = "allMail";
 //var selectedMailFilter = "all";
 //var selectedSearchMailBox = "allBox";
-var type = "self";
+var type = "temp";
 var searchText = "";
 var cnt = 15;
 
@@ -356,7 +356,11 @@ listCall(showPage);
 			 var formId = 'mail' + mail_id;
 			 content += '<tr>';
 			 content += '<td>';
-			 content += '<form method="post" action="mailDetail.do/'+mail_id+'" id="' + formId + '">';
+			 if(title != '검색결과'){
+				 content += '<form method="post" action="mailreply.go"'+'id="'+formId+'">';
+			 }else{
+				 content += '<form method="post" action="mailDetail.do/'+mail_id+'" id="' + formId + '">';
+			 }
 			 content += '<div class="icheck-primary">';
 			 content += '<input type="checkbox" value="" id="check'+formId+'" data-mail-id="' + item.mail_id +'">';
 			 content += '<label for="check'+formId+'"></label>';
@@ -364,12 +368,13 @@ listCall(showPage);
 			 content += '</td>';
 			 content += '<td class="mailbox-star" id="mailSubjectForm" ><a href="#" class="toggle-favorite" data-mail-id="' + item.mail_id + '">';
 			 if(title != '검색결과'){
-				 if (item.bookmark>0){
+				 if (item.favorites>0){
 					 content += '<i class="fas fa-star text-warning">';
 				 }else {
 					 content += '<i class="far fa-star">';
 				 }
 			 }else{
+				 console.log(item.favorites);
 				 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == false ){
 					 if(item.bookmark>0){
 						 content += '<i class="fas fa-star text-warning">';
@@ -382,7 +387,7 @@ listCall(showPage);
 					 }else{
 						 content += '<i class="far fa-star">';
 					 }
-				 }else if(item.is_receiver == 3 && item.blind == false && item.temp == false){
+				 }else if(item.is_receiver == 3 && item.blind == false && item.temp == true){
 					 if(item.favorites>0){
 						 content += '<i class="fas fa-star text-warning">';
 					 }else{
@@ -437,7 +442,7 @@ listCall(showPage);
 	  
 	  $('#list').empty();
 	  $('#list').append(content);
-	  $('.typespan').append('<sapn class="type" id="spanhidden">[내게 쓴 메일함]</span>');
+	  $('.typespan').append('<sapn class="type" id="spanhidden">[임시보관함]</span>');
 
 	  
   }
@@ -452,7 +457,7 @@ listCall(showPage);
 	  console.log(formId);
 	  
 	  
-	  //var typespanHTML = element.querySelector('.typespan');.
+	  //var typespanHTML = element.querySelector('.typespan');
 	  var typeHTML = element.querySelector('.type').innerHTML;
 	  console.log(typeHTML);
 	
@@ -493,7 +498,7 @@ listCall(showPage);
 	    // 현재 즐겨찾기 상태 가져오기
 	    var isLike = $(this).find('i').hasClass('fas');
 	    console.log(isLike);
-	    var Like = 'self';
+	    var Like = 'temp';
 	    
 	    var typeHTML = $(this).closest('tr').find('.typespan .type:first').text();
 	    console.log(typeHTML);
@@ -542,7 +547,6 @@ listCall(showPage);
 		                	  mailToggle.toggleClass('far fa-star fas fa-star text-warning');
 		                  } else if(response.isLike.favorites === false){
 		                      // 즐겨찾기 상태가 아닌 경우
-		                      
 		                	  mailToggle.toggleClass('far fa-star fas fa-star text-warning');
 		                  }
 	                }
@@ -587,7 +591,7 @@ listCall(showPage);
 	    var mailId = $(this).data('mail-id');
 	  	console.log(mailId);
 	
-		var Like = 'self';
+		var Like = 'temp';
 		    
 	    var typeHTML = $(this).closest('tr').find('.typespan .type:first').text();
 	    console.log(typeHTML);

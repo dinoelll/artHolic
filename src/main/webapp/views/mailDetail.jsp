@@ -84,43 +84,66 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0">
+            <form action="" method="post" id="formaction">
               <div class="mailbox-read-info">
                 <!-- <i class="fas fa-star text-warning"></i> -->
-                 <div class="mailboxForm"><a href="#" id="mailSubjectForm"><i class="far fa-star" id="favorites"></i></a>제목&nbsp;&nbsp;${dto.memberdto.get(0).mailSubject}</div>
+                
+                 <div class="mailboxForm"><a href="#" id="mailSubjectForm">
+                 <c:if test="${type.equals('receive')|| type.equals('self') }">
+                 	<c:if test="${dto.memberdto.get(0).bookmark==false}">
+                 		<i class="far fa-star"></i>
+                 	</c:if>
+                 	<c:if test="${dto.memberdto.get(0).bookmark==true}">
+                 		<i class="fas fa-star text-warning"></i>
+                 	</c:if>
+                 </c:if>
+                 <c:if test="${type.equals('send')}">
+                 	<c:if test="${dto.memberdto.get(0).favorites==false}">
+                 		<i class="far fa-star" ></i>
+                 	</c:if>
+                 	<c:if test="${dto.memberdto.get(0).favorites==true}">
+                 		<i class="fas fa-star text-warning" ></i>
+                 	</c:if>
+                 </c:if>
+                 </a>제목&nbsp;&nbsp;${dto.memberdto.get(0).mailSubject}</div>
                  <div class="mailboxForm" id="mailMember">보낸사람&nbsp;&nbsp;
-                    <c:if test="${dto.memberdto.get(0).code_group_id=='DEPT'}">
-                    ${dto.memberdto.get(0).code_name}
-                    </c:if>&nbsp;
-                    <c:if test="${dto.memberdto.get(1).code_group_id=='POSITION'}">
-                    ${dto.memberdto.get(1).code_name}
-                    </c:if>&nbsp;${dto.memberdto.get(0).name}
+                    ${dto.memberdto.get(0).dept_name}&nbsp;${dto.memberdto.get(0).position_name}&nbsp;${dto.memberdto.get(0).name}
                  </div>
                 <div class="mailboxForm" id="SendMember">받는사람&nbsp;&nbsp;
                <c:forEach items="${dto.dto}" var="item">
-                       <c:if test="${item.is_receiver == false}">
+                       <c:if test="${item.is_receiver == 0 || item.is_receiver == 2}">
                           ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
                        </c:if>
                     </c:forEach>
                  </div>
                 <div class="mailboxForm" id="refferMember">참조&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                    <c:forEach items="${dto.dto}" var="item">
-                      <c:if test="${item.is_receiver == true}">
+                      <c:if test="${item.is_receiver == 1}">
                          ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
                       </c:if>
                    </c:forEach>
                 </div>
-                <div class="mailboxForm">${dto.dto.get(0).writeTime}</div>
+                <div class="mailboxForm">${dto.memberdto.get(0).writeTime}</div>
                 <input type="hidden" value="${dto.memberdto.get(0).mail_id}" name="mail_id" id="mail_id">
-                <input type="hidden" value="${dto.memberdto.get(0).favorites}" name="favorites" id="favorites">
-              
+                <input type="hidden" value="${dto.memberdto.get(0).mail_id}" name="seletedMailId" id="seletedMailId">
+                <input type="hidden" value="${type}" name="type" id="type">
+                <c:forEach items="${dto.dto}" var="item">
+                	<input type="hidden" value="${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}" name="refferMember">
+                </c:forEach>
+                <c:forEach items="${dto.mailpthotoList}" var = "file">
+                <input type="hidden" value="${file.ori_file_name }" name="file">
+                </c:forEach>
+                <input type="hidden" value=" ${dto.memberdto.get(0).dept_name}&nbsp;${dto.memberdto.get(0).position_name}&nbsp;${dto.memberdto.get(0).name}" name = "mailMember">
+                <input type="hidden" value="${dto.memberdto.get(0).mailContent}" name="mailConent">
                 
+                <input type="hidden" value="${dto.memberdto.get(0).mailSubject}" name="mailSubject">
+                <input type="hidden" name="set" value="" id="set">
                   <!--<span class="mailbox-read-time float-right">2023.07.24 10:03</span></h6> -->
               </div>
               
               <!-- /.mailbox-controls -->
               <div class="mailbox-read-message">
                 ${dto.memberdto.get(0).mailContent}
-              </div>
               <!-- /.mailbox-read-message -->
             </div>
             <!-- /.card-body -->
@@ -141,6 +164,7 @@
                 </c:forEach>
               </ul>
             </div>
+            </form>
             <!-- /.mailbox-read-info -->
               <div class="mailbox-controls with-border text-center">
                 <div class="btn-group">
@@ -164,6 +188,7 @@
           <!-- /.card -->
         </div>
         <!-- /.col -->
+      </div>
       </div>
       <!-- /.row -->
     </section>
@@ -192,69 +217,55 @@
 <script src="dist/js/demo.js"></script>
 <!-- Page specific script -->
 <script>
-
   $(document).ready(function() {
-    //Enable check and uncheck all functionality
-/*    $('.checkbox-toggle').click(function () {
-      var clicks = $(this).data('clicks')
-      if (clicks) {
-        //Uncheck all checkboxes
-        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
-        $('.checkbox-toggle .far.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
-      } else {
-        //Check all checkboxes
-        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
-        $('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
-      }
-      $(this).data('clicks', !clicks)
-    })
-
-    //Handle starring for font awesome
-     $('#mailSubjectForm i').click(function (e) {
-      e.preventDefault()
-      //detect type
-      var $this = $(this).find('a > i')
-      var fa    = $this.hasClass('fa')
-
-      //Switch states
-      if (fa) {
-        $(this).toggleClass('fa-star')
-        $(this).toggleClass('fa-star-o')
-      }
-    }) */ 
-    
-/*     $('#mailSubjectForm').click(function (e) {
-         e.preventDefault();
-         $(this).find('i').toggleClass('far fa-star fas fa-star text-warning');
-    }); */
     
      $('#mailSubjectForm').click(function (e) {
           e.preventDefault();
 
           // 현재 즐겨찾기 상태 가져오기
-          var isFavorite = $('#mailSubjectForm i').hasClass('fas');
-          console.log(isFavorite);
+          var isLike = $('#mailSubjectForm i').hasClass('fas');
+          var type = $('#type').val();
+          console.log(isLike);
+          console.log(type);
+          console.log(!isLike);
 
           // AJAX 요청 생성
           $.ajax({
               type: 'POST',
-              url: 'mail/favorite.ajax',
+              url: 'mail/Like.ajax',
               data: {
                   'mailId': $('#mail_id').val(), // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
-                  'isFavorite': !isFavorite // 현재 즐겨찾기 상태를 반대로 전환하여 서버에 전달
+                  'isLike': !isLike, // 현재 즐겨찾기 상태를 반대로 전환하여 서버에 전달
+                  'type': type
               },
               dataType: 'json',
               success: function (response) {
-                 console.log(response.isFavorite);
+                 console.log(response.isLike.favorites);
+                 console.log(response.isLike.bookmark);
+	                 if(type=='self' || type=='receive'){
+	                	 console.log('Bookmark:', response.isLike.bookmark);
+		                  // 서버로부터의 응답 처리
+		                  if (response.isLike.bookmark === true) {
+		                      // 즐겨찾기 상태인 경우
+		                      $('#mailSubjectForm i').toggleClass('far fa-star fas fa-star text-warning');
+		                  } else if (response.isLike.bookmark === false){
+		                      // 즐겨찾기 상태가 아닌 경우
+		                      $('#mailSubjectForm i').toggleClass('far fa-star fas fa-star text-warning');
+		                  }
+	                 }
                  
-                  // 서버로부터의 응답 처리
-                  if (response.isFavorite == true) {
-                      // 즐겨찾기 상태인 경우
-                      $('#mailSubjectForm i').removeClass('far fa-star').addClass('fas fa-star text-warning');
-                  } else {
-                      // 즐겨찾기 상태가 아닌 경우
-                      $('#mailSubjectForm i').removeClass('fas fa-star text-warning').addClass('far fa-star');
-                  }
+	                 if(type=='send' || type=='temp'){
+	                	 console.log('Favorites:', response.isLike.favorites);
+		                  // 서버로부터의 응답 처리
+		                  if (response.isLike.favorites === true) {
+		                      // 즐겨찾기 상태인 경우
+		                      $('#mailSubjectForm i').removeClass('far fa-star').addClass('fas fa-star text-warning');
+		                  } else if(response.isLike.favorites === false){
+		                      // 즐겨찾기 상태가 아닌 경우
+		                      
+		                      $('#mailSubjectForm i').removeClass('fas fa-star text-warning').addClass('far fa-star');
+		                  }
+	                }
               },
               error: function (error) {
                   // 오류 처리
@@ -263,6 +274,64 @@
           });
       });
   })
+  
+function del(){
+	   var mail_id = $('#mail_id').val();
+	   var type = $('#type').val();
+	   
+	   if (type === 'trash') {
+		    var confirmation = confirm("영구 삭제시, 복원되지 않습니다. 정말로 삭제하시겠습니까?");
+		    if (!confirmation) {
+		      // 삭제 취소
+		      return;
+		    }
+		  }
+	$.ajax({
+		type: 'POST',
+		url: 'mail/trash.ajax',
+		data: {
+		    'mailId': mail_id, // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
+		    'type' : type
+		},dataType: 'json'
+		,success: function (response) {
+			console.log(response.result);
+			if(type=='receive'){
+				window.location.href = './inBox.go';
+			}else if(type=='self'){
+				window.location.href = './selfBox.go';
+			}else if(type=='send'){
+				window.location.href = './sendBox.go';
+			}else if(type=='trash'){
+				window.location.href = './trashBox.go';
+			}else if(type=='import'){
+				window.location.href = './importBox.go';
+			}
+		}
+	});
+}
+  
+function reply(){
+	var mail_id = $('#mail_id').val();
+	var type = $('#type').val();
+	console.log(mail_id);
+	console.log(type);
+	//$('#formaction').attr('action','/mailreply.do');
+	$('#set').attr('value','reply');
+	$('#formaction').attr('action','/mailreply.go?');
+	$('#formaction').submit();
+}
+
+function forwarding(){
+	var mail_id = $('#mail_id').val();
+	var type = $('#type').val();
+	console.log(mail_id);
+	console.log(type);
+	$('#set').attr('value','forwarding');
+	$('#formaction').attr('action','/mailreply.go?');
+	$('#formaction').submit();
+}
+  
+
   
   
 </script>

@@ -24,11 +24,11 @@ public interface MailDAO {
 
    int referenceMemberWrite(MailDTO dto);
 
-   ArrayList<MailDTO> mailSendDetail(int mail_id,int row);
+   ArrayList<MailDTO> mailSendDetail(int mail_id);
 
    int findMailReference(int mail_id);
 
-   ArrayList<MailDTO> mailMemberDetail(int mail_id);
+   ArrayList<MailDTO> mailMemberDetail(int mail_id, String type);
 
    int mailCheckPhoto(int mail_id);
 
@@ -38,20 +38,34 @@ public interface MailDAO {
 
    HashMap<String, Object> tempList(HashMap<String, Object> params);
 
-   int mailFavorite(Integer mail_id, boolean isFavorite);
+   void mailFavorite(Integer mail_id, boolean isLike, String type);
 
    int tempListUpdate(HashMap<String, String> params);
 
-   ArrayList<MailDTO> mailSelfBox(int cnt, int offset, String type, String mailFilter, String searchInformation, String searchText, String searchMailBox);
+   ArrayList<MailDTO> mailSelfBox(int cnt, int offset, String type, String searchInformation, String searchText);
 
    int savereceiverWrite(MailDTO dto);
 
-   boolean isFavoriteStatus(Integer mail_id);
+   MailDTO isFavoriteStatus(Integer mail_id, String type);
 
-   int mailbookmark(int mailId, Boolean isFavorite, String type);
+	/*
+	 * int mailbookmark(int mailId, Boolean isFavorite, String type);
+	 * 
+	 * boolean isbookmarkStatus(int mailId, String type);
+	 */
 
-   boolean isbookmarkStatus(int mailId, String type);
+   int totalCount(String type, String searchInformation, String searchText);
 
-   int totalCount(String type, String mailFilter, String searchInformation, String searchText, String searchMailBox);
+   int mailPhotodel(int mail_id);
+
+   List<MailDTO> mailCheckPhotoName(int mail_id);
+
+   int mailtrash(String mailId, String type);
+
+   int maildel(String mailId);
+
+   int mymaildel(String valueOf);
+
+  //Object mailtempGet(int mail_id, String type);
 
 }

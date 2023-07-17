@@ -17,7 +17,7 @@ public class MailDTO {
    private Timestamp writeTime;
    private String mailSubject;
    private String mailContent;
-   private String Favorites;
+   private boolean Favorites;
    private boolean temp;
    private boolean blind;
    private String type;
@@ -26,7 +26,7 @@ public class MailDTO {
    private boolean read_chk;
    private boolean read_date;
    private boolean bookmark;
-   private boolean is_receiver;
+   private int is_receiver;
    private String reference;
    
    private String dept_name;
@@ -103,12 +103,8 @@ public class MailDTO {
    public void setReference(String reference) {
       this.reference = reference;
    }
-   public String getFavorites() {
-      return Favorites;
-   }
-   public void setFavorites(String Favorites) {
-      this.Favorites = Favorites;
-   }
+
+
    public boolean isTemp() {
       return temp;
    }
@@ -218,10 +214,10 @@ public class MailDTO {
    public void setBookmark(boolean bookmark) {
       this.bookmark = bookmark;
    }
-   public boolean isIs_receiver() {
+   public int getIs_receiver() {
       return is_receiver;
    }
-   public void setIs_receiver(boolean is_receiver) {
+   public void setIs_receiver(int is_receiver) {
       this.is_receiver = is_receiver;
    }
    
@@ -268,4 +264,10 @@ public class MailDTO {
    public void setType(String type) {
       this.type = type;
    }
+	public boolean isFavorites() {
+		return Favorites;
+	}
+	public void setFavorites(boolean favorites) {
+		Favorites = favorites;
+	}
 }
