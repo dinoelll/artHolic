@@ -173,6 +173,7 @@ public class MailService {
            for (String recipient : recipientList) {
                dto.setMember_id(recipient);
                int result = dao.receiverWrite(dto);
+               dao.receiverMailAlarm(dto);
                logger.info("Receiver saved: " + result);
            }
        }
@@ -186,6 +187,7 @@ public class MailService {
            for (String referrer : referrerList) {
                dto.setMember_id(referrer);
                int result = dao.referenceMemberWrite(dto);
+               dao.referrerMailAlarm(dto);
                logger.info("Referrer saved: " + result);
            }
        }

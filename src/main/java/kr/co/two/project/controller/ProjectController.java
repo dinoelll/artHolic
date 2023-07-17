@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,11 +107,11 @@ public class ProjectController {
    }
 
    @PostMapping(value = "/feedWrite.do")
-   public String feedWrite(MultipartFile[] attachment, @RequestParam HashMap<String, String> params, Model model, RedirectAttributes rttr) {
+   public String feedWrite(MultipartFile[] attachment, @RequestParam HashMap<String, String> params, Model model, RedirectAttributes rttr, HttpSession sess) {
       logger.info("params : " + params);
       logger.info("attachment 접근 : " + attachment);
 
-      return service.feedWrite(attachment, params, model, rttr);
+      return service.feedWrite(attachment, params, model, rttr ,sess);
    }
 
    
