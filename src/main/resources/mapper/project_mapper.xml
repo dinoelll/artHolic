@@ -16,7 +16,7 @@
          <if
             test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
           <if
-            test="myproject != null and !myproject.equals('')">AND project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE member_id = '${myproject}')</if>
+            test="myproject != null and !myproject.equals('')">AND project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE member_id = #{myproject}')</if>
       </where>
       ORDER BY project_id DESC
       LIMIT #{cnt} OFFSET #{offset}
@@ -32,7 +32,7 @@
          <if
             test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND p.field_manager LIKE CONCAT('%',#{keyword},'%')</if>
 		<if
-            test="myproject != null and !myproject.equals('')">AND p.project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE pi2.member_id = '${myproject}')</if>
+            test="myproject != null and !myproject.equals('')">AND p.project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE pi2.member_id = #{myproject})</if>
       </where>
    </select>
 
