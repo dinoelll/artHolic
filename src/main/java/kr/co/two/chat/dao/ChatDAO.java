@@ -25,7 +25,7 @@ public interface ChatDAO {
 
 	int createRoom(ChatDTO dto);
 
-	int insert_chat_room_info(int chat_room_id, String member_id);
+	int insert_chat_room_info(String chat_room_id, String member_id);
 
 	int chatRoomExit(ChatDTO dto);
 

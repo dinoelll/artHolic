@@ -332,23 +332,6 @@
 	font-size: 16px;
 }
 
-/* 의견 스타일 */
- .modi-date-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    color: gray;
-  }
-
-  .bottom-right-text {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin: 0;
-    color: gray;
-  }
-
 
 </style>
   
@@ -428,7 +411,7 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<h1 style="font-weight: 600;">결재 문서함</h1>
+						          	<h1 style="font-weight: 600;">결재하기</h1>
 						          		
 					          		</div>	
 					          </div>
@@ -441,9 +424,6 @@
 							          	<a class="optt" id="optt" value="진행중">진행중</a>
 							          	<a class="optt" id="optt" value="반려">반려</a>
 							          	<a class="optt" id="optt" value="완료">완료</a>
-							          	
-							          	
-							          	
 						          		</div>	
 						          </div>
 						          <div class="col-sm-6">
@@ -468,7 +448,7 @@
 																			<!-- <option value="default">조건</option> -->
 																			<option value="paySubject">제목</option>
 																			<option value="code_name">결재양식</option>
-																			<option value="document_id">문서번호</option>
+																			<option value="name">기안자</option>
 																	</select> 
 																	
 																	<input type="text" id="keyword" placeholder="내용을 입력 해 주세요.">
@@ -495,7 +475,7 @@
 													                    <th>기안일</th>
 													                    <th>결재양식</th>
 													                    <th>제목</th>
-													                    <th>문서번호</th>
+													                    <th>기안자</th>
 													                    <th>의견</th>
 													                    <th>결재 상태</th>
 													                  </tr>
@@ -596,10 +576,9 @@
 				  <!-- /.modal-dialog -->
 				</div>
 				<!-- /.modal -->
-      
-      
-      
-      			 <!-- 결재 의견 모달 -->
+      			
+      			
+      			<!-- 결재 의견 모달 -->
 				<div class="modal fade" id="modal-default">
 					  <div class="modal-dialog">
 					    <div class="modal-content">
@@ -657,6 +636,7 @@
 					    </div>
 					  </div>
 					</div>
+  
      
 
 	
@@ -705,7 +685,7 @@ var showPage = 1;
 var opt ='default';
 var optt ='default';
 var keyword ='default';
-var temp = 0 ;
+
 
 listCall(showPage);
 console.log("list call");
@@ -748,9 +728,9 @@ function listCall(page,cnt){
         var cnt = 8;
       $.ajax({
          type:'post',
-         url:'/paymentList.ajax',
+         url:'/paymentListPay.ajax',
          data:{
-        	 'temp':temp,
+        	 
             'page':page,
             'cnt': cnt,
             'keyword':keyword,
@@ -798,10 +778,9 @@ function listDraw(projectList) {
 
      projectList.forEach(function(dto,project_id){
          content += '<tr>';
-         content += '<th>'+dto.limit_date+'</th>';
-         content += '<th>'+dto.code_name+'</th>';
+         content += '<th>'+dto.limit_date+'</th>';         content += '<th>'+dto.code_name+'</th>';
          content += '<th><a href="./paymentVacationForm_pay.go?document_id='+dto.document_id+'">'+dto.paySubject+'</th>';
-         content += '<td>'+ dto.document_id +'</td>';
+         content += '<td>'+ dto.name +'</td>';
          content += '<td>'+ '<i class="fas fa-comments" data-toggle="modal" data-target="#modal-default" onclick="note(\''+dto.document_id+'\')"></i>'+'</td>';
          
 
@@ -820,8 +799,8 @@ function listDraw(projectList) {
      $('#projectList').append(content);
    }
    
-   
-   
+
+
 function noteSuccess(data) {
     console.log("success");
     console.log(data);
@@ -959,10 +938,6 @@ function restoreButtonColor() {
 	  document.getElementById("paymentButton").removeAttribute("href");
 	  
 	}	
-	
-
-	
-	
   
 </script>
 

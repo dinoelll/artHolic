@@ -275,15 +275,15 @@
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton2" onclick="toggleDocumentTree()">결재 생산함</button>
 						      <div id="documentTree" ><!-- style="display: none;" -->
 						        <p><a href="./paymentList.go" id="ListGo">결재 문서함</a></p>
-						        <p>임시저장</p>
+						        <p><a href="./paymentListTemp.go" id="ListGo">결재 임시저장</a></p>
 						      </div>
 						    </div>
 						    <div>
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton3" onclick="toggleInboxTree()">결재 수신함</button>
 						      <div id="inboxTree"><!--  style="display: none;" -->
-						        <p>결재하기</p>
-						        <p>결재내역</p>
-						        <p>수신참조</p>
+						        <p><a href="./paymentListPay.go" id="ListGo"> 결재하기</a></p>
+						        <p><a href="./paymentListDone.go" id="ListGo"> 결재내역</a></p>
+						        <p><a href="./paymentListTake.go" id="ListGo">수신참조</a></p>
 						      </div>
 						    </div>
 						  </div>
@@ -372,7 +372,7 @@
 																              <td style=" white-space: nowrap; ">기안자</td>
 																            </tr>
 																            <tr>
-																              <td>김형준</td>
+																              <td>${sessionScope.name}</td>
 																            </tr>
 																            <tr>
 																              <td ></td>
@@ -394,7 +394,7 @@
 													  <table class="my-table">
 													    <tr>
 													      <th> 작성자</th>
-													      <td>작성자 입력란</td>
+													      <td id="formName">${sessionScope.name}</td>
 													      <th>부서</th>
 													      <td>부서 입력란</td>
 													    </tr>
@@ -709,7 +709,7 @@
       </div>
       <!-- /.modal -->
       
-       <!--  결재 요청 모달-->
+       <!--  결재 취소 모달-->
       <div class="modal fade" id="modal-default3">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -739,16 +739,9 @@
      
      
       
+	  <jsp:include page="footer.jsp" />
 	
-	
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-    
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
-
+  
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -799,40 +792,24 @@
 
 <script>
 
-
-
 function writeVacation() {
-	var approversVal = $('[name="duallistbox_demo1[]"]').val();
-	console.log(approversVal);
-	
+	  var approversVal = $('[name="duallistbox_demo1[]"]').val();
+	  console.log(approversVal);
+
 	  var referrer = $('[name="duallistbox_demo2[]"]').val();
-	 console.log(referrer);
-	 
-	 
+	  console.log(referrer);
 
 	  var fileInput = document.getElementById('exampleInputFile');
 	  var file = fileInput.files[0]; // Get the selected file
 
-	  
-
-	  
-	  
-	     if (file) {
-	    	 var formData = new FormData();
-
-	  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
-		  formData.append('file', file); // Append the file to the FormData object
-	} else {
-	    // 빈 파일 객체 추가
+	  if (!file) {
 	    alert('파일을 추가해 주세요.');
-	  } 
-	  
-	  
-	 
+	    return; // 파일이 없으면 함수 종료
+	  }
 
 	  var paymentValues = [];
 	  var referrerValues = [];
-	  
+
 	  // Other parameters
 	  var $limit_date = $('#limit_date');
 	  var $form_sort = $('#form_sort');
@@ -841,141 +818,60 @@ function writeVacation() {
 	  var $paySubject = $('#paySubject');
 	  var $payContent = $('#payContent');
 	  var $radioPeriod = $('input[name="radioPeriod"]:checked');
-	  
-	   //for (var i = 0; i < approversVal.length; i++) {
-		    
-		   //var paymentValue= $('#payment'+[i]+'');
-		  //var $payment= $('#payment'+[i]+'');
-		    // payment 값을 배열에 추가
-		  
-		//}
-	 for (var i = 0; i < approversVal.length; i++) {
-	  paymentValues.push(approversVal[i]);
-		}
-	 
-	 
+
+	  for (var i = 0; i < approversVal.length; i++) {
+	    paymentValues.push(approversVal[i]);
+	  }
+
 	  for (var i = 0; i < referrer.length; i++) {
-		  referrerValues.push(referrer[i]);
-			} 
-	  
-	   
+	    referrerValues.push(referrer[i]);
+	  }
 
 	  var param = {
-		  payment: paymentValues,
-		  referrer: referrerValues,
-	  	limit_date: $limit_date.val(),
-	  	form_sort: $form_sort.val(),
-	  	vacation_kind: $vacation_kind.val(),
+	    payment: paymentValues,
+	    referrer: referrerValues,
+	    limit_date: $limit_date.val(),
+	    form_sort: $form_sort.val(),
+	    vacation_kind: $vacation_kind.val(),
 	    reservationtime: $reservationtime.val(),
 	    radioPeriod: $radioPeriod.val(),
 	    paySubject: $paySubject.val(),
 	    payContent: $payContent.val()
-	    
-	   
 	  };
-		console.log(param);
 
-	  // Append other parameters to the FormData object
-	  for (var key in param) {
-		    if (param[key]) {
-		      formData.append(key, param[key]);
-		    }
-		  }
+	  console.log(param);
 
-	  $.ajax({
-	    type: 'POST',
-	    url: 'writeVacation.ajax',
-	    data: formData,
-	    dataType: 'json',
-	    processData: false, // Prevent jQuery from automatically processing the data
-	    contentType: false, // Prevent jQuery from automatically setting the content type
-	    success: function(data) {
-	      console.log(data);
-	      if (data.success =! null) {
-	        alert('전송 성공');
-	        
-	      } else {
-	        alert('전송 실패');
-	      }
-	    },
-	    error: function(e) {
-	      console.log(e);
-	      alert('오류 발생');
+	  // 작성 여부 확인
+	  if (!param.limit_date || !param.paySubject || !param.payContent) {
+	    if (!param.limit_date) {
+	      alert('기안일을 선택해주세요.');
+	    } else if (!param.paySubject) {
+	      alert('제목을 작성해주세요.');
+	    } else if (!param.payContent) {
+	      alert('내용을 추가해주세요.');
+	    } else {
+	      alert('작성되지 않은 항목이 있습니다.');
 	    }
-	  });
-	
-}
-
-
-// 임시저장 요청
-function writeVacationTemp() {
-	var approversVal = $('[name="duallistbox_demo1[]"]').val();
-	console.log(approversVal);
-	
-	 var referrer = $('[name="duallistbox_demo2[]"]').val();
-	 console.log(referrer);
-	
-	  var fileInput = document.getElementById('exampleInputFile');
-	  var file = fileInput.files[0]; // Get the selected file
+	    return; // 작성되지 않은 항목이 있으면 함수 종료
+	  }
+	  
+	  // 결재자 여부 확인
+	  
+	    if (paymentValues.length === 0) {
+	    alert('결재자를 한 명 이상 추가해 주세요.');
+	    return; // 함수 종료
+	  }
 
 	  var formData = new FormData();
-	  
-	  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
-	  if (file) {
-		  formData.append('file', file); // Append the file to the FormData object
-		}
-	  
-
-	  var paymentValues = [];
-	  var referrerValues = [];
-	  
-	  // Other parameters
-	  var $limit_date = $('#limit_date');
-	  var $form_sort = $('#form_sort');
-	  var $vacation_kind = $('#vacation_kind');
-	  var $reservationtime = $('#reservationtime');
-	  var $paySubject = $('#paySubject');
-	  var $payContent = $('#payContent');
-	  var $radioPeriod = $('input[name="radioPeriod"]:checked');
-	  var $temp = $('#temp');
-	  
-	   //for (var i = 0; i < approversVal.length; i++) {
-		    
-		   //var paymentValue= $('#payment'+[i]+'');
-		  //var $payment= $('#payment'+[i]+'');
-		    // payment 값을 배열에 추가
-		  
-		//}
-	 for (var i = 0; i < approversVal.length; i++) {
-	  paymentValues.push(approversVal[i]);
-		}
-	 
-	 for (var i = 0; i < referrer.length; i++) {
-		 referrerValues.push(referrer[i]);
-			}
-	  
-	   
-
-	  var param = {
-		  payment: paymentValues,
-		  referrer: referrerValues,
-	  	limit_date: $limit_date.val(),
-	  	form_sort: $form_sort.val(),
-	  	vacation_kind: $vacation_kind.val(),
-	    reservationtime: $reservationtime.val(),
-	    radioPeriod: $radioPeriod.val(),
-	    paySubject: $paySubject.val(),
-	    temp: $temp.val(),
-	    payContent: $payContent.val()
-	    
-	   
-	  };
-		console.log(param);
 
 	  // Append other parameters to the FormData object
 	  for (var key in param) {
-	    formData.append(key, param[key]);
+	    if (param[key]) {
+	      formData.append(key, param[key]);
+	    }
 	  }
+
+	  formData.append('file', file); // Append the file to the FormData object
 
 	  $.ajax({
 	    type: 'POST',
@@ -987,10 +883,9 @@ function writeVacationTemp() {
 	    success: function(data) {
 	      console.log(data);
 	      if (data.success !== undefined) {
-	        alert('전송 성공');
-	        
+	        alert('요청이 완료되었습니다.');
 	      } else {
-	        alert('전송 실패');
+	        alert('요청이 완료되었습니다.');
 	      }
 	    },
 	    error: function(e) {
@@ -998,8 +893,113 @@ function writeVacationTemp() {
 	      alert('오류 발생');
 	    }
 	  });
-	}
- 
+}
+
+
+// 임시저장 요청
+function writeVacationTemp() {
+  var approversVal = $('[name="duallistbox_demo1[]"]').val();
+  console.log(approversVal);
+
+  var referrer = $('[name="duallistbox_demo2[]"]').val();
+  console.log(referrer);
+
+  var fileInput = document.getElementById('exampleInputFile');
+  var file = fileInput.files[0]; // Get the selected file
+
+  var formData = new FormData();
+
+  // 파일이 추가 되지 않으면 파일 append 하지 않음 (예외처리)
+  if (file) {
+    formData.append('file', file); // Append the file to the FormData object
+  } else {
+    alert('파일을 추가해 주세요.');
+    return; // 파일이 없으면 함수 종료
+  }
+
+  var paymentValues = [];
+  var referrerValues = [];
+
+  // Other parameters
+  var $limit_date = $('#limit_date');
+  var $form_sort = $('#form_sort');
+  var $vacation_kind = $('#vacation_kind');
+  var $reservationtime = $('#reservationtime');
+  var $paySubject = $('#paySubject');
+  var $payContent = $('#payContent');
+  var $radioPeriod = $('input[name="radioPeriod"]:checked');
+  var $temp = $('#temp');
+
+  for (var i = 0; i < approversVal.length; i++) {
+    paymentValues.push(approversVal[i]);
+  }
+
+  for (var i = 0; i < referrer.length; i++) {
+    referrerValues.push(referrer[i]);
+  }
+
+  var param = {
+    payment: paymentValues,
+    referrer: referrerValues,
+    limit_date: $limit_date.val(),
+    form_sort: $form_sort.val(),
+    vacation_kind: $vacation_kind.val(),
+    reservationtime: $reservationtime.val(),
+    radioPeriod: $radioPeriod.val(),
+    paySubject: $paySubject.val(),
+    temp: $temp.val(),
+    payContent: $payContent.val()
+  };
+
+  console.log(param);
+
+  // 작성 여부 확인
+  if (!param.limit_date || !param.paySubject || !param.payContent) {
+    if (!param.limit_date) {
+      alert('기안일을 선택해주세요.');
+    } else if (!param.paySubject) {
+      alert('제목을 작성해주세요.');
+    } else if (!param.payContent) {
+      alert('내용을 추가해주세요.');
+    } else {
+      alert('작성되지 않은 항목이 있습니다.');
+    }
+    return; // 작성되지 않은 항목이 있으면 함수 종료
+  }
+  
+  if (paymentValues.length === 0) {
+	    alert('결재자를 한 명 이상 추가해 주세요.');
+	    return; // 함수 종료
+	  }
+  
+
+  // 데이트들 추가
+  for (var key in param) {
+    formData.append(key, param[key]);
+  }
+
+  $.ajax({
+    type: 'POST',
+    url: 'writeVacation.ajax',
+    data: formData,
+    dataType: 'json',
+    processData: false, // Prevent jQuery from automatically processing the data
+    contentType: false, // Prevent jQuery from automatically setting the content type
+    success: function(data) {
+      console.log(data);
+      if (data.success !== undefined) {
+        alert('요청이 완료되었습니다.');
+      } else {
+        alert('요청이 완료되었습니다.');
+      }
+    },
+    error: function(e) {
+      console.log(e);
+      alert('오류 발생');
+    }
+  });
+}
+
 
 //(마무리)임시저장 요청 
 
@@ -1049,6 +1049,7 @@ $("#demoform").submit(function() {
 
 
 function drawList(approversVal) {
+	var nameValue = document.getElementById('formName').textContent;
 	approversVal.forEach(function(item,idx){
 		console.log(item,idx)
 		
@@ -1066,7 +1067,7 @@ function drawList(approversVal) {
 	  content += '</tr>';
 
 	  content += '<tr>';
-	  content +=  '<td>' + '김형준' + '</td>';
+	  content += '<td>' + nameValue + '</td>';
 	  for (var i = 0; i < approversVal.length; i++) {
 	    content += '<td id="payment'+[i]+'">' + approversVal[i] + '</td>';
 	  }
@@ -1117,7 +1118,7 @@ function drawList2(referrer) {
 	  
 }; 
 
-
+// (끝)결재선, 참조자
 
 
 $(function () {

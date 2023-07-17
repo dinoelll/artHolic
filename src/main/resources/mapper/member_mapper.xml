@@ -195,7 +195,7 @@
    		</insert>
    		
    		<select id="login" resultType="member">
-	      SELECT pw,admin FROM member WHERE member_id = #{id} AND userBlindWhether = 0
+	      SELECT pw,admin,name FROM member WHERE member_id = #{id} AND userBlindWhether = 0
 	   </select>
 	   
 	   <select id="isUserBlind" resultType="java.lang.Boolean">

@@ -6,7 +6,12 @@
 
    <!-- 받는이 옵션 가져오기 -->
    <select id="mailgetOptions" resultType="mail">
-      SELECT * FROM member
+	SELECT mb.*, c_dept.code_name AS dept_name, c_pos.code_name AS position_name
+	FROM member mb
+	LEFT OUTER JOIN 
+	(SELECT code_id, code_name FROM code WHERE code_group_id = 'DEPT') c_dept ON c_dept.code_id = mb.dept_code
+	LEFT OUTER JOIN 
+	(SELECT code_id, code_name FROM code WHERE code_group_id = 'POSITION') c_pos ON c_pos.code_id = mb.position_code
    </select>
    
    <!-- 메일쓰기 -->
@@ -15,7 +20,7 @@
       keyColumn="mail_id"
       keyProperty="mail_id">
       INSERT INTO mail(member_id,writeTime,mailSubject,mailContent,blind,Favorites,temp)
-         VALUES("9988392",#{writeTime},#{mailSubject},#{mailContent},false,false,
+         VALUES("12421313213",#{writeTime},#{mailSubject},#{mailContent},false,false,
       <choose>
             <when test='type == "save" or type == "send"'>
               false
@@ -52,13 +57,13 @@
    </insert>
    
    <!-- 참조자 여부 -->
-   <select id="findMailReference" resultType="int">
+   <select id="findMailReference" resultType="int" parameterType="int">
       SELECT COUNT(member_id) FROM mail_receiver WHERE mail_id=#{mail_id} AND is_receiver = 1 
    </select>
    
    <!-- 메일 상세보기 (참조자,받는사람 리스트 가져오기 -->
    <select id="mailSendDetail" resultType="mail">
-      SELECT mr.mail_id, mr.member_id, mr.is_receiver,m.name, m2.mailSubject, m2.mailContent,mr.bookmark
+      SELECT mr.mail_id, mr.member_id, mr.is_receiver,m.name, m2.mailSubject, m2.mailContent,mr.bookmark,
           MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
           MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name
       FROM mail_receiver mr
@@ -66,24 +71,91 @@
       JOIN mail m2 ON m2.mail_id = mr.mail_id
       JOIN code c ON (c.code_id = m.position_code OR c.code_id = m.dept_code)
       WHERE mr.mail_id = #{mail_id}
-      <if test='row != null and row > 0'>
-         AND mr.is_receiver IN (0, 1)
-      </if>
-      <if test='row != null and row = 0'>
-         AND mr.is_receiver = 0
-      </if>
+      AND mr.is_receiver IN (0, 1 ,2)
       GROUP BY m.name
       ORDER BY m.name;
    </select>
    
    <!-- 메일 상세보기 (보낸사람) -->
-   <select id="mailMemberDetail" resultType="mail">
+   <!-- <select id="mailMemberDetail" resultType="mail">
       SELECT mb.name, mb.dept_code, mb.position_code, m.*, c.code_name, c.code_group_id,m.favorites,m.mail_id
       FROM member mb
       RIGHT OUTER JOIN mail m ON (mb.member_id = m.member_id)
       LEFT OUTER JOIN code c ON (c.code_id = mb.dept_code) OR (c.code_id=mb.position_code)
       WHERE m.mail_id = #{mail_id} ORDER BY code_group_id ASC
-   </select>
+   </select> -->
+   
+   <select id="mailMemberDetail" resultType="mail">
+	  SELECT DISTINCT 
+	  <if test="type=='receive' or type=='self' or type=='all' or type=='trash' or type=='import'">
+	  mr.mail_id, mr.member_id, m.writeTime, m.mailSubject, m.mailContent, mr.blind, m.favorites, mr.bookmark, mr.is_receiver, m.temp, mb.name,
+	  MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
+  	  MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name
+	  FROM mail m
+	  LEFT OUTER JOIN mail_receiver mr ON m.mail_id = mr.mail_id
+	  LEFT OUTER JOIN member mb ON mb.member_id = mr.member_id
+	  LEFT OUTER JOIN code c ON (c.code_id = mb.dept_code) OR (c.code_id=mb.position_code)
+	  WHERE mr.member_id = 12421313213 AND mr.mail_id = #{mail_id}
+	  </if>
+	    <if test="type=='all' and !(searchText == null or searchText.equals(''))"> 
+	  	<if test ="searchInformation=='allMail'">
+	  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
+	  	</if>
+	  	<if test ="searchInformation=='mailSubject'">
+	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  	<if test ="searchInformation=='mailContent'">
+	  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  </if>
+	  <if test="type=='receive'">
+	  	AND mr.blind=0 AND (mr.is_receiver = 0 OR mr.is_receiver = 1)
+	  </if>
+	  <if test="type=='self'">
+	  	AND mr.blind=0 AND mr.is_receiver = 2
+	  </if>
+	  <if test="type=='trash'">
+	  	AND mr.blind = 1 AND mr.blind IS NOT NULL
+	  </if>
+	  <if test="type=='import'">
+	  	AND mr.blind = 0 AND mr.bookmark = 1
+	  </if>
+	  <if test="type== 'all' and !(searchText == null or searchText.equals('')) or type=='trash' or type=='import'">
+	  		UNION SELECT DISTINCT 
+	  </if>
+	   <if test="type=='send' or type=='temp' or type=='all' or type=='trash' or type=='import'">
+		  m.mail_id, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, m.temp, mb.name,
+		  MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
+  	  	  MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name
+		  FROM mail m
+		  LEFT OUTER JOIN member mb ON mb.member_id = m.member_id 
+		  LEFT OUTER JOIN code c ON (c.code_id = mb.dept_code) OR (c.code_id=mb.position_code)
+		  WHERE m.member_id = 12421313213 AND m.mail_id = #{mail_id}
+		  <if test="type=='all' and !(searchText == null or searchText.equals(''))"> 
+		  	<if test ="searchInformation=='allMail'">
+		  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
+		  	</if>
+		  	<if test ="searchInformation=='mailSubject'">
+		  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+		  	</if>
+		  	<if test ="searchInformation=='mailContent'">
+		  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
+		  	</if>
+		  </if>
+	    </if>
+	    <if test="type=='temp'">
+	  		AND m.blind=0 AND temp = 1
+		</if>
+		<if test="type=='send'">
+			AND m.blind=0 AND temp = 0
+		</if>
+		<if test="type=='trash'">
+			AND m.blind=1 AND m.blind IS NOT NULL
+		</if>
+		<if test="type=='import'">
+			AND m.blind = 0 AND m.favorites=1
+		</if>
+	</select>
    
    <select id="mailCheckPhoto" resultType="int">
       SELECT COUNT(mail_file_id) FROM mail_file WHERE mail_id = #{mail_id}
@@ -94,196 +166,233 @@
    </select>
    
    <update id="mailFavorite">
-      UPDATE mail SET favorites = #{isFavorite} WHERE mail_id = #{mail_id}
-   </update>
+      UPDATE 
+	 <if test='type == "send" || type== "temp"'>
+	    mail SET favorites = #{isLike} WHERE mail_id = #{mail_id}
+	  </if>
+	  <if test='type == "self" || type == "receive"'>
+	    mail_receiver SET bookmark = #{isLike} WHERE mail_id = #{mail_id}
+	  </if>
+	</update>
    
-   <select id="isFavoriteStatus" resultType="boolean">
-      SELECT favorites FROM mail WHERE mail_id=#{mail_id}
-   </select>
+   <select id="isFavoriteStatus" resultType="mail">
+      SELECT  
+      <if test='type == "send"|| type== "temp"'>
+	    * FROM mail WHERE mail_id = #{mail_id} AND member_id = '12421313213'
+	  </if>
+	  <if test='type == "self" || type == "receive"'>
+	    * FROM mail_receiver WHERE mail_id = #{mail_id} AND member_id = '12421313213'
+	  </if>
+   </select> 
    
-   <update id="mailbookmark">
-      UPDATE mail_receiver SET bookmark = #{isFavorite} WHERE mail_id=#{mailId} 
+   <!-- <update id="mailbookmark">
+      UPDATE mail_receiver SET bookmark = #{isFavorite} WHERE mail_id=#{mailId} AND member_id = '12421313213'
       <if test='type=="self"'>
       AND is_receiver = '2'
       </if>
    </update>
    
    <select id="isbookmarkStatus" resultType="boolean">
-      SELECT bookmark FROM mail_receiver WHERE mail_id = #{mailId} 
+      SELECT bookmark FROM mail_receiver WHERE mail_id = #{mailId} AND member_id = '12421313213'
       <if test='type=="self"'>
       AND is_receiver = '2'
       </if>
-   </select>
+   </select> -->
    
    <insert id="tempListUpdate" >
-      INSERT INTO mail (mail_id, member_id, mailSubject, mailContent)
-      VALUES (#{mail_id},9988392, #{mailSubject}, #{mailContent})
+      INSERT INTO mail (mail_id, writeTime, member_id, mailSubject, mailContent)
+      VALUES (#{mail_id},#{writeTime},9988392, #{mailSubject}, #{mailContent})
       ON DUPLICATE KEY UPDATE
           mailSubject = #{mailSubject},
-          mailContent = #{mailContent}
+          mailContent = #{mailContent},
+          writeTime = #{writeTime}
    </insert>
    
-   <!--  리스트 페이징 카운트 -->
    <select id="totalCount" resultType="int">
-    <bind name="isSelf" value="type == 'self'"/>
-    <bind name="isEmptySearchText" value="(searchText == null or searchText.equals(''))"/>
-
-    SELECT COUNT(mr.mail_id) FROM mail m 
-    RIGHT OUTER JOIN mail_receiver mr ON (m.mail_id = mr.mail_id)
-    LEFT OUTER JOIN member mb ON (mb.member_id = mr.member_id) 
-    WHERE m.member_id = 9988392
-    <if test="isSelf and searchInformation == 'allMail' and isEmptySearchText">
-    	AND mr.is_receiver = 2
-    	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-        	AND mr.blind = 0
-        </if>
-        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-        </if>
-        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-        	AND mr.blind = 0 AND mr.bookmark = 1
-        </if>
-    </if> 
-    <if test="isSelf and searchInformation == 'allMail' and !(isEmptySearchText)">
-    	<if test = "searchText == 'mailSender'">
-	        AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
-	        <if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
-        <if test = "searchText == 'mailRecipient'">
-        	AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
-        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
-        <if test = "searchText == 'mailSubject'">
-        	AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
-        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
-        <if test = "searchText == 'mailContent'">
-        	AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
-        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
-        <if test = "searchText == 'mailAttachment'">
-        	AND mf.ori_file_name LIKE CONCAT('%', #{searchText}, '%')
-        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
-    </if>
+   SELECT 
+   <if test="type== 'all' and !(searchText == null or searchText.equals('')) or type =='import' or type=='trash'">
+   COUNT(*) AS row_count
+	FROM (
+	SELECT DISTINCT mr.mail_id, mr.member_id, m.writeTime, m.mailSubject, m.mailContent, mr.blind, m.favorites, mr.bookmark, mr.is_receiver, m.temp, mb.name
+	</if>
+	<if test="type=='receive' or type=='self'">
+	COUNT (mr.mail_id) 
+	</if>
+	<if test="type=='receive' or type=='self' or type== 'all' or type =='import' or type=='trash'">
+	  FROM mail m
+	  LEFT OUTER JOIN mail_receiver mr ON m.mail_id = mr.mail_id
+	  LEFT OUTER JOIN member mb ON mb.member_id = mr.member_id
+	  WHERE mr.member_id = 12421313213
+	  <if test="type=='all' and !(searchText == null or searchText.equals(''))"> 
+	  	<if test ="searchInformation=='allMail'">
+	  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
+	  	</if>
+	  	<if test ="type=='all' and searchInformation=='mailSubject'">
+	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  	<if test ="type=='all' and searchInformation=='mailContent'">
+	  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  </if>
+	  <if test="type=='receive'">
+	  	AND mr.blind=0 AND (mr.is_receiver = 0 OR mr.is_receiver = 1)
+	  </if>
+	  <if test="type=='self'">
+	  	AND mr.blind=0 AND mr.is_receiver = 2
+	  </if>
+	  <if test="type=='import'">
+	  	AND mr.blind= 0 AND mr.bookmark=1
+	  </if>
+	  <if test="type=='trash'">
+	  	AND m.blind = 1
+	  </if>
+	</if>
+	  <if test="type== 'all' and !(searchText == null or searchText.equals('')) or type =='import' or type=='trash'">
+	  		UNION
+	  		SELECT DISTINCT m.mail_id, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, NULL, NULL, m.temp, mb.name
+	  </if>
+	  <if test="type=='temp' or type=='send'">
+	  		COUNT (m.mail_id) 
+	  </if>
+	  <if test="type=='temp' or type=='send' or type=='all' or type =='import' or type=='trash'">
+		  FROM mail m
+		  LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
+		  WHERE m.member_id = 12421313213
+	  </if>
+	  <if test="type=='all' and !(searchText == null or searchText.equals('')) "> 
+	  	<if test ="searchInformation=='allMail'">
+	  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
+	  	</if>
+	  	<if test ="searchInformation=='mailSubject'">
+	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  	<if test ="searchInformation=='mailContent'">
+	  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  </if>
+	  <if test="type=='temp'">
+	  	AND m.blind=0 AND temp = 1
+	  </if>
+	  <if test="type=='send'">
+	  	AND m.blind=0 AND temp = 0
+	  </if>
+	  <if test="type=='import'">
+	  	AND m.blind = 0 AND m.favorites = 1
+	  </if>
+	  <if test="type=='trash'">
+	  	AND m.blind = 1
+	  </if>
+	  <if test="type== 'all' and !(searchText == null or searchText.equals(''))">
+	  		) AS subquery
+	  </if>
+	  <if test="type=='import' or type=='trash'">
+	  		) AS subquery 
+	  </if>
 	</select>
    
-   <!-- 내게쓰기 리스트 불러오기 -->
+   
+   
+   
    <select id="mailSelfBox" resultType="mail">
-   	<bind name="isSelf" value="type == 'self'"/>
-    <bind name="isEmptySearchText" value="(searchText == null or searchText.equals(''))"/>
-      SELECT mr.*,m.*,mb.name FROM mail m 
-		RIGHT OUTER JOIN mail_receiver mr ON (m.mail_id = mr.mail_id)
-		LEFT OUTER JOIN member mb ON (mb.member_id = mr.member_id) 
-		WHERE m.member_id = 9988392 
-      <if test="isSelf and searchInformation == 'allMail' and isEmptySearchText">
-    	AND mr.is_receiver = 2
-    	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-        	AND mr.blind = 0
-        </if>
-        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-        </if>
-        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-        	AND mr.blind = 0 AND mr.bookmark = 1
-        </if>
-    </if> 
-    <if test="isSelf and searchInformation == 'allMail' and !(isEmptySearchText)">
-    	<if test = "searchText == 'mailSender'">
-	        	AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
-	        <if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        		AND mr.blind = 0 AND mr.read_chk = 0 
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
-        <if test = "searchText == 'mailRecipient'">
-        	AND (mb.name LIKE CONCAT('%', #{searchText}, '%') OR mb.dept_code LIKE CONCAT('%', #{searchText}, '%') OR mb.position_code LIKE CONCAT('%', #{searchText}, '%'))
-        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
-        <if test = "searchText == 'mailSubject'">
-        	AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
-        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
-        <if test = "searchText == 'mailContent'">
-        	AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
-        	<if test="searchMailBox=='allBox' and (mailFilter == 'all' or mailFilter == 'new' or mailFilter == 'old')">
-	        	AND mr.is_receiver = 2 AND mr.blind = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'unread'">
-        	AND mr.blind = 0 AND mr.read_chk = 0
-	        </if>
-	        <if test="searchMailBox=='allBox' and mailFilter == 'import'">
-	        	AND mr.blind = 0 AND mr.bookmark = 1
-	        </if>
-        </if>
-    </if>
-    <if test=" !(mailFilter == 'old')">
-    	ORDER BY mr.mail_id DESC
-    </if>
-    <if test="(mailFilter == 'old')">
-    	ORDER BY mr.mail_id ASC
-    </if>
-    LIMIT #{cnt} OFFSET #{offset}
-   </select>
-</mapper>
+	  SELECT DISTINCT 
+	  <if test="type=='receive' or type=='self' or type=='all' or type=='import' or type=='trash'">
+	  mr.mail_id, mr.member_id, m.writeTime, m.mailSubject, m.mailContent, mr.blind, m.favorites, mr.bookmark, mr.is_receiver, m.temp, mb.name
+	  FROM mail m
+	  LEFT OUTER JOIN mail_receiver mr ON m.mail_id = mr.mail_id
+	  LEFT OUTER JOIN member mb ON mb.member_id = mr.member_id
+	  WHERE mr.member_id = 12421313213
+	  </if>
+	    <if test="type=='all' and !(searchText == null or searchText.equals(''))"> 
+	  	<if test ="searchInformation=='allMail'">
+	  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
+	  	</if>
+	  	<if test ="searchInformation=='mailSubject'">
+	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  	<if test ="searchInformation=='mailContent'">
+	  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  </if>
+	  <if test="type=='receive'">
+	  	AND mr.blind=0 AND (mr.is_receiver = 0 OR mr.is_receiver = 1)
+	  </if>
+	  <if test="type=='self'">
+	  	AND mr.blind=0 AND mr.is_receiver = 2
+	  </if>
+	  <if test="type=='import'">
+			AND mr.bookmark = 1 AND mr.blind = 0
+		</if>
+		<if test="type=='trash'">
+	  	AND mr.blind = 1
+	  </if>
+	  <if test="type== 'all' and !(searchText == null or searchText.equals('')) or type=='import' or type=='trash'">
+	  		UNION SELECT DISTINCT 
+	  </if>
+	   <if test="type=='send' or type=='temp' or type=='all' or type=='import' or type=='trash'">
+		  m.mail_id, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, m.temp, mb.name
+		  FROM mail m
+		  LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
+		  WHERE m.member_id = 12421313213
+		  <if test="type=='all' and !(searchText == null or searchText.equals(''))"> 
+		  	<if test ="searchInformation=='allMail'">
+		  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
+		  	</if>
+		  	<if test ="searchInformation=='mailSubject'">
+		  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+		  	</if>
+		  	<if test ="searchInformation=='mailContent'">
+		  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
+		  	</if>
+		  </if>
+	    </if>
+	    <if test="type=='temp'">
+	  		AND m.blind=0 AND m.temp = 1
+		</if>
+		<if test="type=='send'">
+			AND m.blind=0 AND m.temp = 0
+		</if>
+		<if test="type=='import'">
+			AND m.favorites = 1 AND m.blind = 0
+		</if>
+		<if test="type=='trash'">
+	  		AND m.blind = 1
+	  	</if>
+		ORDER BY mail_id DESC
+	    LIMIT #{cnt} OFFSET #{offset}
+	</select>
+	
+	<!-- 사진 완전 삭제 -->
+	<delete id="mailPhotodel">
+		DELETE FROM mail_file WHERE mail_id = #{mail_id};
+	</delete>
+	
+	<select id="mailCheckPhotoName" resultType="list">
+		SELECT new_file_name FROM mail_file WHERE mail_id = #{mail_id};
+	</select>
+	
+	<!-- 휴지통으로 보내기 -->
+	<update id="mailtrash">
+		UPDATE 
+		<if test='type == "send" || type== "temp"'>
+	    mail SET blind = 1 WHERE mail_id = #{mailId}
+	  </if>
+	  <if test='type == "self" || type == "receive"'>
+	    mail_receiver SET blind = 1 WHERE mail_id = #{mailId}
+	  </if>
+	</update>
+	
+	<!--  메일 진짜 삭제 -->
+	<delete id="maildel">
+		DELETE FROM mail_receiver WHERE blind = 1 AND mail_id = #{mail_id} AND member_id=12421313213
+	</delete>
+	
+	<delete id="mymaildel">
+		DELETE FROM mail WHERE blind = 1 AND mail_id = #{mail_id} AND member_id = 12421313213
+	</delete>
+	
+	<!-- temp 가져오기 -->
+<!-- 	<select id="mailtempGet" resultType="Ojbect">
+		SELECT m.*,mf.ori_file_name FROM mail m
+		LEFT OUTER JOIN mail_file mf ON (m.mail_id=mf.mail_id) WHERE m.mail_id = #{mail_id} AND m.temp = 1
+	</select> -->
+	</mapper>
