@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +70,7 @@ public class ProjectService {
    }
 
    // 피드 작성
-   public String feedWrite(MultipartFile[] attachment, HashMap<String, String> params, Model model, RedirectAttributes rttr) {
+   public String feedWrite(MultipartFile[] attachment, HashMap<String, String> params, Model model, RedirectAttributes rttr, HttpSession sess) {
       // String id = (String) session.getAttribute("id");
       //String page = "redirect:/projectDetail.go";
 	   HashMap<String , Object> map = new HashMap<String, Object>();
@@ -104,6 +106,16 @@ public class ProjectService {
       map.put("project_id", params.get("project_id"));
       map.put("project_name", params.get("project_name"));
       rttr.addFlashAttribute("map", map);
+      String loginId = String.valueOf(sess.getAttribute("loginId"));
+      ArrayList<ProjectDTO> list = dao.projectInfo(String.valueOf(params.get("project_id")));
+      
+      for (ProjectDTO projectDto : list) {
+		if(!loginId.equals(projectDto.getMember_id())) {
+			dao.feedAlarm(projectDto.getMember_id(), String.valueOf(params.get("project_id")));
+		}
+      }
+      
+      
       
       return "redirect:/projectDetail.go?type=controller";
 

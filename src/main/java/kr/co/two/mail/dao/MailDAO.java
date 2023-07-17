@@ -66,6 +66,10 @@ public interface MailDAO {
 
    int mymaildel(String valueOf);
 
+	void receiverMailAlarm(MailDTO dto);
+	
+	void referrerMailAlarm(MailDTO dto);
+	
   //Object mailtempGet(int mail_id, String type);
 
 }

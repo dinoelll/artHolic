@@ -54,5 +54,8 @@ public interface ProjectDAO {
 
    void addProjectMember(String member_id, String project_id);
 
-   
+   ArrayList<ProjectDTO> projectInfo(String project_id);
+
+   void feedAlarm(String member_id, String project_id);
+	
 }

@@ -252,9 +252,10 @@
                            제목 <c:if test="${model.memberdto.get(0).temp == true}">
                            		<input class="form-control" name="mailSubject" id="mailSubject" value="${model.memberdto.get(0).mailSubject}">
                            </c:if> 
-                           <c:if test="${model.memberdto.get(0).temp == false}">
+                           <!--<c:if test="${model.memberdto.get(0).temp == false}">
                            <input class="form-control" name="mailSubject" id="mailSubject">
-                           </c:if>
+                           </c:if>-->
+                           <input class="form-control" name="mailSubject" id="mailSubject">
                         </div>
                         <div class="form-group" id="mailMessage">
                            
