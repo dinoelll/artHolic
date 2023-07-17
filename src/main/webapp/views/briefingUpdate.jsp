@@ -42,6 +42,10 @@
 		magin-left: 45px;
 	}
 	
+	#content{
+		display: none;
+	}
+	
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -73,7 +77,12 @@
 			<tr>
 				<td>
 					<div id="div_editor"></div>
-					<input id="content" name="content" type="hidden" value="${briefing.content}"/>
+					
+					<div id="content">
+					${briefing.content}
+						<input id="contents" name="content" type="hidden" value=""/>
+					</div>
+					
 				</td>
 			</tr>
 			<tr>
@@ -124,11 +133,11 @@ var editor = new RichTextEditor("#div_editor",config);
 config.toolbar="simple";
 config.toolbar_simple="{save, print, html2pdf, code}";
 
-editor.setHTMLCode($("#content").val()); // editor 에 내용 넣기
+editor.setHTMLCode($("#content").html()); // editor 에 내용 넣기
 
 function updateDo(){
 var content = editor.getHTMLCode();
-$('input[name="content"]').val(content);
+$("#contents").val(content);
 $('form').submit();
 //editor.setReadOnly();
 }

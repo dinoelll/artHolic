@@ -4,6 +4,71 @@
 	   
 <mapper namespace="kr.co.two.main.dao.MainDAO">
 
+	<select id="mainMember">
+			SELECT m.tel, m.name, m.email, m.phone, cd_dept.code_name AS dept_name, cd_pos.code_name AS position_name
+			FROM member m
+			JOIN code cd_dept ON m.dept_code = cd_dept.code_id
+			JOIN code cd_pos ON m.position_code = cd_pos.code_id
+			WHERE m.member_id = #{member_id}
+	</select>
 	
+	<select id="informList" resultType="main">
+			SELECT member_id, subject,DATE_FORMAT(writeTime, '%Y-%m-%d') as writeTime
+			FROM board
+			WHERE board_code = 'inform'
+			ORDER BY writeTime DESC LIMIT 4	
+	</select>
 	
+	<select id="myMaillist">
+			SELECT
+			  m.member_id,
+			  m.mailSubject,
+			  m.writeTime,
+			  mem2.dept_code,
+			  mem2.position_code,
+			  cd_dept.code_name AS dept_name,
+			  cd_pos.code_name AS position_name,
+			  DATE_FORMAT(m.writeTime, '%Y-%m-%d')
+			FROM
+			  mail_receiver mr
+			  JOIN mail m ON m.mail_id = mr.mail_id
+			  JOIN member mem2 ON m.member_id = mem2.member_id
+			  JOIN code cd_dept ON mem2.dept_code = cd_dept.code_id
+			  JOIN code cd_pos ON mem2.position_code = cd_pos.code_id
+			WHERE
+			  mr.member_id = #{member_id}
+			ORDER BY writeTime DESC LIMIT 4
+</select>
+	
+	<select id="myPaymentlist">
+			SELECT document_id ,paySubject ,state, form_sort, limit_date FROM elec_payment WHERE id = #{member_id}
+			ORDER BY document_id DESC LIMIT 4
+	</select>
+	
+	<select id="attendance" resultType="main" parameterType="string">
+      SELECT m.*,c1.code_name AS dept_name,c2.code_name AS
+      position_name
+      from member m JOIN code c1 ON (c1.code_id = m.dept_code)
+      JOIN code c2
+      ON (c2.code_id = m.position_code) WHERE
+      member_id=#{member_id}
+   </select>
+   
+   
+   <select id="annual" resultType="main" parameterType="string">
+      SELECT vacation_kind
+      FROM elec_payment
+      WHERE id=#{member_id}
+      AND form_sort ='PAYMENT_VAC' AND state='완료'
+   </select>
+   
+   <select id="myProjectlist" resultType="main">
+   	    SELECT pj.project_name, pj.project_manager, pj.field_manager, pj.start_date, pj.end_date
+		FROM project pj
+		JOIN project_info pi2 ON pj.project_id = pi2.project_id
+		WHERE pi2.member_id = #{member_id}
+   </select>
+   
+   
+   
 </mapper>

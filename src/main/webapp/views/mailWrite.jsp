@@ -113,7 +113,7 @@
                      <div class="modal-body" id="preview">
                         <table>
                            <tr>
-                              <th>보낸사람:</th>
+                              <th>보낸사람: </th> 
                               <td>&nbsp;&nbsp;&nbsp;<span id="preview-sender"></span></td>
                            </tr>
                            <tr>
@@ -226,9 +226,9 @@
                         <div class="mailCard1">
                            <button id="send" class="mailSend" onclick="send()">보내기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                            <button type="button" id="preview-button"class="btn btn-default div-hidden"data-toggle="modal" data-target="#modal-default">미리보기</button>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                           <button id="temp_save" class="mailSend" onclick="temp()">임시저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                           <!-- <button id="temp_save" class="mailSend" onclick="temp()">임시저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                           <button id="formGnb_button" data-toggle="modal" data-target="#modal-lg2" class="mailSend">받는이선택</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                            <button id="selfBox" class="mailSend" onclick="selfBox()">내게쓰기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                           <button id="formGnb_button" data-toggle="modal" data-target="#modal-lg2" class="mailSend">받는이선택</button>
                         </div>
                         
                         <div class="mailCard2 hidden">
@@ -249,13 +249,21 @@
                            참조 <input class="form-control" name="referenceMember" id="cc-input" readOnly>
                         </div>
                         <div class="form-group">
-                           제목 <input class="form-control" name="mailSubject" id="mailSubject">
+                           제목 <c:if test="${model.memberdto.get(0).temp == true}">
+                           		<input class="form-control" name="mailSubject" id="mailSubject" value="${model.memberdto.get(0).mailSubject}">
+                           </c:if> 
+                           <c:if test="${model.memberdto.get(0).temp == false}">
+                           <input class="form-control" name="mailSubject" id="mailSubject">
+                           </c:if>
                         </div>
                         <div class="form-group" id="mailMessage">
                            
                         </div>
                         <div class="form-group">
                            <textarea id="compose-textarea" class="form-control" style="height: 300px" name="mailContent">
+                           <c:if test="${model.memberdto.get(0).temp == true}">
+                           		${model.memberdto.get(0).mailContent}
+                           </c:if>
                            </textarea>
                         </div>
                         <div class="form-group">
@@ -263,7 +271,13 @@
                               <i class="fas fa-paperclip"></i> Attachment
                               <input type="file" name="attachment" multiple="multiple" id="attachment-input">
                            </div>
-                           <div id="attachment-info"></div>
+                           <div id="attachment-info">
+                           <c:if test="${model.memberdto.get(0).temp == true}">
+                           <c:forEach items="${model.mailpthotoList}" var = "file">
+			              		${file.ori_file_name }
+			                </c:forEach>
+			                </c:if>
+			                </div>
                         </div>
                      </div>
                      <!-- /.card-body -->
@@ -317,6 +331,7 @@
 <!-- Bootstrap4 Duallistbox -->
 <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <script>
+
    // 메일쓰기 숨기기
    function selfBox(){
       document.querySelector('.mailCard2').classList.remove('hidden');
@@ -351,13 +366,51 @@
    // URL에서 매개변수 추출
    const urlParams = new URLSearchParams(window.location.search);
    const selfBoxParam = urlParams.get('selfBox');
+   //const tempParams = urlParams.get('type');
    console.log(selfBoxParam);
+   //console.log(tempParams);
    
    if (selfBoxParam) {
      selfBox();
    } else {
      mailBox();
    }
+/*    if(tempParams){
+	   selfBox();
+   }else{
+	   mailBox();
+   } */
+   
+   // temp 아작스로 값 불러오기
+   /* $(document).ready(function() {
+        $.ajax({
+          url: 'mail/tempGet.ajax', 
+          type: 'post',
+          data: {
+        	  'type' : temp,
+        	  'mail_id' : $('#mail_id').val()
+          },
+          dataType:'json',
+          success: function(data) {
+             console.log(data);
+             optionPrint(data.dto);
+          },error: function(e){
+             console.log(e);
+          }
+        })
+        
+        function tempGetPrint(data){
+           var content;
+           if(data.length>0){
+              data.forEach(function(item,mail_id){
+            	  $('#mailSubject').val(item.mailSubject);
+            	  $('#mailContent').val(item.mailContent);
+              })
+           }else{
+              console.log('없음');
+           }
+        }
+   }) */
    
 
 
@@ -497,7 +550,7 @@
            if(option.length>0){
               
               option.forEach(function(item,member_id){
-                 content += '<option value="'+item.member_id+'">'+item.dept_code+'&nbsp;&nbsp;'+item.position_code+'&nbsp;&nbsp;'
+                 content += '<option value="'+item.member_id+'">'+item.dept_name+'&nbsp;&nbsp;'+item.position_name +'&nbsp;&nbsp;'
                     +item.name+'</option>';
               })
            }else{
@@ -581,19 +634,32 @@
    function temp(){
       var mailId=$('#mail_id').val();
       console.log(mailId);
+       
+      var formData = new FormData();
+      
+      formData.append('mail_id',mailId);
+      formData.append('mailSubject',$('#mailSubject').val());
+      formData.append('mailContent',$('#compose-textarea').val());
+      formData.append('type', 'temp');
+      
+      var attachmentFiles = $('#attachment-input')[0].files; // 파일 input 요소의 파일들 가져오기
+      var attachment = attachmentFiles.length > 0 ? attachmentFiles : []; // 파일이 없을 때는 빈 리스트로 초기화
+      for (var i = 0; i < attachmentFiles.length; i++) {
+        formData.append('attachment', attachmentFiles[i]); // 파일을 FormData에 추가
+      }
+      
+		// 빈 리스트인 경우 빈 값을 추가
+      if (attachment.length === 0) {
+        formData.append('attachment', ''); // 빈 값을 추가
+      }
       $.ajax({
         type:'post'
-        ,url:'mail/temp.ajax'
-        ,data:{
-           'mail_id':mailId,
-           'sendMember':$('#recipient-input').val(),
-           'referenceMember':$('#cc-input').val(),
-           'mailSubject':$('#mailSubject').val(),
-           'mailContent':$('#compose-textarea').val(),
-           'attachment':$('#attachment-input').val(),
-        }
-       ,dataType:'json'
-       ,success:function(data){
+		,url:'mail/temp.ajax'
+		,data: formData
+		,contentType: false // 필수: false로 설정하여 content-type 헤더 자동 설정 방지
+		,processData: false // 필수: false로 설정하여 데이터 처리 방지
+		,dataType:'json'
+		,success:function(data){
           console.log(data);
           tempList(data.mail_id);
          
@@ -604,6 +670,7 @@
        
    }
    
+   // 임시저장 두번째부터
    function tempList(mail_id) {
       var content;
       content = '<input type="hidden" id="mail_id" name="mail_id" value="' + mail_id + '">';

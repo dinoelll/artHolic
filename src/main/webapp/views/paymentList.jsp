@@ -179,6 +179,7 @@
 	margin-right: 28px;
 	font-size: 20px;
 	cursor: pointer;
+	color: black;
 	
 }
 #realForm{
@@ -331,6 +332,23 @@
 	font-size: 16px;
 }
 
+/* 의견 스타일 */
+ .modi-date-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    color: gray;
+  }
+
+  .bottom-right-text {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    color: gray;
+  }
+
 
 </style>
   
@@ -382,15 +400,15 @@
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton2" onclick="toggleDocumentTree()">결재 생산함</button>
 						      <div id="documentTree" ><!-- style="display: none;" -->
 						        <p><a href="./paymentList.go" id="ListGo">결재 문서함</a></p>
-						        <p>임시저장</p>
+						        <p><a href="./paymentListTemp.go" id="ListGo">결재 임시저장</a></p>
 						      </div>
 						    </div>
 						    <div>
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton3" onclick="toggleInboxTree()">결재 수신함</button>
 						      <div id="inboxTree"><!--  style="display: none;" -->
-						        <p>결재하기</p>
-						        <p>결재내역</p>
-						        <p>수신참조</p>
+						        <p><a href="./paymentListPay.go" id="ListGo"> 결재하기</a></p>
+						        <p><a href="./paymentListDone.go" id="ListGo"> 결재내역</a></p>
+						        <p><a href="./paymentListTake.go" id="ListGo">수신참조</a></p>
 						      </div>
 						    </div>
 						  </div>
@@ -423,6 +441,9 @@
 							          	<a class="optt" id="optt" value="진행중">진행중</a>
 							          	<a class="optt" id="optt" value="반려">반려</a>
 							          	<a class="optt" id="optt" value="완료">완료</a>
+							          	
+							          	
+							          	
 						          		</div>	
 						          </div>
 						          <div class="col-sm-6">
@@ -577,6 +598,65 @@
 				<!-- /.modal -->
       
       
+      
+      			 <!-- 결재 의견 모달 -->
+				<div class="modal fade" id="modal-default">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					      
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <h4 style="font-weight: 700; margin-bottom: 31px; margin-left: 30px;">결재 결과</h4>
+					        <a style="margin-left:33px; font-size:17px;"></a>
+					        <div style="margin-top: 31px;">
+					          <c:forEach items="${note}" var="e">
+					            <c:set var="cardColor" value="" />
+					            <c:choose>
+					              <c:when test="${e.result == '반려'}">
+					                <c:set var="cardColor" value="callout-Danger" />
+					              </c:when>
+					              <c:when test="${e.form_sort == 'PAYMENT_PRO'}">
+					                <c:set var="cardColor" value="callout-info" />
+					              </c:when>
+					              <c:when test="${e.result == '결재완료'}">
+					                <c:set var="cardColor" value="callout-success" />
+					              </c:when>
+					            </c:choose>
+					            <div class="row">
+					              <div class="col-sm-1">
+					                <div class="rounded-circle" style="width: 50px; height: 50px; overflow: hidden;">
+					                  <img class="img-fluid" src="dist/img/man_default.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+					                </div>
+					              </div>
+					              <div class="col-sm-11">
+					                <div class="callout ${cardColor}" style="margin-bottom: 10px; margin-left: 18px; width: 395px; position: relative;">
+					                  <p>${e.note}</p><br>
+					                  <c:choose>
+					                    <c:when test="${e.result == '결재완료'}">
+					                      <p style=" margin-bottom: 0px;">${e.name} ${e.position} (승인)</p>
+					                      
+					
+					                    </c:when>
+					                    <c:when test="${e.result == '반려'}">
+					                      <p style=" margin-bottom: 0px;">${e.name} ${e.position} (반려)</p>
+					                      
+					
+					                    </c:when>
+					                  </c:choose>
+					                  <p class="bottom-right-text" style=" margin-bottom: 5px; margin-right: 8px;">${e.modi_date}</p>
+					                </div>
+					              </div>
+					            </div>
+					          </c:forEach>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>
      
 
 	
@@ -589,7 +669,7 @@
 </div>
 <!-- ./wrapper -->
 </div>
-
+ <jsp:include page="footer.jsp" />
  
   <!-- jQuery UI -->
    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -611,13 +691,7 @@
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
- <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-    
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+
 
 <script>
 
@@ -631,6 +705,7 @@ var showPage = 1;
 var opt ='default';
 var optt ='default';
 var keyword ='default';
+var temp = 0 ;
 
 listCall(showPage);
 console.log("list call");
@@ -656,7 +731,7 @@ $('.optt').click(function() {
    // 검색어 확인
    
    optt = $(this).attr('value');
-   console.log('optt :'+optt);
+   console.log('optt 진짜 :'+optt);
    var pagePerNum = 5;
    console.log('pagePerNum: ' + pagePerNum);
    listCall(showPage, pagePerNum);
@@ -675,6 +750,7 @@ function listCall(page,cnt){
          type:'post',
          url:'/paymentList.ajax',
          data:{
+        	 'temp':temp,
             'page':page,
             'cnt': cnt,
             'keyword':keyword,
@@ -722,20 +798,90 @@ function listDraw(projectList) {
 
      projectList.forEach(function(dto,project_id){
          content += '<tr>';
-         content += '<th><a href="projectDetail.go?project_id='+dto.limit_date+'">'+dto.limit_date+'</a></th>';
+         content += '<th>'+dto.limit_date+'</th>';
          content += '<th>'+dto.code_name+'</th>';
-         content += '<th>'+dto.paySubject+'</th>';
+         content += '<th><a href="./paymentVacationForm_pay.go?document_id='+dto.document_id+'">'+dto.paySubject+'</th>';
          content += '<td>'+ dto.document_id +'</td>';
-         content += '<td>'+ '<i class="fas fa-comments"></i>'+'</td>';
-         content += '<td><a class="btn btn-primary btn-sm">'+dto.state+'</a></td>';
+         content += '<td>'+ '<i class="fas fa-comments" data-toggle="modal" data-target="#modal-default" onclick="note(\''+dto.document_id+'\')"></i>'+'</td>';
+         
+
+         if (dto.state === '진행중') {
+             content += '<td><a class="btn btn-primary btn-sm">' + dto.state + '</a></td>';
+         } else if (dto.state === '반려') {
+             content += '<td><a class="btn btn-danger btn-sm">' + dto.state + '</a></td>';
+         } else if (dto.state === '완료') {
+             content += '<td><a class="btn btn-secondary btn-sm">' + dto.state + '</a></td>';
+         }
+
          content += '</tr>';
-       });
+     });
 
      $('#projectList').empty();
      $('#projectList').append(content);
    }
    
+   
+   
+function noteSuccess(data) {
+    console.log("success");
+    console.log(data);
 
+    var content = '';
+    var noteArray = data.note;
+
+    for (var i = 0; i < noteArray.length; i++) {
+        var note = noteArray[i];
+
+        var cardColor = '';
+        if (note.result === '반려') {
+            cardColor = 'callout-Danger';
+        } else if (note.form_sort === 'PAYMENT_PRO') {
+            cardColor = 'callout-info';
+        } else if (note.result === '결재완료') {
+            cardColor = 'callout-success';
+        }
+
+        content += '<div class="row">';
+        content += '<div class="col-sm-1">';
+        content += '<div class="rounded-circle" style="width: 50px; height: 50px; overflow: hidden;">';
+        content += '<img class="img-fluid" src="dist/img/man_default.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">';
+        content += '</div>';
+        content += '</div>';
+        content += '<div class="col-sm-11">';
+        content += '<div class="callout ' + cardColor + '" style="margin-bottom: 10px; margin-left: 18px; width: 395px; position: relative;">';
+        content += '<p>' + note.note + '</p><br>';
+
+        if (note.result === '결재완료') {
+            content += '<p style="margin-bottom: 0px;">' + note.name + ' ' + note.position + ' (승인)</p>';
+        } else if (note.result === '반려') {
+            content += '<p style="margin-bottom: 0px;">' + note.name + ' ' + note.position + ' (반려)</p>';
+        }
+
+        content += '<p class="bottom-right-text" style="margin-bottom: 5px; margin-right: 8px;">' + note.modi_date + '</p>';
+        content += '</div>';
+        content += '</div>';
+        content += '</div>';
+    }
+
+    $('#modal-default .modal-body .row').remove();
+    $('#modal-default .modal-body').append(content);
+}
+
+function note(document_id) {
+    console.log(document_id);
+    $.ajax({
+        type: 'post',
+        url: '/note.ajax',
+        data: {
+            'document_id': document_id
+        },
+        dataType: 'json',
+        success: noteSuccess,
+        error: function(e) {
+            console.log("Error");
+        }
+    });
+}
 
 
 
@@ -813,6 +959,10 @@ function restoreButtonColor() {
 	  document.getElementById("paymentButton").removeAttribute("href");
 	  
 	}	
+	
+
+	
+	
   
 </script>
 

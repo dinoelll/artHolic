@@ -16,7 +16,12 @@
          <if
             test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
           <if
+<<<<<<< HEAD
             test="myproject != null and !myproject.equals('')">AND project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE member_id = #{myproject}')</if>
+=======
+            test="myproject != null and !myproject.equals('')">AND project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE member_id = '${myproject}')</if>
+         AND blind = 0
+>>>>>>> origin/master
       </where>
       ORDER BY project_id DESC
       LIMIT #{cnt} OFFSET #{offset}
@@ -25,6 +30,7 @@
    <select id="totalCount" resultType="int" parameterType="string">
       SELECT COUNT(project_id) FROM project AS p
       <where>
+<<<<<<< HEAD
          <if
             test="keyword != null and !keyword.equals('') and opt =='project_name'">AND p.project_name LIKE CONCAT('%',#{keyword},'%')</if>
          <if
@@ -33,6 +39,13 @@
             test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND p.field_manager LIKE CONCAT('%',#{keyword},'%')</if>
 		<if
             test="myproject != null and !myproject.equals('')">AND p.project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE pi2.member_id = #{myproject})</if>
+=======
+         <if test="keyword != null and !keyword.equals('') and opt =='project_name'">AND p.project_name LIKE CONCAT('%',#{keyword},'%')</if>
+         <if test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND p.project_manager LIKE CONCAT('%',#{keyword},'%')</if>
+         <if test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND p.field_manager LIKE CONCAT('%',#{keyword},'%')</if>
+		<if test="myproject != null and !myproject.equals('')">AND p.project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE pi2.member_id = '${myproject}')</if>
+         AND blind = 0
+>>>>>>> origin/master
       </where>
    </select>
 
@@ -67,11 +80,13 @@
       , (select m.name from member m where m.member_id = f.member_id) AS name
       , f.content
       , DATE_FORMAT(f.date,'%Y-%m-%d') as date
-      , p.feed_file_id
-      , p.ori_photo_name
-      , p.photo_name
+      , ff.feed_file_id
+      , ff.ori_photo_name
+      , ff.photo_name
+      , p.project_name
       from feed f
-      left join feed_file p on p.feed_id = f.feed_id
+      left join feed_file ff on ff.feed_id = f.feed_id
+      left join project p on p.project_id = f.project_id
       WHERE f.project_id = #{project_id}
       order by f.feed_id ASC
    </select>
@@ -87,6 +102,46 @@
 	   INSERT INTO project_info(project_id, member_id)
 	   VALUES(#{project_id},#{member_id})
    </insert>
+   
+   
+   
+   <delete id="fileDel">
+   DELETE FROM feed_file WHERE
+   feed_file_id = #{feed_file_id}
+   </delete>
+   
+   
+   <delete id="feedDel">
+   DELETE FROM feed WHERE
+   feed_id = #{feed_id}
+   </delete>
+   
+   <select id="feedUpdate" resultType="project">
+	 SELECT f.feed_id
+	 ,f.content
+	 ,ff.feed_file_id
+	 ,ff.ori_photo_name 
+	 ,p.project_id
+	 ,p.project_name
+	 FROM feed f
+	 left join feed_file ff on ff.feed_id = f.feed_id
+	 left join project p on p.project_id = f.project_id
+	  WHERE f.feed_id = #{feed_id}
+   </select>
+   
+   <update id="feedUpdateDo" parameterType="string">
+   UPDATE feed SET
+   	content = #{content}
+   	WHERE feed_id = #{feed_id}
+   </update>
+   
+   <update id="projectDel" parameterType="string">
+   	UPDATE project SET
+   	blind = 1
+   	WHERE project_id = #{project_id}
+   </update>
+   
+   
 
 
 
@@ -129,7 +184,6 @@
       project_calendar_id =
       #{project_calendar_id}
    </delete>
-   
 
 
 
