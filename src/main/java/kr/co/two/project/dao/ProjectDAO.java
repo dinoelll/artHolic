@@ -12,9 +12,9 @@ import kr.co.two.project.dto.ProjectEventDataDTO;
 @Mapper
 public interface ProjectDAO {
 
-   int totalCount(String opt, String keyword);
+   int totalCount(String opt, String keyword,String myproject);
 
-   ArrayList<ProjectDTO> listCall(String opt, String keyword, int cnt, int offset);
+   ArrayList<ProjectDTO> listCall(String opt, String keyword, int cnt, int offset,String myproject);
 
    int projectWrite(HashMap<String, Object> params);
    
@@ -23,6 +23,12 @@ public interface ProjectDAO {
    void archivefileWrite(String oriFileName, String newFileName, String feed_id);
 
    ArrayList<HashMap<String, String>> getAllFeed(String project_id);
+   
+   ArrayList<ProjectDTO> projectAddOption();
+
+   ArrayList<String> addPorjectMember(ArrayList<String> approvers);
+   
+   
 
    
    
@@ -35,6 +41,7 @@ public interface ProjectDAO {
 
    int eventDelete(String project_calendar_id);
 
-   
+   void addProjectMember(String member_id, String project_id);
+
 
 }

@@ -66,6 +66,7 @@
 		<table>
 			<tr>
 				<td>
+				<input type="hidden" name="member_id" value="${sessionScope.loginId}" />
 					<input type="text" class="subject" name="subject"/>
 		    	</td>
 			</tr>

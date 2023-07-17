@@ -64,8 +64,8 @@
     <section class="content">
 	<form action="/feedWrite.do" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="project_id" value="${project_id}" />
-			<!-- <input type="hidden" name="user_id" value="${user_id}" /> -->
-			<!-- <input type="hidden" name="member_id" value="${member_id}" /> -->
+			<input type="hidden" name="project_name" value="${project_name}" />
+			<input type="hidden" name="member_id" value="${sessionScope.loginId}" />
 		<table>
 			<tr>
 				<td>

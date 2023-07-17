@@ -1,24 +1,41 @@
 package kr.co.two.project.controller;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import kr.co.two.mail.dto.MailDTO;
 import kr.co.two.mypage.dto.EventDataDTO;
+import kr.co.two.project.dto.ProjectDTO;
 import kr.co.two.project.dto.ProjectEventDataDTO;
 import kr.co.two.project.service.ProjectService;
 
@@ -29,6 +46,8 @@ public class ProjectController {
    ProjectService service;
 
    Logger logger = LoggerFactory.getLogger(getClass());
+   
+   @Value("${spring.servlet.multipart.location}") private String root;
 
    @GetMapping(value = "/projectList.go")
    public String projectList() {
@@ -39,9 +58,9 @@ public class ProjectController {
    @PostMapping(value = "/projectList.ajax")
    @ResponseBody
    public HashMap<String, Object> listCall(@RequestParam String page, @RequestParam String cnt,
-         @RequestParam String opt, @RequestParam String keyword) {
-
-      return service.listCall(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword);
+         @RequestParam String opt, @RequestParam String keyword,@RequestParam String myproject) {
+	   	logger.info(myproject);
+      return service.listCall(Integer.parseInt(page), Integer.parseInt(cnt), opt, keyword,myproject);
    }
 
    @PostMapping(value = "/projectWrite.do")
@@ -64,7 +83,7 @@ public class ProjectController {
    public String projectCalendar(@RequestParam String project_id,@RequestParam String project_name, Model model) {
 
       logger.info(project_id);
-
+      logger.info(project_name);
       model.addAttribute("project_id", project_id);
       model.addAttribute("project_name", project_name);
 
@@ -78,30 +97,44 @@ public class ProjectController {
    }
 
    @GetMapping(value = "/feedWrite.go")
-   public String feedWriteGo(Model model, @RequestParam String project_id) {
+   public String feedWriteGo(Model model, @RequestParam String project_id, @RequestParam String project_name) {
 
       logger.info("프로젝트 아이디 : " + project_id);
       model.addAttribute("project_id", project_id);
+      model.addAttribute("project_name", project_name);
       return "feedWrite";
    }
 
    @PostMapping(value = "/feedWrite.do")
-   public String feedWrite(MultipartFile[] attachment, @RequestParam HashMap<String, String> params, Model model) {
+   public String feedWrite(MultipartFile[] attachment, @RequestParam HashMap<String, String> params, Model model, RedirectAttributes rttr) {
       logger.info("params : " + params);
       logger.info("attachment 접근 : " + attachment);
 
-      return service.feedWrite(attachment, params, model);
+      return service.feedWrite(attachment, params, model, rttr);
    }
 
-   @RequestMapping(value = "/projectDetail.go")
-   public String projectDetail(@RequestParam String project_id,@RequestParam String project_name, Model model) {
-
-      // if(session.getAttribute("id") != null) {
-      // page = "project-detail";
-      model.addAttribute("project_id", project_id);
-      model.addAttribute("project_name", project_name);
-      // }
-
+   
+   
+   @RequestMapping(value = "/projectDetail.go", params="type=jsp", method=RequestMethod.GET)
+   public String projectDetailJsp(@RequestParam String project_id, Model model, @RequestParam String project_name) {
+	   	logger.info("map : " + model.getAttribute("map"));
+	      // if(session.getAttribute("id") != null) {
+	      // page = "project-detail";
+	      model.addAttribute("project_id", project_id);
+	      model.addAttribute("project_name", project_name);
+	      // }
+      
+      return "projectDetail";
+   }
+   
+   @RequestMapping(value = "/projectDetail.go", params="type=controller")
+   public String projectDetailController(@ModelAttribute("map") HashMap<String, Object> map, Model model, HttpServletRequest req) {
+	   	logger.info("map : " + map);
+	      // if(session.getAttribute("id") != null) {
+	      // page = "project-detail";
+	      // }
+	   	model.addAttribute("project_id", String.valueOf(map.get("project_id")));
+	   	model.addAttribute("project_name", String.valueOf(map.get("project_name")));
       return "projectDetail";
    }
 
@@ -149,6 +182,60 @@ public class ProjectController {
 
       return map;
    }
+   
+   
+	// 파일 다운로드
+	@GetMapping(value="/feed_fileDownload.do")
+	public ResponseEntity<Resource> download(String photo_name) {
+		
+		Resource body = new FileSystemResource(root+"/"+photo_name);//BODY		
+		HttpHeaders header = new HttpHeaders();//Header
+		try {						
+			String fileName = "이미지"+photo_name.substring(photo_name.lastIndexOf("."));
+			fileName = URLEncoder.encode(fileName, "UTF-8");
+			// text/... 은 문자열, image/... 이미지, application/octet-stream 은 바이너리 데이터
+			header.add("Content-type", "application/octet-stream");
+			// content-Disposition 은 내려보낼 내용이 문자열(inline)인지 파일(attatchment)인지 알려준다. 
+			header.add("content-Disposition", "attatchment;fileName=\""+fileName+"\"");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+			
+		//body, header, status
+		return new ResponseEntity<Resource>(body, header, HttpStatus.OK);
+	}
+	
+	
+	
+	
+	   // 프로젝트 인원추가 셀렉트
+	   @GetMapping(value="/projectAddOption.ajax")
+	   @ResponseBody
+	   public HashMap<String, Object> projectAddOption(){
+	      HashMap<String, Object> map = new HashMap<String, Object>();
+	      ArrayList<ProjectDTO> option = service.projectAddOption();
+	      map.put("option", option);
+	      return map;
+	   }
+	   
+		
+		 // 프로젝트 인원추가 값 보내기
+		 
+		 
+	     @PostMapping(value = "/addProjectMember.ajax")
+		 @ResponseBody 
+		 public String addProjectMember(@RequestBody HashMap<String,Object> projectInfo){
+	    	
+	    	logger.info("프로젝트 인원, id : "+ projectInfo);	 
+		   
+		 	return service.addProjectMember(projectInfo); 
+		 
+		  }
+	
+	
+	
+	
+   
 
    /*---------------------------------------------------------캘린더 영역--------------------------------------------------------------*/
 
@@ -192,7 +279,6 @@ public class ProjectController {
    }
 
    @PostMapping("/ProjecteventDelete.ajax")
-
    @ResponseBody
    public HashMap<String, String> eventDelete(@RequestParam String project_calendar_id) {
       logger.info("id:" + project_calendar_id);
@@ -208,5 +294,7 @@ public class ProjectController {
 
       return map;
    }
+   
+
 
 }
