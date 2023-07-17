@@ -169,7 +169,7 @@ public class MemberController {
 	    } else {
 	        MemberDTO dto = service.login(id, pw);
 	        if (dto != null) {
-	            page = "main";
+	            page = "redirect:/main";
 	        session.setAttribute("loginId", id);
             session.setAttribute("admin", dto.isAdmin());
             logger.info("admin : " + dto.isAdmin());
