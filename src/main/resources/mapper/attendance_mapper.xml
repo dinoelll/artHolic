@@ -1,7 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	   
+
 <mapper namespace="kr.co.two.attendance.dao.AttendanceDAO">
+
+	<select id="attendance" resultType="attendance"
+		parameterType="string">
+		SELECT m.*,c1.code_name AS dept_name,c2.code_name AS
+		position_name
+		from member m JOIN code c1 ON (c1.code_id = m.dept_code)
+		JOIN code c2
+		ON (c2.code_id = m.position_code) WHERE
+		member_id=#{member_id}
+
+	</select>
+	
+	
+	<select id="annual" resultType="string" parameterType="string">
+		SELECT vacation_kind
+		FROM elec_payment
+		WHERE id=#{member_id}
+		AND form_sort ='PAYMENT_VAC' AND state='완료'
+
+	</select>
+
+
+	<select id="atList" resultType="attendance">
+		SELECT ep.*,m.name AS name,m.member_id AS member_id,c1.code_name as
+		dept_name,c2.code_name as
+		position_name
+		FROM elec_payment AS ep
+		LEFT JOIN `member` AS m ON (ep.id
+		= m.member_id)
+		join code c1 on (c1.code_id = m.dept_code) join code c2
+		on (c2.code_id =
+		m.position_code)
+		<where>
+			ep.form_sort ='PAYMENT_VAC' AND ep.state='완료'
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='name'">
+				AND m.name LIKE CONCAT('%',#{keyword},'%')
+			</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='position'">
+				AND c2.code_name LIKE CONCAT('%',#{keyword},'%')
+			</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt =='dept'">
+				AND c1.code_name LIKE CONCAT('%',#{keyword},'%')
+			</if>
+		</where>
+		ORDER BY start_date DESC
+		LIMIT #{cnt} OFFSET #{offset}
+	</select>
+
+
+	<select id="atTotalCount" resultType="int"
+		parameterType="string">
+		SELECT COUNT(ep.id)
+		FROM elec_payment AS ep
+		LEFT JOIN `member` AS m ON (ep.id = m.member_id)
+		join code c1 on (c1.code_id = m.dept_code) join code c2
+		on (c2.code_id = m.position_code)
+		<where>
+			ep.form_sort ='PAYMENT_VAC' AND ep.state='완료'
+			<if
+				test="keyword != null and !keyword.equals('') and opt == 'name'">
+				AND m.name LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt == 'position'">
+				AND m.position_code IN (SELECT code_id FROM code WHERE code_name LIKE
+				CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if
+				test="keyword != null and !keyword.equals('') and opt == 'dept'">
+				AND m.dept_code IN (SELECT code_id FROM code WHERE code_name LIKE
+				CONCAT('%', #{keyword}, '%'))
+			</if>
+		</where>
+	</select>
+
+
+
+
 
 </mapper>

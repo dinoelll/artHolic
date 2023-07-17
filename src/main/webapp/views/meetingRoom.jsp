@@ -275,7 +275,7 @@
 }
 
 .room img {
-	max-width: 100%;
+	width: 234.031px;
 	height: auto;
 	border-radius: 8px;
 	height: 120px;
@@ -305,12 +305,12 @@
 	margin-left: 90px;
 }
 
- .room .time-buttons button {
+.room .time-buttons button {
 	margin-right: 10px;
 	margin-bottom: 10px;
 	/* border: 3px solid #91bdce; */
 	/* background-color: #91bdce; */
-} 
+}
 
 .room-info {
 	display: flex;
@@ -353,14 +353,13 @@ table {
 	border-spacing: 10px;
 }
 
-.m-0{
-	color:#91bdce;
+.m-0 {
+	color: #91bdce;
 }
-.reserved{
+
+.reserved {
 	background-color: gray;
 }
-
-
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed"
@@ -649,13 +648,14 @@ table {
 							return function() {
 								console.log(selectedDate + '-' + selectedRoom
 										+ '-' + selectedTime);
-								var buttons = document.getElementsByClassName("time");
+								var buttons = document
+										.getElementsByClassName("time");
 								for (var j = 0; j < buttons.length; j++) {
 									buttons[j].removeAttribute("id");
-									buttons[j].style.backgroundColor = "";
+									buttons[j].style.backgroundColor = ""; 
 								}
 								this.id = "selected-time";
-								this.style.backgroundColor = "white";
+								this.style.backgroundColor = "#c2c7d0";
 
 								var selectedTimeElement = document
 										.getElementById("selected-time");
@@ -693,7 +693,8 @@ table {
 
 	/* --------------------------예약 데이터 전송------------------------------------ */
 	function reserveMeeting(roomId, selectedDate, selectedRoom) {
-
+		console.log("색상이 바뀌어야한다!!!!!!!!!");
+		
 		// 예약 버튼 클릭 시 예약 처리
 		var selectedDate = selectedDate
 		var selectedRoom = selectedRoom
@@ -722,6 +723,9 @@ table {
 			$('#reservationInfo').html(
 					"회의날짜: " + selectedDate + "<br>회의실명: " + selectedRoom
 							+ "<br>회의시간: " + selectedTime);
+			
+			var selectedButton = document.getElementById("selected-time");
+			  selectedButton.style.backgroundColor = "#c2c7d0";
 
 		}
 
@@ -766,11 +770,17 @@ table {
 					// 요청 성공 시 처리할 코드 작성
 					console.log('예약 등록 성공');
 					console.log(response.success);
-					alert('예약이 완료되었습니다\n' + '<예약정보>\n' + '회의명 - ' +meetingName+'\n'+'참가자 - ' +meetionMember+'\n'+ '회의실 - ' + selectedRoom
-							+ '\n' + '날짜 - ' + selectedDate + '\n' + '시간 - '
-							+ startTime + '-' + endTime);
+					alert('예약이 완료되었습니다\n' + '<예약정보>\n' + '회의명 - ' + meetingName
+							+ '\n' + '참가자 - ' + meetionMember + '\n' + '회의실 - '
+							+ selectedRoom + '\n' + '날짜 - ' + selectedDate
+							+ '\n' + '시간 - ' + startTime + '-' + endTime);
 
-					location.href = '/metingRoom.go';
+					 location.href = '/metingRoom.go'; 
+				/* 	var newtimeButton = document.getElementById("selected-time");
+					newtimeButton.disabled = true;
+					newtimeButton.classList.add("reserved");
+					showTimeSlots(selectedRoom, selectedDate, roomId,
+							timeButtonsContainer); */
 
 				},
 				error : function() {

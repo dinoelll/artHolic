@@ -12,9 +12,9 @@ import kr.co.two.project.dto.ProjectEventDataDTO;
 @Mapper
 public interface ProjectDAO {
 
-   int totalCount(String opt, String keyword);
+   int totalCount(String opt, String keyword,String myproject);
 
-   ArrayList<ProjectDTO> listCall(String opt, String keyword, int cnt, int offset);
+   ArrayList<ProjectDTO> listCall(String opt, String keyword, int cnt, int offset,String myproject);
 
    int projectWrite(HashMap<String, Object> params);
    
