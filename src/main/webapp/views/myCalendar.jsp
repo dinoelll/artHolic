@@ -192,6 +192,21 @@
     color: #11515e!important;
 }
 
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -7.5px;
+    margin-left: -7.5px;
+    width: 80%;
+}
+
+.wrapper, body, html {
+    min-height: 100%;
+    width: 100%;
+}
+
 
 
 </style>
@@ -359,7 +374,7 @@
 		    	var eventData = response.map(function(event) {
 		    	    var start = new Date(event.start_date);
 		    	    var end = new Date(event.end_date);
-		    	    
+		    	   
 		    	     // UTC 시간대와 로컬 시간대의 차이를 분 단위로 가져옵니다
 		    	    var timezoneOffset = new Date().getTimezoneOffset();
 

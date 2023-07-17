@@ -23,38 +23,38 @@
   
   
   <style>
-     .main-sidebar {
-      background-color: #e9ddc6;
-   }
-   .mt-2 .nav .nav-item .nav-link p {
-      color : black;
-   }
-   .logo {
-      width : 231px;
-      height : 68px;
-   }
-   
-      input[type="text"]{
-      width: 100%;
-      border : 1px solid lightgray;
-   }
-   table{
-      magin-left: 45px;
-   }
-   
+  	.main-sidebar {
+		background-color: #e9ddc6;
+	}
+	.mt-2 .nav .nav-item .nav-link p {
+		color : black;
+	}
+	.logo {
+		width : 231px;
+		height : 68px;
+	}
+	
+		input[type="text"]{
+		width: 100%;
+		border : 1px solid lightgray;
+	}
+	table{
+		magin-left: 45px;
+	}
+	
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-   <jsp:include page="header.jsp"/>
-   
-   <div class="content-wrapper">
+	<jsp:include page="header.jsp"/>
+	
+	<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>공지사항 등록</h3>
+            <h3>피드 등록</h3>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -62,30 +62,32 @@
 
     <!-- Main content -->
     <section class="content">
-   <form id="inform" action="/informWrite.do" method="post">
-      <table>
-         <tr>
-            <td>
-            <input type="hidden" name="member_id" value="${sessionScope.loginId}" />
-               <input type="text" class="subject" name="subject"/>
-                <input type="checkbox" name="is_form" value="1"> 필독 등록
-             </td>
-         </tr>
-         <tr>
-            <td>
-               <div id="div_editor"></div>
-               <input id="content" type="hidden" name="content"/>
-            </td>
-         </tr>
-         <tr>
-            <td>
-            <input style="float:right;" type="button" onclick="location.href='informList.go'" value="취소"/>
-               <input style="float:right;" type="button" onclick="save()" value="등록" />
-               
-            </td>
-         </tr>
-      </table>
-   </form>
+	<form action="/feedWrite.do" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="project_id" value="${project_id}" />
+			<input type="hidden" name="project_name" value="${project_name}" />
+			<input type="hidden" name="member_id" value="${sessionScope.loginId}" />
+		<table>
+			<tr>
+				<td>
+					<div id="div_editor"></div>
+					<input id="content" type="hidden" name="content"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<i class="fas fa-paperclip"></i> 파일 첨부
+			    	<input type="file" name="attachment" multiple="multiple">
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<input style="float:right;" type="button" onclick="location.href='projectDetail.go'" value="취소"/>
+					<input style="float:right;" type="button" onclick="save()" value="등록" />
+					
+				</td>
+			</tr>
+		</table>
+	</form>
     </section>
     <!-- /.content -->
   </div>
@@ -111,28 +113,28 @@ config.editorResizeMode = "none"; // 에디터 크기조절 : none
 
 //파일 업로드
 config.file_upload_handler = function(file,callback){//file 정보, 이미지 경로 변경 함수
-   console.log(file);//크기, 이름, 종류 등을 알 수 있다.
-   if(file.size > (1*1024*1024)){
-      alert('1MB 이상의 파일은 올릴수가 없습니다.');
-      callback('/img/noimage.png');
-   }
+	console.log(file);//크기, 이름, 종류 등을 알 수 있다.
+	if(file.size > (1*1024*1024)){
+		alert('1MB 이상의 파일은 올릴수가 없습니다.');
+		callback('/img/noimage.png');
+	}
 }
 
 
 var editor = new RichTextEditor("#div_editor",config);
 
 function save(){
-   console.log('저장');
-   var content = editor.getHTMLCode();
-   console.log(content.length);
-   if(content.length>(4*1024*1024)){
-      alert('컨텐츠의 크기가 너무 큽니다. 이미지의 크기나 갯수를 줄여 주세요');
-   }else{
-      $('input[name="content"]').val(content);
-      $('form').submit();
-   }
-   
-   
+	console.log('저장');
+	var content = editor.getHTMLCode();
+	console.log(content.length);
+	if(content.length>(4*1024*1024)){
+		alert('컨텐츠의 크기가 너무 큽니다. 이미지의 크기나 갯수를 줄여 주세요');
+	}else{
+		$('input[name="content"]').val(content);
+		$('form').submit();
+	}
+	
+	
 }
 </script>
 </html>

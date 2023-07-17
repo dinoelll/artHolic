@@ -23,7 +23,7 @@ public class AddressService {
 	
 	
 
-	public HashMap<String, Object> adList(int page, int cnt, String opt, String keyword, String bookmark) {
+	public HashMap<String, Object> adList(int page, int cnt, String opt, String keyword, String bookmark,String member_id) {
 	HashMap<String, Object>map = new HashMap<String,Object>();
 	int offset = (page - 1) * cnt;
 
@@ -52,7 +52,8 @@ public class AddressService {
 	map.put("list", adList);
 	
 	/*----------------------------------------즐겨찾기 리스트 가져오기------------------------------------------------*/
-	String member_id ="8948948";
+	
+	logger.info(member_id);
 	ArrayList<String>bmList = new ArrayList<String>();
 	bmList = dao.bmList(member_id);
 	logger.info("bmList:"+bmList);

@@ -30,8 +30,8 @@ public class MypageService {
    Logger logger = LoggerFactory.getLogger(getClass());
 
 
-   public void calendarUpdate(ArrayList<EventDataDTO> eventDataList) {
-      String member_id = "1812001";
+   public void calendarUpdate(ArrayList<EventDataDTO> eventDataList,String member_id) {
+      
       for (EventDataDTO eventDataDTO : eventDataList) {
          eventDataDTO.setMember_id(member_id);
          String title = eventDataDTO.getContent();
@@ -55,9 +55,9 @@ public class MypageService {
    }
 
 
-   public List<EventDataDTO> getEvents() {
+   public List<EventDataDTO> getEvents(String member_id) {
       
-      return dao.getEvent();
+      return dao.getEvent(member_id);
    }
 
    
@@ -120,8 +120,8 @@ public class MypageService {
    }
 
 
-   public void calendarUpdate2(EventDataDTO dto) {
-      String member_id = "1812001";
+   public void calendarUpdate2(EventDataDTO dto,String member_id) {
+      
       dto.setMember_id(member_id);
       dao.calendarUpdate2(dto);
       

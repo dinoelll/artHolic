@@ -23,9 +23,9 @@
    </insert>
 
    
-    <select id="getEvent" resultType="eventdata">
+    <select id="getEvent" resultType="eventdata" parameterType="String">
       SELECT * FROM indi_calendar
-      WHERE member_id="1812001"
+      WHERE member_id=#{member_id}
 
    </select>
    

@@ -5,117 +5,132 @@
 <mapper namespace="kr.co.two.project.dao.ProjectDAO">
 
 
-	<select id="listCall" resultType="project"
-		parameterType="string">
-		SELECT * FROM project
-		<where>
-			<if
-				test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
-			<if
-				test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
-			<if
-				test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
-		</where>
-		ORDER BY project_id DESC
-		LIMIT #{cnt} OFFSET #{offset}
-	</select>
+   <select id="listCall" resultType="project"
+      parameterType="string">
+      SELECT * FROM project
+      <where>
+         <if
+            test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
+         <if
+            test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
+         <if
+            test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
+          <if
+            test="myproject != null and !myproject.equals('')">AND project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE member_id = '${myproject}')</if>
+      </where>
+      ORDER BY project_id DESC
+      LIMIT #{cnt} OFFSET #{offset}
+   </select>
 
-	<select id="totalCount" resultType="int" parameterType="string">
-		SELECT COUNT(project_id) FROM project
-		<where>
-			<if
-				test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
-			<if
-				test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
-			<if
-				test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
-		</where>
-	</select>
-
-
-	<insert id="projectWrite" parameterType="hashmap">
-		INSERT INTO project
-		(project_name, project_manager, field_manager, manager_phone,
-		start_date, end_date,
-		member_id)
-		VALUES(#{project_name},#{project_manager},#{field_manager},
-		#{manager_phone},#{start_date},#{end_date},'123456')
-	</insert>
+   <select id="totalCount" resultType="int" parameterType="string">
+      SELECT COUNT(project_id) FROM project AS p
+      <where>
+         <if
+            test="keyword != null and !keyword.equals('') and opt =='project_name'">AND p.project_name LIKE CONCAT('%',#{keyword},'%')</if>
+         <if
+            test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND p.project_manager LIKE CONCAT('%',#{keyword},'%')</if>
+         <if
+            test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND p.field_manager LIKE CONCAT('%',#{keyword},'%')</if>
+		<if
+            test="myproject != null and !myproject.equals('')">AND p.project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE pi2.member_id = '${myproject}')</if>
+      </where>
+   </select>
 
 
-	<insert id="feedWrite" parameterType="project"
-		useGeneratedKeys="true" keyColumn="feed_id" keyProperty="feed_id">
-		INSERT INTO
-		feed(content, project_id, member_id)
-		VALUES(#{content},#{project_id},
-		'123456')
-	</insert>
+   <insert id="projectWrite" parameterType="hashmap">
+      INSERT INTO project
+      (project_name, project_manager, field_manager, manager_phone,
+      start_date, end_date, member_id)
+      VALUES(#{project_name},#{project_manager},#{field_manager},
+      #{manager_phone},#{start_date},#{end_date},#{member_id})
+   </insert>
 
 
-	<insert id="archivefileWrite">
-		INSERT INTO feed_file(ori_photo_name, photo_name,
-		feed_id)
-		VALUES(#{param1}, #{param2}, #{param3})
-	</insert>
+   <insert id="feedWrite" parameterType="project"
+      useGeneratedKeys="true" keyColumn="feed_id" keyProperty="feed_id">
+      INSERT INTO
+      feed(content, project_id, member_id)
+      VALUES(#{content}, #{project_id}, #{member_id})
+   </insert>
 
 
-	<select id="getAllFeed" parameterType="string"
-		resultType="hashmap">
-		select f.feed_id
-		, f.project_id
-		, (select m.name from member m where m.member_id = f.member_id) AS name
-		, f.content
-		, DATE_FORMAT(f.date,'%Y-%m-%d') as date
-		, p.feed_file_id
-		, p.ori_photo_name
-		from feed f
-		left join feed_file p on p.feed_id = f.feed_id
-		WHERE f.project_id = #{project_id}
-		order by f.feed_id ASC
-	</select>
+   <insert id="archivefileWrite">
+      INSERT INTO feed_file(ori_photo_name, photo_name, feed_id)
+      VALUES(#{param1}, #{param2}, #{param3})
+   </insert>
+
+
+   <select id="getAllFeed" parameterType="string"
+      resultType="hashmap">
+      select f.feed_id
+      , f.project_id
+      , (select m.name from member m where m.member_id = f.member_id) AS name
+      , f.content
+      , DATE_FORMAT(f.date,'%Y-%m-%d') as date
+      , p.feed_file_id
+      , p.ori_photo_name
+      , p.photo_name
+      from feed f
+      left join feed_file p on p.feed_id = f.feed_id
+      WHERE f.project_id = #{project_id}
+      order by f.feed_id ASC
+   </select>
+   
+   
+   
+   <select id="projectAddOption" resultType="project">
+      SELECT * FROM member
+   </select>
+   
+   
+	<insert id="addProjectMember" parameterType="string">
+	   INSERT INTO project_info(project_id, member_id)
+	   VALUES(#{project_id},#{member_id})
+   </insert>
 
 
 
-
-	<!-- 캘린더 영역 -->
-
+   <!-- 캘린더 영역 -->
 
 
-	<select id="getEvent" resultType="ProEventdata">
-		SELECT * FROM project_calendar
-		WHERE project_id=#{project_id}
 
-	</select>
+   <select id="getEvent" resultType="ProEventdata">
+      SELECT * FROM project_calendar
+      WHERE project_id=#{project_id}
 
-
-	<insert id="calendarUpdate" parameterType="ProEventdata">
-		INSERT INTO
-		project_calendar (content, start_date,
-		end_date,project_id,allDay,backgroundColor,borderColor,project_calendar_id)
-		VALUES
-		(#{content},#{start_date},#{end_date},#{project_id},#{allDay},#{backgroundColor},#{borderColor},#{project_calendar_id})
-		ON DUPLICATE KEY UPDATE start_date =
-		#{start_date},end_date=#{end_date}
-
-	</insert>
+   </select>
 
 
-	<insert id="calendarUpdate2" parameterType="ProEventdata">
-		INSERT INTO
-		project_calendar (content, start_date,
-		end_date,project_id,allDay,backgroundColor,borderColor,project_calendar_id)
-		VALUES
-		(#{content},#{start_date},#{end_date},#{project_id},#{allDay},#{backgroundColor},#{borderColor},#{project_calendar_id})
-		ON DUPLICATE KEY UPDATE start_date =
-		#{start_date},end_date=#{end_date}, content=#{content}
+   <insert id="calendarUpdate" parameterType="ProEventdata">
+      INSERT INTO
+      project_calendar (content, start_date,
+      end_date,project_id,allDay,backgroundColor,borderColor,project_calendar_id)
+      VALUES
+      (#{content},#{start_date},#{end_date},#{project_id},#{allDay},#{backgroundColor},#{borderColor},#{project_calendar_id})
+      ON DUPLICATE KEY UPDATE start_date =
+      #{start_date},end_date=#{end_date}
 
-	</insert>
+   </insert>
 
-	<delete id="eventDelete">
-		DELETE FROM project_calendar WHERE
-		project_calendar_id =
-		#{project_calendar_id}
-	</delete>
+
+   <insert id="calendarUpdate2" parameterType="ProEventdata">
+      INSERT INTO
+      project_calendar (content, start_date,
+      end_date,project_id,allDay,backgroundColor,borderColor,project_calendar_id)
+      VALUES
+      (#{content},#{start_date},#{end_date},#{project_id},#{allDay},#{backgroundColor},#{borderColor},#{project_calendar_id})
+      ON DUPLICATE KEY UPDATE start_date =
+      #{start_date},end_date=#{end_date}, content=#{content}
+
+   </insert>
+
+   <delete id="eventDelete">
+      DELETE FROM project_calendar WHERE
+      project_calendar_id =
+      #{project_calendar_id}
+   </delete>
+   
+
 
 
 </mapper>

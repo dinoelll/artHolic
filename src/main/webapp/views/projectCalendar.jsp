@@ -65,9 +65,9 @@
 .content {
 	display: flex;
 	/* justify-content: center;
-		align-items: center;
-		height: 700px;
-		text-align: center; */
+      align-items: center;
+      height: 700px;
+      text-align: center; */
 }
 
 .modal-overlay {
@@ -128,7 +128,6 @@
 	cursor: pointer;
 }
 
-
 #modal-form button:hover {
 	background-color: #357ca5;
 }
@@ -138,69 +137,90 @@
 }
 
 .btn-primary {
-    background-color: #91bdce;
-    border-color: #91bdce;;
-    box-shadow: none;
+	background-color: #91bdce;
+	border-color: #91bdce;;
+	box-shadow: none;
 }
 
 .btn-primary.disabled, .btn-primary:disabled {
-    color: #fff;
-    background-color: #91bdce;
-    border-color: #91bdce;
+	color: #fff;
+	background-color: #91bdce;
+	border-color: #91bdce;
 }
-#save{
+
+#save {
 	float: center;
 	background-color: #91bdce;
-    border-color: #91bdce;
-     color: #fff;
+	border-color: #91bdce;
+	color: #fff;
 }
 
-.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #4d798a;
-    border-color: #4d798a;
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active,
+	.show>.btn-primary.dropdown-toggle {
+	color: #fff;
+	background-color: #4d798a;
+	border-color: #4d798a;
 }
-
-
 
 .bg-success {
-    background-color: #05b6fa!important;
-}
-.bg-warning {
-    background-color: #36d1f7!important;
-}
-.bg-info {
-    background-color: #4d798a!important;
-}
-.bg-primary {
-    background-color: #11515e!important;
-}
-.bg-danger {
-    background-color: #4f7178!important;
-}
-4f7178
-.text-primary {
-    color: #05b6fa!important;
-}
-.text-warning {
-    color: #36d1f7!important;
-}
-.text-success {
-    color: #4d798a!important;
-}
-.text-danger {
-    color: #11515e!important;
+	background-color: #05b6fa !important;
 }
 
-.subject{
-	color:#91bdce;
+.bg-warning {
+	background-color: #36d1f7 !important;
 }
-#project_name{
-	color:#91bdce;
+
+.bg-info {
+	background-color: #4d798a !important;
+}
+
+.bg-primary {
+	background-color: #11515e !important;
+}
+
+.bg-danger {
+	background-color: #4f7178 !important;
+}
+
+4f7178
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.text-primary {
+	color: #05b6fa !important;
+}
+
+.text-warning {
+	color: #36d1f7 !important;
+}
+
+.text-success {
+	color: #4d798a !important;
+}
+
+.text-danger {
+	color: #11515e !important;
+}
+
+.subject {
+	color: #91bdce;
+}
+
+#project {
+	color: #91bdce;
 	text-align-last: center;
 }
-
-
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -213,8 +233,14 @@
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0"><a href="/projectCalendar.go?project_id=${project_id}&project_name=${project_name}" class="subject"><b>캘린더</b></a>|<a href="/projectDetail.go?project_id=${project_id}&project_name=${project_name}" class="subject">피드</a></h1> 
-						
+							<h1 class="m-0">
+								<a
+									href="/projectCalendar.go?project_id=${project_id}&project_name=${project_name}"
+									class="subject"><b>캘린더</b></a>|<a
+									href="/projectDetail.go?type=jsp&project_id=${project_id}&project_name=${project_name}"
+									class="subject">피드</a>
+							</h1>
+
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">
@@ -230,10 +256,10 @@
 				<!-- /.container-fluid -->
 			</div>
 			<!-- /.content-header -->
-			<h1 id="project_name">&lt; team ${project_name} &gt;</h1>
+			<h1 id="project">&lt; team ${project_name} &gt;</h1>
 
-<input type="hidden" id="project_id" value="${project_id }">
-
+			<input type="hidden" id="project_id" value="${project_id }">
+			<input type="hidden" id="project_name" value="${project_name }">
 
 			<div id="modal" style="display: none;">
 				<!-- 모달 내부의 입력 폼 -->
@@ -257,10 +283,11 @@
 								<div class="card">
 									<div class="card-header">
 										<!-- <h4 class="card-title">일정 </h4> -->
-										<button onclick="sendEventsToServer()" id="save" class="btn">일정 저장</button>
+										<button onclick="sendEventsToServer()" id="save" class="btn">일정
+											저장</button>
 									</div>
-									 <!-- <button onclick="cl_ev()">이벤트 불러오기</button>  -->
-									
+									<!-- <button onclick="cl_ev()">이벤트 불러오기</button>  -->
+
 
 
 
@@ -273,9 +300,9 @@
 											<div class="external-event bg-primary">회식</div>
 											<div class="external-event bg-danger">휴가</div>
 											<div class="checkbox">
-												 <label for="drop-remove"> <input type="checkbox"
+												<label for="drop-remove"> <input type="checkbox"
 													id="drop-remove"> 일정 리스트에서 삭제하기
-												</label> 
+												</label>
 											</div>
 										</div>
 									</div>
@@ -358,144 +385,146 @@
 
 	<!-- Page specific script -->
 	<script>
-	var calendar=null;
-	var calendar_id = $('#project_id').val();
-	console.log(calendar_id);
 	
-	
-	 $(document).ready(function callList() {
-		  // 페이지 로드 시 서버에서 이벤트 데이터를 가져와서 캘린더에 표시
-		  console.log('리스트 다시 불러오기!');
-		  $.ajax({
-		    url: '/getProjectEvent.ajax', // 이벤트 데이터를 조회하는 API 엔드포인트
-		    data:{
-		    	project_id : $('#project_id').val()
-		    },
-		    type: 'GET',
-		    success: function(response) {
-		    	console.log('진입!!!!!!!!!!!!!!!');
-		    	var eventData = response.map(function(event) {
-		    	    var start = new Date(event.start_date);
-		    	    var end = new Date(event.end_date);
-		    	    
-		    	     // UTC 시간대와 로컬 시간대의 차이를 분 단위로 가져옵니다
-		    	    var timezoneOffset = new Date().getTimezoneOffset();
+   var calendar=null;
+   var calendar_id = $('#project_id').val();
+   console.log(calendar_id);
+   
+   
+    $(document).ready(function callList() {
+        // 페이지 로드 시 서버에서 이벤트 데이터를 가져와서 캘린더에 표시
+        console.log('리스트 다시 불러오기!');
+        $.ajax({
+          url: '/getProjectEvent.ajax', // 이벤트 데이터를 조회하는 API 엔드포인트
+          data:{
+             project_id : $('#project_id').val()
+          },
+          type: 'GET',
+          success: function(response) {
+             console.log('진입!!!!!!!!!!!!!!!');
+             var eventData = response.map(function(event) {
+                 var start = new Date(event.start_date);
+                 var end = new Date(event.end_date);
+                 
+                  // UTC 시간대와 로컬 시간대의 차이를 분 단위로 가져옵니다
+                 var timezoneOffset = new Date().getTimezoneOffset();
 
-		    	    // 서버에서 받은 UTC 시간을 로컬 시간대로 조정합니다
-		    	    start.setMinutes(start.getMinutes() - timezoneOffset);
-		    	    end.setMinutes(end.getMinutes() - timezoneOffset); 
-		    	    
-		    	    return {
-		    	      title: event.content,
-		    	      start: start,
-		    	      end: end,
-		    	      allDay: event.allDay,
-				      backgroundColor : event.backgroundColor,
-				      borderColor : event.borderColor,
-				      id : event.project_calendar_id
-		    	    };
-		    	  });
-		    	  
-		    	  eventData.forEach(function(event) {
-		    	    calendar.addEvent(event);
-		    	  });
-		    	  
-		    	  console.log('이벤트 데이터가 성공적으로 가져와서 캘린더에 표시되었습니다.');
-		    	  calendar.render();
-		    },
-		    error: function(xhr, status, error) {
-		      console.error('이벤트 데이터 조회 중 에러가 발생하였습니다:', error);
-		    }
-		  });
-		});
-	
-	
-/* 	var eventList = calendar.getEvents(); */
-	
-	$(function () {
+                 // 서버에서 받은 UTC 시간을 로컬 시간대로 조정합니다
+                 start.setMinutes(start.getMinutes() - timezoneOffset);
+                 end.setMinutes(end.getMinutes() - timezoneOffset); 
+                 
+                 return {
+                   title: event.content,
+                   start: start,
+                   end: end,
+                   allDay: event.allDay,
+                  backgroundColor : event.backgroundColor,
+                  borderColor : event.borderColor,
+                  id : event.project_calendar_id
+                 };
+               });
+               
+               eventData.forEach(function(event) {
+                 calendar.addEvent(event);
+               });
+               
+               console.log('이벤트 데이터가 성공적으로 가져와서 캘린더에 표시되었습니다.');
+               calendar.render();
+          },
+          error: function(xhr, status, error) {
+            console.error('이벤트 데이터 조회 중 에러가 발생하였습니다:', error);
+          }
+        });
+      });
+   
+   
+/*    var eventList = calendar.getEvents(); */
+   
+   $(function () {
 
-		  /* 외부 이벤트 초기화
-		     -----------------------------------------------------------------*/
-		  function ini_events(ele) {
-		    ele.each(function () {
+        /* 외부 이벤트 초기화
+           -----------------------------------------------------------------*/
+        function ini_events(ele) {
+          ele.each(function () {
 
-		      // 이벤트 객체 생성 (https://fullcalendar.io/docs/event-object)
-		      // 시작과 끝을 필요로하지 않습니다
-		      var eventObject = {
-		        title: $.trim($(this).text()) // 요소의 텍스트를 이벤트 제목으로 사용
-		      }
+            // 이벤트 객체 생성 (https://fullcalendar.io/docs/event-object)
+            // 시작과 끝을 필요로하지 않습니다
+            var eventObject = {
+              title: $.trim($(this).text()) // 요소의 텍스트를 이벤트 제목으로 사용
+            }
 
-		      // 이벤트 객체를 DOM 요소에 저장하여 나중에 접근할 수 있게 합니다
-		      $(this).data('eventObject', eventObject)
+            // 이벤트 객체를 DOM 요소에 저장하여 나중에 접근할 수 있게 합니다
+            $(this).data('eventObject', eventObject)
 
-		      // jQuery UI를 사용하여 이벤트를 드래그 가능하게 합니다
-		      $(this).draggable({
-		        zIndex        : 1070,
-		        revert        : true, // 드래그 후 원래 위치로 되돌아갑니다
-		        revertDuration: 0  // 드래그 후 복귀하는 시간
-		      })
+            // jQuery UI를 사용하여 이벤트를 드래그 가능하게 합니다
+            $(this).draggable({
+              zIndex        : 1070,
+              revert        : true, // 드래그 후 원래 위치로 되돌아갑니다
+              revertDuration: 0  // 드래그 후 복귀하는 시간
+            })
 
-		    })
-		  }
+          })
+        }
 
-		  ini_events($('#external-events div.external-event'))
+        ini_events($('#external-events div.external-event'))
 
-		  /* 캘린더 초기화
-		     -----------------------------------------------------------------*/
-		  // 캘린더 이벤트용 날짜 (더미 데이터)
-		  var date = new Date()
-		  var d    = date.getDate(),
-		      m    = date.getMonth(),
-		      y    = date.getFullYear()
+        /* 캘린더 초기화
+           -----------------------------------------------------------------*/
+        // 캘린더 이벤트용 날짜 (더미 데이터)
+        var date = new Date()
+        var d    = date.getDate(),
+            m    = date.getMonth(),
+            y    = date.getFullYear()
 
-		  var Calendar = FullCalendar.Calendar;
-		  var Draggable = FullCalendar.Draggable;
+        var Calendar = FullCalendar.Calendar;
+        var Draggable = FullCalendar.Draggable;
 
-		  var containerEl = document.getElementById('external-events');
-		  var checkbox = document.getElementById('drop-remove');
-		  var calendarEl = document.getElementById('calendar');
+        var containerEl = document.getElementById('external-events');
+        var checkbox = document.getElementById('drop-remove');
+        var calendarEl = document.getElementById('calendar');
 
-		  // 외부 이벤트 초기화
-		  // -----------------------------------------------------------------
+        // 외부 이벤트 초기화
+        // -----------------------------------------------------------------
 
-		  new Draggable(containerEl, {
-		    itemSelector: '.external-event',
-		    eventData: function(eventEl) {
-		      return {
-		        title: eventEl.innerText,
-		        backgroundColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
-		        borderColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
-		        textColor: window.getComputedStyle(eventEl, null).getPropertyValue('color'),
-		      };
-		     
-		    }
-		  });
+        new Draggable(containerEl, {
+          itemSelector: '.external-event',
+          eventData: function(eventEl) {
+            return {
+              title: eventEl.innerText,
+              backgroundColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
+              borderColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
+              textColor: window.getComputedStyle(eventEl, null).getPropertyValue('color'),
+            };
+           
+          }
+        });
 
-		  calendar = new Calendar(calendarEl, {
-		    headerToolbar: {
-		      left  : 'prev,next today',
-		      center: 'title',
-		      right : 'dayGridMonth,timeGridWeek,timeGridDay'
-		    },
-		    themeSystem: 'bootstrap',
-		    // 임의의 기본 이벤트
-		
-		    editable  : true,
-		    droppable : true, // 캘린더 위로 요소를 놓을 수 있게 합니다
-		    drop      : function(info) {
-		      // "놓은 후 삭제" 체크박스가 선택되어 있는지 확인합니다
-		      if (checkbox.checked) {
-		        // 체크박스가 선택되어 있다면 "Draggable Events" 목록에서 해당 요소를 제거합니다
-		        info.draggedEl.parentNode.removeChild(info.draggedEl);
-		      }
+        calendar = new Calendar(calendarEl, {
+          headerToolbar: {
+            left  : 'prev,next today',
+            center: 'title',
+            right : 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          themeSystem: 'bootstrap',
+          // 임의의 기본 이벤트
+      
+          editable  : true,
+          droppable : true, // 캘린더 위로 요소를 놓을 수 있게 합니다
+          drop      : function(info) {
+            // "놓은 후 삭제" 체크박스가 선택되어 있는지 확인합니다
+            if (checkbox.checked) {
+              // 체크박스가 선택되어 있다면 "Draggable Events" 목록에서 해당 요소를 제거합니다
+              info.draggedEl.parentNode.removeChild(info.draggedEl);
+            }
 
-		      console.log('이벤트 발생!');
-		    },
-		    /* ---------------------------------------------------------------------------------------------- */
-		    eventClick: function(info) {
-		    	
-		    	 // 모달 창 띄우기
-		    	  showModal(info.event);
+            console.log('이벤트 발생!');
+          },
+          /* ---------------------------------------------------------------------------------------------- */
+          eventClick: function(info) {
+             
+              // 모달 창 띄우기
+               showModal(info.event);
+
 
 		    	  // 모달 폼 전송 이벤트 리스너 등록
 		    	  $('#modal-form').on('submit', function(e) {
@@ -508,11 +537,12 @@
 		    	    var backgroundColor = info.event.backgroundColor;
 		    	    var borderColor = info.event.borderColor;
 		    	    var project_id = $('#project_id').val();
+		    	    var project_name = $('#project_name').val();
 		    	    
 		    	    console.log(content,project_calendar_id);
 
 		    	    // 서버로 데이터 전송 (업데이트 또는 삭제)
-		    	    sendEventData(project_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor,project_id);
+		    	    sendEventData(project_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor,project_id,project_name);
 		    	    
 		    	    // 모달 닫기
 		    	    closeModal();
@@ -531,10 +561,9 @@
 				    	  $('#modal').hide();
 				    	  $('#modal-form')[0].reset();
 				    	}
-
 		    		
-		    	
-				    	function sendEventData(project_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor,project_id) {
+		    		
+				    	function sendEventData(project_calendar_id, content,start_date,end_date,allDay,backgroundColor,borderColor,project_id,project_name) {
 				    	  // 서버로 데이터 전송 (업데이트 또는 삭제)
 				    	  var requestData = {
 				    		project_calendar_id: project_calendar_id,
@@ -557,7 +586,8 @@
 							      // 요청 성공 시 처리할 코드 작성
 							      console.log('일정 업데이트 또는 삭제 성공');
 							      alert('일정이 변경되었습니다!');
-							      location.href='/projectCalendar.go?project_id=' + $('#project_id').val(); 
+							      console.log($('#project_name').val());
+							      location.href='/projectCalendar.go?project_id=' + $('#project_id').val()+'&project_name='+ $('#project_name').val(); 
 							      
 							    },
 							    error: function() {
@@ -566,28 +596,30 @@
 							    }
 							  });    	
 				      }	  
-				    	
-	    	
-				    	  $('#delete').on('click', function(e) {
-					    	    e.preventDefault();
-					    	   console.log(info.event.id);
-					    	    
-					    	    var project_calendar_id = info.event.id; // 클릭한 이벤트의 id 가져오기
-					    	    
-					    	    
-					    	    console.log(project_calendar_id);
+               
+				
+                     $('#delete').on('click', function(e) {
+                          e.preventDefault();
+                         console.log(info.event.id);
+                          
+                          var project_calendar_id = info.event.id; // 클릭한 이벤트의 id 가져오기
+                          
+                          
+                          console.log(project_calendar_id);
 
-					    	    // 서버로 데이터 전송 (업데이트 또는 삭제)
-					    	    deleteEvent(project_calendar_id);
-					    	    
-					    	    // 모달 닫기
-					    	    closeModal();
-					    	  });
-				    	
+
+                          // 서버로 데이터 전송 (업데이트 또는 삭제)
+                          deleteEvent(project_calendar_id);
+                          
+                          // 모달 닫기
+                          closeModal();
+                        });
+                   
+			
 
 				    	
 				    	 function deleteEvent(project_calendar_id) {
-				    		
+				    		 console.log($('#project_name').val());
 				    		console.log(project_calendar_id);
 				    		   $.ajax({
 								    url: '/ProjecteventDelete.ajax',
@@ -599,7 +631,8 @@
 								      // 요청 성공 시 처리할 코드 작성
 								      console.log(data.data);
 								      alert('일정이 삭제되었습니다!');
-								      location.href='/projectCalendar.go?project_id=' + $('#project_id').val(); 
+								      console.log($('#project_name').val());
+								      location.href='/projectCalendar.go?project_id=' + $('#project_id').val()+'&project_name='+ $('#project_name').val(); 
 								      
 								    },
 								    error: function() {
@@ -617,43 +650,46 @@
 		  });
 
 
-		  calendar.render();
 
-		  /* 이벤트 추가 */
-		  var currColor = '#3c8dbc' // 기본적으로 빨강
 
-		  // 색상 선택 버튼
-		  $('#color-chooser > li > a').click(function (e) {
-		    e.preventDefault()
-		    // 색상 저장
-		    currColor = $(this).css('color')
-		    // 버튼에 색상 효과 추가
-		    $('#add-new-event').css({
-		      'background-color': currColor,
-		      'border-color'    : currColor
-		    })
-		  })
+        calendar.render();
 
-		  $('#add-new-event').click(function (e) {
-		    e.preventDefault()
-		    // 값 가져오고 null이 아닌지 확인합니다
-		    var val = $('#new-event').val()
-		    if (val.length == 0) {
-		      return
-		    }
+        /* 이벤트 추가 */
+        var currColor = '#3c8dbc' // 기본적으로 빨강
 
-		    // 이벤트 생성
-		    var event = $('<div />')
-		    event.css({
-		      'background-color': currColor,
-		      'border-color'    : currColor,
-		      'color'           : '#fff'
-		    }).addClass('external-event')
-		    event.text(val)
-		    $('#external-events').prepend(event)
+        // 색상 선택 버튼
+        $('#color-chooser > li > a').click(function (e) {
+          e.preventDefault()
+          // 색상 저장
+          currColor = $(this).css('color')
+          // 버튼에 색상 효과 추가
+          $('#add-new-event').css({
+            'background-color': currColor,
+            'border-color'    : currColor
+          })
+        })
 
-		    // 드래그 가능하도록 기능 추가
-		    ini_events(event)
+        $('#add-new-event').click(function (e) {
+          e.preventDefault()
+          // 값 가져오고 null이 아닌지 확인합니다
+          var val = $('#new-event').val()
+          if (val.length == 0) {
+            return
+          }
+
+          // 이벤트 생성
+          var event = $('<div />')
+          event.css({
+            'background-color': currColor,
+            'border-color'    : currColor,
+            'color'           : '#fff'
+          }).addClass('external-event')
+          event.text(val)
+          $('#external-events').prepend(event)
+
+          // 드래그 가능하도록 기능 추가
+          ini_events(event)
+
 
 		    // 텍스트 입력란에서 이벤트 삭제
 		    $('#new-event').val('')
@@ -667,7 +703,7 @@
 	  
 	  /* -----------------------------------------------------------------------------------------  */
 		 /*  sendEventsToServer(); */
-		  
+
 		  function sendEventsToServer() {
 			  var events = calendar.getEvents(); // 현재 캘린더의 이벤트 배열 가져오기
 				
@@ -697,7 +733,7 @@
 				  success: function(response) {
 				    console.log(response);
 				    alert('일정이 등록되었습니다!');
-				    location.href='/projectCalendar.go?project_id=' + $('#project_id').val(); 
+				    location.href='/projectCalendar.go?project_id=' + $('#project_id').val()+'&project_name='+ $('#project_name').val(); 
 				    calendar.render();
 				  },
 				  error: function(error) {
@@ -705,40 +741,21 @@
 				  }
 				});
 			}
-		  /* -----------------------------------------------------------------------------------------  */
-		  
-		  
-
-
-
-
-/* const btn = document.getElementById('popupBtn');
-const modal = document.getElementById('modalWrap');
-const closeBtn = document.getElementById('closeBtn');
-
-/* btn.onclick = function() {
-	modal.style.display = 'block';
-} */
-/* closeBtn.onclick = function() {
-	modal.style.display = 'none';
-}
-
-window.onclick = function(event) {
-	if (event.target == modal) {
-		modal.style.display = "none";
-	}
-} */ 
-
-
-		  
-function closeModal() {
-	  // 모달 창 닫기 및 모달 폼 초기화
-	  $('#modal').hide();
-	  $('#modal-form')[0].reset();
-	}
 	
+		  /* -----------------------------------------------------------------------------------------  */
 
-		  
+
+
+ 
+        
+function closeModal() {
+     // 모달 창 닫기 및 모달 폼 초기화
+     $('#modal').hide();
+     $('#modal-form')[0].reset();
+   }
+   
+
+        
 
 
 </script>

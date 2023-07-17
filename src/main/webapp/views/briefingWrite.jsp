@@ -54,7 +54,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h3>현장설명 게시판</h3>
+            <h3>현장설명회 등록</h3>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -66,6 +66,7 @@
 		<table>
 			<tr>
 				<td>
+				<input type="hidden" name="member_id" value="${sessionScope.loginId}" />
 					<input type="text" class="subject" name="subject"/>
 		    	</td>
 			</tr>

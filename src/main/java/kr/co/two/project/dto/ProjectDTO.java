@@ -21,6 +21,13 @@ public class ProjectDTO {
    private String identify_number;
    private String ext;
    
+   //member
+   private String pw;
+   private String name;
+   private String email;
+   private String dept_code;
+   private String position_code;
+   
    
    public int getProject_id() {
       return project_id;
@@ -112,6 +119,36 @@ public class ProjectDTO {
    public void setExt(String ext) {
       this.ext = ext;
    }
+	public String getPw() {
+		return pw;
+	}
+	public void setPw(String pw) {
+		this.pw = pw;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getDept_code() {
+		return dept_code;
+	}
+	public void setDept_code(String dept_code) {
+		this.dept_code = dept_code;
+	}
+	public String getPosition_code() {
+		return position_code;
+	}
+	public void setPosition_code(String position_code) {
+		this.position_code = position_code;
+	}
 
 
 }
