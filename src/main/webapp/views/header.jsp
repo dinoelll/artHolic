@@ -198,7 +198,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./outBox.go" class="nav-link">
+                <a href="./tempBox.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>임시 보관함</p>
                 </a>
@@ -326,7 +326,7 @@
   
   
 <script>
-   loginChk();
+/*    loginChk();
    function loginChk() {
         var loginId = '${sessionScope.loginId}';
         var admin = '${sessionScope.admin}';
@@ -342,5 +342,5 @@
                 $('#adminMenu').removeClass('admin');
             }
         }
-    }
+    } */
 </script>

@@ -69,24 +69,25 @@
       color: gray;
       font-weight: bold;
       background-color: white;
-      width: 114px;
-      border: none;
-      border-radius: 10px;
-      margin-top: 30px;
-   }
-   
-   .btn-sm2 {
-      color: white;
-      font-weight: bold;
-      background-color: #91bdce;
-      width: 114px;
+      width: 134px;
       border: none;
       border-radius: 10px;
       margin-top: 30px;
       margin-left: 30px;
    }
    
-   .send-icon{
+   .btn-sm2 {
+      color: white;
+      font-weight: bold;
+      background-color: #91bdce;
+      width: 134px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 30px;
+      margin-left: 30px;
+   }
+   
+   .fa-envelope{
       font-size: 150px;
       color: #e9ddc6;
    }
@@ -120,16 +121,16 @@
     <section class="content">
       <div class="container-fluid">
        
-      <i class="fa-thin fa-paper-plane fa-beat"></i>
+      <i class="fa-thin fa-envelope fa-bounce"></i>
       <br>
       <br>
       <br>
       <br>
-      <p> - 상대방에게 메일 전송이 정상적으로 전송되었습니다. -</p>
-      <p> - 보낸 메일함에서 확인 가능 합니다. -</p>
+      <p> - 내게 쓴 메일 전송이 정상적으로 전송되었습니다. -</p>
+      <p> - 내게 쓴 메일함에서 확인 가능 합니다. -</p>
        
        <a href="mailWrite.go" class="btn btn-primary btn-sm1 ">메일 쓰기</a>
-        <a href="inBox.go" class="btn btn-primary btn-sm2 ">보낸 메일함</a>
+        <a href="#" class="btn btn-primary btn-sm2 ">내게 쓴 메일함</a>
        
       </div>
       <!-- /.container-fluid -->
