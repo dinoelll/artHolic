@@ -53,7 +53,7 @@
    </update>
 
    <delete id="myFolderDelte">
-        DELETE FROM myFolder WHERE folder_id = #{folderId}
+        DELETE FROM myfolder WHERE folder_id = #{folderId}
     </delete>
     
     <select id="fileList" resultType="mypage">
