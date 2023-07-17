@@ -3,7 +3,17 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
       
 <mapper namespace="kr.co.two.mail.dao.MailDAO">
-
+	
+	<insert id="receiverMailAlarm" parameterType="mail">
+		INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,is_read,iden_id)
+		VALUES('새로운 메일 알림','ALARM_MAIL',#{member_id},false,#{mail_id})
+	</insert>
+	
+	<insert id="referrerMailAlarm" parameterType="mail">
+		INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,is_read,iden_id)
+		VALUES('새로운 참조메일 알림','ALARM_MAIL',#{member_id},false,#{mail_id})
+	</insert>
+	
    <!-- 받는이 옵션 가져오기 -->
    <select id="mailgetOptions" resultType="mail">
 	SELECT mb.*, c_dept.code_name AS dept_name, c_pos.code_name AS position_name

@@ -3,8 +3,17 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.two.project.dao.ProjectDAO">
-
-
+	
+	<select id="projectInfo" resultType="project">
+		SELECT * FROM project_info
+		WHERE project_id = #{project_id}
+	</select>
+	
+	<insert id="feedAlarm" parameterType="String">
+		INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,is_read,iden_id)
+		VALUES('새로운 피드 알림','ALARM_FEED',#{member_id},false,#{project_id})
+	</insert>
+	
    <select id="listCall" resultType="project"
       parameterType="string">
       SELECT * FROM project

@@ -407,11 +407,11 @@
                  var end = new Date(event.end_date);
                  
                   // UTC 시간대와 로컬 시간대의 차이를 분 단위로 가져옵니다
-                 var timezoneOffset = new Date().getTimezoneOffset();
+                // var timezoneOffset = new Date().getTimezoneOffset();
 
                  // 서버에서 받은 UTC 시간을 로컬 시간대로 조정합니다
-                 start.setMinutes(start.getMinutes() - timezoneOffset);
-                 end.setMinutes(end.getMinutes() - timezoneOffset); 
+                 //start.setMinutes(start.getMinutes() - timezoneOffset);
+                 //end.setMinutes(end.getMinutes() - timezoneOffset); 
                  
                  return {
                    title: event.content,
