@@ -19,10 +19,10 @@
 <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 <!-- Theme style-->
 <link rel="stylesheet" href="dist/css/adminlte.min.css">
-
+<!-- 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-Sk6wdn37z2xz5YLYf3GMldpi6fDjiB9UifzInwW6l9beav1yX2vaJQZfD8d9OVQwRxwvVvaypPioUcZGkUg7cQ==" crossorigin="anonymous" />
-<!-- MDB -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet"/>
+<!-- MDB 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet"/> -->
 
 <style>
 	#chat_list {
@@ -67,6 +67,266 @@
 		border-collapse: collapse;
 		border : 1px solid black;
 	}
+	
+	
+	
+	.card {
+    background: #fff;
+    transition: .5s;
+    border: 0;
+    margin-bottom: 30px;
+    border-radius: .55rem;
+    position: relative;
+    width: 100%;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
+}
+.chat-app .people-list {
+    width: 280px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 20px;
+    z-index: 7
+}
+
+.chat-app .chat {
+    margin-left: 280px;
+    border-left: 1px solid #eaeaea
+}
+
+.people-list {
+    -moz-transition: .5s;
+    -o-transition: .5s;
+    -webkit-transition: .5s;
+    transition: .5s
+}
+
+.people-list .chat-list li {
+    padding: 10px 15px;
+    list-style: none;
+    border-radius: 3px
+}
+
+.people-list .chat-list li:hover {
+    background: #efefef;
+    cursor: pointer
+}
+
+.people-list .chat-list li.active {
+    background: #efefef
+}
+
+.people-list .chat-list li .name {
+    font-size: 15px
+}
+
+.people-list .chat-list img {
+    width: 45px;
+    border-radius: 50%
+}
+
+.people-list img {
+    float: left;
+    border-radius: 50%
+}
+
+.people-list .about {
+    float: left;
+    padding-left: 8px
+}
+
+.people-list .status {
+    color: #999;
+    font-size: 13px
+}
+
+.chat .chat-header {
+    padding: 15px 20px;
+    border-bottom: 2px solid #f4f7f6
+}
+
+.chat .chat-header img {
+    float: left;
+    border-radius: 40px;
+    width: 40px
+}
+
+.chat .chat-header .chat-about {
+    float: left;
+    padding-left: 10px
+}
+
+.chat .chat-history {
+    padding: 20px;
+    border-bottom: 2px solid #fff;
+    height:400px;
+    overflow: auto;
+}
+
+.chat .chat-history ul {
+    padding: 0
+}
+
+.chat .chat-history ul li {
+    list-style: none;
+    margin-bottom: 30px
+}
+
+.chat .chat-history ul li:last-child {
+    margin-bottom: 0px
+}
+
+.chat .chat-history .message-data {
+    margin-bottom: 15px
+}
+
+.chat .chat-history .message-data img {
+    border-radius: 40px;
+    width: 40px
+}
+
+.chat .chat-history .message-data-time {
+    color: #434651;
+    padding-left: 6px
+}
+
+.chat .chat-history .message {
+    color: #444;
+    padding: 18px 20px;
+    line-height: 26px;
+    font-size: 16px;
+    border-radius: 7px;
+    display: inline-block;
+    position: relative
+}
+
+.chat .chat-history .message:after {
+    bottom: 100%;
+    left: 7%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-bottom-color: #fff;
+    border-width: 10px;
+    margin-left: -10px
+}
+
+.chat .chat-history .my-message {
+    background: #efefef
+}
+
+.chat .chat-history .my-message:after {
+    bottom: 100%;
+    left: 30px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-bottom-color: #efefef;
+    border-width: 10px;
+    margin-left: -10px
+}
+
+.chat .chat-history .other-message {
+    background: #e8f1f3;
+    text-align: right
+}
+
+.chat .chat-history .other-message:after {
+    border-bottom-color: #e8f1f3;
+    left: 93%
+}
+
+.chat .chat-message {
+    padding: 20px
+}
+
+.online,
+.offline,
+.me {
+    margin-right: 2px;
+    font-size: 8px;
+    vertical-align: middle
+}
+
+.online {
+    color: #86c541
+}
+
+.offline {
+    color: #e47297
+}
+
+.me {
+    color: #1d8ecd
+}
+
+.float-right {
+    float: right
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0
+}
+
+@media only screen and (max-width: 767px) {
+    .chat-app .people-list {
+        height: 465px;
+        width: 100%;
+        overflow-x: auto;
+        background: #fff;
+        left: -400px;
+        display: none
+    }
+    .chat-app .people-list.open {
+        left: 0
+    }
+    .chat-app .chat {
+        margin: 0
+    }
+    .chat-app .chat .chat-header {
+        border-radius: 0.55rem 0.55rem 0 0
+    }
+    .chat-app .chat-history {
+        height: 300px;
+        overflow-x: auto;
+        overflow: auto;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    .chat-app .chat-list {
+        height: 650px;
+        overflow-x: auto
+    }
+    .chat-app .chat-history {
+        height: 600px;
+        overflow-x: auto;
+        overflow: auto;
+    }
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
+    .chat-app .chat-list {
+        height: 480px;
+        overflow-x: auto
+    }
+    .chat-app .chat-history {
+        height: calc(100vh - 350px);
+        overflow-x: auto;
+        overflow: auto;
+    }
+}
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -97,26 +357,124 @@
 			<!-- Main content -->
  			<section class="content">
 				<div class="container-fluid">
-    				
-    				 
-    				<input type="text" id="name"/>
-					<button onclick="send_name()">이름저장</button>
-					<input type="text" id="content"/>
-					<button onclick="sendMessage()">전송</button>
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatCreateModal" onclick="create()">채팅방 생성하기</button>
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatInviteModal" onclick="invite()">초대하기</button>
-					<button onclick="chat_room_exit()">채팅방 나가기</button>
-					
-					<div id="chat_list">
-						<div id="chat_room"></div>
-						
-						
-						<div id="chat_history" data-bs-spy="scroll" data-bs-target=".direct-chat-msg" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
-			
+    				<div class="container">
+						<div class="row clearfix">
+						    <div class="col-lg-12">
+						        <div class="card chat-app">
+						            <div id="plist" class="people-list">
+						                <div class="input-group">
+						                    <div class="input-group-prepend">
+						                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+						                    </div>
+						                    <input type="text" class="form-control" placeholder="Search...">
+						                </div>
+						                <ul class="list-unstyled chat-list mt-2 mb-0">
+						                    <li class="clearfix">
+						                        <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar"> -->
+						                        <div class="about">
+						                            <div class="name">Vincent Porter</div>
+						                            <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>                                            
+						                        </div>
+						                    </li>
+						                    <li class="clearfix active">
+						                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+						                        <div class="about">
+						                            <div class="name">Aiden Chavez</div>
+						                            <div class="status"> <i class="fa fa-circle online"></i> online </div>
+						                        </div>
+						                    </li>
+						                    <li class="clearfix">
+						                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">
+						                        <div class="about">
+						                            <div class="name">Mike Thomas</div>
+						                            <div class="status"> <i class="fa fa-circle online"></i> online </div>
+						                        </div>
+						                    </li>                                    
+						                    <li class="clearfix">
+						                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+						                        <div class="about">
+						                            <div class="name">Christian Kelly</div>
+						                            <div class="status"> <i class="fa fa-circle offline"></i> left 10 hours ago </div>
+						                        </div>
+						                    </li>
+						                    <li class="clearfix">
+						                        <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="avatar">
+						                        <div class="about">
+						                            <div class="name">Monica Ward</div>
+						                            <div class="status"> <i class="fa fa-circle online"></i> online </div>
+						                        </div>
+						                    </li>
+						                    <li class="clearfix">
+						                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">
+						                        <div class="about">
+						                            <div class="name">Dean Henry</div>
+						                            <div class="status"> <i class="fa fa-circle offline"></i> offline since Oct 28 </div>
+						                        </div>
+						                    </li>
+						                </ul>
+						            </div>
+						            <div class="chat">
+						                <div class="chat-header clearfix">
+						                    <div class="row">
+						                        <div class="col-lg-6">
+						                            <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+						                                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+						                            </a>
+						                            <div class="chat-about">
+						                                <h6 class="m-b-0">Aiden Chavez</h6>
+						                                <small>Last seen: 2 hours ago</small>
+						                            </div>
+						                        </div>
+						                        <div class="col-lg-6 hidden-sm text-right">
+						                        <!-- 
+						                            <a href="javascript:void(0);" class="btn btn-outline-secondary"><i class="fa fa-camera"></i></a>
+						                            <a href="javascript:void(0);" class="btn btn-outline-primary"><i class="fa fa-image"></i></a>
+						                            <a href="javascript:void(0);" class="btn btn-outline-info"><i class="fa fa-cogs"></i></a>
+						                            <a href="javascript:void(0);" class="btn btn-outline-warning"><i class="fa fa-question"></i></a> -->
+						                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatCreateModal" onclick="create()">채팅방 생성하기</button>
+													<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatInviteModal" onclick="invite()">초대하기</button>
+						                        </div>
+						                    </div>
+						                </div>
+						                <div class="chat-history">
+						                    <ul class="m-b-0 chat_history">
+						                        <li class="clearfix">
+						                            <div class="message-data text-right">
+						                                <span class="message-data-time">10:10 AM, Today</span>
+						                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+						                               	<div>강경석</div>
+						                            </div>
+						                            <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
+						                            
+						                        </li>
+						                        <li class="clearfix">
+						                            <div class="message-data">
+						                                <span class="message-data-time">10:12 AM, Today</span>
+						                            </div>
+						                            <div class="message my-message">Are we meeting today?</div>                                    
+						                        </li>                               
+						                        <li class="clearfix">
+						                            <div class="message-data">
+						                                <span class="message-data-time">10:15 AM, Today</span>
+						                            </div>
+						                            <div class="message my-message">Project has been already finished and I have results to show you.</div>
+						                        </li>
+						                    </ul>
+						                </div>
+						                <div class="chat-message clearfix">
+						                    <div class="input-group mb-0">
+						                        <div class="input-group-prepend">
+						                            <span class="input-group-text"><i class="fa fa-send"></i></span>
+						                        </div>
+						                        <input id="content" type="text" class="form-control" placeholder="Enter text here...">                                    
+						                    </div>
+						                </div>
+						            </div>
+						        </div>
+						    </div>
 						</div>
-						
-					</div> 
-  					
+					</div>
+					<!-- /.container -->
 				</div>
       			<!-- /.container-fluid -->
 			</section>
@@ -195,353 +553,10 @@
 
 
 	
-	<section style="background-color: #eee;">
-  <div class="container py-5">
-
-    <div class="row d-flex justify-content-center">
-      <div class="col-md-8 col-lg-6 col-xl-4">
-
-        <div class="card" id="chat1" style="border-radius: 15px;">
-          <div
-            class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
-            style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
-            <i class="fas fa-angle-left"></i>
-            <p class="mb-0 fw-bold">Live chat</p>
-            <i class="fas fa-times"></i>
-          </div>
-          <div class="card-body">
-
-            <div class="d-flex flex-row justify-content-start mb-4">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-              <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                <p class="small mb-0">Hello and thank you for visiting MDBootstrap. Please click the video
-                  below.</p>
-              </div>
-            </div>
-
-            <div class="d-flex flex-row justify-content-end mb-4">
-              <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
-                <p class="small mb-0">Thank you, I really like your product.</p>
-              </div>
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-            </div>
-
-            <div class="d-flex flex-row justify-content-start mb-4">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-              <div class="ms-3" style="border-radius: 15px;">
-                <div class="bg-image">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/screenshot1.webp"
-                    style="border-radius: 15px;" alt="video">
-                  <a href="#!">
-                    <div class="mask"></div>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="d-flex flex-row justify-content-start mb-4">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-              <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                <p class="small mb-0">...</p>
-              </div>
-            </div>
-
-            <div class="form-outline">
-              <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
-              <label class="form-label" for="textAreaExample">Type your message</label>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</section>
 
 
 
-<section style="background-color: #CDC4F9;">
-  <div class="container py-5">
 
-    <div class="row">
-      <div class="col-md-12">
-
-        <div class="card" id="chat3" style="border-radius: 15px;">
-          <div class="card-body">
-
-            <div class="row">
-              <div class="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
-
-                <div class="p-3">
-
-                  <div class="input-group rounded mb-3">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                      aria-describedby="search-addon" />
-                    <span class="input-group-text border-0" id="search-addon">
-                      <i class="fas fa-search"></i>
-                    </span>
-                  </div>
-
-                  <div data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
-                    <ul class="list-unstyled mb-0">
-                      <li class="p-2 border-bottom">
-                        <a href="#!" class="d-flex justify-content-between">
-                          <div class="d-flex flex-row">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                alt="avatar" class="d-flex align-self-center me-3" width="60">
-                              <span class="badge bg-success badge-dot"></span>
-                            </div>
-                            <div class="pt-1">
-                              <p class="fw-bold mb-0">Marie Horwitz</p>
-                              <p class="small text-muted">Hello, Are you there?</p>
-                            </div>
-                          </div>
-                          <div class="pt-1">
-                            <p class="small text-muted mb-1">Just now</p>
-                            <span class="badge bg-danger rounded-pill float-end">3</span>
-                          </div>
-                        </a>
-                      </li>
-                      <li class="p-2 border-bottom">
-                        <a href="#!" class="d-flex justify-content-between">
-                          <div class="d-flex flex-row">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                alt="avatar" class="d-flex align-self-center me-3" width="60">
-                              <span class="badge bg-warning badge-dot"></span>
-                            </div>
-                            <div class="pt-1">
-                              <p class="fw-bold mb-0">Alexa Chung</p>
-                              <p class="small text-muted">Lorem ipsum dolor sit.</p>
-                            </div>
-                          </div>
-                          <div class="pt-1">
-                            <p class="small text-muted mb-1">5 mins ago</p>
-                            <span class="badge bg-danger rounded-pill float-end">2</span>
-                          </div>
-                        </a>
-                      </li>
-                      <li class="p-2 border-bottom">
-                        <a href="#!" class="d-flex justify-content-between">
-                          <div class="d-flex flex-row">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                                alt="avatar" class="d-flex align-self-center me-3" width="60">
-                              <span class="badge bg-success badge-dot"></span>
-                            </div>
-                            <div class="pt-1">
-                              <p class="fw-bold mb-0">Danny McChain</p>
-                              <p class="small text-muted">Lorem ipsum dolor sit.</p>
-                            </div>
-                          </div>
-                          <div class="pt-1">
-                            <p class="small text-muted mb-1">Yesterday</p>
-                          </div>
-                        </a>
-                      </li>
-                      <li class="p-2 border-bottom">
-                        <a href="#!" class="d-flex justify-content-between">
-                          <div class="d-flex flex-row">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-                                alt="avatar" class="d-flex align-self-center me-3" width="60">
-                              <span class="badge bg-danger badge-dot"></span>
-                            </div>
-                            <div class="pt-1">
-                              <p class="fw-bold mb-0">Ashley Olsen</p>
-                              <p class="small text-muted">Lorem ipsum dolor sit.</p>
-                            </div>
-                          </div>
-                          <div class="pt-1">
-                            <p class="small text-muted mb-1">Yesterday</p>
-                          </div>
-                        </a>
-                      </li>
-                      <li class="p-2 border-bottom">
-                        <a href="#!" class="d-flex justify-content-between">
-                          <div class="d-flex flex-row">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
-                                alt="avatar" class="d-flex align-self-center me-3" width="60">
-                              <span class="badge bg-warning badge-dot"></span>
-                            </div>
-                            <div class="pt-1">
-                              <p class="fw-bold mb-0">Kate Moss</p>
-                              <p class="small text-muted">Lorem ipsum dolor sit.</p>
-                            </div>
-                          </div>
-                          <div class="pt-1">
-                            <p class="small text-muted mb-1">Yesterday</p>
-                          </div>
-                        </a>
-                      </li>
-                      <li class="p-2">
-                        <a href="#!" class="d-flex justify-content-between">
-                          <div class="d-flex flex-row">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                                alt="avatar" class="d-flex align-self-center me-3" width="60">
-                              <span class="badge bg-success badge-dot"></span>
-                            </div>
-                            <div class="pt-1">
-                              <p class="fw-bold mb-0">Ben Smith</p>
-                              <p class="small text-muted">Lorem ipsum dolor sit.</p>
-                            </div>
-                          </div>
-                          <div class="pt-1">
-                            <p class="small text-muted mb-1">Yesterday</p>
-                          </div>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="col-md-6 col-lg-7 col-xl-8">
-
-                <div class="pt-3 pe-3" data-mdb-perfect-scrollbar="true"
-                  style="position: relative; height: 400px">
-
-                  <div class="d-flex flex-row justify-content-start">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 100%;">
-                    <div>
-                      <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">Lorem ipsum
-                        dolor
-                        sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                        dolore
-                        magna aliqua.</p>
-                      <p class="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug 13</p>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-end">
-                    <div>
-                      <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Ut enim ad minim veniam,
-                        quis
-                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                      <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
-                    </div>
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 100%;">
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-start">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 100%;">
-                    <div>
-                      <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">Duis aute
-                        irure
-                        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                      </p>
-                      <p class="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug 13</p>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-end">
-                    <div>
-                      <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Excepteur sint occaecat
-                        cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                      <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
-                    </div>
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 100%;">
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-start">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 100%;">
-                    <div>
-                      <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">Sed ut
-                        perspiciatis
-                        unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-                        rem
-                        aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-                        dicta
-                        sunt explicabo.</p>
-                      <p class="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug 13</p>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-end">
-                    <div>
-                      <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Nemo enim ipsam
-                        voluptatem quia
-                        voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-                        qui
-                        ratione voluptatem sequi nesciunt.</p>
-                      <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
-                    </div>
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 100%;">
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-start">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 100%;">
-                    <div>
-                      <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">Neque porro
-                        quisquam
-                        est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non
-                        numquam
-                        eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-                      <p class="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug 13</p>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-end">
-                    <div>
-                      <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Ut enim ad minima veniam,
-                        quis
-                        nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea
-                        commodi
-                        consequatur?</p>
-                      <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
-                    </div>
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 100%;">
-                  </div>
-
-                </div>
-
-                <div class="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                    alt="avatar 3" style="width: 40px; height: 100%;">
-                  <input type="text" class="form-control form-control-lg" id="exampleFormControlInput2"
-                    placeholder="Type message">
-                  <a class="ms-1 text-muted" href="#!"><i class="fas fa-paperclip"></i></a>
-                  <a class="ms-3 text-muted" href="#!"><i class="fas fa-smile"></i></a>
-                  <a class="ms-3" href="#!"><i class="fas fa-paper-plane"></i></a>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</section>
 
 
 	
@@ -558,9 +573,10 @@
 	<script src="dist/js/adminlte.min.js"></script>
 	<!-- JavaScript Bundle with Popper -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-	<!-- MDB -->
+	
+	<!-- MDB 
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js" integrity="sha512-ep8lHTLmy2ka7dS5usq2ntXXuRVYmC9wQwh3MKlgzgXv3XkAk7frn8q6SZAxK3QVmERHxE8VWbLJwZQXr56y9g==" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js" integrity="sha512-ep8lHTLmy2ka7dS5usq2ntXXuRVYmC9wQwh3MKlgzgXv3XkAk7frn8q6SZAxK3QVmERHxE8VWbLJwZQXr56y9g==" crossorigin="anonymous"></script>-->
 </body>
 
 <!--  
@@ -574,7 +590,8 @@
 <script>
 	
 	var chat_room_id;
-	var name='';
+	var name='${sessionScope.loginId}';
+	console.log(name);
 	var socket;
 	var stompClient;
 	
@@ -585,11 +602,11 @@
 	    chatListAjax();
 	}, 5000);
 
-	   function chatListAjax() {
-	       scrollPosition = $('#chat-column1').scrollTop();
-	       chatListAjax();       
-	       $('#chat-column1').scrollTop(scrollPosition);
-	   }
+	function chatListAjax() {
+	    scrollPosition = $('#chat_room').scrollTop();
+	    chatListAjax();       
+	    $('#chat_room').scrollTop(scrollPosition);
+	}
 	
 	function chatOpen(id) {
 		chat_room_id = id;
@@ -629,58 +646,86 @@
 	        		url:'chatLoad.ajax',
 	        		type:'post',
 	        		data:id,
+	        		async : false,
 	        		dataType:'json',
 	        		contentType: 'application/json; charset=utf-8',
 	        		/**/
 	        		success:function(data){
 	        			console.log(data);
-	        			$('#chat_history').html('');
-	        			
+	        			//$('#chat_history').html('');
 	        			chatHistory(data);
+	        			
 	        			
 	        		},
 	        		error:function(e){
 	        			console.log(e);
 	        		}
 	        	});
+	            $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
 	            // 메시지 처리 로직 추가
 	        });
 	    });
 	}
-	
+	/*
+	<li class="clearfix">
+    <div class="message-data text-right">
+        <span class="message-data-time">10:10 AM, Today</span>
+        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+       	<div>강경석</div>
+    </div>
+    <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
+    
+	</li>
+	<li class="clearfix">
+	    <div class="message-data">
+	        <span class="message-data-time">10:12 AM, Today</span>
+	    </div>
+	    <div class="message my-message">Are we meeting today?</div>                                    
+	</li>    
+	*/
 	function chatHistory(data) {
+		$('.m-b-0.chat_history').html('');
 		data.forEach(function(item) {
 			var content = '';
 				
 			console.log(item.is_notice);
 			if(item.is_notice != true){
 				if(name == item.send_id) {
-					console.log('일치요' + item.send_id);
-					content+='<div class="direct-chat-msg">';
-					content+='<div class="direct-chat-infos clearfix">';
-					content+='<span class="direct-chat-name float-left">'+item.send_id+'</span>';
-					content+='<span class="direct-chat-timestamp float-right">'+item.send_time+'</span>';
+					content+='<li class="clearfix">';
+					content+='<div class="message-data">';
+					content+='<span class="message-data-time">'+item.send_time+'</span>';
+					content+='</div>';
+					content+='<div class="message my-message">'+item.content+'</div>';
 				}else {
-					console.log('불일치요' + item.send_id);
-					content+='<div class="direct-chat-msg right">';
-					content+='<div class="direct-chat-infos clearfix">';
-					content+='<span class="direct-chat-name float-right">'+item.send_id+'</span>';
-					content+='<span class="direct-chat-timestamp float-left">'+item.send_time+'</span>';
+					content+='<li class="clearfix">';
+					content+='<div class="message-data text-right">';
+					content+='<span class="message-data-time">'+item.send_time+'</span>';
+					content+='<img src="/photo/'+item.profile_photo+'" alt="avatar">';
+					content+='<div>'+item.send_id+'</div>';
+					content+='</div>';
+					content+='<div class="message other-message float-right">'+item.content+'</div>';
+					//content+='</li>';
 				}
 				
-				content+='</div>';
-				content+='<img class="direct-chat-img" src="/photo/'+item.profile_photo+'" alt="message user image">';
-				content+='<div class="direct-chat-text">'+item.content+'</div></div>';
+				content+='</li>';
+				//content+='<img class="direct-chat-img" src="/photo/'+item.profile_photo+'" alt="message user image">';
+				//content+='<div class="direct-chat-text">'+item.content+'</div></div>';
 			} else {
 				content += '<div>'+item.content+'</div>';
 			}
-			
+			$('.m-b-0.chat_history').append(content);
 			$('#chat_history').append(content);
 
 		});
 			
 	}
-	
+	$('#content').on('keydown', function(event) {
+		if ($(this).is(':focus') && event.key === 'Enter') {
+		    event.preventDefault(); // 기본 엔터 행동 방지
+
+		    sendMessage();
+		  }
+	})
 	
 	function sendMessage(event) {
 	    var messageContent = $('#content').val();
@@ -696,17 +741,19 @@
 
 	        stompClient.send("/pub/chat/sendMessage", {}, JSON.stringify(chatMessage));
 	        $('#content').val('');
+	        console.log('스크롤 맨 아래로');
+	        $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
 	    }
 	    //event.preventDefault();
 	}
-	
+	/*
 	function send_name() {
 		name= $('#name').val();
 		console.log(name);
 		
 		chatListAjax();
 	}
-	
+	*/
 	function create() {
 		console.log('create() 호출');
 		$.ajax({
@@ -888,11 +935,27 @@
 			success:function(data){
 				console.log('chatList.ajax : ' + data);
 				console.log('chatList.ajax 통신 성공');
+				console.log(data.length);
+				console.log(data);
 				$('#chat_room').html('');
-				data.forEach(function(item) {
-					var content = '<div onclick="chatOpen(\''+item.chat_room_id+'\')">'+item.name+'</div>';
-					$('#chat_room').append(content);
-				});
+				$('.list-unstyled.chat-list').html('');
+				if(data.length == 0) {
+					var content = '<div>채팅방 없음</div>';
+				}else {
+					data.forEach(function(item) {
+						//var content = '<div onclick="chatOpen(\''+item.chat_room_id+'\')">'+item.name+'</div>';
+						var content = '<li class="clearfix" onclick="chatOpen(\''+item.chat_room_id+'\')">';
+						content += '<img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">';
+						content += '<div class="about">';
+						content += '<div class="name">'+item.name+'</div>';
+						content += '<div class="status"> <i class="fa fa-circle online"></i> online </div>';
+						content += '</div>';
+						content += '</li>';
+						
+						$('.list-unstyled.chat-list').append(content);
+						$('#chat_room').append(content);
+					});
+				}
 			},
 			error:function(e){
 				console.log('chatList.ajax 통신 실패');
@@ -900,7 +963,16 @@
 			}
 		});
 	}
+	/*
+	<li class="clearfix">
+    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">
+    <div class="about">
+        <div class="name">Mike Thomas</div>
+        <div class="status"> <i class="fa fa-circle online"></i> online </div>
+    </div>
+	</li>  
 	
+	*/
 	function chat_room_exit() {
 		console.log(chat_room_id);
 		if (stompClient) {

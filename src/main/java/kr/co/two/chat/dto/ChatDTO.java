@@ -1,6 +1,7 @@
 package kr.co.two.chat.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import org.apache.ibatis.type.Alias;
 
@@ -12,7 +13,7 @@ public class ChatDTO {
 	private String subject;
 	private String content;
 	private boolean is_read;
-	private Date send_time;
+	private Timestamp send_time;
 	private boolean blind;
 	private boolean is_notice;
 	private String profile_photo;
@@ -53,12 +54,6 @@ public class ChatDTO {
 	public void setIs_read(boolean is_read) {
 		this.is_read = is_read;
 	}
-	public Date getSend_time() {
-		return send_time;
-	}
-	public void setSend_time(Date send_time) {
-		this.send_time = send_time;
-	}
 
 	public boolean isIs_notice() {
 		return is_notice;
@@ -83,6 +78,12 @@ public class ChatDTO {
 	}
 	public void setProfile_photo(String profile_photo) {
 		this.profile_photo = profile_photo;
+	}
+	public Timestamp getSend_time() {
+		return send_time;
+	}
+	public void setSend_time(Timestamp send_time) {
+		this.send_time = send_time;
 	}
 	
 }

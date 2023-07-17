@@ -1,5 +1,10 @@
 package kr.co.two.chat.service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,7 +42,18 @@ public class ChatService {
 	}
 
 	public ArrayList<ChatDTO> chatHistory(String chat_room_id) {
-		return dao.chatHistory(chat_room_id);
+		ArrayList<ChatDTO> list = dao.chatHistory(chat_room_id);
+		//String dateTimeString;
+		//LocalDateTime localDateTime;
+		//Timestamp time;
+		for (ChatDTO dto : list) {
+			Timestamp timestamp = dto.getSend_time();
+		    LocalDateTime localDateTime = timestamp.toLocalDateTime();
+		    String formattedDateTime = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
+		    dto.setSend_time(Timestamp.valueOf(formattedDateTime));
+		    logger.info("send_time : " + dto.getSend_time());
+		}
+		return list;
 	}
 
 	public void chatStored(ChatDTO dto) {
@@ -55,7 +71,11 @@ public class ChatService {
 	}
 
 	public ArrayList<ChatDTO> chatLoad(String id) {
-		return dao.chatLoad(id);
+		ArrayList<ChatDTO> list = dao.chatHistory(id);
+		for (ChatDTO dto : list) {
+			logger.info("send_time : " + dto.getSend_time());
+		}
+		return dao.chatHistory(id);
 	}
 
 	public ArrayList<MemberDTO> memberListAll() {

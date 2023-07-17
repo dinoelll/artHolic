@@ -83,7 +83,7 @@ public class ChatController {
 	@ResponseBody
 	public ArrayList<ChatDTO> chatStored(@RequestBody String id) {
 		logger.info("id : " + id);
-		return service.chatLoad(id);
+		return service.chatHistory(id);
 	}
 	
 	@PostMapping(value="/memberListAll.ajax")

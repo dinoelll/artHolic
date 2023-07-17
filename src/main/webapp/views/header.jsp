@@ -32,9 +32,9 @@
     
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/chat.go">
           <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
+          <span class="badge badge-danger navbar-badge"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" class="dropdown-item">
@@ -92,7 +92,7 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">15 Notifications</span>
@@ -283,12 +283,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./rentalList.go" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>재고관리</p>
-                </a>
-              </li>
+             
               <li class="nav-item">
                 <a href="./employeeList.go" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -315,6 +310,15 @@
                 </a>
               </li> -->
             </ul>
+          </li>
+          
+          <li class="nav-item">
+            <a href="./informList.go" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                공지사항
+              </p>
+            </a>
           </li>
         </ul>
       </nav>
@@ -343,4 +347,83 @@
             }
         }
     }
+   
+   var socket;
+
+   socket = new WebSocket('ws://localhost/alarm');
+
+   socket.onopen = function(event) {
+       console.log('WebSocket 연결이 열렸습니다.');
+       $.ajax({
+   		type:'post',
+   		url:'alarmCount.ajax',
+   		data: {
+   			receive_id : '${sessionScope.id}'
+   		},
+   		dataType:'json',
+   		success:function(data){
+   			console.log(data);
+   			
+   			$('.badge.badge-warning.navbar-badge').html(data);
+   		},
+   		error:function(e){
+   			console.log(e);
+   		}		
+   	});
+   };
+
+
+    socket.onopen = function(event) {
+       console.log('WebSocket 연결이 열렸습니다.');
+       /*
+       $.ajax({
+   		type:'post',
+   		url:'alarmList.ajax',
+   		data: {
+   			receive_id : '${sessionScope.id}'
+   		},
+   		dataType:'json',
+   		success:function(data){
+   			console.log(data);
+   			var content = '';
+   			data.forEach(function(item) {
+   				content += '<tr>';
+   				content += '<td>' + item.type + '</td>';
+   				content += '<td>' + item.identify_value + '</td>';
+   				content += '<td>' + item.name + '</td>';
+   				content += '<td><input type="hidden" id="' + item.id + '"></td>';
+   				content += '</tr>';
+   			});
+   			
+   			// HTML에 알림 목록 추가
+   			//$('#notification-table').append(content);
+
+   		},
+   		error:function(e){
+   			console.log(e);
+   		}		
+   	});
+       */
+   };
+
+   socket.onmessage = function(event) {
+       var message = event.data;
+       console.log('수신된 메시지: ' + message);
+       // 메시지 처리 로직 구현
+   };
+
+   socket.onclose = function(event) {
+       console.log('WebSocket 연결이 닫혔습니다.');
+   };
+
+   socket.onerror = function(error) {
+       console.error('WebSocket 오류:', error);
+   };
+     
+
+   function goMyMainPage(userId) {
+   	console.log(userId);
+   	  window.location.href = "/main.go?id=" + userId;
+   	}
+
 </script>
