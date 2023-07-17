@@ -170,7 +170,6 @@ b {
    <!-- Site wrapper -->
    <div class="wrapper">
       <jsp:include page="header.jsp" />
-
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
          <!-- Content Header (Page header) -->
@@ -181,7 +180,7 @@ b {
                      <h1 class="m-0">
                         <a href="/projectCalendar.go?project_id=${project_id}&project_name=${project_name}"
                            class="subject">캘린더</a>|<a
-                           href="/projectDetail.go?project_id=${project_id}&project_name=${project_name}"
+                           href="/projectDetail.go?type=jsp&project_id=${project_id}&project_name=${project_name}"
                            class="subject"><b>피드</b></a>
                      </h1>
                   </div>
@@ -195,7 +194,7 @@ b {
             </div>
             <!-- /.container-fluid -->
          </section>
-         <h1 id="project_name">&lt; team ${project_name} &gt;</h1>
+         <!--  <h1 id="project_name">&lt; team ${params.project_name} &gt;</h1> -->
          <!-- Main content -->
          <section class="content">
 
@@ -206,7 +205,7 @@ b {
 
                   <div class="card-tools">
 
-                     <a href="feedWrite.go?project_id=${project_id}"
+                     <a href="feedWrite.go?project_id=${project_id}&project_name=${project_name}"
                         class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>피드등록</a>
                      <a href="projectDel.do?project_id=${project_id}"
                         class="btn btn-danger btn-sm">삭제</a>
@@ -234,7 +233,7 @@ b {
       </div>
       <!-- /.content-wrapper -->
 
-      <input type="hidden" id="loginId" value="${sessionScope.id }">
+      <input type="hidden" id="loginId" value="${sessionScope.id}">
 
       <!-- Control Sidebar -->
       <aside class="control-sidebar control-sidebar-dark">
@@ -269,19 +268,20 @@ b {
 <script>
    var loginId = $("#loginId").val();
    console.log('id:' + loginId);
+   
+   
 
    $(document)
          .ready(
                function() {
                   console.log("함수 실행");
 
-                  var project_id = "${project_id}";
+                  var project_id =${project_id};
                   detailAjax();
 
                   function detailAjax() {
                      console.log('detailAjax() 호출');
-                     $
-                           .ajax({
+                     $.ajax({
                               url : "projectDetail.ajax?project_id="
                                     + project_id, // 서버에서 데이터를 가져올 URL
                               method : "GET",
@@ -290,11 +290,7 @@ b {
                               success : function(data) {
                                  var container = $("#projectDetailContainer");
 
-                                 $
-                                       .each(
-                                             data.feedList,
-                                             function(index,
-                                                   detail) {
+                                 $.each( data.feedList, function(index, detail) {
                                                 var feed_id = detail.feed_id;
 
                                                 var html = '<div class="row">';
@@ -305,24 +301,20 @@ b {
                                                 html += '<div class="user-block">';
                                                 html += '<img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">';
                                                 html += '<span class="name">';
-                                                html += '<a href="#">'
-                                                      + detail.name
-                                                      + '</a>';
+                                                html += '<a href="#">' + detail.name + '</a>';
                                                 html += '</span>';
                                                 html += '<span class="description">'
                                                       + detail.date
                                                       + '</span>';
                                                 html += '</div>';
-                                                html += '<p>'
-                                                      + detail.content
-                                                      + '</p>';
+                                                html += '<p>'+ detail.content + '</p>';
                                                 if (detail.feed_file_id != null) {
                                                    html += '<div class="mailbox-feed_file-info">';
                                                    html += '<a class="mailbox-feed_file-name"><i class="fas fa-paperclip"></i> &nbsp;'
                                                          + detail.ori_photo_name
                                                          + '</a>';
-                                                   html += '<a href="feed_fileDownload.do?id='
-                                                         + detail.feed_file_id
+                                                   html += '<a href="feed_fileDownload.do?photo_name='
+                                                         + detail.photo_name
                                                          + '" class="btn btn-default btn-sm"><i class="fas fa-cloud-download-alt"></i></a>';
                                                    html += '</div>';
 

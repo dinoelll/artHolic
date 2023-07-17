@@ -41,6 +41,10 @@
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
+
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+
 <script src="/js/jquery.twbsPagination.js" type="text/javascript"></script>
 
 <!-- Datetimepicker 라이브러리 불러오기 -->
@@ -196,7 +200,7 @@
             <th>현장 관리자</th>
             <th>담당자 연락처</th>
             <th>일정</th>
-            <!-- <th>담당자 연락처</th>  -->
+            <th>인원 선택</th>
             </tr>
          </thead>
          <tbody id="projectList" style="text-align:center">
@@ -232,7 +236,10 @@
                            <table>
                               <tr>
                                  <th>프로젝트명</th>
-                                 <td><input type="text" name="project_name" id="project_name" value="" /></td>
+                                 <td>
+                                 	<input type="text" name="project_name" id="project_name" value="" />
+                                 	<input type="hidden" name="member_id" value="${sessionScope.loginId}" />
+                                 </td>
                               </tr>
                               <tr>
                                  <th>프로젝트 담당자</th>
@@ -271,6 +278,52 @@
                <!-- /.modal-dialog -->
             </div>
             <!-- /.modal -->
+            
+            
+            
+            <!-- 인원추가 모달-->
+                  <div class="modal fade" id="modal-lg2">
+                     <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <h4 class="modal-title">인원 선택</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                              </button>
+                           </div>
+                           <div class="modal-body">
+                              <div class="card card-default">
+                                 <div class="card-body">
+                                    <div class="row">
+                                       <div class="col-12">
+                                          <div class="form-group">
+                                          	 <input name="project_id" type="hidden" value=""/>
+                                             <label>인원 추가</label>
+                                             <div class="dual-listbox-container">
+                                             
+                                                <select id="approvers" class="duallistbox" multiple="multiple" name="sendMember">
+                                                </select>
+                                                
+                                             </div>
+                                          </div>
+                                       <!-- /.form-group -->
+                                       </div>
+                                    <!-- /.col -->
+                                    </div>
+                                 </div>
+                              </div>
+                              <!-- /.card -->
+                           </div>
+                           <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="button" id="submitButton" class="btn btn-primary" onclick="sendList()">인원 확정</button>            
+                           </div>
+                        </div>
+                     <!-- /.modal-content -->
+                     </div>
+                     <!-- /.modal-dialog -->
+                  </div>
+                  <!-- /.modal -->
          
    
     </section>
@@ -286,6 +339,9 @@
    
    <!-- jQuery UI -->
    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+   
+   <!-- Bootstrap4 Duallistbox -->
+<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
    
    <!-- Bootstrap 4 -->
    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -416,6 +472,7 @@ $(function() {
 function listDraw(projectList) {
      console.log("listDraw Call");
      var content = '';
+     
 
      projectList.forEach(function(dto,project_id){
          content += '<tr>';
@@ -424,12 +481,102 @@ function listDraw(projectList) {
          content += '<th>'+dto.field_manager+'</th>';
          content += '<td>'+ dto.manager_phone +'</td>';
          content += '<td>'+ dto.start_date + '~' + dto.end_date +'</td>';
+         content += '<td><button class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-lg2">인원추가</button></td>';
          content += '</tr>';
        });
 
      $('#projectList').empty();
      $('#projectList').append(content);
+     
+     $('.formGnb_button').click(function() {
+    	 var data = $(this).data('project_id');
+    	 console.log('data : ',data);
+    	 
+    	 $('input[name="project_id"]').val(data);
+     })
    }
+   
+   
+   
+// 받는사람, 참조자 option 값 가져오기
+$(document).ready(function() {
+     $.ajax({
+       url: 'projectAddOption.ajax', 
+       type: 'get',
+       data: {},
+       dataType:'json',
+       success: function(data) {
+          console.log(data);
+          optionPrint(data.option);
+       },error: function(e){
+          console.log(e);
+       }
+     })
+     
+     function optionPrint(option){
+        var content;
+        if(option.length>0){
+           
+           option.forEach(function(item,member_id){
+              content += '<option value="'+item.member_id+'">'+item.dept_code+'&nbsp;&nbsp;'+item.position_code+'&nbsp;&nbsp;'
+                 +item.name+'</option>';
+           })
+        }else{
+           content += '<option>선택값이 없습니다.</option>';
+        }
+        $('.duallistbox').empty();
+        $('.duallistbox').append(content);
+        //Bootstrap Duallistbox
+        $('.duallistbox').bootstrapDualListbox();
+     }
+})
+   
+   
+   
+ // 프로젝트 추가인원 값 보내기
+function sendList() {
+   var approvers = $('#approvers option:selected').map(function() {
+       return this.value;
+     }).get();
+   
+   console.log(approvers);
+   
+    var projectInfo = {
+		'approvers' : approvers,
+		'project_id' : $('input[name="project_id"]').val()
+    };
+    
+    $.ajax({
+	   url: 'addProjectMember.ajax',
+	   type: 'post',
+	   data : JSON.stringify(projectInfo),
+   	   dataType:'json',
+   	   contentType : 'application/json',
+	   success: function(data) {
+		   console.log(data);
+		   alert('프로젝트 인원이 추가 되었습니다.');
+		 },error: function(e){
+		       console.log(e);
+		       alert('프로젝트 인원추가에 실패 했습니다.');
+		 }
+		
+   });
+ // 모달창 닫기
+    $('#modal-lg2').modal('hide');
+}
+
+   
+/*     $('#mailForm input[name="approvers"]').remove();
+   var content ='';
+   if(approvers.length>0){
+      approvers.forEach(function(item){
+         content += '<input type="hidden" class="approvers" name="approvers" value="'+item+'">';
+      })
+      
+   }
+   $('#mailForm').append(content);
+   $('#mailForm').append(message); 
+};*/
    
 
 

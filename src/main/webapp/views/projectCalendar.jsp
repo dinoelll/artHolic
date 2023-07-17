@@ -213,7 +213,7 @@
             <div class="container-fluid">
                <div class="row mb-2">
                   <div class="col-sm-6">
-                     <h1 class="m-0"><a href="/projectCalendar.go?project_id=${project_id}&project_name=${project_name}" class="subject"><b>캘린더</b></a>|<a href="/projectDetail.go?project_id=${project_id}&project_name=${project_name}" class="subject">피드</a></h1> 
+                     <h1 class="m-0"><a href="/projectCalendar.go?project_id=${project_id}&project_name=${project_name}" class="subject"><b>캘린더</b></a>|<a href="/projectDetail.go?type=jsp&project_id=${project_id}&project_name=${project_name}" class="subject">피드</a></h1> 
                   
                   </div>
                   <!-- /.col -->

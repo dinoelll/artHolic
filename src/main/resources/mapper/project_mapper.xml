@@ -36,10 +36,9 @@
    <insert id="projectWrite" parameterType="hashmap">
       INSERT INTO project
       (project_name, project_manager, field_manager, manager_phone,
-      start_date, end_date,
-      member_id)
+      start_date, end_date, member_id)
       VALUES(#{project_name},#{project_manager},#{field_manager},
-      #{manager_phone},#{start_date},#{end_date},'123456')
+      #{manager_phone},#{start_date},#{end_date},#{member_id})
    </insert>
 
 
@@ -47,14 +46,12 @@
       useGeneratedKeys="true" keyColumn="feed_id" keyProperty="feed_id">
       INSERT INTO
       feed(content, project_id, member_id)
-      VALUES(#{content},#{project_id},
-      '123456')
+      VALUES(#{content}, #{project_id}, #{member_id})
    </insert>
 
 
    <insert id="archivefileWrite">
-      INSERT INTO feed_file(ori_photo_name, photo_name,
-      feed_id)
+      INSERT INTO feed_file(ori_photo_name, photo_name, feed_id)
       VALUES(#{param1}, #{param2}, #{param3})
    </insert>
 
@@ -68,12 +65,24 @@
       , DATE_FORMAT(f.date,'%Y-%m-%d') as date
       , p.feed_file_id
       , p.ori_photo_name
+      , p.photo_name
       from feed f
       left join feed_file p on p.feed_id = f.feed_id
       WHERE f.project_id = #{project_id}
       order by f.feed_id ASC
    </select>
-
+   
+   
+   
+   <select id="projectAddOption" resultType="project">
+      SELECT * FROM member
+   </select>
+   
+   
+	<insert id="addProjectMember" parameterType="string">
+	   INSERT INTO project_info(project_id, member_id)
+	   VALUES(#{project_id},#{member_id})
+   </insert>
 
 
 
@@ -116,6 +125,8 @@
       project_calendar_id =
       #{project_calendar_id}
    </delete>
+   
+
 
 
 </mapper>

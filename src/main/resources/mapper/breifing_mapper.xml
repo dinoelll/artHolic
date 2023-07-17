@@ -6,7 +6,7 @@
 
    <insert id="write" parameterType="briefing">
       INSERT INTO board(subject, member_id, content, board_code)
-         VALUES(#{subject}, '123456',#{content}, 'briefing')   
+         VALUES(#{subject}, #{member_id}, #{content}, 'briefing')   
    </insert>
    
     
