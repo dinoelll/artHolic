@@ -8,6 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Timeline</title>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -179,15 +180,15 @@
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton2" onclick="toggleDocumentTree()">결재 생산함</button>
 						      <div id="documentTree" ><!-- style="display: none;" -->
 						        <p><a href="./paymentList.go" id="ListGo">결재 문서함</a></p>
-						        <p>임시저장</p>
+						        <p><a href="./paymentListTemp.go" id="ListGo">결재 임시저장</a></p>
 						      </div>
 						    </div>
 						    <div>
 						      <button type="button" class="btn btn-block btn-secondary btn-lg" id="paybutton3" onclick="toggleInboxTree()">결재 수신함</button>
 						      <div id="inboxTree"><!--  style="display: none;" -->
-						        <p>결재하기</p>
-						        <p>결재내역</p>
-						        <p>수신참조</p>
+						        <p><a href="./paymentListPay.go" id="ListGo"> 결재하기</a></p>
+						        <p><a href="./paymentListDone.go" id="ListGo"> 결재내역</a></p>
+						        <p><a href="./paymentListTake.go" id="ListGo">수신참조</a></p>
 						      </div>
 						    </div>
 						  </div>
@@ -226,96 +227,69 @@
 						       <div class="row">
 						         <div class="col-md-12">
 						           <!-- The time line -->
-						           <div class="timeline" style="margin-top:10px;">
+						           <div class="timeline" style="margin-top:10px; overflow-y: auto; max-height: 610px;">
 						             <!-- timeline time label -->
 						             <div class="time-label">
 						               <span class="bg-gray">10 Feb. 2014</span>
 						             </div>
 						             <!-- /.timeline-label -->
 						             <!-- timeline item -->
-						             <div>
-						               <i class="fas fa-solid fa-download bg-gray"></i> 
-						               <div class="timeline-item">
-						                 <span class="time"><i class="fas fa-clock"></i> 2014-02-10 16:34:29</span>
-						                 <h3 class="timeline-header"><a href="#" >휴가 신청</a> </h3>
-						                 <div class="timeline-body">
-										      <div class="d-flex justify-content-between align-items-center">
-										      
-										        <div >
-										          기안자: 형준 사원<br>
-										          기안일자: 2014.02.11<br>
-										          결재양식: 휴가신청
+						             <c:forEach items="${timeline}" var="t">
+										    <div>
+										        <c:choose>
+										        	<c:when test="${not empty t.refer and not empty t.payment_ship_id}">
+										                <i class="fa fa-star-half bg-purple" style="color:#ffffff"></i>
+										            </c:when>
+										            <c:when test="${not empty t.refer}">
+										                <i class="fa fa-book bg-yellow" style="color:#ffffff"></i>
+										            </c:when>
+										            <c:when test="${not empty t.payment_ship_id}">
+										                <i class="fas fa-solid fa-download bg-gray"></i>
+										            </c:when>
+										            
+										            <c:when test="${ empty t.payment_ship_id and empty t.refer}">
+										                <c:choose>
+										                    <c:when test="${t.state eq '진행중' }">
+										                        <i class="fas fa-clock bg-blue"></i>
+										                    </c:when>
+										                    <c:when test="${t.state eq '완료' }">
+										                        <i class="fas fa-check bg-green"></i>
+										                    </c:when>
+										                    <c:when test="${t.state eq '반려' }">
+										                        <i class="fas fa-exclamation bg-red"></i>
+										                    </c:when>
+										                </c:choose>
+										            </c:when>
+										            <c:otherwise>
+										                <i class="fas fa-solid fa-download bg-gray"></i>
+										            </c:otherwise>
+										        </c:choose>
+										        <div class="timeline-item">
+										            <span class="time"><i class="fas fa-clock"></i> ${t.modi_date}</span>
+										            <h3 class="timeline-header"><a href="#">${t.paySubject}</a></h3>
+										            <div class="timeline-body">
+										                <div class="d-flex justify-content-between align-items-center">
+										                    <div>
+										                        기안자: ${t.name}<br>
+										                        기안일자: ${t.limit_date}<br>
+										                        결재양식: ${t.form}
+										                    </div>
+										                    <c:choose>
+										                        <c:when test="${t.state eq '진행중'}">
+										                            <a class="btn btn-primary btn-sm float-right">${t.state}</a>
+										                        </c:when>
+										                        <c:when test="${t.state eq '완료'}">
+										                            <a class="btn btn-secondary btn-sm float-right">${t.state}</a>
+										                        </c:when>
+										                        <c:when test="${t.state eq '반려'}">
+										                            <a class="btn btn-danger btn-sm float-right">${t.state}</a>
+										                        </c:when>
+										                    </c:choose>
+										                </div>
+										            </div>
 										        </div>
-										        <a class="btn btn-primary btn-sm float-right">진행중</a>
-										      </div>
 										    </div>
-						               </div>
-						             </div>
-						             <!-- END timeline item -->
-						             <!-- timeline item -->
-						             <div>
-						               <i class="fas fa-check bg-green"></i>
-						                <div class="timeline-item">
-						                 <span class="time"><i class="fas fa-clock"></i> 2014-02-10 16:34:29</span>
-						                 <h3 class="timeline-header"><a href="#" >휴가 신청</a> </h3>
-						                 <div class="timeline-body">
-										      <div class="d-flex justify-content-between align-items-center">
-										        <div >
-										          기안자: 형준 사원<br>
-										          기안일자: 2014.02.11<br>
-										          <a style="color:#9d9d9d">결재양식 : 프로젝트 신청</a>
-										        </div>
-										        <a class="btn btn-Secondary  btn-sm float-right bs-tertiary-color">완료</a>
-										      </div>
-										    </div>
-						               </div>
-						             </div>
-						             <div class="time-label">
-						               <span class="bg-gray">9 Feb. 2014</span>
-						             </div>
-						             <!-- END timeline item -->
-						             <!-- timeline item -->
-						             <div>
-						               <i class="fas fa-clock bg-blue"></i>
-						               <div class="timeline-item">
-						                 <span class="time"><i class="fas fa-clock"></i> 2014-02-10 16:34:29</span>
-						                 <h3 class="timeline-header"><a href="#" >가위 비품 신청</a> </h3>
-						                 <div class="timeline-body">
-										      <div class="d-flex justify-content-between align-items-center">
-										        <div >
-										          기안자: 형준 사원<br>
-										          기안일자: 2014.02.11<br>
-										          <a style="color:#9d9d9d">결재양식 : 비품 신청</a>
-										        </div>
-										        <a class="btn btn-primary btn-sm float-right">진행중</a>
-										      </div>
-										    </div>
-						               </div>
-						             </div>
-						             <!-- END timeline item -->
-						             <!-- timeline time label -->
-						             <!-- /.timeline-label -->
-						             <!-- timeline item -->
-						             <div>
-						               <i class="fa  fa-book bg-yellow" style="color:#ffffff"></i>
-						               <div class="timeline-item">
-						                 <span class="time"><i class="fas fa-clock"></i> 2014-02-10 16:34:29</span>
-						                 <h3 class="timeline-header"><a href="#" >휴가신청</a> </h3>
-						                 <div class="timeline-body">
-										      <div class="d-flex justify-content-between align-items-center">
-										        <div >
-										          기안자: 형준 사원<br>
-										          기안일자: 2014.02.11<br>
-										          <a style="color:#9d9d9d">결재양식 : 비품 신청</a>
-										        </div>
-										        <a class="btn btn-primary btn-sm float-right">진행중</a>
-										      </div>
-										    </div>
-						               </div>
-						             </div>
-						             <!-- END timeline item -->
-						             <!-- timeline item -->
-						             <!-- END timeline item -->
+										</c:forEach>
 						           </div>
 						         </div>
 						         <!-- /.col -->
@@ -326,6 +300,9 @@
 						   </section>
 						   <!-- /.content -->
 						 </div> <!-- .나의 결재 현황 카드  -->
+						 
+						 
+						 
 			 	</div> <!--col-md-6  -->
 			  	<div class="col-sm-6">
 			  		<section class="content-header">
@@ -355,18 +332,22 @@
 													</tr>
 												</thead>
 												<tbody>
-												<%-- 
-													<c:if test="${list.size()==0 }">
-														<tr><th colspan="5">게시물이 없습니다.</th></tr>
-													</c:if>
-													<c:forEach items="${list}" var="bbs">
-														<tr>
-															<td>${bbs.id}</td>
-															<td>${bbs.name}</td>
-															<td>${bbs.age}</td>
-														</tr>			
-													</c:forEach>
-												 --%>
+														<c:if test="${list.size()==0 }">
+																<tr><th colspan="5">게시물이 없습니다.</th></tr>
+															</c:if>
+												
+													    <c:forEach items="${refuse}" var="rf">
+													        <tr>
+													            <td>1.</td>
+													            <td>${rf.name}</td>
+													            <td>${rf.paySubject}</td>
+													            <td>${rf.limit_date}</td>
+													        </tr>	
+													    </c:forEach> 
+																								
+													
+															
+												 <!-- 
 													<tr>
 														<td>1.</td>
 														<td>형준사원</td>
@@ -389,7 +370,8 @@
 													<td>형준사원</td>
 													<td>연봉 협상 관련 결재입니...</td>
 													<td>2014-02-10</td>
-												</tr>
+												</tr> 
+												-->
 												</tbody>
 										</table>
 								</div>
@@ -411,60 +393,43 @@
 			    	</section>
 			    	<section class="content2">
 							 <div class="card-body" id="donePayment">
-				                <div class="callout callout-Danger">
-						                  <h5>인테리어 디자인 승인건</h5>
-						
-						                  <p>
-						                  <div class="row">
-						                  <div class="col-sm-1">
-						                  		<img class="img-fluid rounded-circle" src="dist/img/man_default.png" alt="">
-						                  </div>
-						                  <div class="col-sm-7">
-						                  기안자 : 김형준 <br>
-						                  종료일 : 2014-01-04
-						                  </div>
-						                  <div class="col-sm-3">
-						                 
-						                  </div>
-						                  </div>
-						                    </p>
-				                </div>
-				                <div class="callout callout-info">
-						                 <h5>비품관련</h5>
-						
-						                  <p>
-						                  <div class="row">
-						                  <div class="col-sm-1">
-						                  		<img class="img-fluid rounded-circle" src="dist/img/여자 증명사진.png" alt="">
-						                  </div>
-						                  <div class="col-sm-7">
-						                  기안자 : 아무개 <br>
-						                  종료일 : 2014-01-02
-						                  </div>
-						                  <div class="col-sm-3">
-						                 
-						                  </div>
-						                  </div>
-						                    </p>
-				                </div>
-				                <div class="callout callout-success">
-						                  <h5>프로젝트 승인건</h5>
-						
-						                  <p>
-						                  <div class="row">
-						                  <div class="col-sm-1">
-						                  		<img class="img-fluid rounded-circle" src="dist/img/man_default.png" alt="">
-						                  </div>
-						                  <div class="col-sm-7">
-						                  기안자 : 홍길동 <br>
-						                  종료일 : 2014-01-04
-						                  </div>
-						                  <div class="col-sm-3">
-						                 
-						                  </div>
-						                  </div>
-						                    </p>
-				                </div>
+				                <c:forEach items="${end}" var="e">
+									    <c:set var="cardColor" value="" />
+									    <c:choose>
+									        <c:when test="${e.form_sort== 'PAYMENT_VAC'}">
+									            <c:set var="cardColor" value="callout-Danger" />
+									        </c:when>
+									        <c:when test="${e.form_sort == 'PAYMENT_PRO'}">
+									            <c:set var="cardColor" value="callout-info" />
+									        </c:when>
+									        <c:when test="${e.form_sort == 'PAYMENT_BUY'}">
+									            <c:set var="cardColor" value="callout-success" />
+									        </c:when>
+									    </c:choose>
+									    
+									    <div class="callout ${cardColor}">
+									        <h5>${e.paySubject}</h5>
+									        <p>
+									            <div class="row">
+									                <div class="col-sm-1">
+									                    <img class="img-fluid rounded-circle" src="dist/img/man_default.png" alt="">
+									                </div>
+									                <div class="col-sm-7">
+									                    기안자: ${e.name} <br>
+									                    종료일: ${e.limit_date}
+									                </div>
+									                <div class="col-sm-3">
+									                
+									                </div>
+									            </div>
+									        </p>
+									    </div>
+									</c:forEach>
+
+
+
+
+
 			              </div>
 			              <!-- /.card-body -->
 					
@@ -551,18 +516,11 @@
 </div>
 <!-- ./wrapper -->
 </div>
-
+  <jsp:include page="footer.jsp" />
 
 	
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
+
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
@@ -577,7 +535,86 @@
 
 
 <script>
+console.log(refuse);
 
+
+/* 
+listCall(showPage);
+console.log("list call");
+
+//리스트 불러오기
+function listCall(){
+   		
+       
+      $.ajax({
+         type:'post',
+         url:'/paymentListDone.ajax',
+         data:{
+        	
+         },
+         dataType:'json',           
+         success:function(data){
+           console.log("success");
+            console.log(data);
+            listDraw(data.projectList);
+            
+         // Paging Plugin (j-query의 기본기능을 가지고 만들었기 때문에  plugin)
+            $('#pagination').twbsPagination({
+            startPage:data.currPage, // 시작 페이지
+            totalPages:data.pages,// 총 페이지 수 
+            visiblePages:5,// 보여줄 페이지
+            next : '<span style="color: #91bdce;">></span>', 
+            last : '<span style="color: #91bdce;">>></span>',
+            first : '<span style="color: #91bdce;"><<</span>',
+           prev : '<span style="color: #91bdce;"><</span>',
+            onPageClick:function(event,page){ // 페이지 클릭시 동작되는 (콜백)함수
+               console.log(page,showPage);
+               if(page != showPage){
+                  showPage=page;
+                  listCall(page,cnt);
+                  
+               }
+               }
+               })
+      
+         },
+         error:function(e){
+            console.log("Error");
+         }
+   });
+}
+	
+
+//리스트 작성
+function listDraw(projectList) {
+  console.log("listDraw Call");
+  var content = '';
+
+  projectList.forEach(function(dto,project_id){
+      content += '<tr>';
+      content += '<th><a href="projectDetail.go?project_id='+dto.limit_date+'">'+dto.limit_date+'</a></th>';
+      content += '<th>'+dto.code_name+'</th>';
+      content += '<th>'+dto.paySubject+'</th>';
+      content += '<td>'+ dto.document_id +'</td>';
+      content += '<td>'+ '<i class="fas fa-comments"></i>'+'</td>';
+      
+
+      if (dto.state === '진행중') {
+          content += '<td><a class="btn btn-primary btn-sm">' + dto.state + '</a></td>';
+      } else if (dto.state === '반려') {
+          content += '<td><a class="btn btn-danger btn-sm">' + dto.state + '</a></td>';
+      } else if (dto.state === '완료') {
+          content += '<td><a class="btn btn-secondary btn-sm">' + dto.state + '</a></td>';
+      }
+
+      content += '</tr>';
+  });
+
+  $('#projectList').empty();
+  $('#projectList').append(content);
+}
+
+ */
 
 /*결재 작성하기 모달  */
 	

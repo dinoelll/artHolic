@@ -170,8 +170,10 @@ public class MemberController {
 	        MemberDTO dto = service.login(id, pw);
 	        if (dto != null) {
 	            page = "main";
+	            String name = dto.getName();
 	        session.setAttribute("loginId", id);
             session.setAttribute("admin", dto.isAdmin());
+            session.setAttribute("name", name);
             logger.info("admin : " + dto.isAdmin());
             
 	        } else {
