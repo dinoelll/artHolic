@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -177,11 +178,12 @@ public class MypageController {
    
    @RequestMapping(value="/calendarUpdate.ajax")
    @ResponseBody
-   public String calendarUpdate(@RequestBody ArrayList<EventDataDTO> eventDataList) {
+   public String calendarUpdate(@RequestBody ArrayList<EventDataDTO> eventDataList,HttpSession session) {
       logger.info("eventDataList : " + eventDataList);
+      String member_id = (String) session.getAttribute("loginId");
 
       
-      service.calendarUpdate(eventDataList);
+      service.calendarUpdate(eventDataList,member_id);
 
       return "success";
    }
@@ -190,20 +192,21 @@ public class MypageController {
 
    @RequestMapping(value = "/calendarUpdate2.ajax")
    @ResponseBody
-   public String calendarUpdate2(@RequestBody EventDataDTO requestData) {
-
+   public String calendarUpdate2(@RequestBody EventDataDTO requestData,HttpSession session) {
+	   String member_id = (String) session.getAttribute("loginId");
       logger.info("requestdata : " + requestData.getMember_id());
 
-      service.calendarUpdate2(requestData);
+      service.calendarUpdate2(requestData,member_id);
 
       return "success";
    }
 
    @GetMapping("/getEvent.ajax")
    @ResponseBody
-   public List<EventDataDTO> getEvents() {
+   public List<EventDataDTO> getEvents(HttpSession session) {
+	   String member_id = (String) session.getAttribute("loginId");
       // 이벤트 데이터를 가져와서 리스트 형태로 반환
-      List<EventDataDTO> events = service.getEvents();
+      List<EventDataDTO> events = service.getEvents(member_id);
 
       for (EventDataDTO eventDataDTO : events) {
          logger.info("start:" + eventDataDTO.getStart_date());

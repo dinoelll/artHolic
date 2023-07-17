@@ -37,12 +37,12 @@ public class ProjectService {
    @Value("${spring.servlet.multipart.location}")
    private String attachmentRoot;
 
-   public HashMap<String, Object> listCall(int page, int cnt, String opt, String keyword) {
+   public HashMap<String, Object> listCall(int page, int cnt, String opt, String keyword,String myproject) {
 
       HashMap<String, Object> map = new HashMap<String, Object>();
       int offset = (page - 1) * cnt;
 
-      int total = dao.totalCount(opt, keyword); // 12
+      int total = dao.totalCount(opt, keyword,myproject); // 12
       // cnt = 10
       int range = total % cnt == 0 ? total / cnt : (total / cnt) + 1;
 
@@ -56,7 +56,7 @@ public class ProjectService {
 
       map.put("currPage", page);
       map.put("pages", range);
-      ArrayList<ProjectDTO> list = dao.listCall(opt, keyword, cnt, offset);
+      ArrayList<ProjectDTO> list = dao.listCall(opt, keyword, cnt, offset,myproject);
       map.put("projectList", list);
       return map;
    }

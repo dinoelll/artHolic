@@ -23,7 +23,7 @@ public interface MypageDAO {
    
    
    
-   List<EventDataDTO> getEvent();
+   List<EventDataDTO> getEvent(String member_id);
 
    void myFolderCreate(String folderName, String member_id);
 

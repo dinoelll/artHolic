@@ -15,22 +15,22 @@
             test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
          <if
             test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
-      	AND blind = 0
+          <if
+            test="myproject != null and !myproject.equals('')">AND project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE member_id = '${myproject}')</if>
+         AND blind = 0
       </where>
       ORDER BY project_id DESC
       LIMIT #{cnt} OFFSET #{offset}
    </select>
 
    <select id="totalCount" resultType="int" parameterType="string">
-      SELECT COUNT(project_id) FROM project
+      SELECT COUNT(project_id) FROM project AS p
       <where>
-         <if
-            test="keyword != null and !keyword.equals('') and opt =='project_name'">AND project_name LIKE CONCAT('%',#{keyword},'%')</if>
-         <if
-            test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND project_manager LIKE CONCAT('%',#{keyword},'%')</if>
-         <if
-            test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
-      	AND blind = 0
+         <if test="keyword != null and !keyword.equals('') and opt =='project_name'">AND p.project_name LIKE CONCAT('%',#{keyword},'%')</if>
+         <if test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND p.project_manager LIKE CONCAT('%',#{keyword},'%')</if>
+         <if test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND p.field_manager LIKE CONCAT('%',#{keyword},'%')</if>
+		<if test="myproject != null and !myproject.equals('')">AND p.project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE pi2.member_id = '${myproject}')</if>
+         AND blind = 0
       </where>
    </select>
 
