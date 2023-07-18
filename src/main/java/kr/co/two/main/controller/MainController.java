@@ -46,10 +46,12 @@ public class MainController {
 	
 	@RequestMapping(value="/mainInformList.ajax", method=RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String, Object> informList(@RequestParam HashMap<String,Object> params) {
+	public HashMap<String, Object> informList(@RequestParam HashMap<String,Object> params,HttpSession session) {
 		
 		logger.info("informList Call Controller");
 		logger.info("params :"+params);
+		String member_id = (String) session.getAttribute("loginId");
+		
 		return service.informList(params);
 	}
 	
