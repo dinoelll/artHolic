@@ -287,9 +287,7 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-					          		<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재하기</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려하기</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
+
 						          
 						          		
 					          		</div>	
@@ -468,7 +466,7 @@
 												                        <label class="custom-file-label" for="exampleInputFile">${form.ori_file_name }</label>
 												                      </div>
 												                      <div class="input-group-append">
-												                        <span type="button" class="input-group-text" onclick="downloadFile('${form.ori_file_name }','${form.new_file_name }')">download</span>
+												                        <span class="input-group-text">download</span>
 												                      </div>
 												                    </div>
 												                  </div>
@@ -725,14 +723,6 @@
 
 <script>
 
-
-
-//파일 다운로드
-function downloadFile(ori_fileName, new_fileName) {
-				  console.log('파일 다운로드');
-				  console.log(ori_fileName, new_fileName);
-				  window.location.href = '/download2.do?ori_fileName=' + ori_fileName + '&new_fileName=' + new_fileName; // 파일 다운로드를 위한 요청
-				}
 
 
 $(document).ready(function() {
@@ -1023,9 +1013,9 @@ function updateCharCount() {
 	        dataType: 'json',
 	        success: function(data) {
 	            console.log(data);
-	            if (data != null) {
-		  	        alert('요청이 완료되었습니다.');
-		  	        location.href ='/paymentListDone.go';
+	            if (data.success != null) {
+	            	alert('전송 성공');
+	            	location.href ='./';
 	            } else {
 	                
 	            }

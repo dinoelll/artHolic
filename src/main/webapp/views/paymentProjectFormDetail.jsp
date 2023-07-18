@@ -41,9 +41,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   
-  
   <style>
-
 
 /* gnb 스타일 */
 
@@ -54,6 +52,7 @@
      align-items: center;
      width: 205px;
     height: 460px;
+    
 		
 	}
 	#paybutton{
@@ -72,7 +71,7 @@
 	    color: black;
 	    
     }
-        	#paybutton3 {
+    	#paybutton3 {
 	    margin-bottom: 10px;
 	    font-size: 16px;
 	    width: 150px;
@@ -83,7 +82,7 @@
     }
     
     
-        #ListGo{
+    #ListGo{
 	color: black;
 	}
     
@@ -166,7 +165,7 @@
 #realForm{
 	border: 1px soild gray;
 	width: 1012px;
-	height: 1272px;
+	height: 1163px;
 	margin-left: 60px;
 	margin-right: 50px; 
 	margin-top: 50px;
@@ -199,17 +198,16 @@
     width: 100%;
     color: transparent;
     text-shadow: 0 0 0 black;
-    
   }
-  
-  #topRow {
+
+#topRow {
     margin-bottom: 50px;
     justify-content: space-between;
 }
 
 
-
 </style>
+  
   
 </head>
 <body class="hold-transition sidebar-mini">
@@ -287,9 +285,7 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-					          		<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재하기</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려하기</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
+
 						          
 						          		
 					          		</div>	
@@ -297,7 +293,7 @@
 					          <div class="col-sm-6">
 					            <ol class="breadcrumb float-sm-right">
 					              <li class="breadcrumb-item"><a href="#">결재 작성하기</a></li>
-					              <li class="breadcrumb-item active">비품구매</li>
+					              <li class="breadcrumb-item active">휴가신청</li>
 					            </ol>
 					          </div>
 					        </div>
@@ -313,57 +309,55 @@
 							<div class="container">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
-												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">비품 구매</h1>
-														      <div class="row" style="margin-bottom: 50px;" id="topRow">
-												          <div class="left-table" style="border :1px soild black;">
-																          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px;  ">
-																            <colgroup>
-																              <col style="width: 30%;">
-																              <col style="width: 70%;">
-																            </colgroup>
-																            <tr>
-																              <th style="width: 1%; white-space: nowrap; vertical-align: middle;">기안일</th>
-																              <td>
-																				<div class="group">
-																				  ${form.limit_date}
-																			  </div>
-																			</td>
-																            </tr>
-																            <tr>
-																              <th style=" width: 1%; white-space: nowrap; ">문서번호</th>
-																              <td id="document_id">${form.document_id}</td>
-																            </tr>
-																          </table>
-																        </div>
-												          
+												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">프로젝트 신청</h1>
+												      <div class="row" style="margin-bottom: 50px;" id="topRow">
+												        
+												         				<div class="left-table" style="border :1px soild black;">
+																	          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px;  ">
+																	            <colgroup>
+																	              <col style="width: 30%;">
+																	              <col style="width: 70%;">
+																	            </colgroup>
+																	            <tr>
+																	              <th style="width: 1%; white-space: nowrap; vertical-align: middle;">기안일</th>
+																	              <td>
+																					<div class="group">
+																					  ${form.limit_date}
+																				  </div>
+																				</td>
+																	            </tr>
+																	            <tr>
+																	              <th style=" width: 1%; white-space: nowrap; ">문서번호</th>
+																	              <td id="document_id">${form.document_id}</td>
+																	            </tr>
+																	          </table>
+																	        </div>
 												        
 												       
-												          			 <div class="right-table" style="border :1px soild black;">
-																        
-															       		<div id="list" class="right" >
-																          <table class="my-table" style="width: auto; table-layout: fixed; ">
-				
-																            <tr>
-																              <th style=" white-space: nowrap; " rowspan="4" >결재</th>
-																              <td style=" white-space: nowrap; ">기안자</td>
-																            </tr>
-																            <tr>
-																              <td></td>
-																            </tr>
-																            <tr>
-																              <td ></td>
-																            </tr>
-																             <tr>
-																              <td ></td>
-																            </tr>
-																            
-																	    </table>
-																	    </div>
-																	
-																	</div>
-												 			 </div><!--  제일 윗 부분-->
-												 			 
-												 			 
+												         				 <div class="right-table" style="border :1px soild black;">
+																	        
+																       		<div id="list" class="right" >
+																	          <table class="my-table" style="width: auto; table-layout: fixed; ">
+					
+																	            <tr>
+																	              <th style=" white-space: nowrap; " rowspan="4" >결재</th>
+																	              <td style=" white-space: nowrap; ">기안자</td>
+																	            </tr>
+																	            <tr>
+																	              <td></td>
+																	            </tr>
+																	            <tr>
+																	              <td ></td>
+																	            </tr>
+																	             <tr>
+																	              <td ></td>
+																	            </tr>
+																	            
+																		    </table>
+																		    </div>
+																		
+																		</div>
+												  </div>
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  <table class="my-table">
@@ -377,60 +371,43 @@
 													    <tr>
 													      <th>문서 분류</th>
 													      <td>${form.code_name}</td>
-													      <th>비품 종류</th>
+													      <th>프로젝트 종류</th>
 													      <td>
 													      		<div class="group">
-											                        
 											                        <select class="form-control">
-																	   <c:if test="${form.equipment_kind eq '자재'}"> 
-																	    <option selected>자재</option>
+																	   <c:if test="${form.project_kind eq '주택'}"> 
+																	    <option selected>주택</option>
 																	  </c:if>
-																	  <c:if test="${form.equipment_kind eq '장비'}">
-																	    <option selected>장비</option>
+																	  <c:if test="${form.project_kind eq '공공기관'}">
+																	    <option selected>공공기관</option>
 																	  </c:if>
-																	  <c:if test="${form.equipment_kind eq '기타'}">
-																	    <option selected>기타</option>
+																	  <c:if test="${form.project_kind eq '상가'}">
+																	    <option selected>상가</option>
 																	  </c:if> 
 																	</select>
-																</div>
+											                        
+											                      </div>
 														</td>
 													    </tr>
 													    
 													    <tr>
-													      <th>금액</th>
-													      <td>
-													      		 ${form.amount}
+													     <th>기간 및 일시</th>
+													      <td style="justify-content: center; ">
+													      		 <div class="group">
+												                  <div class="input-group"  style="justify-content: space-around;">
+												                    ${form.start_date}~${form.end_date}
+												                  </div>
+												                  <!-- /.input group -->
+												                </div>
 														</td>
-														      <th>운송장 여부</th>
-														      <td>
-															    <div class="form-check form-check-inline">
-																	  <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning"
-																	    <c:if test="${form.is_billway eq '0'}">checked</c:if>/>
-																	  <label class="form-check-label" for="radioMorning">있음</label>
-																	</div>
-																	<div class="form-check form-check-inline">
-																	  <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon" 
-																	    <c:if test="${form.is_billway eq '1'}">checked</c:if>/>
-																	  <label class="form-check-label" for="radioAfternoon">없음</label>
-																</div>
-	                          								</td>
-													    </tr>
-													  </table>
-												  </div>
-												  <div class="row" style="margin-bottom: 50px;">
-													  
-													  
-													  <table class="my-table">
-													    <tr>
-													  	  
-														      <td >
-														     	 <a>- 운송장 있을 시 ' 있음으로 체크하고 해당 내용 파일 첨부 요망</a><br>
-														     	 <a>- 파일 첨부가 힘들 경우 해당 내용 내용란에 추가 바람</a>
+													      <th>프로젝트 리더</th>
+													      <td>
+														     	 <input type="text" class="invisible-input" value="${form.project_leader}">
 														      </td>
 													    </tr>
 													  </table>
-													  
 												  </div>
+												 
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  
@@ -468,7 +445,7 @@
 												                        <label class="custom-file-label" for="exampleInputFile">${form.ori_file_name }</label>
 												                      </div>
 												                      <div class="input-group-append">
-												                        <span type="button" class="input-group-text" onclick="downloadFile('${form.ori_file_name }','${form.new_file_name }')">download</span>
+												                        <span class="input-group-text">download</span>
 												                      </div>
 												                    </div>
 												                  </div>
@@ -510,7 +487,8 @@
 	
 	
       
-      	<!-- 모달모달!! 숨겨진 -->
+      
+			<!-- 모달모달!! 숨겨진 -->
 				<div class="modal fade" id="modal-lg" data-backdrop="static">
 				  <div class="modal-dialog modal-lg">
 				    <div class="modal-content">
@@ -568,8 +546,7 @@
       
       
       
-      
-       <!-- 결재 요청 모달 -->
+      <!-- 결재 요청 모달 -->
 				<div class="modal fade" id="modal-default">
 				  <div class="modal-dialog">
 				    <div class="modal-content">
@@ -657,14 +634,13 @@
       <!-- /.modal -->
       
       
-      
      
      
      
       
 	
-	 <jsp:include page="footer.jsp" />
-  
+	
+ <jsp:include page="footer.jsp" />
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -673,11 +649,7 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
-</div>
-
-
-
+</div><!--  제일 큰거-->
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -727,14 +699,6 @@
 
 
 
-//파일 다운로드
-function downloadFile(ori_fileName, new_fileName) {
-				  console.log('파일 다운로드');
-				  console.log(ori_fileName, new_fileName);
-				  window.location.href = '/download2.do?ori_fileName=' + ori_fileName + '&new_fileName=' + new_fileName; // 파일 다운로드를 위한 요청
-				}
-
-
 $(document).ready(function() {
     var document_id = $('#document_id').text();
     console.log('document_id :' + document_id );
@@ -749,7 +713,7 @@ $(document).ready(function() {
             drawList(data.payList);
             /* drawList2(data.referrer); */
             if (data.success != null) {
-                
+            	
             } else {
                 
             }
@@ -965,7 +929,7 @@ function updateCharCount() {
         success: function(data) {
             console.log(data);
             if (data.success != null) {
-            	alert('전송 성공');
+            	alert('결재 완료');
             	location.href ='./';
             } else {
                 
@@ -1023,9 +987,9 @@ function updateCharCount() {
 	        dataType: 'json',
 	        success: function(data) {
 	            console.log(data);
-	            if (data != null) {
-		  	        alert('요청이 완료되었습니다.');
-		  	        location.href ='/paymentListDone.go';
+	            if (data.success != null) {
+	            	alert('반려 완료');
+	            	location.href ='./';
 	            } else {
 	                
 	            }
@@ -1039,7 +1003,6 @@ function updateCharCount() {
 	    
 	  }
 
-  
 </script>
 
 

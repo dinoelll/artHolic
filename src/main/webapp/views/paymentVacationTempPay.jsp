@@ -287,7 +287,6 @@
 						          <div id="formGnb" >
 						          	<br><br>
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재요청</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-lg2">결재선</a>
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
 						          
 						          
@@ -312,6 +311,8 @@
 							<div class="container">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
+												    <input type="hidden"  id="form_sort" name="vacation" value="PAYMENT_VAC">
+												    
 												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">휴가 신청</h1>
 													      <div class="row" style="margin-bottom: 50px;" id="topRow">
 													          				<div class="left-table" style="border :1px soild black;">
@@ -401,7 +402,8 @@
 												                  
 												
 												                  <div class="input-group"  style="justify-content: space-around;">
-												                    ${form.start_date}~${form.end_date}
+												                   <input type="text" class="form-control float-right" id="reservationtime" >
+												                    
 												                  </div>
 												                  <!-- /.input group -->
 												                </div>
@@ -429,7 +431,7 @@
 													    <tr>
 													  	  <th>제목</th>
 														      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요" value="${form.paySubject}">
+														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요" value="${form.paySubject}" id="paySubject">
 														      </td>
 													    </tr>
 													  </table>
@@ -441,7 +443,7 @@
 															    <tr>
 															    	<th>내용</th>
 															      <td>
-																      <textarea rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;">${form.payContent}</textarea>
+																      <textarea rows="10" cols="50" id="payContent" style="width: 100%; height: 100%; border: none; resize: none;">${form.payContent}</textarea>
     															</td>
 															    </tr>
 															  </table>
@@ -540,6 +542,8 @@
 				            <div id="previewBox">
 				
 				            </div>
+				            
+				             <input type="hidden" id="temp" value="1">
 				
 				
 				          </div>
@@ -676,7 +680,7 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-              <button type="button" class="btn btn-primary">예</button>
+              <button type="button" class="btn btn-primary" onclick="goBack()">예</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -733,6 +737,11 @@
 
 
 <script>
+
+function goBack() {
+    window.history.back(); // 이전 페이지로 이동
+  }
+
 
 
 $(document).ready(function() {
@@ -797,9 +806,17 @@ $(document).ready(function() {
 		    content += '<tr>';
 		    content += '<td>' + approversVal[0].reg_date + '</td>';
 		    for (var i = 0; i < approversVal.length; i++) {
-		      var noteValue = approversVal[i].note;
-		      content += '<td>' + (noteValue !== null ? approversVal[i].modi_date : '') + '</td>';
-		    }
+		    	  var noteValue = approversVal[i].result;
+		    	  var approvalStatus = '';
+
+		    	  if (noteValue === '결재완료') {
+		    	    approvalStatus = '승인';
+		    	  } else if (noteValue === '반려') {
+		    	    approvalStatus = '반려';
+		    	  }
+
+		    	  content += '<td>' + (approvalStatus !== '' ? approvalStatus : '') + '</td>';
+		    	}
 		    content += '</tr>';
 		  } else {
 		    content += '<tr>';
@@ -824,121 +841,8 @@ $(document).ready(function() {
 		}
 	
 
- /*  결재선 데이터 전송*/
+ 
 
-
-	 $("#approvers").bootstrapDualListbox({
-	 	  // 기타 매개변수 설정
-	 	  infoText: false, // "Showing all {0}" 메시지 숨김
-	 	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
-	 	  moveAllLabel: '' // "Move all" 버튼 제거
-	 	});
-	 $("#referrer").bootstrapDualListbox({
-	 	  // 기타 매개변수 설정
-	 	  infoText: false, // "Showing all {0}" 메시지 숨김
-	 	  filterPlaceHolder: '검색어를 입력하세요' ,// 검색 입력란 플레이스홀더 변경
-	 	  moveAllLabel: '' // "Move all" 버튼 제거
-	 	});
-
-
-	 var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox();
-	 $("#demoform").submit(function() {
-	   
-	   var approversVal = $('[name="duallistbox_demo1[]"]').val();
-	   console.log(approversVal);
-	   drawList(approversVal);  
-	   
-	   
-	   
-	   return false;
-	 });
-
-
-	 var demo1 = $('select[name="duallistbox_demo2[]"]').bootstrapDualListbox();
-	 $("#demoform").submit(function() {
-	   
-	   var referrer = $('[name="duallistbox_demo2[]"]').val();
-	   console.log(referrer);
-	   drawList2(referrer);  
-	   return false;
-	 });
-
-
-
-
-
-/* 
-	 function drawList(approversVal) {
-	 	var nameValue = document.getElementById('formName').textContent;
-	 	approversVal.forEach(function(item,idx){
-	 		console.log(item,idx)
-	 		
-	 		});
-	 	 
-	 	  var content = '<table class="my-table" style="width: auto; table-layout: fixed;">';
-
-
-	 	  content += '<tr>';
-	 	  content += '<th style=" white-space: nowrap;" rowspan="' + (approversVal.length + 3) + '">결재</th>';
-	 	  content += '<td style=" white-space: nowrap;">기안자</td>';
-	 	  for (var i = 0; i < approversVal.length; i++) {
-	 	    content += '<td style=" white-space: nowrap;">결재자</td>';
-	 	  }
-	 	  content += '</tr>';
-
-	 	  content += '<tr>';
-	 	  content += '<td>' + nameValue + '</td>';
-	 	  for (var i = 0; i < approversVal.length; i++) {
-	 	    content += '<td id="payment'+[i]+'">' + approversVal[i] + '</td>';
-	 	  }
-	 	  content += '</tr>';
-	 	  
-	 	  content += '<tr>';
-	 	  content += '<td>' + '</td>';
-	 	  for (var i = 0; i < approversVal.length; i++) {
-	 	    content += '<td>' + '</td>';
-	 	  }
-	 	  content += '</tr>';
-	 	  
-	 	  content += '<tr>';
-	 	  content += '<td>' + '</td>';
-	 	  for (var i = 0; i < approversVal.length; i++) {
-	 	    content += '<td>' + '</td>';
-	 	  }
-	 	  content += '</tr>';
-
-
-	 	  content += '</table>';
-
-	 	  
-	 	  $('#list').html(content);
-	 	  // 테이블을 어떤 엘리먼트에 추가할지 결정하고, 해당 엘리먼트에 HTML 내용을 할당
-	 	  
-	 };
-
-	 function drawList2(referrer) {
-	 	referrer.forEach(function(item,idx){
-	 		console.log(item,idx)
-	 		
-	 		});
-	 		var content2 = '<table class="my-table">'
-	 		
-	 		content2 += '<tr>';
-	 		content2 += '<th style="background-color:white">참조자</th>';
-	 		content2 += '<td>';
-	 		content2 += '<input type="text" class="invisible-input" value="'+referrer+'">';
-	 		content2 += '<td>';
-	 		content2 += '<tr>';
-	 		content2 += '</table>';
-	 	 
-	 	  
-	 	  
-	 	  $('#referrer').html(content2);
-	 	  // 테이블을 어떤 엘리먼트에 추가할지 결정하고, 해당 엘리먼트에 HTML 내용을 할당
-	 	  
-	 }; 
- */
-	 // (끝)결재선, 참조자
 
 
 
@@ -963,14 +867,13 @@ $(function () {
  	  var fileInput = document.getElementById('exampleInputFile');
  	  var file = fileInput.files[0]; // Get the selected file
 
- 	  if (!file) {
- 	    alert('파일을 추가해 주세요.');
- 	    return; // 파일이 없으면 함수 종료
- 	  }
 
  	  var paymentValues = [];
  	  var referrerValues = [];
 
+ 	 var document_id = $('#document_id').text();
+     console.log('document_id :' + document_id );
+ 	  
  	  // Other parameters
  	  var $limit_date = $('#limit_date');
  	  var $form_sort = $('#form_sort');
@@ -979,6 +882,7 @@ $(function () {
  	  var $paySubject = $('#paySubject');
  	  var $payContent = $('#payContent');
  	  var $radioPeriod = $('input[name="radioPeriod"]:checked');
+ 	 var $temp = $('#temp');
 
  	  for (var i = 0; i < approversVal.length; i++) {
  	    paymentValues.push(approversVal[i]);
@@ -990,6 +894,7 @@ $(function () {
 
  	  var param = {
  	    payment: paymentValues,
+ 	   document_id: document_id,
  	    referrer: referrerValues,
  	    limit_date: $limit_date.val(),
  	    form_sort: $form_sort.val(),
@@ -997,32 +902,14 @@ $(function () {
  	    reservationtime: $reservationtime.val(),
  	    radioPeriod: $radioPeriod.val(),
  	    paySubject: $paySubject.val(),
+ 	   tempRequest: $temp.val(),
  	    payContent: $payContent.val()
  	  };
 
  	  console.log(param);
 
- 	  // 작성 여부 확인
- 	  if (!param.limit_date || !param.paySubject || !param.payContent) {
- 	    if (!param.limit_date) {
- 	      alert('기안일을 선택해주세요.');
- 	    } else if (!param.paySubject) {
- 	      alert('제목을 작성해주세요.');
- 	    } else if (!param.payContent) {
- 	      alert('내용을 추가해주세요.');
- 	    } else {
- 	      alert('작성되지 않은 항목이 있습니다.');
- 	    }
- 	    return; // 작성되지 않은 항목이 있으면 함수 종료
- 	  }
- 	  
- 	  // 결재자 여부 확인
- 	  
- 	    if (paymentValues.length === 0) {
- 	    alert('결재자를 한 명 이상 추가해 주세요.');
- 	    return; // 함수 종료
- 	  }
 
+ 	
  	  var formData = new FormData();
 
  	  // Append other parameters to the FormData object
@@ -1036,15 +923,16 @@ $(function () {
 
  	  $.ajax({
  	    type: 'POST',
- 	    url: 'writeVacation.ajax',
+ 	    url: 'writeVacationTemp.ajax',
  	    data: formData,
  	    dataType: 'json',
  	    processData: false, // Prevent jQuery from automatically processing the data
  	    contentType: false, // Prevent jQuery from automatically setting the content type
  	    success: function(data) {
  	      console.log(data);
- 	      if (data.success !== undefined) {
- 	        alert('요청이 완료되었습니다.');
+  	      if (data != null) {
+	  	        alert('요청이 완료되었습니다.');
+	  	        location.href ='/paymentList.go';
  	      } else {
  	        alert('요청이 완료되었습니다.');
  	      }
@@ -1111,124 +999,7 @@ function project(button) {
 	  }	
 	  
 
-/* 모달 글자수 제한  */
-function updateCharCount() {
-    var textarea = document.getElementById("myTextarea");
-    var charCount = document.getElementById("charCount");
-    var warningMsg = document.getElementById("warningMsg");
-    var textLength = textarea.value.length;
-    charCount.textContent = textLength + "/100";
-    
-    if (textLength > 100) {
-      textarea.value = textarea.value.slice(0, 100); // 글자 수 제한
-      charCount.textContent = "100/100"; // 최대 글자 수에 도달한 경우
-    }
-    
-    if (textLength > 0) {
-      warningMsg.style.display = "none"; // 의견이 작성된 경우 경고 메시지 숨김
-    }
-  }
-  
-  function handleRequest() {
-    var textarea = document.getElementById("myTextarea");
-    var warningMsg = document.getElementById("warningMsg");
-    var textLength = textarea.value.length;
-    
-    if (textLength === 0) {
-      warningMsg.style.display = "block"; // 의견이 작성되지 않은 경우 경고 메시지 표시
-      return;
-    }
-    
-    var document_id = $('#document_id').text();
-    console.log('document_id :' + document_id );
-    var note = $('#myTextarea').val();
-    console.log('note :' + note );
-    
-    // 결재하기
-    $.ajax({
-        type: 'POST',
-        url: 'payRequest.ajax',
-        data: { 
-        	document_id: document_id ,
-        	note : note
-        },
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
-            if (data.success != null) {
-            	alert('전송 성공');
-            	location.href ='./';
-            } else {
-                
-            }
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    });
-    
-  }
-  
-  function updateCharCount2() {
-	    var textarea = document.getElementById("myTextarea2");
-	    var charCount = document.getElementById("charCount2");
-	    var warningMsg = document.getElementById("warningMsg2");
-	    var textLength = textarea.value.length;
-	    charCount.textContent = textLength + "/100";
-	    
-	    if (textLength > 100) {
-	      textarea.value = textarea.value.slice(0, 100); // 글자 수 제한
-	      charCount.textContent = "100/100"; // 최대 글자 수에 도달한 경우
-	    }
-	    
-	    if (textLength > 0) {
-	      warningMsg.style.display = "none"; // 의견이 작성된 경우 경고 메시지 숨김
-	    }
-	  }
-	  
-	  function handleRequest2() {
-		   
-		  
-	    var textarea = document.getElementById("myTextarea2");
-	    var warningMsg = document.getElementById("warningMsg2");
-	    var textLength = textarea.value.length;
-	    
-	    if (textLength === 0) {
-	      warningMsg.style.display = "block"; // 의견이 작성되지 않은 경우 경고 메시지 표시
-	      return;
-	    }
-	    
-	    // 반려하기
-	    var document_id = $('#document_id').text();
-	    console.log('document_id :' + document_id );
-	    var note = $('#myTextarea2').val();
-	    console.log('note :' + note );
-	    
-	    $.ajax({
-	        type: 'POST',
-	        url: 'payRefuse.ajax',
-	        data: { 
-	        	document_id: document_id ,
-	        	note : note
-	        },
-	        dataType: 'json',
-	        success: function(data) {
-	            console.log(data);
-	            if (data.success != null) {
-	            	alert('전송 성공');
-	            	location.href ='./';
-	            } else {
-	                
-	            }
-	        },
-	        error: function(e) {
-	            console.log(e);
-	        }
-	    });
-	
-
-	    
-	  }
+ 
 
 		
 	  $(function () {

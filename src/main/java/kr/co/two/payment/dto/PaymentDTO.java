@@ -30,6 +30,7 @@ public class PaymentDTO {
 	private String vacation_kind;
 	private String dept_name;
 	private String ori_file_name;
+	private String new_file_name;
 	private String note;
 	private String result;
 	private String modi_date;
@@ -39,6 +40,8 @@ public class PaymentDTO {
 	private String refer;
 	private String order_column;
 	private String form;
+	private String reg_date;
+	private String profile_photo;
 	
 
 	
@@ -247,6 +250,24 @@ public class PaymentDTO {
 	}
 	public void setForm(String form) {
 		this.form = form;
+	}
+	public String getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(String reg_date) {
+		this.reg_date = reg_date;
+	}
+	public String getProfile_photo() {
+		return profile_photo;
+	}
+	public void setProfile_photo(String profile_photo) {
+		this.profile_photo = profile_photo;
+	}
+	public String getNew_file_name() {
+		return new_file_name;
+	}
+	public void setNew_file_name(String new_file_name) {
+		this.new_file_name = new_file_name;
 	}
 	
 	

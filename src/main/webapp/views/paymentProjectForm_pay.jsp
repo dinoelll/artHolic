@@ -447,7 +447,7 @@
 												                        <label class="custom-file-label" for="exampleInputFile">${form.ori_file_name }</label>
 												                      </div>
 												                      <div class="input-group-append">
-												                        <span class="input-group-text">download</span>
+												                        <span type="button" class="input-group-text" onclick="downloadFile('${form.ori_file_name }','${form.new_file_name }')">download</span>
 												                      </div>
 												                    </div>
 												                  </div>
@@ -699,6 +699,12 @@
 
 <script>
 
+//파일 다운로드
+function downloadFile(ori_fileName, new_fileName) {
+				  console.log('파일 다운로드');
+				  console.log(ori_fileName, new_fileName);
+				  window.location.href = '/download2.do?ori_fileName=' + ori_fileName + '&new_fileName=' + new_fileName; // 파일 다운로드를 위한 요청
+				}
 
 
 $(document).ready(function() {
@@ -755,9 +761,17 @@ $(document).ready(function() {
 		    content += '<tr>';
 		    content += '<td>' + '신청' + '</td>';
 		    for (var i = 0; i < approversVal.length; i++) {
-		      var noteValue = approversVal[i].note;
-		      content += '<td>' + (noteValue !== null ? '승인' : '') + '</td>';
-		    }
+		    	  var noteValue = approversVal[i].result;
+		    	  var approvalStatus = '';
+
+		    	  if (noteValue === '결재완료') {
+		    	    approvalStatus = '승인';
+		    	  } else if (noteValue === '반려') {
+		    	    approvalStatus = '반려';
+		    	  }
+
+		    	  content += '<td>' + (approvalStatus !== '' ? approvalStatus : '') + '</td>';
+		    	}
 		    content += '</tr>';
 
 		    content += '<tr>';
@@ -981,9 +995,9 @@ function updateCharCount() {
 	        dataType: 'json',
 	        success: function(data) {
 	            console.log(data);
-	            if (data.success != null) {
-	            	alert('반려 완료');
-	            	location.href ='./';
+	            if (data != null) {
+		  	        alert('요청이 완료되었습니다.');
+		  	        location.href ='/paymentListDone.go';
 	            } else {
 	                
 	            }

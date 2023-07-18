@@ -100,6 +100,16 @@ public interface PaymentDAO {
 
 	ArrayList<PaymentDTO> mainTimeline(String id);
 
+	int paymentShipTemp(HashMap<String, String> params);
+
+	int vacationFormSaveRequestTemp(HashMap<String, String> params);
+
+	
+	  int buyItemFormSaveRequestTemp(HashMap<String, String> params);
+	  
+	  int projectFormSaveRequestTemp(HashMap<String, String> params);
+	 
+
 
 
 	

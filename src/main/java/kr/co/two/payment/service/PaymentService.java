@@ -40,7 +40,9 @@ public class PaymentService {
 	    // 기본 정보 부여
 	    String blind = "0";
 	    params.put("blind", blind);
-	    String state = "진행중";
+	    String state = new String();
+	    
+	    state = "진행중";
 	    params.put("state", state);
 	    
 	    
@@ -48,10 +50,7 @@ public class PaymentService {
 	    String id = (String) session.getAttribute("loginId");
 	    params.put("id", id);
 	    
-	    
-	    
-	    
-	    
+
 	    String form_sort =  params.get("form_sort");
 	    
 	    
@@ -71,6 +70,8 @@ public class PaymentService {
 	    	
 	    	if(form_sort.equals("PAYMENT_VAC") ) {
 	    		// 기간 및 일시
+	    		state = "임시저장";
+	    	    params.put("state", state);
 	    		String oriReservationtime = params.get("reservationtime");
 	    		String start_date =  oriReservationtime.substring(0, 10);
 	    		logger.info("start_date : "+start_date);
@@ -96,14 +97,28 @@ public class PaymentService {
 	    	
 	    	  if(form_sort.equals("PAYMENT_BUY")) {
 
+	    		  state = "임시저장";
+		    	    params.put("state", state);
 	    	  
-	    	  
+		    	    if(params.get("radioPeriod") != null) {
+		    			String vacation_sort =  params.get("radioPeriod");
+		    			if(vacation_sort.equals("있음") ) {
+		    				params.put("is_billway", "0");
+		    			}
+		    			if(vacation_sort.equals("없음") )  {
+		    				params.put("is_billway", "1");
+		    			}
+		    		}	  
+		    	    
 		    	vacationFormSaveTempRow =  dao.buyItemFormSaveTemp(params);
 		    	 logger.info("작성폼 임시저장 업로드 완료 "+vacationFormSaveTempRow);
 	    	}
 	    	if(form_sort.equals("PAYMENT_PRO")) {
 	    	
 	 		
+	    		state = "임시저장";
+	    	    params.put("state", state);
+	    	    
 	    		// 기간 및 일시
 	 			String oriReservationtime = params.get("reservationtime");
 	 			String start_date =  oriReservationtime.substring(0, 10);
@@ -154,7 +169,15 @@ public class PaymentService {
 	 	    
 	 	   if(form_sort.equals("PAYMENT_BUY") ) {
 	 		   
-	 		   
+	 		  if(params.get("radioPeriod") != null) {
+	    			String vacation_sort =  params.get("radioPeriod");
+	    			if(vacation_sort.equals("있음") ) {
+	    				params.put("is_billway", "0");
+	    			}
+	    			if(vacation_sort.equals("없음") )  {
+	    				params.put("is_billway", "1");
+	    			}
+	    		}	  
 	 		   
 	 		   
 	 		  buyItemFormSaveRow =  dao.buyItemFormSave(params);
@@ -187,46 +210,103 @@ public class PaymentService {
 	    
 
 	    // 결재 관련 정보 생성
-
+	    if(params.get("temp")!=null){
 	    
-	    logger.info("결재관련 파람 확인!! " + params);
-	    
-	    String result = "진행 중";
-	    params.put("result", result);
-
-	    for (int i = 1; i <= 4; i++) {
-	        String paymentKey = "payment" + i;
-	        if (params.get(paymentKey) != null && !params.get(paymentKey).isEmpty()) {
-	            String order_column = String.valueOf(i);
-	            params.put("order_column", order_column);
-	            String member_id =  params.get(paymentKey);
-	            params.put("member_id", member_id);
-	            int paymentShipRow = dao.paymentShip(params);
-	            logger.info("payment변경완료Ship" + paymentShipRow);
-	        }
+		    logger.info("결재관련 파람 확인!! " + params);
+		    
+		    String result = "진행 중";
+		    params.put("result", result);
+	
+		    for (int i = 1; i <= 4; i++) {
+		        String paymentKey = "payment" + i;
+		        if (params.get(paymentKey) != null && !params.get(paymentKey).isEmpty()) {
+		            String order_column = String.valueOf(i);
+		            params.put("order_column", order_column);
+		            String member_id =  params.get(paymentKey);
+		            params.put("member_id", member_id);
+		            int paymentShipRow = dao.paymentShipTemp(params);
+		            logger.info("payment변경완료ShipTemp" + paymentShipRow);
+		        }
+		    }
+	    }
+	    if(params.get("temp")==null){
+		    
+		    logger.info("결재관련 파람 확인!! " + params);
+		    
+		    String result = "진행 중";
+		    params.put("result", result);
+	
+		    for (int i = 1; i <= 4; i++) {
+		        String paymentKey = "payment" + i;
+		        if (params.get(paymentKey) != null && !params.get(paymentKey).isEmpty()) {
+		            String order_column = String.valueOf(i);
+		            params.put("order_column", order_column);
+		            String member_id =  params.get(paymentKey);
+		            params.put("member_id", member_id);
+		            int paymentShipRow = dao.paymentShip(params);
+		            logger.info("payment변경완료ShipTemp" + paymentShipRow);
+		        }
+		    }
+		 // 참조자 넣기
+		    for (int i = 1; i <= 4; i++) {
+		    	String referrerKey = "referrer" + i;
+		    	if (params.get(referrerKey) != null && !params.get(referrerKey).isEmpty()) {
+		            
+		            
+		            String member_id =  params.get(referrerKey);
+		            params.put("member_id", member_id);
+		            int referrerRow = dao.payment_reference(params);
+		            logger.info("참조자 변경완료 !! " + referrerRow);
+		        }
+		    	
+		   
+		    }
+		    
+		    
 	    }
 	    
-	    // 참조자 넣기
-	    for (int i = 1; i <= 4; i++) {
-	    	String referrerKey = "referrer" + i;
-	    	if (params.get(referrerKey) != null && !params.get(referrerKey).isEmpty()) {
-	            
-	            
-	            String member_id =  params.get(referrerKey);
-	            params.put("member_id", member_id);
-	            int referrerRow = dao.payment_reference(params);
-	            logger.info("참조자 변경완료 !! " + referrerRow);
-	        }
-	    	
-	   
-	    }
+	    
 	    
 	   
 	    
 	    
-	    return vacationFormSaveRow;
+	    return 1;
 	    
 	    
+	}
+	public int writeVacationTemp(HashMap<String, String> params, HttpSession session) {
+	    
+		 String form_sort =  params.get("form_sort");
+	    int vacationFormSaveRow = 0;
+	    int buyItemFormSaveRow = 0;
+	    int projectFormSaveRow = 0;
+	    int vacationFormSaveTempRow = 0;
+	    int buyItemFormSaveTempRow = 0;
+	    int projectFormSaveTempRow = 0;
+		
+		if(form_sort.equals("PAYMENT_VAC")) {
+ 	    	
+
+ 	    	vacationFormSaveRow =  dao.vacationFormSaveRequestTemp(params);
+ 	    	logger.info(" 휴가작성폼 업로드 완료 "+vacationFormSaveRow);
+ 	    }
+ 	    
+		
+		 if(form_sort.equals("PAYMENT_BUY") ) {
+		 
+		 
+		  buyItemFormSaveRow = dao.buyItemFormSaveRequestTemp(params);
+		  logger.info(" 비품 작성폼 업로드 완료 "+vacationFormSaveRow); }
+		  if(form_sort.equals("PAYMENT_PRO")) {
+		  
+		  
+		  
+		  projectFormSaveRow = dao.projectFormSaveRequestTemp(params);
+		  logger.info(" 작성폼 업로드 완료 "+vacationFormSaveRow); }
+		
+ 	    	
+
+		return 1;
 	}
 	
 	// 파일 업로드 메소드
@@ -588,6 +668,35 @@ public ModelAndView vacationForm(HttpSession session, String document_id, boolea
 	return mav;
 }
 
+public ModelAndView vacationFormDetail(HttpSession session, String document_id, boolean temp) {
+	String id = (String) session.getAttribute("loginId");
+	String FormKind = document_id.substring(0, 3); // 앞의 3글자 추출
+	PaymentDTO dto = new PaymentDTO();
+	ModelAndView mav = new ModelAndView();
+	
+	ArrayList<MemberDTO> mdto = new ArrayList<MemberDTO>();
+
+	
+	if(FormKind.equals("vac")) {
+		
+		dto = dao.vacationForm(id, document_id );
+		mav = new ModelAndView("paymentVacationFormDetail");
+	}
+	if(FormKind.equals("buy")) {
+		dto = dao.buyItemForm(id, document_id );
+		mav = new ModelAndView("paymentBuyItemFormDetail");
+			
+		}
+	if(FormKind.equals("pro")) {
+		dto = dao.projectForm(id, document_id );
+		mav = new ModelAndView("paymentProjectFormDetail");
+		
+	}
+	mav.addObject("form", dto);
+	
+	return mav;
+}
+
 public HashMap<String, Object> payListCall(String document_id) {
 	HashMap<String, Object> map = new HashMap<String, Object>();
 	
@@ -615,7 +724,7 @@ public int payRequest(String document_id, String note, String member_id) {
 	
 	
 	
-	return payRequestInt;
+	return 1;
 }
 
 public int payRefuse(String document_id, String note, String member_id) {
@@ -678,6 +787,9 @@ public HashMap<String, Object> note(HttpSession session, String document_id) {
 	
 	return mav;
 }
+
+
+
 
 
 

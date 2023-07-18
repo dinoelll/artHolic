@@ -420,10 +420,7 @@
 						          <div class="col-sm-6">
 							          <div id="formGnb2" >
 							          	<br><br>
-							          	<a class="optt" id="optt" value="전체">전체</a>
-							          	<a class="optt" id="optt" value="진행중">진행중</a>
-							          	<a class="optt" id="optt" value="반려">반려</a>
-							          	<a class="optt" id="optt" value="완료">완료</a>
+	
 						          		</div>	
 						          </div>
 						          <div class="col-sm-6">
@@ -467,7 +464,7 @@
 																		<col width="7%" />
 																		<col width="23%" />
 																		<col width="8%" />
-																		<col width="5%" />
+																		<col width="14%" />
 																		<col width="7%" />
 																  </colgroup>
 												                  <thead>
@@ -476,7 +473,7 @@
 													                    <th>결재양식</th>
 													                    <th>제목</th>
 													                    <th>문서번호</th>
-													                    <th>의견</th>
+													                    <th>생성 시간</th>
 													                    <th>결재 상태</th>
 													                  </tr>
 												                  </thead>
@@ -589,7 +586,7 @@
 					        </button>
 					      </div>
 					      <div class="modal-body">
-					        <h4 style="font-weight: 700; margin-bottom: 31px; margin-left: 30px;">결재 결과</h4>
+					        <h4 style="font-weight: 700; margin-bottom: 31px; margin-left: 30px;">결재 의견</h4>
 					        <a style="margin-left:33px; font-size:17px;"></a>
 					        <div style="margin-top: 31px;">
 					          <c:forEach items="${note}" var="e">
@@ -779,7 +776,8 @@ function listDraw(projectList) {
          content += '<th>'+dto.limit_date+'</th>';         content += '<th>'+dto.code_name+'</th>';
          content += '<th><a href="./paymentVacationForm_pay.go?document_id='+dto.document_id+'&temp='+dto.temp+'">'+dto.paySubject+'</th>';
          content += '<td>'+ dto.document_id +'</td>';
-         content += '<td>'+ '<i class="fas fa-comments" data-toggle="modal" data-target="#modal-default" onclick="note(\''+dto.document_id+'\')"></i>'+'</td>';
+         content += '<td>'+ dto.reg_date  +'</td>';
+         
          
 
          if (dto.state === '진행중') {
@@ -788,7 +786,9 @@ function listDraw(projectList) {
              content += '<td><a class="btn btn-danger btn-sm">' + dto.state + '</a></td>';
          } else if (dto.state === '완료') {
              content += '<td><a class="btn btn-secondary btn-sm">' + dto.state + '</a></td>';
-         }
+         } else if (dto.state === '임시저장') {
+	         content += '<td><a class="btn btn-Success btn-sm">' + dto.state + '</a></td>';
+	     }
 
          content += '</tr>';
      });

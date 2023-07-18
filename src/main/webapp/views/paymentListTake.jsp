@@ -463,21 +463,23 @@
 										                <table id="example1" class="table table-bordered table-striped">
 										                  
 												                  <colgroup>
-																		<col width="10%" />
-																		<col width="7%" />
-																		<col width="23%" />
 																		<col width="8%" />
-																		<col width="5%" />
+																		<col width="7%" />
+																		<col width="18%" />
+																		<col width="6%" />
+																		<col width="3%" />
+																		<col width="6%" />
 																		<col width="7%" />
 																  </colgroup>
 												                  <thead>
 													                  <tr id="thead" style="text-align:center">
-													                    <th>기안일</th>
+													                     <th>기안일</th>
 													                    <th>결재양식</th>
 													                    <th>제목</th>
 													                    <th>문서번호</th>
 													                    <th>의견</th>
 													                    <th>결재 상태</th>
+													                    <th>신청 시간</th>
 													                  </tr>
 												                  </thead>
 												                  <tbody id="projectList" style="text-align:center; align-item:center; ">
@@ -589,10 +591,10 @@
 					        </button>
 					      </div>
 					      <div class="modal-body">
-					        <h4 style="font-weight: 700; margin-bottom: 31px; margin-left: 30px;">결재 결과</h4>
+					        <h4 style="font-weight: 700; margin-bottom: 31px; margin-left: 30px;">결재 의견</h4>
 					        <a style="margin-left:33px; font-size:17px;"></a>
 					        <div style="margin-top: 31px;">
-					          <c:forEach items="${note}" var="e">
+					          <c:forEach items="${note}" var="e">ㄴ
 					            <c:set var="cardColor" value="" />
 					            <c:choose>
 					              <c:when test="${e.result == '반려'}">
@@ -608,7 +610,7 @@
 					            <div class="row">
 					              <div class="col-sm-1">
 					                <div class="rounded-circle" style="width: 50px; height: 50px; overflow: hidden;">
-					                  <img class="img-fluid" src="dist/img/man_default.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+					                  <img class="img-fluid" src="dist/img/여자 증명사진.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
 					                </div>
 					              </div>
 					              <div class="col-sm-11">
@@ -778,7 +780,7 @@ function listDraw(projectList) {
   projectList.forEach(function(dto,project_id){
       content += '<tr>';
       content += '<th>'+dto.limit_date+'</th>';      content += '<th>'+dto.code_name+'</th>';
-      content += '<th><a href="./paymentVacationForm_pay.go?document_id='+dto.document_id+'">'+dto.paySubject+'</th>';
+      content += '<th><a href="./paymentVacationFormDetail.go?document_id='+dto.document_id+'">'+dto.paySubject+'</th>';
       content += '<td>'+ dto.document_id +'</td>';
       content += '<td>'+ '<i class="fas fa-comments" data-toggle="modal" data-target="#modal-default" onclick="note(\''+dto.document_id+'\')"></i>'+'</td>';
       
@@ -790,7 +792,7 @@ function listDraw(projectList) {
       } else if (dto.state === '완료') {
           content += '<td><a class="btn btn-secondary btn-sm">' + dto.state + '</a></td>';
       }
-
+      content += '<td>'+ dto.reg_date  +'</td>';
       content += '</tr>';
   });
 

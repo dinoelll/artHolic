@@ -287,8 +287,7 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-					          		<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재하기</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려하기</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재요청</a>
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
 						          
 						          		
@@ -313,6 +312,8 @@
 							<div class="container">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
+												    <input type="hidden"  id="form_sort" name="vacation" value="PAYMENT_BUY">
+												    
 												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">비품 구매</h1>
 														      <div class="row" style="margin-bottom: 50px;" id="topRow">
 												          <div class="left-table" style="border :1px soild black;">
@@ -381,7 +382,7 @@
 													      <td>
 													      		<div class="group">
 											                        
-											                        <select class="form-control">
+											                        <select class="form-control" id="equipment_kind">
 																	   <c:if test="${form.equipment_kind eq '자재'}"> 
 																	    <option selected>자재</option>
 																	  </c:if>
@@ -438,7 +439,7 @@
 													    <tr>
 													  	  <th>제목</th>
 														      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요" value="${form.paySubject}">
+														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요" value="${form.paySubject}" id="paySubject">
 														      </td>
 													    </tr>
 													  </table>
@@ -450,7 +451,7 @@
 															    <tr>
 															    	<th>내용</th>
 															      <td>
-																      <textarea rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;">${form.payContent}</textarea>
+																      <textarea rows="10" cols="50"  id="payContent" style="width: 100%; height: 100%; border: none; resize: none;">${form.payContent}</textarea>
     															</td>
 															    </tr>
 															  </table>
@@ -568,71 +569,110 @@
       
       
       
+      <!--  결재 요청 모달-->
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>결재 요청 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary" onclick="writeVacation()" >요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content --> 
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
       
-       <!-- 결재 요청 모달 -->
-				<div class="modal fade" id="modal-default">
-				  <div class="modal-dialog">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div style="align-item:inline;">
-				        <div class="modal-body" style="text-align: center;">
-				          <h4 style="font-weight: 700; margin-bottom: 31px;">결재 하시겠습니까?</h4>
-				        </div>
-				        <a style="margin-left:33px; font-size:17px;">의견 남기기</a>
-				        <div style="border: 1px solid lightgray; width: 416px; height: 161px; margin-left: 43px; margin-top: 31px;">
-				          <textarea id="myTextarea" rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;" oninput="updateCharCount()"></textarea>
-				        </div>
-				        <a id="charCount" style="color: lightgray; margin-left: 400px; margin-bottom: 10px;">0/100</a>
-				        <p id="warningMsg" style="color: red; margin-left: 43px; display: none;">의견을 남겨야 요청을 완료할 수 있습니다. </p>
-				      </div>
-				      <div class="modal-footer justify-content-between">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-				        <button id="requestBtn" type="button" class="btn btn-primary" onclick="handleRequest()">요청</button>
-				      </div>
-				    </div>
-				    <!-- /.modal-content -->
-				  </div>
-				  <!-- /.modal-dialog -->
-				</div>
-				<!-- /.modal -->
-				
-				<!-- 반려 모달 -->
-					<div class="modal fade" id="modal-default2">
-					  <div class="modal-dialog">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					      </div>
-					      <div style="align-item:inline;">
-					        <div class="modal-body" style="text-align: center;">
-					          <h4 style="font-weight: 700; margin-bottom: 31px;">반려 하시겠습니까?</h4>
+      
+      <!--  결재선 모달-->
+      <div class="modal fade" id="modal-lg2">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">결재선</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+		              <div class="card card-default">
+					          
+					          
+					         <form id="demoform" action="#" method="post">
+					          <div class="card-body">
+								  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label style="font-size:27px;">결재선 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="approvers" class="duallistbox" multiple="multiple" name="duallistbox_demo1[]">
+										          <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										          
+
+										          </c:forEach>
+										        </select>
+										      </div>
+										    </div>
+										    <!-- /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row -->
+									  
+									  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label style="font-size:27px;">참조자 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="referrer" class="duallistbox" multiple="multiple" name="duallistbox_demo2[]">
+										           <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										        </c:forEach>
+										        </select>
+										      </div>
+										    </div>
+										   <!--  /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row  -->
+
+								</div>
 					        </div>
-					        <a style="margin-left:33px; font-size:17px;">의견 남기기</a>
-					        <div style="border: 1px solid lightgray; width: 416px; height: 161px; margin-left: 43px; margin-top: 31px;">
-					          <textarea id="myTextarea2" rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;" oninput="updateCharCount2()"></textarea>
-					        </div>
-					        <a id="charCount2" style="color: lightgray; margin-left: 400px; margin-bottom: 10px;">0/100</a>
-					        <p id="warningMsg2" style="color: red; margin-left: 43px; display: none;">의견을 남겨야 요청을 완료할 수 있습니다.</p>
-					      </div>
-					      <div class="modal-footer justify-content-between">
-					        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-					        <button id="requestBtn2" type="button" class="btn btn-primary" onclick="handleRequest2()">요청</button>
-					      </div>
-					    </div>
-					    <!-- /.modal-content -->
-					  </div>
-					  <!-- /.modal-dialog -->
-					</div>
-					<!-- /.modal -->
+					        <!-- /.card -->
+					        
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+				<button type="submit" id="submitButton" class="btn btn-primary" >요청</button>            
+				</form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+      
+      
 					      
       
-      <!--  결재 요청 모달-->
+      <!--  결재 취소 모달-->
       <div class="modal fade" id="modal-default3">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -658,6 +698,9 @@
       
       
       
+     
+     
+     
      
      
      
@@ -781,9 +824,17 @@ $(document).ready(function() {
 		    content += '<tr>';
 		    content += '<td>' + '신청' + '</td>';
 		    for (var i = 0; i < approversVal.length; i++) {
-		      var noteValue = approversVal[i].note;
-		      content += '<td>' + (noteValue !== null ? '승인' : '') + '</td>';
-		    }
+		    	  var noteValue = approversVal[i].result;
+		    	  var approvalStatus = '';
+
+		    	  if (noteValue === '결재완료') {
+		    	    approvalStatus = '승인';
+		    	  } else if (noteValue === '반려') {
+		    	    approvalStatus = '반려';
+		    	  }
+
+		    	  content += '<td>' + (approvalStatus !== '' ? approvalStatus : '') + '</td>';
+		    	}
 		    content += '</tr>';
 
 		    content += '<tr>';
@@ -851,6 +902,93 @@ $(function () {
 
 
 
+ function writeVacation() {
+ 	  var approversVal = $('[name="duallistbox_demo1[]"]').val();
+ 	  console.log(approversVal);
+
+ 	  var referrer = $('[name="duallistbox_demo2[]"]').val();
+ 	  console.log(referrer);
+
+ 	  var fileInput = document.getElementById('exampleInputFile');
+ 	  var file = fileInput.files[0]; // Get the selected file
+
+
+ 	  var paymentValues = [];
+ 	  var referrerValues = [];
+
+ 	 var document_id = $('#document_id').text();
+     console.log('document_id :' + document_id );
+ 	  
+ 	  // Other parameters
+ 	  var $limit_date = $('#limit_date');
+ 	  var $form_sort = $('#form_sort');
+ 	  var $equipment_kind  = $('#equipment_kind ');
+ 	  var $amount = $('#amount');
+ 	  var $paySubject = $('#paySubject');
+ 	  var $payContent = $('#payContent');
+ 	  var $radioPeriod = $('input[name="radioPeriod"]:checked');
+ 	 var $temp = $('#temp');
+
+ 	  for (var i = 0; i < approversVal.length; i++) {
+ 	    paymentValues.push(approversVal[i]);
+ 	  }
+
+ 	  for (var i = 0; i < referrer.length; i++) {
+ 	    referrerValues.push(referrer[i]);
+ 	  }
+
+ 	  var param = {
+ 	    payment: paymentValues,
+ 	   document_id: document_id,
+ 	    referrer: referrerValues,
+ 	    limit_date: $limit_date.val(),
+ 	    form_sort: $form_sort.val(),
+ 	   equipment_kind: $equipment_kind.val(),
+ 		  amount : $amount.val(),
+ 	    radioPeriod: $radioPeriod.val(),
+ 	    paySubject: $paySubject.val(),
+ 	   tempRequest: $temp.val(),
+ 	    payContent: $payContent.val()
+ 	  };
+
+ 	  console.log(param);
+
+
+ 	
+ 	  var formData = new FormData();
+
+ 	  // Append other parameters to the FormData object
+ 	  for (var key in param) {
+ 	    if (param[key]) {
+ 	      formData.append(key, param[key]);
+ 	    }
+ 	  }
+
+ 	  formData.append('file', file); // Append the file to the FormData object
+
+ 	  $.ajax({
+ 	    type: 'POST',
+ 	    url: 'writeVacationTemp.ajax',
+ 	    data: formData,
+ 	    dataType: 'json',
+ 	    processData: false, // Prevent jQuery from automatically processing the data
+ 	    contentType: false, // Prevent jQuery from automatically setting the content type
+ 	    success: function(data) {
+ 	      console.log(data);
+  	      if (data != null) {
+	  	        alert('요청이 완료되었습니다.');
+	  	        location.href ='/paymentList.go';
+ 	      } else {
+ 	        alert('요청이 완료되었습니다.');
+ 	      }
+ 	    },
+ 	    error: function(e) {
+ 	      console.log(e);
+ 	      alert('오류 발생');
+ 	    }
+ 	  });
+ }
+
 function item(button) {
 	  // 버튼 클래스 변경
 	  $('#previewBox').empty();
@@ -901,127 +1039,138 @@ function project(button) {
 	
 	// 사용하기 버튼의 href 변경
 	    document.getElementById("paymentButton").setAttribute("href", "./paymentProjectForm.go");
-	  }	
-	  
+ }
 
-/* 모달 글자수 제한  */
-function updateCharCount() {
-    var textarea = document.getElementById("myTextarea");
-    var charCount = document.getElementById("charCount");
-    var warningMsg = document.getElementById("warningMsg");
-    var textLength = textarea.value.length;
-    charCount.textContent = textLength + "/100";
-    
-    if (textLength > 100) {
-      textarea.value = textarea.value.slice(0, 100); // 글자 수 제한
-      charCount.textContent = "100/100"; // 최대 글자 수에 도달한 경우
-    }
-    
-    if (textLength > 0) {
-      warningMsg.style.display = "none"; // 의견이 작성된 경우 경고 메시지 숨김
-    }
-  }
-  
-  function handleRequest() {
-    var textarea = document.getElementById("myTextarea");
-    var warningMsg = document.getElementById("warningMsg");
-    var textLength = textarea.value.length;
-    
-    if (textLength === 0) {
-      warningMsg.style.display = "block"; // 의견이 작성되지 않은 경우 경고 메시지 표시
-      return;
-    }
-    
-    var document_id = $('#document_id').text();
-    console.log('document_id :' + document_id );
-    var note = $('#myTextarea').val();
-    console.log('note :' + note );
-    
-    // 결재하기
-    $.ajax({
-        type: 'POST',
-        url: 'payRequest.ajax',
-        data: { 
-        	document_id: document_id ,
-        	note : note
-        },
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
-            if (data.success != null) {
-            	alert('전송 성공');
-            	location.href ='./';
-            } else {
-                
-            }
-        },
-        error: function(e) {
-            console.log(e);
-        }
+
+$(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+    //Datemask2 mm/dd/yyyy
+    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+    //Money Euro
+    $('[data-mask]').inputmask()
+
+    //Date picker
+    $('#reservationdate').datetimepicker({
+        format: 'L'
     });
-    
-  }
-  
-  function updateCharCount2() {
-	    var textarea = document.getElementById("myTextarea2");
-	    var charCount = document.getElementById("charCount2");
-	    var warningMsg = document.getElementById("warningMsg2");
-	    var textLength = textarea.value.length;
-	    charCount.textContent = textLength + "/100";
-	    
-	    if (textLength > 100) {
-	      textarea.value = textarea.value.slice(0, 100); // 글자 수 제한
-	      charCount.textContent = "100/100"; // 최대 글자 수에 도달한 경우
-	    }
-	    
-	    if (textLength > 0) {
-	      warningMsg.style.display = "none"; // 의견이 작성된 경우 경고 메시지 숨김
-	    }
-	  }
-	  
-	  function handleRequest2() {
-		   
-		  
-	    var textarea = document.getElementById("myTextarea2");
-	    var warningMsg = document.getElementById("warningMsg2");
-	    var textLength = textarea.value.length;
-	    
-	    if (textLength === 0) {
-	      warningMsg.style.display = "block"; // 의견이 작성되지 않은 경우 경고 메시지 표시
-	      return;
-	    }
-	    
-	    // 반려하기
-	    var document_id = $('#document_id').text();
-	    console.log('document_id :' + document_id );
-	    var note = $('#myTextarea2').val();
-	    console.log('note :' + note );
-	    
-	    $.ajax({
-	        type: 'POST',
-	        url: 'payRefuse.ajax',
-	        data: { 
-	        	document_id: document_id ,
-	        	note : note
-	        },
-	        dataType: 'json',
-	        success: function(data) {
-	            console.log(data);
-	            if (data.success != null) {
-	            	alert('전송 성공');
-	            	location.href ='./';
-	            } else {
-	                
-	            }
-	        },
-	        error: function(e) {
-	            console.log(e);
-	        }
-	    });
-	
 
-	    
-	  }
+    //Date and time picker
+    $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
+
+    //Date range picker
+    $('#reservation').daterangepicker()
+    //Date range picker with time picker
+    $('#reservationtime').daterangepicker({
+      timePicker: true,
+      timePickerIncrement: 30,
+      locale: {
+        format: 'MM/DD/YYYY hh:mm A'
+      }
+    })
+    //Date range as a button
+    $('#daterange-btn').daterangepicker(
+      {
+        ranges   : {
+          'Today'       : [moment(), moment()],
+          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+          'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        startDate: moment().subtract(29, 'days'),
+        endDate  : moment()
+      },
+      function (start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+      }
+    )
+
+    //Timepicker
+    $('#timepicker').datetimepicker({
+      format: 'LT'
+    })
+
+   
+
+    //Colorpicker
+    $('.my-colorpicker1').colorpicker()
+    //color picker with addon
+    $('.my-colorpicker2').colorpicker()
+
+    $('.my-colorpicker2').on('colorpickerChange', function(event) {
+      $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+    })
+  })
+  // BS-Stepper Init
+  document.addEventListener('DOMContentLoaded', function () {
+    window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+  })
+
+  // DropzoneJS Demo Code Start
+  Dropzone.autoDiscover = false
+
+  // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+  var previewNode = document.querySelector("#template")
+  previewNode.id = ""
+  var previewTemplate = previewNode.parentNode.innerHTML
+  previewNode.parentNode.removeChild(previewNode)
+
+  var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+    url: "/target-url", // Set the url
+    thumbnailWidth: 80,
+    thumbnailHeight: 80,
+    parallelUploads: 20,
+    previewTemplate: previewTemplate,
+    autoQueue: false, // Make sure the files aren't queued until manually added
+    previewsContainer: "#previews", // Define the container to display the previews
+    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+  })
+
+  myDropzone.on("addedfile", function(file) {
+    // Hookup the start button
+    file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
+  })
+
+  // Update the total progress bar
+  myDropzone.on("totaluploadprogress", function(progress) {
+    document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+  })
+
+  myDropzone.on("sending", function(file) {
+    // Show the total progress bar when upload starts
+    document.querySelector("#total-progress").style.opacity = "1"
+    // And disable the start button
+    file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
+  })
+
+  // Hide the total progress bar when nothing's uploading anymore
+  myDropzone.on("queuecomplete", function(progress) {
+    document.querySelector("#total-progress").style.opacity = "0"
+  })
+
+  // Setup the buttons for all transfers
+  // The "add files" button doesn't need to be setup because the config
+  // `clickable` has already been specified.
+  document.querySelector("#actions .start").onclick = function() {
+    myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+  }
+  document.querySelector("#actions .cancel").onclick = function() {
+    myDropzone.removeAllFiles(true)
+  }
+  // DropzoneJS Demo Code End */
+
+
+	  
 
   
 </script>
