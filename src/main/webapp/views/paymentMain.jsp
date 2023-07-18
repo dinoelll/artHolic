@@ -127,7 +127,18 @@
 	height: 700px;
 	
 }
-
+.timeline::before {
+  border-radius: 0.25rem;
+  background-color: #dee2e6;
+  bottom: 0;
+  content: "";
+  left: 31px;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 8000px;
+}
 
 
 </style>
