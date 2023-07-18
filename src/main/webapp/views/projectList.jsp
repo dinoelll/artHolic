@@ -205,6 +205,7 @@
             <th>담당자 연락처</th>
             <th>일정</th>
             <th>인원 선택</th>
+            <th>수정</th>
             <th>삭제</th>
             </tr>
          </thead>
@@ -212,7 +213,7 @@
            <!-- 리스트가 출력될 영역 -->
          </tbody>   
          <tr>
-         <td colspan="7" id="paging">   
+         <td colspan="8" id="paging">   
             <!--    플러그인 사용   (twbsPagination)   -->
             <div class="container" >                           
                <nav aria-label="Page navigation" style="text-align:center">
@@ -276,6 +277,67 @@
                         <button type="button" class="btn btn-default"
                            data-dismiss="modal">닫기</button>
                         <button type="button" class="btn btn-primary" onclick="save()">등록</button>
+                     </div>
+                  </div>
+                  <!-- /.modal-content -->
+               </div>
+               <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            
+            
+            
+                     <!-- 프로젝트 수정 modal 창 -->
+            <div class="modal fade" id="modal-update">
+               <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h4 class="modal-title">프로젝트 수정</h4>
+                        <button type="button" class="close" data-dismiss="modal"
+                           aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div>
+                     <div class="modal-body">
+                        <form action="projectUpdate.do" method="post">
+                           <table>
+                              <tr>
+                                 <th>프로젝트명</th>
+                                 <td>
+                                 	<input type="text" name="project_name" id="project_name2" value="" />
+                                 	<input type="hidden" name="project_id" id="project_id2" value="" />
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <th>프로젝트 담당자</th>
+                                 <td><input type="text" name="project_manager" id="project_manager2" value="" /></td>
+                              </tr>
+                              <tr>
+                                 <th>현장 관리자</th>
+                                 <td><input type="text" name="field_manager" id="field_manager2" value="" /></td>
+                              </tr>
+                              <tr>
+                                 <th>담당자 연락처</th>
+                                 <td><input type="text" name="manager_phone" id="manager_phone2" value="" /></td>
+                              </tr>
+                              <tr>
+                                 <th colspan="2" style="text-align: center;"><br>프로젝트 일정</th>
+                              </tr>
+                              <tr>
+                                 <th>시작 일</th>
+                                 <td><input type="text" name="start_date" id="start_date2" /></td>
+                              </tr>
+                              <tr>
+                                 <th>종료 일</th>
+                                 <td><input type="text" name="end_date" id="end_date2" /></td>
+                              </tr>
+                           </table>
+                        </form>
+                     </div>
+                     <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default"
+                           data-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary btn-update">수정</button>
                      </div>
                   </div>
                   <!-- /.modal-content -->
@@ -490,6 +552,24 @@ $(function() {
         });
       });
    
+   $(function() {
+       $("#start_date2").datepicker({
+         dateFormat: "yy-mm-dd",
+         changeMonth: true,
+         changeYear: true,
+         yearRange: "-100:+0"
+       });
+     });
+
+  $(function() {
+       $("#end_date2").datepicker({
+         dateFormat: "yy-mm-dd",
+         changeMonth: true,
+         changeYear: true,
+         yearRange: "-100:+0"
+       });
+     });
+   
    //리스트 작성
 function listDraw(projectList) {
      console.log("listDraw Call");
@@ -504,6 +584,7 @@ function listDraw(projectList) {
          content += '<td>'+ dto.manager_phone +'</td>';
          content += '<td>'+ dto.start_date + '~' + dto.end_date +'</td>';
          content += '<td><button class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-lg2">인원추가</button></td>';
+         content += '<td><input type="button" id="projectUpdate" class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-update" value="수정"></td>';
          content += '<td><a href="projectDel.do?project_id='+dto.project_id+'" class="btn btn-danger btn-sm">삭제</a></td>';
          content += '</tr>';
        });
@@ -518,6 +599,84 @@ function listDraw(projectList) {
     	 $('input[name="project_id"]').val(data);
      })
    }
+   
+   
+   
+   
+// 모달 수정창이 열릴 때 호출되는 함수
+$('#modal-update').on('show.bs.modal', function(event) {
+  var button = $(event.relatedTarget); // 모달을 열기 위해 클릭한 버튼
+  var project_id = button.data('project_id'); // 클릭한 버튼의 data-id 속성 값 (project_id)
+  
+  $.ajax({
+	    type: 'POST',
+	    url: '/projectUpdateModal.ajax',
+	    data: {
+	    	project_id: project_id
+	    },
+	    success: function(response) {
+	    	console.log('response 성공');
+	    	console.log(response.project.project_name);
+	        console.log(response);
+	        $('#project_name2').val(response.project.project_name);
+	        $('#project_manager2').val(response.project.project_manager);
+	        $('#field_manager2').val(response.project.field_manager);
+	        $('#manager_phone2').val(response.project.manager_phone);
+	        $('#start_date2').val(response.project.start_date);
+	        $('#end_date2').val(response.project.end_date);
+	        $('#project_id2').val(response.project.project_id);
+	        $('#modal-update').modal('show');
+	    },
+	    error: function(error) {
+	        console.log(error);
+	    }
+	});
+});
+
+
+
+/* 프로젝트 수정 */
+$(document).ready(function() {
+  // 버튼 클릭 시
+  $('.btn-update').click(function() {
+ 
+	var project_name = $("#project_name2").val();
+	var project_manager = $("#project_manager2").val();
+	var field_manager = $("#field_manager2").val();
+	var manager_phone = $("#manager_phone2").val();
+	var start_date = $("#start_date2").val();
+	var end_date = $("#end_date2").val();
+	var project_id = $("#project_id2").val();
+	
+    // 서버로 요청 전송
+    $.ajax({
+      type: 'POST',
+      url: '/projectUpdate.ajax',
+      data: {
+    	  project_name2: project_name,
+    	  project_manager2: project_manager,
+    	  field_manager2: field_manager,
+    	  manager_phone2: manager_phone,
+    	  start_date2: start_date,
+    	  end_date2: end_date,
+    	  project_id2: project_id
+      },
+      success: function(data) {
+        // 성공 시
+        alert('프로젝트 수정에 성공했습니다.');
+        location.reload(); // 페이지 새로고침
+      },
+      error: function(error) {
+        // 실패 시
+        alert('프로젝트 수정에 실패했습니다.');
+        console.log(error);
+      }
+    });
+
+    // 모달창 닫기
+    $('#modal-update').modal('hide');
+  });
+});
    
    
    

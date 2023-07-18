@@ -281,6 +281,34 @@ public class ProjectController {
 			   service.projectDel(project_id);
 			   return "redirect:/projectList.go";
 		   }
+		   
+		   
+		   
+		   
+			@RequestMapping(value="/projectUpdateModal.ajax")
+			@ResponseBody
+			public HashMap<String, Object> projectUpdateModal(@RequestParam HashMap<String,Object> params) {
+				
+				logger.info("projectUpdate Call Controller");
+				logger.info("params :"+params);
+				String project_id = (String) params.get("project_id");
+				
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				map.put("project", service.projectUpdateModal(project_id));
+
+			    return map;
+			}
+			
+			
+			@PostMapping(value="/projectUpdate.ajax")
+			public String projectUpdate(@RequestParam HashMap<String, String> params) {
+				
+				logger.info("projectUpdate Do Controller");
+				logger.info("params :"+params);
+				
+				return service.projectUpdate(params);
+				
+			}
 	
 	
 	
