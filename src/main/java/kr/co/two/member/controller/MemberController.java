@@ -163,6 +163,10 @@ public class MemberController {
 		logger.info("id :"+id+"/"+"pw :"+pw);
 		
 		String page = "login";
+		
+	    if (pw.equals("1111")) {
+	        model.addAttribute("msg", "현재 비밀번호는 임시 비밀번호입니다. 비밀번호를 변경해주세요.");
+	    }
 				
 		if (service.isUserBlind(id)) {
 	        model.addAttribute("msg", "계정이 비활성화 되었습니다. 관리자에게 문의해주세요.");
@@ -182,10 +186,6 @@ public class MemberController {
 	        } else {
 	        model.addAttribute("msg", "아이디 또는 비밀번호가 올바르지 않습니다. 다시 시도해주세요.");
 	        }
-	    }
-
-	    if (pw.equals("1111")) {
-	        model.addAttribute("msg", "현재 비밀번호는 임시 비밀번호입니다. 비밀번호를 변경해주세요.");
 	    }
 
 	    return page;

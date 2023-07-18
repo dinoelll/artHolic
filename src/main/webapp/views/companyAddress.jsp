@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ArtHolic</title>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -496,7 +496,21 @@ function listPrint(companyList) {
 		var name = $("#name").val();
 		var part = $("#part").val();
 		var tel = $("#tel").val();
-
+		
+		if (business === '') {
+	       	alert('사업자명을 입력하세요.');
+	        return;
+	    } else if (name === ''){
+	    	alert('이름을 입력하세요.');
+	        return;
+	    } else if (part === ''){
+	    	alert('담당을 입력하세요.');
+	    	return;
+	    } else if (tel === ''){
+	    	alert('전화번호를 입력하세요.');
+	    	return;
+	    }
+		
 	    // 서버로 요청 전송
 	    $.ajax({
 	      type: 'POST',
@@ -562,6 +576,20 @@ function listPrint(companyList) {
 		var part = $("#part2").val();
 		var tel = $("#tel2").val();
 		var cooper_id = $("#cooper_id2").val();
+		
+		if (business === '') {
+	       	alert('사업자명을 입력하세요.');
+	        return;
+	    } else if (name === ''){
+	    	alert('이름을 입력하세요.');
+	        return;
+	    } else if (part === ''){
+	    	alert('담당을 입력하세요.');
+	    	return;
+	    } else if (tel === ''){
+	    	alert('전화번호를 입력하세요.');
+	    	return;
+	    }
 		
 	    // 서버로 요청 전송
 	    $.ajax({

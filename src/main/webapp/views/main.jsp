@@ -3,7 +3,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ArtHolic</title>
+
 <!-- 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
  -->
@@ -94,12 +95,9 @@
    		text-align: left;
    		
 	}	
-	
-	
-	
-	
+
 	#myProject{
-		border: 1px solid blakc;
+		border: 1px solid lightgray;
 		border-collapse:collapse;
 		background-color: white;
 		width: 1200px;
@@ -108,7 +106,7 @@
 	}
 	
 	#myPayment{
-		border: 1px solid blakc;
+		border: 1px solid lightgray;
 		border-collapse:collapse;
 		background-color: white;
 		margin-bottom: 8px;
@@ -118,7 +116,7 @@
 	}
 	
 	#myMail{
-		border: 1px solid blakc;
+		border: 1px solid lightgray;
 		border-collapse:collapse;
 		background-color: white;
 		margin-bottom: 30px;
@@ -128,7 +126,7 @@
 	}
 	
 	#inform{
-		border: 1px solid blakc;
+		border: 1px solid lightgray;
 		border-collapse:collapse;
 		background-color: white;
 		margin-bottom: 30px;
@@ -138,7 +136,7 @@
 	}
 	
 	#myAnnual{
-		border: 1px solid blakc;
+		border: 1px solid lightgray;
 		border-collapse:collapse;
 		background-color: white;
 		margin-bottom: 30px;
@@ -267,6 +265,10 @@
 		padding-bottom: 0px;
 		color: gray;
 	}
+	
+	.info{
+		margin-left: 0px;
+	}
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -299,7 +301,7 @@
 	    <div id="main">
 		  <div class="row">
 		    <div class="col-sm-3">					        
-			        <h5><i class="fas fa-address-card"></i>   내 정보</h5>
+			        <h5 class="info"><i class="fas fa-address-card"></i>   내 정보</h5>
 		    <div id="profile">
 		        <table>
 		          <tr>
@@ -336,8 +338,9 @@
 		        </table>
 		        <br>
 		        <a href="./pwchange">비밀번호 변경</a>
-		      </div>					  
-			          <h5><i class="fas fa-address-book"></i>   내 연차정보</h5>
+		      </div>	
+		      <br>				  
+			          <h5 class="info"><i class="fas fa-address-book"></i>   내 연차정보</h5>
 		          <div id="myAnnual">
 		               <div class="circle-container">
 		                  <div class="circle">
@@ -377,6 +380,8 @@
 		            </table>
 		          </div>
 		        </div>
+		        <br>
+		        <br>
 		        <div class="col-sm-12">			            
 			            <h5 class="long"><i class="far fa-keyboard"></i>   내 결재함 <button class="btn btn-link" style="float: right;" onclick="window.location.href='/paymentList.go';">more+</button></h5>
 			           
@@ -396,6 +401,7 @@
 		            </table>
 		          </div>
 		        </div>
+		        <br>
 		      <div class="row">
 		        <div class="col-sm-6">			           
 			            <h5 class="long"><i class="far fa-sticky-note"></i>   공지사항 <button class="btn btn-link" style="float: right;" onclick="window.location.href='/informList.go';">more+</button></h5>
@@ -422,8 +428,8 @@
 		              <thead>
 		                <tr>
 		                  <th>부서/직급</th>
-		                  <th>제목</th>
 		                  <th>보낸 사람</th>
+		                  <th>제목</th>
 		                  <th>보낸 일자</th>	
 		                </tr>
 		              </thead>
@@ -518,9 +524,13 @@ function informlistPrint(informList) {
 
 	  if (informList && Array.isArray(informList) && informList.length > 0) {
 		  informList.forEach(function (item, informList) {
+			  var subject = item.subject;
+		      if (subject.length > 10) {
+		    	  subject = subject.substring(0, 7) + '...';
+		  }
 			
 	      content += '<tr>';
-	      content += '<td>' + item.member_id + '</td>';
+	      content += '<td>' + item.name + '</td>';
 	      content += '<td>' + item.subject + '</td>';
 	      content += '<td>' + item.writeTime + '</td>';
 	      content += '</tr>';
@@ -562,11 +572,15 @@ function myMaillistPrint(myMaillist) {
 	  var content = '';
 
 	  if (myMaillist && Array.isArray(myMaillist) && myMaillist.length > 0) {
-		  myMaillist.forEach(function (item, myMaillist) {
+		    myMaillist.forEach(function (item, myMaillist) {
+		      var mailSubject = item.mailSubject;
+		      if (mailSubject.length > 10) {
+		        mailSubject = mailSubject.substring(0, 7) + '...';
+		  }
 			
 	      content += '<tr>';
 	      content += '<td>' + item.dept_name + '/' + item.position_name + '</td>';
-	      content += '<td>' + item.member_id + '</td>';
+	      content += '<td>' + item.name + '</td>';
 	      content += '<td>' + item.mailSubject + '</td>';
 	      content += '<td>' + item.writeTime + '</td>';
 	      content += '</tr>';
@@ -613,6 +627,10 @@ function myPaymentlistPrint(myPaymentlist) {
 
 	  if (myPaymentlist && Array.isArray(myPaymentlist) && myPaymentlist.length > 0) {
 		  myPaymentlist.forEach(function (item, myPaymentlist) {
+			  var paySubject = item.paySubject;
+		      if (paySubject.length > 15) {
+		    	  paySubject = paySubject.substring(0, 12) + '...';
+		  }
 			
 	      content += '<tr>';
 	      content += '<td>' + item.limit_date + '</td>';
@@ -661,6 +679,11 @@ function myProjectlistPrint(myProjectlist) {
 
 	  if (myProjectlist && Array.isArray(myProjectlist) && myProjectlist.length > 0) {
 		  myProjectlist.forEach(function (item, myProjectlist) {
+			  var project_name = item.project_name;
+		      if (project_name.length > 15) {
+		    	  project_name = project_name.substring(0, 12) + '...';
+		  }
+			  
 			
 	      content += '<tr>';
 	      content += '<td>' + item.project_name + '</td>';

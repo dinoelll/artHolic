@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ArtHolic</title>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <style>
 	body{
@@ -64,10 +64,10 @@
 	<form action="login.do" method="post" onsubmit="return validateForm()">
 		<table>
 		  	<tr>
-		    	<td><input type="text" id="id" name="id" placeholder="ID"></td>
+		    	<td><input type="text" id="id" name="id" placeholder="   ID"></td>
 		  	</tr>
 		  		<tr>
-		    	<td><input type="password" id="pw" name="pw" placeholder="Password"></td>
+		    	<td><input type="password" id="pw" name="pw" placeholder="   Password"></td>
 		  	</tr>
 		  	<tr>
 		    	<td><div id="msg"></div></td>
