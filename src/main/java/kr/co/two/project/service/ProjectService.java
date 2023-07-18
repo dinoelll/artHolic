@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.two.mail.dto.MailDTO;
+import kr.co.two.member.dto.MemberDTO;
 import kr.co.two.project.dao.ProjectDAO;
 import kr.co.two.project.dto.ProjectDTO;
 import kr.co.two.project.dto.ProjectEventDataDTO;
@@ -193,6 +194,19 @@ public class ProjectService {
    public void projectDel(String project_id) {
 		dao.projectDel(project_id);
 		
+	}
+   
+   
+	public ProjectDTO projectUpdateModal(String project_id) {
+
+		return dao.projectUpdateModal(project_id);
+	}
+	
+	public String projectUpdate(HashMap<String, String> params) {
+
+		int success = dao.projectUpdate(params);
+		logger.info("success :"+success);
+		return "redirect:/projectList.go";
 	}
    
 

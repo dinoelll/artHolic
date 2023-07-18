@@ -166,7 +166,7 @@
    
 	<div class="employeeWrite">
 		<div class="emplyeeInput">
-			<form action="join.do" method="post" enctype="multipart/form-data">
+			<form action="join.do" method="post" enctype="multipart/form-data"  onsubmit="return validateForm()">
 				<hr>
 					<ul class="list" style="list-style: none; width: 700px; margin-left: 500px;">
 						<li>
@@ -205,12 +205,14 @@
 						<li style="display:inline; padding-right: 31px">
 						    &nbsp;&nbsp;&nbsp;&nbsp;<p style="display:inline;">부서</p>&nbsp;&nbsp;
 						    <select id="dept-dropdown" name="dept_code" style="display:inline;">
+						    	<option value="default">부서</option>
 						        <option value="dept_hr">인사</option>
 						        <option value="dept_ct">시공</option>
 						        <option value="dept_dg">설계</option>
 						    </select>	
 						    &nbsp;&nbsp;&nbsp;&nbsp;<p style="display:inline;">직급</p>&nbsp;&nbsp;
 						    <select id="position-dropdown" name="position_code" style="display:inline;">
+						    	<option value="default">직급</option>
 						        <option value="art_06">사원</option>
 						        <option value="art_05">주임</option>
 						        <option value="art_04">대리</option>
@@ -289,6 +291,89 @@
 
 </body>
 <script>
+
+function validateForm() {
+
+	  var fileInput = document.getElementById("file-input");
+	  if (fileInput.files.length === 0) {
+	    alert("프로필 사진을 등록해 주세요.");
+	    return false; 
+	  }
+
+	  var yearSelect = document.getElementsByName("year")[0];
+	  var monthSelect = document.getElementsByName("month")[0];
+	  var daySelect = document.getElementsByName("day")[0];
+	  if (yearSelect.value === "" || monthSelect.value === "" || daySelect.value === "") {
+	    alert("생년월일을 입력해 주세요.");
+	    return false; 
+	  }
+
+	  var deptDropdown = document.getElementById("dept-dropdown");
+	  var positionDropdown = document.getElementById("position-dropdown");
+	  if (deptDropdown.value === "" || positionDropdown.value === "") {
+	    alert("직급과 부서를 선택해 주세요.");
+	    return false; 
+	  }
+
+	  var memberIDInput = document.getElementsByName("member_id")[0];
+	  if (memberIDInput.value === "") {
+	    alert("사번을 입력해 주세요.");
+	    return false; 
+	  }
+
+	  var passwordInput = document.getElementById("pw");
+	  var confirmPasswordInput = document.getElementById("pwChk");
+	  if (passwordInput.value === "" || confirmPasswordInput.value === "") {
+	    alert("비밀번호를 입력해 주세요.");
+	    return false; 
+	  }
+
+	  if (passwordInput.value !== confirmPasswordInput.value) {
+	    alert("비밀번호가 맞지 않습니다. 비밀번호를 확인해 주세요.");
+	    return false; 
+	  }
+
+	  var nameInput = document.getElementsByName("name")[0];
+	  if (nameInput.value === "") {
+	    alert("이름을 입력해 주세요.");
+	    return false; 
+	  }
+
+	  var genderInputs = document.getElementsByName("gender");
+	  var genderChecked = false;
+	  for (var i = 0; i < genderInputs.length; i++) {
+	    if (genderInputs[i].checked) {
+	      genderChecked = true;
+	      break;
+	    }
+	  }
+	  if (!genderChecked) {
+	    alert("성별을 선택해 주세요");
+	    return false;
+	  }
+	  
+	  var phoneInput = document.getElementById("phone");
+	  var telInput = document.getElementById("tel");
+	  if (phoneInput.value === "" && telInput.value === "") {
+	    alert("핸드폰번호와 내선번호를 입력해 주세요.");
+	    return false;
+	  }
+
+	  var emailPrefixInput = document.getElementById("emailPrefix");
+	  var email3Input = document.getElementById("email3");
+	  var emailDomainSelect = document.getElementById("emailDomain");
+	  if (emailPrefixInput.value === "" || email3Input.value === "") {
+	    alert("이메일을 입력해 주세요.");
+	    return false;
+	  }
+
+	  if (emailDomainSelect.value === "custom" && email3Input.value === "") {
+	    alert("이메일 도메인을 입력해 주세요");
+	    return false; 
+	  }
+
+	  return true;
+	}
 
 var msg = "${msg}";
 if (msg !== "") {

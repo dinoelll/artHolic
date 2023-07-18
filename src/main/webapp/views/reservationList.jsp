@@ -205,18 +205,27 @@
 #upload {
 	float: right;
 	background-color: blue;
-    border: 1px solid blue;
-    font-weight: bold;
-    color: white;
+	border: 1px solid blue;
+	font-weight: bold;
+	color: white;
 }
+
 .m-0 {
 	color: #91bdce;
 }
- .subject {
+
+/* .subject {
 	color: #91bdce;
 	text-decoration: none;
 	background-color: transparent;
-} 
+} */
+
+#delbutton{
+	     background-color: #f82a2aa3;
+         border: 1px solid #f82a2aa3;
+         font-weight: bold;
+         color: white;
+}
 </style>
 </head>
 
@@ -231,7 +240,10 @@
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0"><a href="/MeetingRoomList.go" class="subject">회의실 관리</a> | <b><a href="/ReservationList.go" class="subject">예약 관리</a></b></h1>
+							<h1 class="m-0">
+								<a href="/MeetingRoomList.go" class="subject">회의실 관리</a> | <b><a
+									href="/ReservationList.go" class="subject">예약 관리</a></b>
+							</h1>
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">
@@ -285,7 +297,7 @@
 						<thead>
 							<tr id="thead" style="text-align: center">
 								<th><input type="checkbox" id="all" /></th>
-								<th>번호</th>								
+								<th>번호</th>
 								<th>회의실명</th>
 								<th>회의명</th>
 								<th>참가자</th>
@@ -299,8 +311,8 @@
 						</tbody>
 						<tr>
 							<td colspan="8" id="paging">
-								<button type="button" class="btn btn-danger" onclick="del()"
-									id="del">취소</button>
+								<button type="button" class="btn btn-delete" data-toggle="modal"
+									data-target="#modal-delete" id="delbutton">취소</button>
 								<div class="container">
 									<nav aria-label="Page navigation" style="text-align: center">
 
@@ -312,6 +324,35 @@
 					</table>
 
 				</div>
+
+
+
+				<div class="modal fade" id="modal-delete">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">회의실예약 삭제</h4>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+
+								<p>해당 회의실 예약을 정말로 삭제하시겠습니까?</p>
+							</div>
+							<div class="modal-footer justify-content-between">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">닫기</button>
+								<button type="button" class="btn btn-danger" onclick="del()"
+									id="del">취소</button>
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+				<!-- /.modal -->
 
 
 
@@ -360,7 +401,6 @@
 		alert(msg);
 
 	}
-
 
 	var showPage = 1;
 	var cnt = 10;
@@ -451,17 +491,19 @@
 		var content = '';
 
 		if (rvList.length > 0) {
-			rvList.forEach(function(dto, idx) {
-				console.log(dto.startTime);
+			rvList
+					.forEach(function(dto, idx) {
+						console.log(dto.startTime);
 						content += '<tr>';
 						content += '<td><input type="checkbox" value="'+dto.reservation_id+'"/></td>';
-						content += '<td>'+dto.reservation_id+'</td>';
+						content += '<td>' + dto.reservation_id + '</td>';
 						content += '<td>' + dto.room_name + '</td>';
 						content += '<td>' + dto.meeting_id + '</td>';
 						content += '<td>' + dto.team_member + '</td>';
 						content += '<td>' + dto.member_id + '</td>';
-						content += '<td>' + dto.date+ '</td>';
-						content += '<td>' + dto.startTime+ '~' +dto.endTime + '</td>';
+						content += '<td>' + dto.date + '</td>';
+						content += '<td>' + dto.startTime + '~' + dto.endTime
+								+ '</td>';
 						content += '</tr>';
 					});
 		} else {
@@ -494,27 +536,31 @@
 		});
 
 		console.log(checkArr);
+		if (checkArr.length === 0) {
+			alert('체크된 항목이 없습니다.');
+			$('#modal-delete').modal('hide');
+		} else {
 
-		$.ajax({
-			type : 'get',
-			url : 'rvDelete.ajax',
-			data : {
-				'rvDelList' : checkArr
-			},
-			dataType : 'json',
-			success : function(data) {
-				console.log(data);
-				if (data.success) {
-					alert(data.msg);
-					listCall(showPage);
+			$.ajax({
+				type : 'get',
+				url : 'rvDelete.ajax',
+				data : {
+					'rvDelList' : checkArr
+				},
+				dataType : 'json',
+				success : function(data) {
+					console.log(data);
+					if (data.success) {
+						alert(data.msg);
+						listCall(showPage);
+					}
+				},
+				error : function(e) {
+					console.log(e);
+
 				}
-			},
-			error : function(e) {
-				console.log(e);
-				
-			}
-		});
-
+			});
+		}
 	}
 
 	/*    if (employeeList && Array.isArray(employeeList) && employeeList.length > 0) {
