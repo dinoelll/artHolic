@@ -16,6 +16,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   
+  
  
   <style>
   	.main-sidebar {
@@ -139,14 +140,13 @@
             <div class="card-body p-0">
               <div class="mailbox-controls">
                 <!-- Check all button -->
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
-                </button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name = "allCheck" class="btn btn-default btn-sm checkbox-toggle">
                 <div class="btn-group">
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <button type="button" class="btn btn-default btn-sm" id="del" onclick="mailtrash(this)">
                     <i class="far fa-trash-alt"></i>&nbsp;&nbsp;삭제&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
-                  <button type="button" class="btn btn-default btn-sm" id="reply">
+                  <button type="button" class="btn btn-default btn-sm" id="reply" onclick="reply(this)">
                     <i class="fas fa-reply"></i>&nbsp;&nbsp;답장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
                   <button type="button" class="btn btn-default btn-sm" id="forwarding">
@@ -358,7 +358,7 @@ listCall(showPage);
 			 content += '<td>';
 			 content += '<form method="post" action="mailDetail.do/'+mail_id+'" id="' + formId + '">';
 			 content += '<div class="icheck-primary">';
-			 content += '<input type="checkbox" value="" id="check'+formId+'" data-mail-id="' + item.mail_id +'">';
+			 content += '<input type="checkbox" name="Rowcheck" value="" id="check'+formId+'" data-mail-id="' + item.mail_id +'">';
 			 content += '<label for="check'+formId+'"></label>';
 			 content += '</div>';
 			 content += '</td>';
@@ -399,7 +399,13 @@ listCall(showPage);
 				 }
 			 }
 			 content += '</i></a></td>';
-			 content += '<td>'+item.read_chk+'</td>'
+			 content += '<td>';
+			 if(item.read_chk === false){
+				 content += '<i class="far fa-envelope"></i>';
+			 }else{
+				 content += '<i class="far fa-envelope-open"></i>';
+			 }
+			 content += '</td>';
 			 content += '<td class="mailbox-name">'+item.name+'</a></td>';
 			 content += '<td class="mailbox-subject"><a href="#" onclick="mailDetail(this)" data-mail-id="' + item.mail_id +'"><span class="typespan">';
 			 if (title === '검색결과'){
@@ -476,6 +482,7 @@ listCall(showPage);
 		  $('.typespan').remove('#spanhidden');
 		  $(element).closest('tr').find('form').append('<input type="hidden" value="'+mailId+'" name="seletedMailId">');
 		  $(element).closest('tr').find('form').append('<input type="hidden" value="temp" name="type">');
+		  $('#'+formId).attr('action','/mailreply.go');
 	  }
 	    
 	    $(element).closest('tr').find('form').submit();
@@ -561,7 +568,7 @@ listCall(showPage);
 	
 	  $('.checkbox-toggle').data('clicks', false);
 	// 체크박스
-  $('.checkbox-toggle').click(function (e) {
+  /* $('.checkbox-toggle').click(function (e) {
 		 console.log('클릭!');
 	     var clicks = $(this).data('clicks')
 	    console.log(clicks);
@@ -577,7 +584,29 @@ listCall(showPage);
 	       $(this).find('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
 	     }
 	     $(this).data('clicks', !clicks)
-	   }) 
+	   })  */
+	// 전체선택 
+	   $(function(){
+	      var chkObj = $("input[name='Rowcheck']");
+	      var rowCnt = chkObj.length;
+	      console.log(chkObj);
+
+	        
+	        $("input[name='allCheck']").click(function(){
+	          var chk_listArr = $("input[name='Rowcheck']"); // 체크박스의 name 속성을 "Rowcheck"로 수정
+	          for (var i=0; i<chk_listArr.length; i++){
+	            chk_listArr[i].checked = this.checked;
+	          }
+	        });
+	        $("input[name='Rowcheck']").click(function(){
+	          if($("input[name='Rowcheck']:checked").length == rowCnt){ // 체크박스의 name 속성을 "Rowcheck"로 수정
+	            $("input[name='allCheck']")[0].checked = true;
+	          }
+	          else{
+	            $("input[name='allCheck']")[0].checked = false;
+	          }
+	        });
+	      });
 	   
  function mailtrash(element){
 		

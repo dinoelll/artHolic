@@ -1,6 +1,7 @@
 package kr.co.two.mail.dao;
 
 import java.lang.StackWalker.Option;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +25,11 @@ public interface MailDAO {
 
    int referenceMemberWrite(MailDTO dto);
 
-   ArrayList<MailDTO> mailSendDetail(int mail_id);
+   ArrayList<MailDTO> mailSendDetail(int mail_id, String member_id);
 
    int findMailReference(int mail_id);
 
-   ArrayList<MailDTO> mailMemberDetail(int mail_id, String type);
+   ArrayList<MailDTO> mailMemberDetail(int mail_id, String type, String member_id);
 
    int mailCheckPhoto(int mail_id);
 
@@ -38,15 +39,15 @@ public interface MailDAO {
 
    HashMap<String, Object> tempList(HashMap<String, Object> params);
 
-   void mailFavorite(Integer mail_id, boolean isLike, String type);
+   void mailFavorite(Integer mail_id, boolean isLike, String type, String member_id);
 
    int tempListUpdate(HashMap<String, String> params);
 
-   ArrayList<MailDTO> mailSelfBox(int cnt, int offset, String type, String searchInformation, String searchText);
+   ArrayList<MailDTO> mailSelfBox(int cnt, int offset, String type, String searchInformation, String searchText, String member_id);
 
    int savereceiverWrite(MailDTO dto);
 
-   MailDTO isFavoriteStatus(Integer mail_id, String type);
+   MailDTO isFavoriteStatus(Integer mail_id, String type, String member_id);
 
 	/*
 	 * int mailbookmark(int mailId, Boolean isFavorite, String type);
@@ -54,21 +55,23 @@ public interface MailDAO {
 	 * boolean isbookmarkStatus(int mailId, String type);
 	 */
 
-   int totalCount(String type, String searchInformation, String searchText);
+   int totalCount(String type, String searchInformation, String searchText, String member_id);
 
    int mailPhotodel(int mail_id);
 
    List<MailDTO> mailCheckPhotoName(int mail_id);
 
-   int mailtrash(String mailId, String type);
+   int mailtrash(String mailId, String type,String member_id);
 
-   int maildel(String mailId);
+   int maildel(String mailId,String member_id);
 
-   int mymaildel(String valueOf);
+   int mymaildel(String mailId,String member_id);
 
 	void receiverMailAlarm(MailDTO dto);
 	
 	void referrerMailAlarm(MailDTO dto);
+
+	void updateread(int mail_id, String type, Timestamp writeTime, String member_id);
 	
   //Object mailtempGet(int mail_id, String type);
 
