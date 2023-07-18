@@ -252,10 +252,9 @@
                            제목 <c:if test="${model.memberdto.get(0).temp == true}">
                            		<input class="form-control" name="mailSubject" id="mailSubject" value="${model.memberdto.get(0).mailSubject}">
                            </c:if> 
-                           <!--<c:if test="${model.memberdto.get(0).temp == false}">
-                           <input class="form-control" name="mailSubject" id="mailSubject">
-                           </c:if>-->
-                           <input class="form-control" name="mailSubject" id="mailSubject">
+                           <c:if test="${model.memberdto.get(0).temp == false || model.memberdto.get(0).temp == null}">
+                           		<input class="form-control" name="mailSubject" id="mailSubject">
+                           </c:if>
                         </div>
                         <div class="form-group" id="mailMessage">
                            
@@ -512,7 +511,7 @@
          var selectedOptions = $('#approvers').val();
          var referrerselectedOptions = $('#referrer').val();
          console.log(selectedOptions,referrerselectedOptions); // 선택된 옵션 값 출력
-      });
+      });      
    });
 
    // 받는사람, 참조자 선택 함수
@@ -527,6 +526,7 @@
 
            $('#recipient-input').val(selectedApprovers);
            $('#cc-input').val(selectedReferrers);
+           $('#modal-lg2').modal('hide');
        });
    });
    
