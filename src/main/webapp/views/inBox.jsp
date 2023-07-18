@@ -356,6 +356,7 @@ listCall(showPage);
 			 content += '<tr>';
 			 content += '<td>';
 			 content += '<form method="post" class="mailForm" action="mailDetail.do/' + mail_id + '" id="' + formId + '" data-mail-id="' + item.mail_id + '">';
+			 content += '<input type="hidden" name="set" value="" id="set">';
 			 content += '<div class="icheck-primary">';
 			 content += '<input type="checkbox" name="Rowcheck" value="" id="check'+formId+'" data-mail-id="' + item.mail_id +'">';
 			 content += '<label for="check'+formId+'"></label>';
@@ -664,22 +665,17 @@ $('.checkbox-toggle').data('clicks', false);
 } 
 	
 function reply(element){
-		var checkedCheckboxes = $('input[type="checkbox"]:checked');
-		  console.log(checkedCheckboxes);
-		  checkedCheckboxes.each(function() {
-	    var mailId = $(this).data('mail-id');
-	  	console.log(mailId);
-	  	var formId = 'mail' + mailId;
-	  	 function submitForm() {
-	  	    if (formId) {
-	  	        var form = $('#' + formId)[0];
-	  	        if (form) {
-	  	            form.submit();
-	  	        }
-	  	    }
-	  	}
-		  })
-}
+	var Rowcheck = $('input[name="Rowcheck"]:checked');
+	console.log(Rowcheck);
+	Rowcheck.each(function() {
+		var mailId = $(this).data('mail-id');
+		console.log(mailId);
+		var formId = 'mail' + mailId;
+		$('#set').attr('value','reply');
+		$('#'+formId).attr('action','/mailreply.go?');
+		$('#'+formId).submit();
+	})
+ }
 
   
 </script>

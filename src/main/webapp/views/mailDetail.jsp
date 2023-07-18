@@ -121,12 +121,12 @@
                  </c:if>
                  </a>제목&nbsp;&nbsp;${dto.memberdto.get(0).mailSubject}</div>
                  <div class="mailboxForm" id="mailMember">보낸사람&nbsp;&nbsp;
-                    ${dto.memberdto.get(0).dept_name}&nbsp;${dto.memberdto.get(0).position_name}&nbsp;${dto.memberdto.get(0).name}
+                    ${dto.memberdto.get(0).dept_name}팀&nbsp;${dto.memberdto.get(0).position_name}&nbsp;${dto.memberdto.get(0).name}
                  </div>
                 <div class="mailboxForm" id="SendMember">받는사람&nbsp;&nbsp;
                <c:forEach items="${dto.dto}" var="item">
                        <c:if test="${item.is_receiver == 0 || item.is_receiver == 2}">
-                          ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                          ${item.dept_name}팀&nbsp;${item.position_name}&nbsp;${item.name}
                        </c:if>
                     </c:forEach>
                  </div>

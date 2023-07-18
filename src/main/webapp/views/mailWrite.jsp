@@ -551,7 +551,7 @@
            if(option.length>0){
               
               option.forEach(function(item,member_id){
-                 content += '<option value="'+item.member_id+'">'+item.dept_name+'&nbsp;&nbsp;'+item.position_name +'&nbsp;&nbsp;'
+                 content += '<option value="'+item.member_id+'">'+item.dept_name+'팀&nbsp;&nbsp;'+item.position_name +'&nbsp;&nbsp;'
                     +item.name+'</option>';
               })
            }else{

@@ -245,7 +245,7 @@
                         <div class="form-group" id="form-sendMember">
                            받는사람
                            <c:if test="${set=='reply'}">
-                           	<input class="form-control" value="${model.memberdto.get(0).dept_name}&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}" name="sendMember" id="recipient-input" readOnly>
+                           	<input class="form-control" value="${model.memberdto.get(0).dept_name}팀&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}" name="sendMember" id="recipient-input" readOnly>
                         	</c:if> 
                         	<c:if test="${set=='forwarding' }">
                         		<input class="form-control" value="" name="sendMember" id="recipient-input" readOnly>
@@ -279,18 +279,18 @@
                            -----Original Message-----
                            <br/>
                  <p>subject&nbsp;:&nbsp; ${model.dto.get(0).mailSubject}</p>
-                 <p>From&nbsp;:&nbsp;${model.memberdto.get(0).dept_name}&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}</p>
+                 <p>From&nbsp;:&nbsp;${model.memberdto.get(0).dept_name}팀&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}</p>
                  <p>To&nbsp;:&nbsp;
                <c:forEach items="${model.dto}" var="item">
                        <c:if test="${item.is_receiver == 0 || item.is_receiver == 2}">
-                          ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                          ${item.dept_name}팀&nbsp; ${item.position_name}&nbsp;${item.name}
                        </c:if>
                     </c:forEach>
                     </p>
                 <p>cc&nbsp;:&nbsp;
                    <c:forEach items="${model.dto}" var="item">
                       <c:if test="${item.is_receiver == 1}">
-                         ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                         ${item.dept_name}팀&nbsp; ${item.position_name}&nbsp;${item.name}
                       </c:if>
                    </c:forEach>
                    </p>
@@ -584,7 +584,7 @@
            if(option.length>0){
               
               option.forEach(function(item,member_id){
-                 content += '<option value="'+item.member_id+'">'+item.dept_name+'&nbsp;&nbsp;'+item.position_name +'&nbsp;&nbsp;'
+                 content += '<option value="'+item.member_id+'">'+item.dept_name+'팀&nbsp;&nbsp;'+item.position_name +'&nbsp;&nbsp;'
                     +item.name+'</option>';
               })
            }else{
