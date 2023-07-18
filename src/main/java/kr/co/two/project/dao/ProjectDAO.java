@@ -38,6 +38,10 @@ public interface ProjectDAO {
    
    void projectDel(String project_id);
    
+   ProjectDTO projectUpdateModal(String project_id);
+   
+   int projectUpdate(HashMap<String, String> params);
+   
    
    
 
@@ -57,5 +61,6 @@ public interface ProjectDAO {
    ArrayList<ProjectDTO> projectInfo(String project_id);
 
    void feedAlarm(String member_id, String project_id);
+
 	
 }

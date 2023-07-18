@@ -87,7 +87,7 @@
 			</tr>
 			<tr>
 				<td>
-					<input style="float:right;" type="button" onclick="location.href='redirect:/briefingDetail.do'" value="취소"/>
+					<input style="float:right;" type="button" onclick="location.href='/briefingList.go'" value="취소"/>
 					<input type="button" onclick="updateDo()" style="float:right;" value="수정" />
 				</td>
 			</tr>
