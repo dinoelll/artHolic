@@ -289,7 +289,7 @@
 	      <div class="container-fluid">
 	        <div class="row mb-2">
 	          <div class="col-sm-6">
-			<!--<h1 class="m-0">Dashboard</h1> -->
+			  <h1 class="m-0">내 문서</h1>
 	          </div><!-- /.col -->
 	          <div class="col-sm-6">
 	            <ol class="breadcrumb float-sm-right">
@@ -524,6 +524,7 @@
           <!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->
+	   <jsp:include page="footer.jsp"/>
 	   
 	</div>
     <!-- /.container-fluid -->
@@ -593,6 +594,13 @@ filelistcall();
 	    var folderName = $('#folderUpdate').val();
 	    var folderId = $('.folder_id.update').text();
 		console.log(folderName,folderId);
+		
+		  // 폴더 이름이 공백인 경우 경고창 띄우고 함수 종료
+	    if (folderName === '') {
+	       	alert('폴더 이름을 입력하세요.');
+	        return;
+	    }
+		  
 	    // 서버로 폴더 수정 요청 전송
 	    $.ajax({
 	      type: 'POST',
