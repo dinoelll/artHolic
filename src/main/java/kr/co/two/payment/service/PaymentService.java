@@ -68,6 +68,9 @@ public class PaymentService {
 	    
 	    if(params.get("temp")!=null) {
 	    	
+	    	
+		 
+	    	
 	    	if(form_sort.equals("PAYMENT_VAC") ) {
 	    		// 기간 및 일시
 	    		state = "임시저장";
@@ -210,9 +213,9 @@ public class PaymentService {
 	    
 
 	    // 결재 관련 정보 생성
-	    if(params.get("temp")!=null){
+	    if(params.get("temp").equals("1")){
 	    
-		    logger.info("결재관련 파람 확인!! " + params);
+		    logger.info("결재관련 임시저장 파람 넣을꺼임. 파람 확인하셈!! " + params);
 		    
 		    String result = "진행 중";
 		    params.put("result", result);
@@ -229,7 +232,7 @@ public class PaymentService {
 		        }
 		    }
 	    }
-	    if(params.get("temp")==null){
+	    if(params.get("temp")=="0"){
 		    
 		    logger.info("결재관련 파람 확인!! " + params);
 		    
