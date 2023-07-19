@@ -304,7 +304,7 @@
 		        SELECT 1
 		        FROM payment_ship AS ps
 		        WHERE ps.member_id = #{member_id}
-		        AND ps.result = '결재완료'
+		          AND (ps.result = '결재완료' OR ps.result = '반려')
 		        AND ps.document_id = e.document_id
 		        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
 		        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
@@ -324,7 +324,7 @@
 				    SELECT 1
 				    FROM payment_ship AS ps
 				    WHERE ps.member_id = #{member_id}
-				    AND ps.result = '결재완료'
+				      AND (ps.result = '결재완료' OR ps.result = '반려')
 				    AND ps.document_id = e.document_id
 				    <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
 				    <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
