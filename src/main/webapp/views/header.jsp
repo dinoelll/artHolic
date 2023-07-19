@@ -439,4 +439,5 @@
    	console.log(userId);
    	  window.location.href = "/main.go?id=" + userId;
    	}
+   
 </script>
