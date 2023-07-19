@@ -337,7 +337,7 @@
         console.log(admin);
         if (!loginId) {
             window.location.href = './';
-            alert("로그인 해라 씨ㅏㅃ꺼.");
+            alert("로그인이 필요한 서비스입니다");
         } else {
            console.log(admin);
            console.log(loginId);
