@@ -740,7 +740,7 @@ public int payRefuse(String document_id, String note, String member_id) {
 	
 	
 	
-	return paymentRefuseInt;
+	return 1;
 }
 
 public ModelAndView main(HttpSession session) {

@@ -938,7 +938,7 @@ function updateCharCount() {
         success: function(data) {
             console.log(data);
   	      if (data != null) {
-  	        alert('요청이 완료되었습니다.');
+  	        alert('결재요청이 완료되었습니다.');
   	        location.href ='/paymentListDone.go';
             } else {
                 
@@ -996,9 +996,9 @@ function updateCharCount() {
 	        dataType: 'json',
 	        success: function(data) {
 	            console.log(data);
-	  	      if (data != null) {
-	  	        alert('요청이 완료되었습니다.');
-	  	        location.href ='/paymentListDone.go';
+	    	      if (data != null) {
+	    	  	        alert('반려요청이 완료되었습니다.');
+	    	  	        location.href ='/paymentListDone.go';
 	            } else {
 	                
 	            }

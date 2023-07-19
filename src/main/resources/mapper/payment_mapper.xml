@@ -313,7 +313,7 @@
 			    <if test="optt == '완료'">AND e.state = '완료'</if>
 			    <if test="optt == '반려'">AND e.state = '반려'</if>
 			    )
-			    ORDER BY e.reg_date DESC
+			    ORDER BY e.modi_date DESC
 			    LIMIT #{cnt} OFFSET #{offset}
 			</select>
 			
@@ -582,47 +582,53 @@
 		</select>
 		
 		<select id="mainTimeline" resultType="payment" parameterType="string">
-				  SELECT
-				    ep.*,
-				    ps.order_column,
-				    ps.member_id AS shipMember_id,
-				    ps.payment_ship_id AS payment_ship_id,
-				    pr.member_id AS referMember_id,
-				    pr.refer,
-				    c1.code_name AS code_name,
-				    c2.code_name AS position,
-				    c3.code_name AS form,
-				    m.name AS name,
-				    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
-				    m.name AS name
-				  FROM
-				    elec_payment AS ep
-				  LEFT JOIN
-				    payment_ship AS ps ON ep.document_id = ps.document_id AND #{member_id} = ps.member_id
-				  LEFT JOIN
-				    payment_reference AS pr ON ep.document_id = pr.document_id AND #{member_id} = pr.member_id
-				  LEFT JOIN code AS c1 ON ep.form_sort = c1.code_id
-				  LEFT JOIN member AS m ON ep.id = m.member_id
-				  LEFT JOIN code AS c2 ON m.position_code = c2.code_id
-				  LEFT JOIN code AS c3 ON ep.form_sort = c3.code_id
-				  WHERE (ep.temp IS NULL OR ep.temp != 1) -- temp 컬럼이 NULL이거나 1이 아닌 데이터만 가져옴
-				    AND (
-				      EXISTS (
-				        SELECT 1
-				        FROM payment_ship AS ps
-				        WHERE ps.member_id = #{member_id}
-				          AND ps.document_id = ep.document_id
-				      )
-				      OR EXISTS (
-				        SELECT 1
-				        FROM payment_reference AS pr
-				        WHERE pr.member_id = #{member_id}
-				          AND pr.document_id = ep.document_id
-				      )
-				      OR ep.id = #{member_id}
-				    )
-				  ORDER BY modi_date DESC;
-				</select>
+  SELECT
+    ep.*,
+    ps.order_column,
+    ps.member_id AS shipMember_id,
+    ps.payment_ship_id AS payment_ship_id,
+    ps.result,
+    pr.member_id AS referMember_id,
+    pr.refer,
+    c1.code_name AS code_name,
+    c2.code_name AS position,
+    c3.code_name AS form,
+    m.name AS name,
+    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
+    m.name AS name
+  FROM
+    elec_payment AS ep
+  LEFT JOIN
+    payment_ship AS ps ON ep.document_id = ps.document_id AND #{member_id} = ps.member_id
+  LEFT JOIN
+    payment_reference AS pr ON ep.document_id = pr.document_id AND #{member_id} = pr.member_id
+  LEFT JOIN code AS c1 ON ep.form_sort = c1.code_id
+  LEFT JOIN member AS m ON ep.id = m.member_id
+  LEFT JOIN code AS c2 ON m.position_code = c2.code_id
+  LEFT JOIN code AS c3 ON ep.form_sort = c3.code_id
+  WHERE (ep.temp IS NULL OR ep.temp != 1) -- temp 컬럼이 NULL이거나 1이 아닌 데이터만 가져옴
+    AND (
+      (ps.payment_ship_id IS NULL OR ps.result IS NULL) -- ps.payment_ship_id가 NULL이거나 ps.result가 NULL인 경우
+      OR (ps.result != '진행 중') -- ps.result가 '진행 중'이 아닌 경우
+    )
+    AND (
+      EXISTS (
+        SELECT 1
+        FROM payment_ship AS ps
+        WHERE ps.member_id = #{member_id}
+          AND ps.document_id = ep.document_id
+      )
+      OR EXISTS (
+        SELECT 1
+        FROM payment_reference AS pr
+        WHERE pr.member_id = #{member_id}
+          AND pr.document_id = ep.document_id
+      )
+      OR ep.id = #{member_id}
+    )
+  ORDER BY modi_date DESC;
+</select>
+
 		
 		<select id="note" resultType="payment" parameterType="string">
 		   SELECT 

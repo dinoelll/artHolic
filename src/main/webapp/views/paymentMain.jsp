@@ -128,7 +128,20 @@
 	
 }
 
+/* 타임 라인 길이 조절 */
 
+.timeline::before {
+  border-radius: 0.25rem;
+  background-color: #dee2e6;
+  bottom: 0;
+  content: "";
+  left: 31px;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 2000px;
+}
 
 </style>
   
@@ -269,13 +282,29 @@
 										            	<c:choose>
 												             
 												            <c:when test="${not empty t.refer and not empty t.payment_ship_id}">
-												                <h3 class="timeline-header"><a href="./paymentVacationForm_pay.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                <c:choose>
+													                    <c:when test="${t.state eq '진행중'}">
+													                        <h3 class="timeline-header"><a href="./paymentVacationForm_pay.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                    </c:when>
+													                    <c:when test="${t.state eq '반려'}">
+													                        <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                    </c:when>
+													                     
+											                    	</c:choose>
+												                
 												            </c:when>
 												            <c:when test="${not empty t.refer}">
 												               <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
 												            </c:when>
 												            <c:when test="${not empty t.payment_ship_id}">
-												                <h3 class="timeline-header"><a href="./paymentVacationForm_pay.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+												                 <c:choose>
+													                    <c:when test="${t.state eq '진행중'}">
+													                        <h3 class="timeline-header"><a href="./paymentVacationForm_pay.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                    </c:when>
+													                    <c:when test="${t.state eq '반려'}">
+													                        <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                    </c:when>
+											                    	</c:choose>
 												            </c:when>
 												            <c:when test="${ empty t.payment_ship_id and empty t.refer}">
 												               <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id} ">${t.paySubject}</a></h3>
@@ -311,6 +340,8 @@
 										        </div>
 										    </div>
 										</c:forEach>
+										
+										
 						           </div>
 						         </div>
 						         <!-- /.col -->
