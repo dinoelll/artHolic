@@ -553,6 +553,7 @@
 					if (data.success) {
 						alert(data.msg);
 						listCall(showPage);
+						location.href = '/ReservationList.go';
 					}
 				},
 				error : function(e) {
