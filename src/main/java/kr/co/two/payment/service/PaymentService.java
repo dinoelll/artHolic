@@ -232,6 +232,8 @@ public class PaymentService {
 		        }
 		    }
 	    }
+	    
+	    
 	    if(params.get("temp")=="0"){
 		    
 		    logger.info("결재관련 파람 확인!! " + params);
@@ -267,11 +269,7 @@ public class PaymentService {
 		    
 		    
 	    }
-	    
-	    
-	    
-	   
-	    
+
 	    
 	    return 1;
 	    
