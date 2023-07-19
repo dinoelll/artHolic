@@ -52,6 +52,12 @@
 
 
 <style>
+ .subject {
+	color: black;
+	text-decoration: none;
+	background-color: transparent;
+}  
+
 .main-sidebar {
 	background-color: #e9ddc6;
 }

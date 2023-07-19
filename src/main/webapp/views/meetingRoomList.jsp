@@ -213,12 +213,11 @@
 	height: 40px;
 }
 
-/*  .subject {
+ .subject {
 	color: black;
 	text-decoration: none;
 	background-color: transparent;
-}  */
-
+}  
 modal-content {
 	width: 500px;
 	height: 600px;
@@ -247,11 +246,12 @@ th, td {
 	border: 1px solid #ddd;
 	text-align: left;
 }
-#delbutton{
-	     background-color: #f82a2aa3;
-         border: 1px solid #f82a2aa3;
-         font-weight: bold;
-         color: white;
+
+#delbutton {
+	background-color: #f82a2aa3;
+	border: 1px solid #f82a2aa3;
+	font-weight: bold;
+	color: white;
 }
 </style>
 </head>
@@ -370,15 +370,15 @@ th, td {
 									<table>
 										<tr>
 											<th>회의실 이름</th>
-											<td><input type="text" name="room_name" value=""
-												placeholder="회의실 이름을 입력하세요" class="modalinput" /></td>
+											<td><input type="text" name="room_name" id="room_name"
+												value="" placeholder="회의실 이름을 입력하세요" class="modalinput" /></td>
 										</tr>
 										<tr>
 											<th>수용인원</th>
 											<td>
 												<!-- <input type="text" name="Capacity" value=""
-												placeholder="수용인원을 입력하세요" class="modalinput" /> --> 
-												<select id="opt" name="Capacity"   class="modalinput">
+												placeholder="수용인원을 입력하세요" class="modalinput" /> --> <select
+												id="opt" name="Capacity" class="modalinput">
 													<!-- <option value="default">조건</option> -->
 													<option value="4">4</option>
 													<option value="6">6</option>
@@ -386,14 +386,14 @@ th, td {
 													<option value="10">10</option>
 													<option value="12">12</option>
 													<option value="14">14</option>
-													<option value="16">16</option>											
+													<option value="16">16</option>
 											</select>
 											</td>
 										</tr>
 										<tr>
 											<th>회의실 위치</th>
-											<td><input type="text" name="location" value=""
-												placeholder="회의실 위치를 입력하세요" class="modalinput" /></td>
+											<td><input type="text" name="location" id="location"
+												value="" placeholder="회의실 위치를 입력하세요" class="modalinput" /></td>
 										</tr>
 										<tr>
 											<th>회의실 대표 이미지</th>
@@ -496,13 +496,15 @@ th, td {
 
 	function save() {
 		console.log('저장');
-
-		if ($('#mrPhoto').val() == "") {
-			alert("사진을 등록해주세요");
+		if($('#room_name').val().trim() == "") {
+			alert("회의실 이름을 등록해주세요");
+		} else if ($('#location').val().trim() == "") {
+			alert("회의실 위치를 등록해주세요");
+		}else if ($('#mrPhoto').val() == "") {
+			alert("사진을 등록해주세요"); 
 		} else {
 			/* $('input[name="content"]').val(content); */
 			$('form').submit();
-
 		}
 	}
 	var showPage = 1;

@@ -154,9 +154,7 @@
 	width: 58px;
 }
 
-.m-0 {
-	color: #91bdce;
-}
+
 
 .bookmark {
 	display: inline-block;
@@ -263,6 +261,7 @@ select {
 /* img {
 	width: 100px;
 } */
+
 </style>
 </head>
 
