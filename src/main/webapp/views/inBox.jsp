@@ -70,6 +70,9 @@
 	#spanhidden{
 		display: none;
 	}
+	.hidden{
+       display: none;
+    }
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -145,12 +148,12 @@
                   <button type="button" class="btn btn-default btn-sm" id="del" onclick="mailtrash(this)">
                     <i class="far fa-trash-alt"></i>&nbsp;&nbsp;삭제&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
-                  <button type="button" class="btn btn-default btn-sm" id="reply" onclick="reply(this)">
+                  <!-- <button type="button" class="btn btn-default btn-sm" id="reply" onclick="reply(this)">
                     <i class="fas fa-reply"></i>&nbsp;&nbsp;답장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
                   <button type="button" class="btn btn-default btn-sm" id="forwarding">
                     <i class="fas fa-share"></i>&nbsp;&nbsp;전달 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  </button>
+                  </button> -->
 <!--                   <select id="mailFilter">
                   	<option value="" selected disabled hidden>필터</option>
                   	<option value="all">모든 메일</option>
@@ -289,9 +292,9 @@ listCall(showPage);
 	   console.log(searchText);
 	   if(selectedSearchInformation !== "" ){
 		   type='all';
-		   listCall(showPage);
 		   $('#title').html('검색결과');
 		   $('#pagination').twbsPagination('destroy');
+		   listCall(showPage);
 	   }
 	};
 	
@@ -389,7 +392,7 @@ listCall(showPage);
 						 content += '<i class="far fa-star">';
 					 }
 				 }else if(item.blind == true){
-					 content += '<span class="type">[휴지통]</span>';
+					 content += '';
 				 }else if(item.temp == true){
 					 if(item.favorites>0){
 						 content += '<i class="fas fa-star text-warning">';
@@ -422,15 +425,15 @@ listCall(showPage);
 			 content += '<td class="mailbox-subject"><a href="#" onclick="mailDetail(this)" data-mail-id="' + item.mail_id +'"><span class="typespan">';
 			 if (title === '검색결과'){
 				 console.log(item.is_receiver);
-				 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == false ){
+				 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == 0 ){
 					 content += '<span class="type">[받은 메일함]</span>';
-				 }else if(item.is_receiver == 2 && item.blind == false){
+				 }else if(item.is_receiver == 2 && item.blind == 0){
 					 content += '<span class="type">[내게 쓴 메일함]</span>';
-				 }else if(item.is_receiver == 3 && item.blind == false && item.temp == false){
+				 }else if(item.is_receiver == 3 && item.blind == false && item.temp == true){
 					 content += '<span class="type">[보낸 메일함]</span>';
-				 }else if(item.blind == true){
+				 }else if(item.blind == 1){
 					 content += '<span class="type">[휴지통]</span>';
-				 }else if(item.temp == true){
+				 }else if(item.temp == true && item.blind == 0){
 					 content += '<span class="type">[임시보관함]</span>';
 				 }
 			 }
@@ -603,7 +606,6 @@ $('.checkbox-toggle').data('clicks', false);
 	      var rowCnt = chkObj.length;
 	      console.log(chkObj);
 
-	        
 	        $("input[name='allCheck']").click(function(){
 	          var chk_listArr = $("input[name='Rowcheck']"); // 체크박스의 name 속성을 "Rowcheck"로 수정
 	          for (var i=0; i<chk_listArr.length; i++){
@@ -622,11 +624,20 @@ $('.checkbox-toggle').data('clicks', false);
 	   
  function mailtrash(element){
 		
-	  var checkedCheckboxes = $('input[type="checkbox"]:checked');
+	 var checkedCheckboxes = $('input[type="checkbox"]:checked');
+	  var count = checkedCheckboxes.length;
+	  var mailId = $(this).data('mail-id');
 	  console.log(checkedCheckboxes);
-	  checkedCheckboxes.each(function() {
-	    var mailId = $(this).data('mail-id');
-	  	console.log(mailId);
+	  console.log(mailId);
+	  	if (count > 0) {
+	   		if (type === 'trash') {
+			    var confirmation = confirm("영구 삭제시, 복원되지 않습니다. 정말로 삭제하시겠습니까?");
+			    if (!confirmation) {
+			      // 삭제 취소
+			      return;
+			    }
+	   		}
+		}
 	
 		var Like = 'receive';
 		    
@@ -645,7 +656,8 @@ $('.checkbox-toggle').data('clicks', false);
 				Like = 'temp';
 			}
 	    }
-	    
+	checkedCheckboxes.each(function() {
+		var mailId = $(this).data('mail-id');
 	    $.ajax({
 	        type: 'POST',
 	        url: 'mail/trash.ajax',
@@ -660,22 +672,33 @@ $('.checkbox-toggle').data('clicks', false);
 	     		   $('#pagination').twbsPagination('destroy');
 	        	}
 	        }
-	});
-	  })
+		});
+	})
 } 
 	
 function reply(element){
 	var Rowcheck = $('input[name="Rowcheck"]:checked');
 	console.log(Rowcheck);
-	Rowcheck.each(function() {
-		var mailId = $(this).data('mail-id');
-		console.log(mailId);
+	var mailId = $(this).data('mail-id');
+	console.log(mailId);
+	if(Rowcheck){
 		var formId = 'mail' + mailId;
 		$('#set').attr('value','reply');
 		$('#'+formId).attr('action','/mailreply.go?');
-		$('#'+formId).submit();
-	})
+		$('#'+formId).submit();	
+	}
  }
+ 
+
+var Rowcheck = $('input[name="Rowcheck"]:checked');
+
+if (Rowcheck.length > 1) {
+    $('#forwarding').addClass('hidden');
+    $('#reply').addClass('hidden');
+} else {
+    $('#forwarding').removeClass('hidden');
+    $('#reply').removeClass('hidden');
+}
 
   
 </script>

@@ -37,14 +37,14 @@
 	.test{
 		display:inline;
 	}
-	#forwarding,#reply,#del{
+	#forwarding,#reply,#del,#restore{
         font-weight: bold;
         background-color: white;
         border: 1px solid white;
         color: black;
    }
    
-   #forwarding:hover,#reply:hover,#del:hover,#mailFilter:hover{
+   #forwarding:hover,#reply:hover,#del:hover,#mailFilter:hover,#restore:hover{
         border-color: rgba(233, 221, 198, 0.4);
     }
     #mailFilter{
@@ -146,11 +146,14 @@
                   <button type="button" class="btn btn-default btn-sm" id="del" onclick="del(this)">
                     <i class="far fa-trash-alt"></i>&nbsp;&nbsp;삭제&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
-                  <button type="button" class="btn btn-default btn-sm" id="reply" onclick="reply(this)" >
+                  <!-- <button type="button" class="btn btn-default btn-sm" id="reply" onclick="reply(this)" >
                     <i class="fas fa-reply"></i>&nbsp;&nbsp;답장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
-                  <button type="button" class="btn btn-default btn-sm" id="forwarding">
+                  <button type="button" class="btn btn-default btn-sm" id="forwarding" onclick="reply(this)">
                     <i class="fas fa-share"></i>&nbsp;&nbsp;전달 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </button> -->
+                  <button type="button" class="btn btn-default btn-sm" id="restore" onclick="restore(this)">
+                    <i class="fas fa-share"></i>&nbsp;&nbsp;복원 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
 <!--                   <select id="mailFilter">
                   	<option value="" selected disabled hidden>필터</option>
@@ -363,13 +366,39 @@ listCall(showPage);
 			 content += '</div>';
 			 content += '</td>';
 			 content += '<td class="mailbox-star" id="mailSubjectForm" ><a href="#" class="toggle-favorite" data-mail-id="' + item.mail_id + '">';
-			 if(title != '검색결과'){
-				 if (item.bookmark>0){
-					 content += '<i class="fas fa-star text-warning">';
-				 }else {
-					 content += '<i class="far fa-star">';
-				 }
-			 }else{
+			 content += '<input type="hidden" class="receiver" value="'+item.is_receiver+'">';
+			 content += '<input type="hidden" class="blind" value="'+item.blind+'">';
+			 /*if(title != '검색결과'){
+					 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == false ){
+						 content += '<input type="hidden" name="set" id="set" value="receive">';
+						 if(item.bookmark>0){
+							 content += '<i class="fas fa-star text-warning">';
+						 }else{
+							 content += '<i class="far fa-star">';
+						 }
+					 }else if(item.is_receiver == 2 && item.blind == false){
+						 content += '<input type="hidden" name="set" id="set" value="self">';
+						 if(item.bookmark>0){
+							 content += '<i class="fas fa-star text-warning">';
+						 }else{
+							 content += '<i class="far fa-star">';
+						 }
+					 }else if(item.is_receiver == 3 && item.blind == true && item.temp == false){
+						 content += '<input type="hidden" name="set" id="set" value="send">';
+						 if(item.favorites>0){
+							 content += '<i class="fas fa-star text-warning">';
+						 }else{
+							 content += '<i class="far fa-star">';
+						 }
+					 }else if(item.temp == true && item.blind == true){
+						 content += '<input type="hidden" name="set" id="set" value="temp">';
+						 if(item.favorites>0){
+							 content += '<i class="fas fa-star text-warning">';
+						 }else{
+							 content += '<i class="far fa-star">';
+						 }
+					 }*/
+				 if(title == '검색결과'){
 				 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == false ){
 					 if(item.bookmark>0){
 						 content += '<i class="fas fa-star text-warning">';
@@ -389,7 +418,7 @@ listCall(showPage);
 						 content += '<i class="far fa-star">';
 					 }
 				 }else if(item.blind == true){
-					 content += '<span class="type">[휴지통]</span>';
+					 content += '';
 				 }else if(item.temp == true){
 					 if(item.favorites>0){
 						 content += '<i class="fas fa-star text-warning">';
@@ -532,7 +561,7 @@ listCall(showPage);
 	        data: {
 	            'mailId': mailId, // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
 	            'isLike': !isLike, // 현재 즐겨찾기 상태를 반대로 전환하여 서버에 전달
-	            'type' : trash
+	            'type' : 'trash'
 	        },dataType: 'json'
 	        ,success: function (response) {
 	        	console.log(response.isLike.favorites);
@@ -617,21 +646,21 @@ listCall(showPage);
 	      });
 
 function del(){
-		
 	  var checkedCheckboxes = $('input[type="checkbox"]:checked');
+	  var count = checkedCheckboxes.length;
+	  var mailId = $(this).data('mail-id');
 	  console.log(checkedCheckboxes);
-	  checkedCheckboxes.each(function() {
-	    var mailId = $(this).data('mail-id');
-	  	console.log(mailId);
-	  	
-	   if (type === 'trash') {
-		    var confirmation = confirm("영구 삭제시, 복원되지 않습니다. 정말로 삭제하시겠습니까?");
-		    if (!confirmation) {
-		      // 삭제 취소
-		      return;
-		    }
-		  }
-	  	
+	  console.log(mailId);
+	  	if (count > 0) {
+	   		if (type === 'trash') {
+			    var confirmation = confirm("영구 삭제시, 복원되지 않습니다. 정말로 삭제하시겠습니까?");
+			    if (!confirmation) {
+			      // 삭제 취소
+			      return;
+			    }
+	   		}
+		}
+   		
 	  	var Like = 'trash';
 	    
 	    var typeHTML = $(this).closest('tr').find('.typespan .type:first').text();
@@ -650,30 +679,59 @@ function del(){
 			}
 	    }
 	    
-	$.ajax({
-		type: 'POST',
-		url: 'mail/trash.ajax',
-		data: {
-		    'mailId': mailId, // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
-		    'type' : Like
-		},dataType: 'json'
-		,success: function (response) {
-			console.log(response.result);
-			if(type=='receive'){
-				window.location.href = './inBox.go';
-			}else if(type=='self'){
-				window.location.href = './selfBox.go';
-			}else if(type=='send'){
-				window.location.href = './sendBox.go';
-			}else if(type=='trash'){
-				window.location.href = './trashBox.go';
-			}else if(type=='import'){
-				window.location.href = './importBox.go';
+	checkedCheckboxes.each(function() {
+		var mailId = $(this).data('mail-id');
+		var set = $('input[name="set"]').val();
+		console.log(mailId);
+		$.ajax({
+			type: 'POST',
+			url: 'mail/trash.ajax',
+			data: {
+			    'mailId': mailId, // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
+			    'type' : Like,
+			    'set' : set
+			},dataType: 'json'
+			,success: function (response) {
+				console.log(response.result);
+				if(type=='receive'){
+					window.location.href = './inBox.go';
+				}else if(type=='self'){
+					window.location.href = './selfBox.go';
+				}else if(type=='send'){
+					window.location.href = './sendBox.go';
+				}else if(type=='trash'){
+					window.location.href = './trashBox.go';
+				}else if(type=='import'){
+					window.location.href = './importBox.go';
+				}
 			}
-		}
+		});
 	});
-	  })
 }
+
+function restore(){
+	var checkedCheckboxes = $('input[type="checkbox"]:checked');
+	var count = checkedCheckboxes.length;
+	checkedCheckboxes.each(function() {
+		var mailId = $(this).data('mail-id');
+		var set = $('input[name="set"]').val();
+		console.log(set);
+		console.log(mailId);
+		$.ajax({
+			type: 'POST',
+			url: 'mail/restore.ajax',
+			data: {
+				'mail_id': mailId,
+				'type': 'trash',
+				'set': set
+			},dataType:'json'
+			,success: function(response){
+				listCall(showPage);
+	     		$('#pagination').twbsPagination('destroy');
+			}
+		}); 
+	});
+};
 	
 
   

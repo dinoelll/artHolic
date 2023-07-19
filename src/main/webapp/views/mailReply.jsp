@@ -250,6 +250,9 @@
                         	<c:if test="${set=='forwarding' }">
                         		<input class="form-control" value="" name="sendMember" id="recipient-input" readOnly>
                         	</c:if>
+                        	<c:if test="${set == null}">
+                        		<input class="form-control" name="sendMember" id="recipient-input" readOnly>
+                        	</c:if>
                         </div>
                         <div class="form-group" id="form-referenceMember">
                            참조 <input class="form-control" name="referenceMember" id="cc-input" readOnly>
@@ -262,12 +265,19 @@
                            <c:if test="${set=='forwarding' }">
                            	<input class="form-control" name="mailSubject" id="mailSubject" value="PW: ${model.dto.get(0).mailSubject}">
                            </c:if>
+                           <c:if test="${model.memberdto.get(0).temp == true}">
+                           		<input class="form-control" name="mailSubject" id="mailSubject" value="${model.memberdto.get(0).mailSubject}">
+                           </c:if> 
                         </div>
                         <div class="form-group" id="mailMessage">
                            
                         </div>
                         <div class="form-group">
                            <textarea id="compose-textarea" class="form-control" style="height: 300px" name="mailContent">	
+                           <c:if test="${model.memberdto.get(0).temp == true}">
+                           		${model.memberdto.get(0).mailContent}
+                           </c:if>
+                           <c:if test="${set =='reply' || set== 'forwarding' }">
                            <br/>
                            <br/>
                            <br/>
@@ -302,6 +312,7 @@
               		${file.ori_file_name }
                 </c:forEach>
                 </p>
+                </c:if>
                            </textarea>
                         </div>
                         <div class="form-group">
@@ -309,7 +320,13 @@
                               <i class="fas fa-paperclip"></i> Attachment
                               <input type="file" name="attachment" multiple="multiple" id="attachment-input">
                            </div>
-                           <div id="attachment-info"></div>
+                           <div id="attachment-info">
+                           <c:if test= "${model.memberdto.get(0).temp == true}">
+                           <c:forEach items="${model.mailpthotoList}" var = "file">
+			              		${file.ori_file_name }
+			                </c:forEach>
+			                </c:if>
+                           </div>
                         </div>
                      </div>
                      <!-- /.card-body -->
@@ -322,7 +339,12 @@
                      </div>
                      <div class="tempList" id="tempList">
                      	<c:if test="${set=='reply'}">
-                        <input type="hidden" class="approvers" name="approvers" value="${model.memberdto.get(0).send}">
+                        	<input type="hidden" class="approvers" name="approvers" value="${model.memberdto.get(0).send}">
+                        	<input type="hidden" class="set" name="set" value="${set}">
+                        </c:if>
+                        <c:if test="${type=='temp'}">
+                        	<input type="hidden" class="type" name="type" value="${type}">
+                        	<input type="hidden" calss="mailId" id="mail_id" name="mail_id" value="${model.memberdto.get(0).mail_id}">
                         </c:if>
                      </div>
                   </form>
@@ -392,78 +414,56 @@
       document.querySelector('.mailCard1').classList.remove('hidden');
       document.querySelector('.mailCard2').classList.add('hidden');
       document.getElementById('form-sendMember').style.display = 'block';
-       document.getElementById('form-referenceMember').style.display = 'block';
-       document.getElementById('mysendButton').classList.add('hidden');
-       document.getElementById('sendButton').classList.remove('hidden');
+      document.getElementById('form-referenceMember').style.display = 'block';
+      document.getElementById('mysendButton').classList.add('hidden');
+      document.getElementById('sendButton').classList.remove('hidden');
    }
    
    // URL에서 매개변수 추출
    const urlParams = new URLSearchParams(window.location.search);
    const selfBoxParam = urlParams.get('selfBox');
-   //const tempParams = urlParams.get('type');
    console.log(selfBoxParam);
-   //console.log(tempParams);
    
    if (selfBoxParam) {
      selfBox();
    } else {
      mailBox();
    }
-/*    if(tempParams){
-	   selfBox();
-   }else{
-	   mailBox();
-   } */
-   
-   // temp 아작스로 값 불러오기
-   /* $(document).ready(function() {
-        $.ajax({
-          url: 'mail/tempGet.ajax', 
-          type: 'post',
-          data: {
-        	  'type' : temp,
-        	  'mail_id' : $('#mail_id').val()
-          },
-          dataType:'json',
-          success: function(data) {
-             console.log(data);
-             optionPrint(data.dto);
-          },error: function(e){
-             console.log(e);
-          }
-        })
-        
-        function tempGetPrint(data){
-           var content;
-           if(data.length>0){
-              data.forEach(function(item,mail_id){
-            	  $('#mailSubject').val(item.mailSubject);
-            	  $('#mailContent').val(item.mailContent);
-              })
-           }else{
-              console.log('없음');
-           }
-        }
-   }) */
+   if ($("input[name='type']").val() === 'temp') {
+	    selfBox();
+	} else {
+	    mailBox();
+	}
    
 
 
-   // 받는사람, 제목, 내용 미 입력 시 메세지 (수정필요)
-   /* $(document).ready(function() {
+	// 받는사람, 제목, 내용 미 입력 시 메세지 
+   $(document).ready(function() {
        $('#mailForm').submit(function(event) {
-           var recipientInput = $('#recipient-input').val();
+    	   var recipientInput = $('#recipient-input').val();
            var mailSubject = $('#mailSubject').val();
            var composeTextarea = $('#compose-textarea').val();
-
-           if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
-               var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
-               $('#mailMessage').html('<p class="error">' + Message + '</p>');
-               event.preventDefault();
-           } else {
-               $('#mailMessage').empty(); // 문구 삭제
+           var mailCard2 = document.querySelector('.mailCard2');
+           var isHidden2 = mailCard2.classList.contains('hidden');
+           if (isHidden2) {
+        	   if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
+                   var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
+                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
+                   event.preventDefault();
+               } else {
+                   $('#mailMessage').empty(); // 문구 삭제
+               }
+           } else{
+        	   if( mailSubject == "" || composeTextarea.trim() == ""){
+    			   var Message = "제목, 내용을 모두 입력해주세요.";
+                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
+                   event.preventDefault();
+               } else {
+                   $('#mailMessage').empty(); // 문구 삭제
+               }
            }
-       });
-   }); */
+       })
+    })
 
 
    $(function () {
@@ -560,6 +560,7 @@
 
            $('#recipient-input').val(selectedApprovers);
            $('#cc-input').val(selectedReferrers);
+           $('#modal-lg2').modal('hide');
        });
    });
    
@@ -660,7 +661,8 @@
    
    // 저장
    function save(){
-      $('#mailForm').append('<input type="hidden" name="type" value="save">');
+      //$('#mailForm').append('<input type="hidden" name="type" value="tempsave">');
+      $('input[name="type"]').attr('value','tempsave');
       $('#mailForm').submit();
    }
    
@@ -702,14 +704,6 @@
        }
       });
        
-   }
-   
-   // 임시저장 두번째부터
-   function tempList(mail_id) {
-      var content;
-      content = '<input type="hidden" id="mail_id" name="mail_id" value="' + mail_id + '">';
-      
-      $('#tempList').append(content);
    }
 
    

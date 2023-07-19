@@ -63,7 +63,7 @@ public interface MailDAO {
 
    int mailtrash(String mailId, String type,String member_id);
 
-   int maildel(String mailId,String member_id);
+   int maildel(int mail_id,String member_id, String set);
 
    int mymaildel(String mailId,String member_id);
 
@@ -72,6 +72,10 @@ public interface MailDAO {
 	void referrerMailAlarm(MailDTO dto);
 
 	void updateread(int mail_id, String type, Timestamp writeTime, String member_id);
+
+	void tempsaveupdate(String mail_id, Timestamp writeTime, String mailSubject, String mailContent);
+
+	int mailrestore(int mail_id, String member_id, String set);
 	
   //Object mailtempGet(int mail_id, String type);
 

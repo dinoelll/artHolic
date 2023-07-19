@@ -249,21 +249,13 @@
                            참조 <input class="form-control" name="referenceMember" id="cc-input" readOnly>
                         </div>
                         <div class="form-group">
-                           제목 <c:if test="${model.memberdto.get(0).temp == true}">
-                           		<input class="form-control" name="mailSubject" id="mailSubject" value="${model.memberdto.get(0).mailSubject}">
-                           </c:if> 
-                           <c:if test="${model.memberdto.get(0).temp == false || model.memberdto.get(0).temp == null}">
-                           		<input class="form-control" name="mailSubject" id="mailSubject">
-                           </c:if>
+                           제목 <input class="form-control" name="mailSubject" id="mailSubject">
                         </div>
                         <div class="form-group" id="mailMessage">
                            
                         </div>
                         <div class="form-group">
                            <textarea id="compose-textarea" class="form-control" style="height: 300px" name="mailContent">
-                           <c:if test="${model.memberdto.get(0).temp == true}">
-                           		${model.memberdto.get(0).mailContent}
-                           </c:if>
                            </textarea>
                         </div>
                         <div class="form-group">
@@ -272,11 +264,6 @@
                               <input type="file" name="attachment" multiple="multiple" id="attachment-input">
                            </div>
                            <div id="attachment-info">
-                           <c:if test="${model.memberdto.get(0).temp == true}">
-                           <c:forEach items="${model.mailpthotoList}" var = "file">
-			              		${file.ori_file_name }
-			                </c:forEach>
-			                </c:if>
 			                </div>
                         </div>
                      </div>
@@ -375,61 +362,56 @@
    } else {
      mailBox();
    }
-/*    if(tempParams){
-	   selfBox();
-   }else{
-	   mailBox();
-   } */
-   
-   // temp 아작스로 값 불러오기
-   /* $(document).ready(function() {
-        $.ajax({
-          url: 'mail/tempGet.ajax', 
-          type: 'post',
-          data: {
-        	  'type' : temp,
-        	  'mail_id' : $('#mail_id').val()
-          },
-          dataType:'json',
-          success: function(data) {
-             console.log(data);
-             optionPrint(data.dto);
-          },error: function(e){
-             console.log(e);
-          }
-        })
-        
-        function tempGetPrint(data){
-           var content;
-           if(data.length>0){
-              data.forEach(function(item,mail_id){
-            	  $('#mailSubject').val(item.mailSubject);
-            	  $('#mailContent').val(item.mailContent);
-              })
-           }else{
-              console.log('없음');
-           }
-        }
-   }) */
-   
 
 
-   // 받는사람, 제목, 내용 미 입력 시 메세지 (수정필요)
-   /* $(document).ready(function() {
+   // 받는사람, 제목, 내용 미 입력 시 메세지 
+   $(document).ready(function() {
        $('#mailForm').submit(function(event) {
-           var recipientInput = $('#recipient-input').val();
+    	   var recipientInput = $('#recipient-input').val();
            var mailSubject = $('#mailSubject').val();
            var composeTextarea = $('#compose-textarea').val();
-
-           if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
-               var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
-               $('#mailMessage').html('<p class="error">' + Message + '</p>');
-               event.preventDefault();
-           } else {
-               $('#mailMessage').empty(); // 문구 삭제
+           var mailCard2 = document.querySelector('.mailCard2');
+           var isHidden2 = mailCard2.classList.contains('hidden');
+           if (isHidden2) {
+        	   if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
+                   var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
+                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
+                   event.preventDefault();
+               } else {
+                   $('#mailMessage').empty(); // 문구 삭제
+               }
+           } else{
+        	   if( mailSubject == "" || composeTextarea.trim() == ""){
+    			   var Message = "제목, 내용을 모두 입력해주세요.";
+                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
+                   event.preventDefault();
+               } else {
+                   $('#mailMessage').empty(); // 문구 삭제
+               }
            }
+           
+           
+           
+           
+    	   /* if(mailBox()){
+    		   if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
+                   var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
+                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
+                   event.preventDefault();
+               } else {
+                   $('#mailMessage').empty(); // 문구 삭제
+               }
+    	   }else{
+    		   if( mailSubject == "" || composeTextarea == ""){
+    			   var Message = "제목, 내용을 모두 입력해주세요.";
+                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
+                   event.preventDefault();
+               } else {
+                   $('#mailMessage').empty(); // 문구 삭제
+               }
+    		} */
+    	   })
        });
-   }); */
 
 
    $(function () {
