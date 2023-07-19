@@ -83,7 +83,7 @@
 			</tr>
 			<tr>
 				<td>
-				<input style="float:right;" type="button" onclick="location.href='projectDetail.go?type=jsp'" value="취소"/>
+				<input style="float:right;" type="button" onclick="goToProjectDetail()" value="취소"/>
 					<input style="float:right;" type="button" onclick="updateDo()" value="수정" />
 				</td>
 			</tr>
@@ -120,6 +120,13 @@ config.file_upload_handler = function(file,callback){//file 정보, 이미지 �
 		callback('/img/noimage.png');
 	}
 }
+
+function goToProjectDetail() {
+    var project_id = "${feed.project_id}";
+    var project_name = "${feed.project_name}";
+    var url = "projectDetail.go?type=jsp&project_id=" + project_id + "&project_name=" + project_name;
+    location.href = url;
+  }
 
 
 var editor = new RichTextEditor("#div_editor",config);

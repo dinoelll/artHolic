@@ -379,7 +379,9 @@
 		    	   // var timezoneOffset = new Date().getTimezoneOffset();
 
 		    	    // 서버에서 받은 UTC 시간을 로컬 시간대로 조정합니다
+
 		    	   // start.setMinutes(start.getMinutes() - timezoneOffset);
+
 		    	   // end.setMinutes(end.getMinutes() - timezoneOffset); 
 		    	    
 		    	    return {

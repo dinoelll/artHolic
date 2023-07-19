@@ -72,6 +72,12 @@ public class PaymentMoveController {
 		return service.vacationForm(session, document_id, temp);
 
 	}
+	@RequestMapping(value = "/paymentVacationFormDetail.go")
+	public ModelAndView home19(HttpSession session, String document_id, boolean temp) {
+
+		return service.vacationFormDetail(session, document_id, temp);
+
+	}
 
 	@RequestMapping(value = "/pay__mentVacationForm.go")
 	public ModelAndView home10() {

@@ -718,7 +718,7 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">아니요</button>
-              <button type="button" class="btn btn-primary">예</button>
+              <button type="button" class="btn btn-primary" onclick="goBack()">예</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -796,6 +796,9 @@
 
 <script>
 
+function goBack() {
+    window.history.back(); // 이전 페이지로 이동
+  }
 
 
 function writeVacation() {
@@ -911,9 +914,9 @@ function writeVacation() {
 	    contentType: false, // Prevent jQuery from automatically setting the content type
 	    success: function(data) {
 	      console.log(data);
-	      if (data.success =! null) {
-	        alert('전송 성공');
-	        
+	      if (data != null) {
+		        alert('요청이 완료되었습니다.');
+		        location.href ='/paymentList.go';
 	      } else {
 	        alert('전송 실패');
 	      }
@@ -952,8 +955,8 @@ function writeVacationTemp() {
 	  // Other parameters
 	  var $limit_date = $('#limit_date');
 	  var $form_sort = $('#form_sort');
-	  var $equipment_kind = $('#vacation_kind');
-	  var $amount = $('#reservationtime');
+	  var $equipment_kind = $('#equipment_kind');
+	  var $amount = $('#amount');
 	  var $paySubject = $('#paySubject');
 	  var $payContent = $('#payContent');
 	  var $radioPeriod = $('input[name="radioPeriod"]:checked');
@@ -1029,8 +1032,9 @@ function writeVacationTemp() {
 	    contentType: false, // Prevent jQuery from automatically setting the content type
 	    success: function(data) {
 	      console.log(data);
-	      if (data.success =! null) {
-	        alert('전송 성공');
+	      if (data != null) {
+		        alert('요청이 완료되었습니다.');
+		        location.href ='/paymentListTemp.go';
 	        
 	      } else {
 	        alert('전송 실패');
@@ -1089,55 +1093,50 @@ $("#demoform").submit(function() {
 
 
 
-
-
 function drawList(approversVal) {
-	var nameValue = document.getElementById('formName').textContent;
-	approversVal.forEach(function(item,idx){
-		console.log(item,idx)
-		
-		});
-	 
+	  var nameValue = document.getElementById('formName').textContent;
 	  var content = '<table class="my-table" style="width: auto; table-layout: fixed;">';
-
 
 	  content += '<tr>';
 	  content += '<th style=" white-space: nowrap;" rowspan="' + (approversVal.length + 3) + '">결재</th>';
 	  content += '<td style=" white-space: nowrap;">기안자</td>';
-	  for (var i = 0; i < approversVal.length; i++) {
+
+	  var loopLimit = Math.min(4, approversVal.length); // 최대 4개까지만 반복
+	  for (var i = 0; i < loopLimit; i++) {
 	    content += '<td style=" white-space: nowrap;">결재자</td>';
 	  }
 	  content += '</tr>';
 
 	  content += '<tr>';
 	  content += '<td>' + nameValue + '</td>';
-	  for (var i = 0; i < approversVal.length; i++) {
-	    content += '<td id="payment'+[i]+'">' + approversVal[i] + '</td>';
-	  }
-	  content += '</tr>';
-	  
-	  content += '<tr>';
-	  content += '<td>' + '</td>';
-	  for (var i = 0; i < approversVal.length; i++) {
-	    content += '<td>' + '</td>';
-	  }
-	  content += '</tr>';
-	  
-	  content += '<tr>';
-	  content += '<td>' + '</td>';
-	  for (var i = 0; i < approversVal.length; i++) {
-	    content += '<td>' + '</td>';
+	  for (var i = 0; i < loopLimit; i++) {
+	    content += '<td id="payment' + [i] + '">' + approversVal[i] + '</td>';
 	  }
 	  content += '</tr>';
 
+	  content += '<tr>';
+	  content += '<td></td>';
+	  for (var i = 0; i < loopLimit; i++) {
+	    content += '<td></td>';
+	  }
+	  content += '</tr>';
+
+	  content += '<tr>';
+	  content += '<td></td>';
+	  for (var i = 0; i < loopLimit; i++) {
+	    content += '<td></td>';
+	  }
+	  content += '</tr>';
 
 	  content += '</table>';
 
-	  
 	  $('#list').html(content);
-	  // 테이블을 어떤 엘리먼트에 추가할지 결정하고, 해당 엘리먼트에 HTML 내용을 할당
-	  
-};
+
+	  if (approversVal.length > 4) {
+	    alert('결재자는 최대 4명까지만 표시됩니다.');
+	  }
+	};
+
 
 function drawList2(referrer) {
 	referrer.forEach(function(item,idx){

@@ -25,8 +25,9 @@
          <if
             test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND field_manager LIKE CONCAT('%',#{keyword},'%')</if>
           <if
-            test="myproject != null and !myproject.equals('')">AND project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE member_id = '${myproject}')</if>
+            test="myproject != null and !myproject.equals('')">AND project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE member_id = #{myproject})</if>
          AND blind = 0
+
       </where>
       ORDER BY project_id DESC
       LIMIT #{cnt} OFFSET #{offset}
@@ -35,11 +36,13 @@
    <select id="totalCount" resultType="int" parameterType="string">
       SELECT COUNT(project_id) FROM project AS p
       <where>
+
          <if test="keyword != null and !keyword.equals('') and opt =='project_name'">AND p.project_name LIKE CONCAT('%',#{keyword},'%')</if>
          <if test="keyword != null and !keyword.equals('') and opt =='project_manager'">AND p.project_manager LIKE CONCAT('%',#{keyword},'%')</if>
          <if test="keyword != null and !keyword.equals('') and opt =='field_manager'">AND p.field_manager LIKE CONCAT('%',#{keyword},'%')</if>
-		<if test="myproject != null and !myproject.equals('')">AND p.project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE pi2.member_id = '${myproject}')</if>
+		<if test="myproject != null and !myproject.equals('')">AND p.project_id IN (SELECT pi2.project_id FROM project_info pi2 WHERE pi2.member_id = #{myproject})</if>
          AND blind = 0
+
       </where>
    </select>
 
@@ -134,6 +137,42 @@
    	blind = 1
    	WHERE project_id = #{project_id}
    </update>
+   
+   
+   <select id="projectUpdateModal">
+   	SELECT * FROM project WHERE project_id = #{project_id}
+   </select>
+   
+   
+   		<update id="projectUpdate" parameterType="map">
+		  UPDATE project
+		  <set>
+		    <if test="project_name2 != null">
+		      project_name = #{project_name2}
+		    </if>
+		    <if test="project_manager2 != null">
+		      <if test="project_name2 != null">,</if>
+		      project_manager = #{project_manager2}
+		    </if>
+		    <if test="field_manager2 != null">
+		      <if test="project_name2 != null or project_manager2 != null">,</if>
+		      field_manager = #{field_manager2}
+		    </if>
+		    <if test="manager_phone2 != null">
+		      <if test="project_name2 != null or project_manager2 != null or field_manager2 != null">,</if>
+		      manager_phone = #{manager_phone2}
+		    </if>
+		    <if test="start_date2 != null">
+		      <if test="project_name2 != null or project_manager2 != null or field_manager2 != null or manager_phone2 != null">,</if>
+		      start_date = #{start_date2}
+		    </if>
+		    <if test="end_date2 != null">
+		      <if test="project_name2 != null or project_manager2 != null or field_manager2 != null or manager_phone2 != null or start_date2 != null">,</if>
+		      end_date = #{end_date2}
+		    </if>
+		  </set>
+		  WHERE project_id = #{project_id2}
+		</update>
    
    
 

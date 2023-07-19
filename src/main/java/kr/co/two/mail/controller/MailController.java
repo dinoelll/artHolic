@@ -99,6 +99,7 @@ public class MailController {
 	   return "tempBox";
    }
    
+   // 답장, 전달, 임시저장 상세보기
    @RequestMapping(value="/mailreply.go")
    public String mailreply(Model model, @RequestParam HashMap<String, Object> params,HttpSession session) {
 	   logger.info("params: "+params);
@@ -106,14 +107,16 @@ public class MailController {
 	   String page ="mailReply";
 	   int seletedMailId = Integer.parseInt((String) params.get("seletedMailId"));
 	   String type= (String) params.get("type");
-	   model.addAttribute("model", service.mailDetail(model,seletedMailId,type));
+	   
+	   String member_id = (String) session.getAttribute("loginId");
+	   
+	   model.addAttribute("model", service.mailDetail(model,seletedMailId,type,member_id));
 	   if(type.equals("temp")){
 		   logger.info("임시저장왔따.");
-		   HashMap<String, ArrayList<MailDTO>> map = (HashMap<String, ArrayList<MailDTO>>) service.mailDetail(model,seletedMailId,type);
-			/* map.get("memberdto"); */
+		   HashMap<String, ArrayList<MailDTO>> map = (HashMap<String, ArrayList<MailDTO>>) service.mailDetail(model,seletedMailId,type,member_id);
 		   logger.info("map:"+map.get("memberdto"));
 		   
-		   session.setAttribute("model", service.mailDetail(model,seletedMailId,type));
+		   session.setAttribute("model", service.mailDetail(model,seletedMailId,type,member_id));
 		   page = "redirect:/mailWrite.go?selfBox=true";
 	   }
 	   model.addAttribute("set", params.get("set"));
@@ -177,15 +180,16 @@ public class MailController {
    // 메일 보내기
    @RequestMapping(value="/mailWrite.do")
    public String mailWrite(@RequestParam String type,@RequestParam HashMap<String, String> params, MultipartFile[] attachment,
-         @RequestParam(required = false) String approvers,@RequestParam(required = false) String referrer,RedirectAttributes redirect) {
+         @RequestParam(required = false) String approvers,@RequestParam(required = false) String referrer,RedirectAttributes redirect,HttpSession session) {
 
       logger.info("type: "+type);
       logger.info("attachment: "+attachment);
       logger.info("params:"+params);
       logger.info("approvers: "+approvers);
       logger.info("referrer: "+referrer);
+      String member_id = (String) session.getAttribute("loginId");
 
-      return service.mailWrite(type,params,attachment,approvers,referrer,redirect);
+      return service.mailWrite(type,params,attachment,approvers,referrer,redirect,member_id);
    }
    
    // 받는사람, 참조자
@@ -200,14 +204,15 @@ public class MailController {
    
    //메일 상세보기
    @RequestMapping(value="/mailDetail.do/{mail_id}")
-   public String mailDetaildo(Model model,@PathVariable String mail_id,@RequestParam String type,@RequestParam int seletedMailId) {
+   public String mailDetaildo(Model model,@PathVariable String mail_id,@RequestParam String type,@RequestParam int seletedMailId,HttpSession session) {
       
+	  String member_id = (String) session.getAttribute("loginId");
       String page = "mailDetail";
       logger.info("mail_id: "+mail_id);
       logger.info("seletedMailId:"+seletedMailId);
       logger.info("type: "+type);
       
-      model.addAttribute("dto", service.mailDetail(model,seletedMailId,type));
+      model.addAttribute("dto", service.mailDetail(model,seletedMailId,type,member_id));
       model.addAttribute("type", type);
 
       /*Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
@@ -238,9 +243,10 @@ public class MailController {
    @PostMapping(value="mail/temp.ajax")
    @ResponseBody
    public HashMap<String, Object> mailtempWrite(@RequestParam HashMap<String, String> params,String mail_id,
-		   @RequestParam(required = false) List<MultipartFile> attachment,HttpServletRequest request){
+		   @RequestParam(required = false) List<MultipartFile> attachment,HttpServletRequest request,HttpSession session){
       logger.info("params: "+params);
       logger.info("mail_id: "+mail_id);
+      String member_id = (String) session.getAttribute("loginId");
        HashMap<String, Object> mailResult = new HashMap<String, Object>();
       
       if (mail_id.equals("undefined") || mail_id == null) {
@@ -248,10 +254,10 @@ public class MailController {
     	  logger.info("조건에 들어감");
     	  if(attachment != null && !attachment.isEmpty()) { // 사진이 있을 때 
     		  logger.info("사진 있음");
-    		  mailtempList = service.tempList(params,attachment);
+    		  mailtempList = service.tempList(params,attachment,member_id);
     	  }else { // 사진이 없을 때
     		  logger.info("사진없음");
-    		  mailtempList = service.tempList(params);
+    		  mailtempList = service.tempList(params,member_id);
     	  }
            
            logger.info("mail_id: " + mailtempList.get("mail_id"));
@@ -270,42 +276,29 @@ public class MailController {
    @RequestMapping(value="mail/selfBox.ajax")
    @ResponseBody
    public HashMap<String, Object> mailSelfBox(@RequestParam String page,@RequestParam String cnt, @RequestParam String searchInformation,
-		   @RequestParam String searchText,@RequestParam String type){
+		   @RequestParam String searchText,@RequestParam String type,HttpSession session){
       logger.info("page: "+page+"/cnt: "+cnt+"/searchInformation: "+searchInformation+"/searchText: "+searchText+"/type:"+type);
-	   return service.mailSelfBox(Integer.parseInt(page),Integer.parseInt(cnt),searchInformation,searchText,type);
+      String member_id = (String) session.getAttribute("loginId");
+	   return service.mailSelfBox(Integer.parseInt(page),Integer.parseInt(cnt),searchInformation,searchText,type,member_id);
    }
    
    // mail 즐겨찾기
    @PostMapping(value="mail/Like.ajax")
    @ResponseBody
-   public HashMap<String, Object> mailFavorite(@RequestParam("mailId") Integer mail_id, boolean isLike, @RequestParam String type) {
+   public HashMap<String, Object> mailFavorite(@RequestParam("mailId") Integer mail_id, boolean isLike, @RequestParam String type,HttpSession session) {
       logger.info("mail_id: "+mail_id+"/"+"isLike: "+isLike+"/type: "+type);
-      return service.mailFavorite(mail_id,isLike,type);
+      String member_id = (String) session.getAttribute("loginId");
+      return service.mailFavorite(mail_id,isLike,type,member_id);
    }
    
-   // mail receiver 즐겨찾기
-   /*@RequestMapping(value="mail/bookmark.ajax")
-   @ResponseBody
-   public HashMap<String, Object> mailbookmark(@RequestParam int mailId, @RequestParam Boolean isFavorite, @RequestParam String type){
-      logger.info("mailId: "+mailId+"isFavorite: "+isFavorite+"type: "+type);
-      return service.mailbookmark(mailId,isFavorite,type);
-   }*/
    
    @PostMapping(value="mail/trash.ajax")
    @ResponseBody
-   public HashMap<String, Object> mailtrash(@RequestParam String mailId, @RequestParam String type){
+   public HashMap<String, Object> mailtrash(@RequestParam String mailId, @RequestParam String type,HttpSession session){
 	   logger.info("mailId: "+mailId+"/ type: "+type);
-	   return service.mailtrash(mailId,type);
+	   String member_id = (String) session.getAttribute("loginId");
+	   return service.mailtrash(mailId,type,member_id);
    }
-   
-   /*@PostMapping(value="/mail/tempGet.ajax")
-   @ResponseBody
-   public HashMap<String, Object> mailtempGet(@RequestParam int mail_id, @RequestParam String type){
-	   HashMap<String, Object> map = new HashMap<String, Object>();
-	   logger.info("mail_id :"+mail_id+"type: "+type);
-	   //return service.mailtempGet(mail_id,type);
-	   return null;
-   }
-   */
+
 
 }

@@ -7,6 +7,13 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriUtils;
 
 import kr.co.two.payment.service.PaymentService;
 
@@ -24,6 +32,8 @@ public class PaymentController {
 	@Autowired PaymentService service;
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
+	
+	@Value("${spring.servlet.multipart.location}") private String root;
 	
 	
 	@RequestMapping(value = "/paymentWrite.do")
@@ -114,6 +124,20 @@ public class PaymentController {
 		
 		
 		return service.writeVacation(params ,files, session);
+
+	}
+	@RequestMapping(value = "/writeVacationTemp.ajax")
+	@ResponseBody
+	public int writeVacationTemp(@RequestParam HashMap<String, String> params 
+			, HttpSession session ) {
+		logger.info("params : "+params);
+	
+		
+		
+		
+		
+		
+		return service.writeVacationTemp(params , session);
 
 	}
 	
@@ -225,7 +249,35 @@ public class PaymentController {
 
 	}
 
-	
+	@GetMapping(value = "/download2.do")
+	   public ResponseEntity<Resource> download(@RequestParam("ori_fileName") String oriFileName,
+	         @RequestParam("new_fileName") String newFileName) {
+
+	      logger.info("download Controller");
+	      logger.info("ori_fileName: " + oriFileName);
+	      logger.info("new_fileName: " + newFileName);
+
+	      String filePath = root + "/" + newFileName;
+
+	      Resource body = new FileSystemResource(filePath);
+
+	      HttpHeaders headers = new HttpHeaders();
+	      try {
+	         // String fileName = "이미지" +
+	         // oriFileName.substring(oriFileName.lastIndexOf("."));
+	         String fileName = UriUtils.encode(oriFileName, "UTF-8");
+	         // Encode the file name to handle special characters
+	         // fileName = URLEncoder.encode(fileName, "UTF-8");
+
+	         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	         headers.setContentDispositionFormData("attachment", fileName);
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      }
+
+	      // Return the ResponseEntity with the file resource, headers, and OK status
+	      return new ResponseEntity<>(body, headers, HttpStatus.OK);
+	   }
 	
 	
 	 

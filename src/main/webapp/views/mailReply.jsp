@@ -255,7 +255,7 @@
                            참조 <input class="form-control" name="referenceMember" id="cc-input" readOnly>
                         </div>
                         <div class="form-group">
-                           제목 ${set }
+                           제목 
                            <c:if test="${set=='reply'}">
                            	<input class="form-control" name="mailSubject" id="mailSubject" value="Re: ${model.dto.get(0).mailSubject}">
                            	</c:if>
@@ -270,28 +270,34 @@
                            <textarea id="compose-textarea" class="form-control" style="height: 300px" name="mailContent">	
                            <br/>
                            <br/>
+                           <br/>
+                           <br/>
+                           <br/>
+                           <br/>
+                           <br/>
+                           <br/>
                            -----Original Message-----
                            <br/>
-                 <p>subject&nbsp;&nbsp;: ${model.dto.get(0).mailSubject}</p>
-                 <p>From&nbsp;&nbsp;:${model.memberdto.get(0).dept_name}&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}</p>
-                 <p>To&nbsp;&nbsp;:
+                 <p>subject&nbsp;:&nbsp; ${model.dto.get(0).mailSubject}</p>
+                 <p>From&nbsp;:&nbsp;${model.memberdto.get(0).dept_name}&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}</p>
+                 <p>To&nbsp;:&nbsp;
                <c:forEach items="${model.dto}" var="item">
                        <c:if test="${item.is_receiver == 0 || item.is_receiver == 2}">
                           ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
                        </c:if>
                     </c:forEach>
                     </p>
-                <p>cc:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <p>cc&nbsp;:&nbsp;
                    <c:forEach items="${model.dto}" var="item">
                       <c:if test="${item.is_receiver == 1}">
                          ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
                       </c:if>
                    </c:forEach>
                    </p>
-               <p>Sent:&nbsp;&nbsp;${model.memberdto.get(0).writeTime}</p>
-                <p>content:&nbsp;&nbsp;${model.memberdto.get(0).mailContent}</p>
+               <p>Sent&nbsp;:&nbsp;${model.memberdto.get(0).writeTime}</p>
+                <p>content&nbsp;:&nbsp;${model.memberdto.get(0).mailContent}</p>
                 <p>
-				file :
+				file&nbsp;:&nbsp;
               <c:forEach items="${model.mailpthotoList}" var = "file">
               		${file.ori_file_name }
                 </c:forEach>
@@ -316,7 +322,7 @@
                      </div>
                      <div class="tempList" id="tempList">
                      	<c:if test="${set=='reply'}">
-                        <input type="hidden" class="approvers" name="approvers" value="${model.memberdto.get(0).member_id}">
+                        <input type="hidden" class="approvers" name="approvers" value="${model.memberdto.get(0).send}">
                         </c:if>
                      </div>
                   </form>

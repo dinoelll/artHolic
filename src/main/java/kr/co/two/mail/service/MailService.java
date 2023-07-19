@@ -26,6 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -240,11 +242,12 @@ public class MailService {
 
 
    // 메일 쓰기
-   public String mailWrite(String type, HashMap<String, String> params, MultipartFile[] attachments, String approvers, String referrers, RedirectAttributes redirect) {
+   public String mailWrite(String type, HashMap<String, String> params, MultipartFile[] attachments, String approvers, String referrers, RedirectAttributes redirect, String member_id) {
        MailDTO dto = createMailDTO(params);
        Timestamp writeTime = mailWriteDate(); // 날짜 정보 가져오기
        logger.info("writeTime: "+writeTime);
        dto.setWriteTime(writeTime);
+       dto.setMember_id(member_id);
 
        int row = dao.mailWrite(dto);
        logger.info("mailWrite row: " + row);
@@ -274,7 +277,7 @@ public class MailService {
        
        if(type.equals("save")) {
           logger.info("저장");
-          approvers = "12421313213";// 나중에 로그인 아이디로 바꾸기
+          approvers = member_id;
           dto.setMember_id(approvers);
           int saverow = dao.savereceiverWrite(dto);
        }
@@ -333,10 +336,11 @@ public class MailService {
    */
 
    // 처음 임시저장 게시글만 작성
-   public HashMap<String, Object> tempList(HashMap<String, String> params) {
+   public HashMap<String, Object> tempList(HashMap<String, String> params, String member_id) {
 	   MailDTO dto = createMailDTO(params);
       Timestamp writeTime = mailWriteDate(); // 날짜 정보 가져오기
       dto.setWriteTime(writeTime);
+      dto.setMember_id(member_id);
 
        int row = dao.mailWrite(dto);
        logger.info("mailWrite row: " + row);
@@ -351,11 +355,12 @@ public class MailService {
 	}
    
    // 처음 임시저장 (사진포함)
-   public HashMap<String, Object> tempList(HashMap<String, String> params, List<MultipartFile> attachments) {
+   public HashMap<String, Object> tempList(HashMap<String, String> params, List<MultipartFile> attachments, String member_id) {
       
       MailDTO dto = createMailDTO(params);
       Timestamp writeTime = mailWriteDate(); // 날짜 정보 가져오기
       dto.setWriteTime(writeTime);
+      dto.setMember_id(member_id);
 
        int row = dao.mailWrite(dto);
        logger.info("mailWrite row: " + row);
@@ -418,10 +423,10 @@ public class MailService {
    }
    
    // 보낸메일 즐겨찾기
-   public HashMap<String, Object> mailFavorite(Integer mail_id, boolean isLike, String type) {
+   public HashMap<String, Object> mailFavorite(Integer mail_id, boolean isLike, String type, String member_id) {
       HashMap<String, Object> map = new HashMap<String, Object>();
-      dao.mailFavorite(mail_id,isLike,type);
-      MailDTO dto = dao.isFavoriteStatus(mail_id,type);
+      dao.mailFavorite(mail_id,isLike,type,member_id);
+      MailDTO dto = dao.isFavoriteStatus(mail_id,type,member_id);
       logger.info("isLikeStatues : "+dto );
       logger.info("bookmark: "+dto.isBookmark());
       logger.info("favorites: "+dto.isFavorites());
@@ -432,13 +437,13 @@ public class MailService {
    
 
    // 메일 리스트 아작스
-   public HashMap<String, Object> mailSelfBox(int page, int cnt, String searchInformation, String searchText, String type) {
+   public HashMap<String, Object> mailSelfBox(int page, int cnt, String searchInformation, String searchText, String type, String member_id) {
 		logger.info("아작스도착");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		ArrayList<MailDTO> list = new ArrayList<MailDTO>();
 		  
 		int offset = (page-1)*cnt;
-		int total = dao.totalCount(type,searchInformation,searchText);
+		int total = dao.totalCount(type,searchInformation,searchText,member_id);
 		int range = total%cnt == 0?total/cnt:(total/cnt)+1;
 		  
 		logger.info("전체 게시물 수: "+total);
@@ -453,7 +458,7 @@ public class MailService {
 		 * dao.totalCount(type,searchInformation); }
 		 */
 		logger.info("total: "+total);
-		list = dao.mailSelfBox(cnt,offset,type,searchInformation,searchText);
+		list = dao.mailSelfBox(cnt,offset,type,searchInformation,searchText,member_id);
 		map.put("list", list);
 		/*
 		 * for (MailDTO maillist : list) { // 리스트 하나하나씩 꺼내기
@@ -463,25 +468,16 @@ public class MailService {
    }
 
    // 메일 상세보기
-   public Object mailDetail(Model model,int seletedMailId, String type) {
+   @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT)
+   public Object mailDetail(Model model,int seletedMailId, String type, String member_id) {
       ArrayList<MailDTO> sendMemberList = new ArrayList<MailDTO>();
       ArrayList<MailDTO> mailMemberList = new ArrayList<MailDTO>();
       ArrayList<MailDTO> mailpthotoList = new ArrayList<MailDTO>();
       HashMap<String, ArrayList<MailDTO>> map = new HashMap<String, ArrayList<MailDTO>>();
       int mail_id = seletedMailId;
       
-/*
-     // 참조자가 있는지 확인
-     int row = dao.findMailReference(mail_id);
-     logger.info("row: "+row);
-     // 받는사람, 참조자 리스트 가져오기
-     if(row>0) {
-    	 sendMemberList = dao.mailSendDetail(mail_id,row);
-    	 logger.info("size : " + sendMemberList.size());
-     }
-     */
       // 받는사람 참조자 가져오기
-     sendMemberList = dao.mailSendDetail(mail_id);
+     sendMemberList = dao.mailSendDetail(mail_id,member_id);
  	 logger.info("size : " + sendMemberList.size());
      
       map.put("dto", sendMemberList);
@@ -493,7 +489,7 @@ public class MailService {
           }
       }
       // 디테일 가져오기
-      mailMemberList = dao.mailMemberDetail(mail_id,type);
+      mailMemberList = dao.mailMemberDetail(mail_id,type,member_id);
       map.put("memberdto", mailMemberList);
 
       for (MailDTO maillist : mailMemberList) { // 리스트 하나하나씩 꺼내기
@@ -501,17 +497,6 @@ public class MailService {
 			logger.info("receiver list: "+maillist.getPosition_name());
 	}
       
-      
-         // 보낸사람 리스트 가져오기
-       /*  mailMemberList = dao.mailMemberDetail(mail_id);
-         map.put("memberdto", mailMemberList);
-         logger.info("받는사람: "+sendMemberList.toArray());
-         logger.info("보낸사람: "+mailMemberList.toArray());
-      }else if(type.equals("save")){
-         mailMemberList = dao.mailMemberDetail(mail_id);
-         map.put("memberdto", mailMemberList);
-         logger.info("보낸사람: "+mailMemberList.toArray());
-      }*/
       //사진 가져오기
       int photo = dao.mailCheckPhoto(mail_id);
       if(photo > 0) {
@@ -520,92 +505,41 @@ public class MailService {
          logger.info("파일사이즈: "+mailpthotoList.size());
       }
       
+      // 수신확인
+      if(type.equals("self")|| type.equals("receive")) {
+    	  Timestamp writeTime = mailWriteDate();
+    	  dao.updateread(mail_id,member_id,writeTime,member_id);  
+      }
+      
       return map;
    }
 
    // 휴지통 (삭제) blind = 0
-	public HashMap<String, Object> mailtrash(String mail_Id, String type) {
+	public HashMap<String, Object> mailtrash(String mail_Id, String type,String member_id) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if(type.equals("trash")) {
 			ArrayList<MailDTO> mailMemberList = new ArrayList<MailDTO>();
-			mailMemberList = dao.mailSendDetail(Integer.parseInt(mail_Id));
+			mailMemberList = dao.mailSendDetail(Integer.parseInt(mail_Id),member_id);
 		 	 logger.info("size : " + mailMemberList.size());
 			 	for (MailDTO mail : mailMemberList) {
 			        if (mail.getIs_receiver() == 0 || mail.getIs_receiver() == 1 || mail.getIs_receiver() == 2) {
-			            int receivetrashRow = dao.maildel(String.valueOf(mail.getMail_id()));
+			            int receivetrashRow = dao.maildel(String.valueOf(mail.getMail_id()),member_id);
 			            logger.info("receivetrashRow: " + receivetrashRow);
 			            map.put("result", receivetrashRow);
 			        }else {
-			        	int trashRow = dao.mymaildel(String.valueOf(mail.getMail_id()));
+			        	int trashRow = dao.mymaildel(String.valueOf(mail.getMail_id()),member_id);
 			        	logger.info("trashRow: " + trashRow);
 			        	map.put("result", trashRow);
 			        }
 			        
 			    }
 		}else {
-			int row = dao.mailtrash(mail_Id,type);
+			int row = dao.mailtrash(mail_Id,type,member_id);
 			logger.info("trash row: "+row);
 			map.put("result", row);
 		}	
 		return map;
 	}
-
-	/*public Object mailreply(HashMap<String, Object> params) {
-		ArrayList<MailDTO> sendMemberList = new ArrayList<MailDTO>();
-		ArrayList<MailDTO> mailpthotoList = new ArrayList<MailDTO>();
-		ArrayList<MailDTO> mailMemberList = new ArrayList<MailDTO>();
-		HashMap<String, ArrayList<MailDTO>> map = new HashMap<String, ArrayList<MailDTO>>();
-		int mail_id = (int) params.get("mail_id");
-		String type = (String) params.get("type");
-		sendMemberList = dao.mailSendDetail(mail_id);
-	 	 logger.info("size : " + sendMemberList.size());
-	 	 
-	 	 map.put("dto", sendMemberList);
-	      // `mailMemberList`에서 `mail_id`가 `NULL`인 행 제외
-	      for (Iterator<MailDTO> iterator = mailMemberList.iterator(); iterator.hasNext();) {
-	          MailDTO mail = iterator.next();
-	          if (Integer.valueOf(mail.getMail_id()) == null) {
-	              iterator.remove();
-	          }
-	      }
-	      
-	      mailMemberList = dao.mailMemberDetail(mail_id,type);
-	      map.put("memberdto", mailMemberList);
-	      
-	 	int photo = dao.mailCheckPhoto(mail_id);
-	      if(photo > 0) {
-	         mailpthotoList = dao.mailHasPhoto(mail_id);
-	         map.put("mailpthotoList", mailpthotoList);
-	         logger.info("파일사이즈: "+mailpthotoList.size());
-	      }
-	     
-	      map.put("sendMemberList", sendMemberList);
-	      map.put("mailpthotoList", mailpthotoList);
-
-		return map;
-	}
-
-	/*public HashMap<String, Object> mailtempGet(int mail_id, String type) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("tempContent", dao.mailtempGet(mail_id,type));
-		return map;
-	}*/
-
-   // 받는사람, 참조자 즐겨찾기
-   /*public HashMap<String, Object> mailbookmark(int mailId, Boolean isFavorite, String type) {
-      HashMap<String, Object> map = new HashMap<String, Object>();
-      int row = dao.mailbookmark(mailId,isFavorite,type);
-      logger.info("row: "+row);
-      boolean isFavoriteStatus = dao.isbookmarkStatus(mailId,type);
-      logger.info("isFavoriteStatus : "+isFavoriteStatus );
-      map.put("isFavorite", isFavoriteStatus);
-      return map;
-   }*/
-
-
-
-
-
 
 
 }

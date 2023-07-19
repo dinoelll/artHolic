@@ -24,13 +24,14 @@ public class MailDTO {
    
    //mail_receiver
    private boolean read_chk;
-   private boolean read_date;
+   private Date read_date;
    private boolean bookmark;
    private int is_receiver;
    private String reference;
    
    private String dept_name;
    private String position_name;
+   private String send;
    
    //member
    private String pw;
@@ -202,12 +203,7 @@ public class MailDTO {
    public void setWriteTime(Timestamp writeTime) {
       this.writeTime = writeTime;
    }
-   public boolean isRead_date() {
-      return read_date;
-   }
-   public void setRead_date(boolean read_date) {
-      this.read_date = read_date;
-   }
+
    public boolean isBookmark() {
       return bookmark;
    }
@@ -270,4 +266,17 @@ public class MailDTO {
 	public void setFavorites(boolean favorites) {
 		Favorites = favorites;
 	}
+	public String getSend() {
+		return send;
+	}
+	public void setSend(String send) {
+		this.send = send;
+	}
+	public Date getRead_date() {
+		return read_date;
+	}
+	public void setRead_date(Date read_date) {
+		this.read_date = read_date;
+	}
+
 }

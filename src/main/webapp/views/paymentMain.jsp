@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Timeline</title>
+  <title>ArtHolic</title>
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 
   <!-- Google Font: Source Sans Pro -->
@@ -128,7 +128,20 @@
 	
 }
 
+/* 타임 라인 길이 조절 */
 
+.timeline::before {
+  border-radius: 0.25rem;
+  background-color: #dee2e6;
+  bottom: 0;
+  content: "";
+  left: 31px;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 2000px;
+}
 
 </style>
   
@@ -230,7 +243,7 @@
 						           <div class="timeline" style="margin-top:10px; overflow-y: auto; max-height: 610px;">
 						             <!-- timeline time label -->
 						             <div class="time-label">
-						               <span class="bg-gray">10 Feb. 2014</span>
+						               
 						             </div>
 						             <!-- /.timeline-label -->
 						             <!-- timeline item -->
@@ -266,7 +279,44 @@
 										        </c:choose>
 										        <div class="timeline-item">
 										            <span class="time"><i class="fas fa-clock"></i> ${t.modi_date}</span>
-										            <h3 class="timeline-header"><a href="#">${t.paySubject}</a></h3>
+										            	<c:choose>
+												             
+												            <c:when test="${not empty t.refer and not empty t.payment_ship_id}">
+													                <c:choose>
+													                    <c:when test="${t.state eq '진행중'}">
+													                        <h3 class="timeline-header"><a href="./paymentVacationForm_pay.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                    </c:when>
+													                    <c:when test="${t.state eq '반려'}">
+													                        <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                    </c:when>
+													                     
+											                    	</c:choose>
+												                
+												            </c:when>
+												            <c:when test="${not empty t.refer}">
+												               <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+												            </c:when>
+												            <c:when test="${not empty t.payment_ship_id}">
+												                 <c:choose>
+													                    <c:when test="${t.state eq '진행중'}">
+													                        <h3 class="timeline-header"><a href="./paymentVacationForm_pay.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                    </c:when>
+													                    <c:when test="${t.state eq '반려'}">
+													                        <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                    </c:when>
+											                    	</c:choose>
+												            </c:when>
+												            <c:when test="${ empty t.payment_ship_id and empty t.refer}">
+												               <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id} ">${t.paySubject}</a></h3>
+												            </c:when>
+												             <c:when test="${t.temp == true}">
+												               <h3 class="timeline-header"><a href="./paymentVacationForm_pay.go?document_id=${t.document_id}&temp=${t.temp} ">${t.paySubject}</a></h3>
+												            </c:when>
+												          
+												          	 <c:otherwise>
+										                		<h3 class="timeline-header"><a href="#">${t.paySubject}</a></h3>
+										            		</c:otherwise>
+												          </c:choose>  
 										            <div class="timeline-body">
 										                <div class="d-flex justify-content-between align-items-center">
 										                    <div>
@@ -290,6 +340,8 @@
 										        </div>
 										    </div>
 										</c:forEach>
+										
+										
 						           </div>
 						         </div>
 						         <!-- /.col -->
@@ -313,7 +365,7 @@
 					          </div>
 					          <div class="col-sm-6">
 					            <ol class="breadcrumb float-sm-right">
-					            	<li class="breadcrumb-item" style="margin-right:50px;"><a href="#">more ></a></li>
+					            	<li class="breadcrumb-item" style="margin-right:50px;"><a href="#"></a></li>
 					            </ol>
 					          </div>
 					        </div>
@@ -385,7 +437,7 @@
 					          </div>
 					          <div class="col-sm-6">
 					            <ol class="breadcrumb float-sm-right">
-					            	<li class="breadcrumb-item" style="margin-right:50px;"><a href="#">more ></a></li>
+					            	<li class="breadcrumb-item" style="margin-right:50px;"><a href="#"></a></li>
 					            </ol>
 					          </div>
 					        </div>
@@ -412,7 +464,17 @@
 									        <p>
 									            <div class="row">
 									                <div class="col-sm-1">
-									                    <img class="img-fluid rounded-circle" src="dist/img/man_default.png" alt="">
+									                    <div class="profile-photo">
+														  <c:choose>
+														    <c:when test="${not empty e.profile_photo}">
+														      <img class="img-fluid rounded-circle" src="dist/img/${e.profile_photo}" alt="">
+														    </c:when>
+														    <c:otherwise>
+														      <img class="img-fluid rounded-circle" src="dist/img/기본프로필.jpg" alt="">
+														    </c:otherwise>
+														  </c:choose>
+														</div>
+
 									                </div>
 									                <div class="col-sm-7">
 									                    기안자: ${e.name} <br>

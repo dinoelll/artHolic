@@ -285,8 +285,7 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재하기</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려하기</a>
+						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재요청</a>
 						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
 						          
 						          		
@@ -404,7 +403,7 @@
 														</td>
 													      <th>프로젝트 리더</th>
 													      <td>
-														     	 <input type="text" class="invisible-input" value="${form.project_leader}">
+														     	 <input type="text" class="invisible-input" value="${form.project_leader}" id="project_leader">
 														      </td>
 													    </tr>
 													  </table>
@@ -417,7 +416,7 @@
 													    <tr>
 													  	  <th>제목</th>
 														      <td>
-														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요" value="${form.paySubject}">
+														     	 <input type="text" class="invisible-input" placeholder="텍스트를 입력하세요" value="${form.paySubject}" id="paySubject">
 														      </td>
 													    </tr>
 													  </table>
@@ -429,7 +428,7 @@
 															    <tr>
 															    	<th>내용</th>
 															      <td>
-																      <textarea rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;">${form.payContent}</textarea>
+																      <textarea rows="10" cols="50" id="payContent" style="width: 100%; height: 100%; border: none; resize: none;">${form.payContent}</textarea>
     															</td>
 															    </tr>
 															  </table>
@@ -548,70 +547,111 @@
       
       
       
-      <!-- 결재 요청 모달 -->
-				<div class="modal fade" id="modal-default">
-				  <div class="modal-dialog">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div style="align-item:inline;">
-				        <div class="modal-body" style="text-align: center;">
-				          <h4 style="font-weight: 700; margin-bottom: 31px;">결재 하시겠습니까?</h4>
-				        </div>
-				        <a style="margin-left:33px; font-size:17px;">의견 남기기</a>
-				        <div style="border: 1px solid lightgray; width: 416px; height: 161px; margin-left: 43px; margin-top: 31px;">
-				          <textarea id="myTextarea" rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;" oninput="updateCharCount()"></textarea>
-				        </div>
-				        <a id="charCount" style="color: lightgray; margin-left: 400px; margin-bottom: 10px;">0/100</a>
-				        <p id="warningMsg" style="color: red; margin-left: 43px; display: none;">의견을 남겨야 요청을 완료할 수 있습니다. </p>
-				      </div>
-				      <div class="modal-footer justify-content-between">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-				        <button id="requestBtn" type="button" class="btn btn-primary" onclick="handleRequest()">요청</button>
-				      </div>
-				    </div>
-				    <!-- /.modal-content -->
-				  </div>
-				  <!-- /.modal-dialog -->
-				</div>
-				<!-- /.modal -->
-				
-				<!-- 반려 모달 -->
-					<div class="modal fade" id="modal-default2">
-					  <div class="modal-dialog">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					      </div>
-					      <div style="align-item:inline;">
-					        <div class="modal-body" style="text-align: center;">
-					          <h4 style="font-weight: 700; margin-bottom: 31px;">반려 하시겠습니까?</h4>
-					        </div>
-					        <a style="margin-left:33px; font-size:17px;">의견 남기기</a>
-					        <div style="border: 1px solid lightgray; width: 416px; height: 161px; margin-left: 43px; margin-top: 31px;">
-					          <textarea id="myTextarea2" rows="10" cols="50" style="width: 100%; height: 100%; border: none; resize: none;" oninput="updateCharCount2()"></textarea>
-					        </div>
-					        <a id="charCount2" style="color: lightgray; margin-left: 400px; margin-bottom: 10px;">0/100</a>
-					        <p id="warningMsg2" style="color: red; margin-left: 43px; display: none;">의견을 남겨야 요청을 완료할 수 있습니다.</p>
-					      </div>
-					      <div class="modal-footer justify-content-between">
-					        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-					        <button id="requestBtn2" type="button" class="btn btn-primary" onclick="handleRequest2()">요청</button>
-					      </div>
-					    </div>
-					    <!-- /.modal-content -->
-					  </div>
-					  <!-- /.modal-dialog -->
-					</div>
-					<!-- /.modal -->
-					      
       
       <!--  결재 요청 모달-->
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+             <h4>결재 요청 하시겠습니까?</h4>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary" onclick="writeVacation()" >요청</button>
+            </div>
+          </div>
+          <!-- /.modal-content --> 
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+      <!--  결재선 모달-->
+      <div class="modal fade" id="modal-lg2">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">결재선</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+		              <div class="card card-default">
+					          
+					          
+					         <form id="demoform" action="#" method="post">
+					          <div class="card-body">
+								  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label style="font-size:27px;">결재선 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="approvers" class="duallistbox" multiple="multiple" name="duallistbox_demo1[]">
+										          <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										          
+
+										          </c:forEach>
+										        </select>
+										      </div>
+										    </div>
+										    <!-- /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row -->
+									  
+									  <div class="row">
+										  <div class="col-12">
+										    <div class="form-group">
+										      <label style="font-size:27px;">참조자 선택</label>
+										      <div class="dual-listbox-container">
+										        <select id="referrer" class="duallistbox" multiple="multiple" name="duallistbox_demo2[]">
+										           <c:forEach items="${member}" var="member">
+										          
+										          <option value="${member.code_name} ${member.name} " >${member.code_name} ${member.name}</option>
+										        </c:forEach>
+										        </select>
+										      </div>
+										    </div>
+										   <!--  /.form-group -->
+										  </div>
+										  <!-- /.col -->
+										</div>
+									  <!-- /.row  -->
+
+								</div>
+					        </div>
+					        <!-- /.card -->
+					        
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+				<button type="submit" id="submitButton" class="btn btn-primary" >요청</button>            
+				</form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      
+      
+      
+					      
+      
+      <!--  결재 취소 모달-->
       <div class="modal fade" id="modal-default3">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -636,7 +676,7 @@
       <!-- /.modal -->
       
       
-     
+      
      
      
       
@@ -755,9 +795,17 @@ $(document).ready(function() {
 		    content += '<tr>';
 		    content += '<td>' + '신청' + '</td>';
 		    for (var i = 0; i < approversVal.length; i++) {
-		      var noteValue = approversVal[i].note;
-		      content += '<td>' + (noteValue !== null ? '승인' : '') + '</td>';
-		    }
+		    	  var noteValue = approversVal[i].result;
+		    	  var approvalStatus = '';
+
+		    	  if (noteValue === '결재완료') {
+		    	    approvalStatus = '승인';
+		    	  } else if (noteValue === '반려') {
+		    	    approvalStatus = '반려';
+		    	  }
+
+		    	  content += '<td>' + (approvalStatus !== '' ? approvalStatus : '') + '</td>';
+		    	}
 		    content += '</tr>';
 
 		    content += '<tr>';
@@ -878,124 +926,94 @@ function project(button) {
 	  }	
 	  
 
-/* 모달 글자수 제한  */
-function updateCharCount() {
-    var textarea = document.getElementById("myTextarea");
-    var charCount = document.getElementById("charCount");
-    var warningMsg = document.getElementById("warningMsg");
-    var textLength = textarea.value.length;
-    charCount.textContent = textLength + "/100";
-    
-    if (textLength > 100) {
-      textarea.value = textarea.value.slice(0, 100); // 글자 수 제한
-      charCount.textContent = "100/100"; // 최대 글자 수에 도달한 경우
-    }
-    
-    if (textLength > 0) {
-      warningMsg.style.display = "none"; // 의견이 작성된 경우 경고 메시지 숨김
-    }
-  }
-  
-  function handleRequest() {
-    var textarea = document.getElementById("myTextarea");
-    var warningMsg = document.getElementById("warningMsg");
-    var textLength = textarea.value.length;
-    
-    if (textLength === 0) {
-      warningMsg.style.display = "block"; // 의견이 작성되지 않은 경우 경고 메시지 표시
-      return;
-    }
-    
-    var document_id = $('#document_id').text();
+function writeVacation() {
+	  var approversVal = $('[name="duallistbox_demo1[]"]').val();
+	  console.log(approversVal);
+
+	  var referrer = $('[name="duallistbox_demo2[]"]').val();
+	  console.log(referrer);
+
+	  var fileInput = document.getElementById('exampleInputFile');
+	  var file = fileInput.files[0]; // Get the selected file
+
+
+	  var paymentValues = [];
+	  var referrerValues = [];
+
+	 var document_id = $('#document_id').text();
     console.log('document_id :' + document_id );
-    var note = $('#myTextarea').val();
-    console.log('note :' + note );
-    
-    // 결재하기
-    $.ajax({
-        type: 'POST',
-        url: 'payRequest.ajax',
-        data: { 
-        	document_id: document_id ,
-        	note : note
-        },
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
-            if (data.success != null) {
-            	alert('결재 완료');
-            	location.href ='./';
-            } else {
-                
-            }
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    });
-    
-  }
-  
-  function updateCharCount2() {
-	    var textarea = document.getElementById("myTextarea2");
-	    var charCount = document.getElementById("charCount2");
-	    var warningMsg = document.getElementById("warningMsg2");
-	    var textLength = textarea.value.length;
-	    charCount.textContent = textLength + "/100";
-	    
-	    if (textLength > 100) {
-	      textarea.value = textarea.value.slice(0, 100); // 글자 수 제한
-	      charCount.textContent = "100/100"; // 최대 글자 수에 도달한 경우
-	    }
-	    
-	    if (textLength > 0) {
-	      warningMsg.style.display = "none"; // 의견이 작성된 경우 경고 메시지 숨김
-	    }
+	  
+	  // Other parameters
+	  var $limit_date = $('#limit_date');
+	  var $form_sort = $('#form_sort');
+	  var $project_kind = $('#project_kind');
+	  var $reservationtime = $('#reservationtime');
+	  var $paySubject = $('#paySubject');
+	  var $payContent = $('#payContent');
+	  var $projectLeader = $('#projectLeader');
+	  var $temp = $('#temp');
+
+
+	  for (var i = 0; i < approversVal.length; i++) {
+	    paymentValues.push(approversVal[i]);
+	  }
+
+	  for (var i = 0; i < referrer.length; i++) {
+	    referrerValues.push(referrer[i]);
 	  }
 	  
-	  function handleRequest2() {
+	  var param = {
+			  payment: paymentValues,
+			  referrer: referrerValues,
+		  	limit_date: $limit_date.val(),
+		  	form_sort: $form_sort.val(),
+		  	project_kind: $project_kind.val(),
+		    reservationtime: $reservationtime.val(),
+		    projectLeader: $projectLeader.val(),
+		    temp: $temp.val(),
+		    paySubject: $paySubject.val(),
+		    payContent: $payContent.val()
+		    
 		   
-		  
-	    var textarea = document.getElementById("myTextarea2");
-	    var warningMsg = document.getElementById("warningMsg2");
-	    var textLength = textarea.value.length;
-	    
-	    if (textLength === 0) {
-	      warningMsg.style.display = "block"; // 의견이 작성되지 않은 경우 경고 메시지 표시
-	      return;
-	    }
-	    
-	    // 반려하기
-	    var document_id = $('#document_id').text();
-	    console.log('document_id :' + document_id );
-	    var note = $('#myTextarea2').val();
-	    console.log('note :' + note );
-	    
-	    $.ajax({
-	        type: 'POST',
-	        url: 'payRefuse.ajax',
-	        data: { 
-	        	document_id: document_id ,
-	        	note : note
-	        },
-	        dataType: 'json',
-	        success: function(data) {
-	            console.log(data);
-	            if (data.success != null) {
-	            	alert('반려 완료');
-	            	location.href ='./';
-	            } else {
-	                
-	            }
-	        },
-	        error: function(e) {
-	            console.log(e);
-	        }
-	    });
-	
+		  };
 
-	    
+	  console.log(param);
+
+
+	
+	  var formData = new FormData();
+
+	  // Append other parameters to the FormData object
+	  for (var key in param) {
+	    if (param[key]) {
+	      formData.append(key, param[key]);
+	    }
 	  }
+
+	  formData.append('file', file); // Append the file to the FormData object
+
+	  $.ajax({
+	    type: 'POST',
+	    url: 'writeVacationTemp.ajax',
+	    data: formData,
+	    dataType: 'json',
+	    processData: false, // Prevent jQuery from automatically processing the data
+	    contentType: false, // Prevent jQuery from automatically setting the content type
+	    success: function(data) {
+	      console.log(data);
+  	      if (data != null) {
+	  	        alert('요청이 완료되었습니다.');
+	  	        location.href ='/paymentList.go';
+	      } else {
+	        alert('요청이 완료되었습니다.');
+	      }
+	    },
+	    error: function(e) {
+	      console.log(e);
+	      alert('오류 발생');
+	    }
+	  });
+}
 
 </script>
 

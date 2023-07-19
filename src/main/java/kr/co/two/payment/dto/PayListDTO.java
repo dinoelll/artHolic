@@ -13,6 +13,7 @@ public class PayListDTO {
 	private String order_column;
 	private String reg_date;
 	private String modi_date;
+	private String result;
 	
 	
 	public String getName() {
@@ -50,6 +51,12 @@ public class PayListDTO {
 	}
 	public void setModi_date(String modi_date) {
 		this.modi_date = modi_date;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
 	}
 	
 }	

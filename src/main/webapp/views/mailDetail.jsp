@@ -44,9 +44,6 @@
    .hidden{
        display: none;
     }
-    #favorites{
-       font-size:36px;
-    }
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -60,7 +57,24 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>받은 메일함</h1>
+	          <c:if test="${type.equals('receive')}">
+	            <h1>받은 메일함</h1>
+	          </c:if>
+	          <c:if test="${type.equals('send')}">
+	            <h1>보낸 메일함</h1>
+	          </c:if>
+	          <c:if test="${type.equals('temp')}">
+	            <h1>임시 보관함</h1>
+	          </c:if>
+	          <c:if test="${type.equals('self')}">
+	            <h1>내게 쓴 메일함</h1>
+	          </c:if>
+	          <c:if test="${type.equals('trash')}">
+	            <h1>휴지통</h1>
+	          </c:if>
+	          <c:if test="${type.equals('import')}">
+	            <h1>중요 메일함</h1>
+	          </c:if>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -168,13 +182,13 @@
             <!-- /.mailbox-read-info -->
               <div class="mailbox-controls with-border text-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete">
+                  <button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete" onclick="del()">
                     <i class="far fa-trash-alt"></i>
                   </button>
-                  <button type="button" class="btn btn-default btn-sm" data-container="body" title="Reply">
+                  <button type="button" class="btn btn-default btn-sm" data-container="body" title="Reply" onclick="reply()">
                     <i class="fas fa-reply"></i>
                   </button>
-                  <button type="button" class="btn btn-default btn-sm" data-container="body" title="Forward">
+                  <button type="button" class="btn btn-default btn-sm" data-container="body" title="Forward" onclick="forwarding()">
                     <i class="fas fa-share"></i>
                   </button>
                 </div>

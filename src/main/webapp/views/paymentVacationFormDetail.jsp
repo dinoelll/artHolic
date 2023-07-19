@@ -2,8 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="ko">
 
-
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +14,7 @@
   <!-- AdminLTE css -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   
-    <!-- SweetAlert2 -->
+  <!-- SweetAlert2 -->
   <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
@@ -38,12 +36,9 @@
   <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
   <!-- dropzonejs -->
   <link rel="stylesheet" href="plugins/dropzone/min/dropzone.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+</head>
   
-  
-  <style>
-
+<style>
 
 /* gnb 스타일 */
 
@@ -86,6 +81,7 @@
         #ListGo{
 	color: black;
 	}
+    
     
 	.main-sidebar {
 		background-color: #e9ddc6;
@@ -166,7 +162,7 @@
 #realForm{
 	border: 1px soild gray;
 	width: 1012px;
-	height: 1272px;
+	height: 1163px;
 	margin-left: 60px;
 	margin-right: 50px; 
 	margin-top: 50px;
@@ -199,19 +195,18 @@
     width: 100%;
     color: transparent;
     text-shadow: 0 0 0 black;
-    
   }
-  
-  #topRow {
+
+#topRow {
     margin-bottom: 50px;
     justify-content: space-between;
 }
 
-
-
 </style>
   
+  
 </head>
+
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
@@ -236,6 +231,7 @@
 	    </div>
 	    <!-- /.content-header -->
   
+ 
     
   
 <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
@@ -287,9 +283,8 @@
 					          <div class="col-sm-6">
 						          <div id="formGnb" >
 						          	<br><br>
-					          		<a id="formGnb_button" data-toggle="modal" data-target="#modal-default">결재하기</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default2">반려하기</a>
-						          	<a id="formGnb_button" data-toggle="modal" data-target="#modal-default3">취소</a>
+	
+						          
 						          
 						          		
 					          		</div>	
@@ -297,7 +292,7 @@
 					          <div class="col-sm-6">
 					            <ol class="breadcrumb float-sm-right">
 					              <li class="breadcrumb-item"><a href="#">결재 작성하기</a></li>
-					              <li class="breadcrumb-item active">비품구매</li>
+					              <li class="breadcrumb-item active">휴가신청</li>
 					            </ol>
 					          </div>
 					        </div>
@@ -313,57 +308,56 @@
 							<div class="container">
 												  <div class="form-container" id="realForm" style="border: 1px solid gray; padding: 10px;">
 												    <div>
-												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">비품 구매</h1>
-														      <div class="row" style="margin-bottom: 50px;" id="topRow">
-												          <div class="left-table" style="border :1px soild black;">
-																          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px;  ">
-																            <colgroup>
-																              <col style="width: 30%;">
-																              <col style="width: 70%;">
-																            </colgroup>
-																            <tr>
-																              <th style="width: 1%; white-space: nowrap; vertical-align: middle;">기안일</th>
-																              <td>
-																				<div class="group">
-																				  ${form.limit_date}
-																			  </div>
-																			</td>
-																            </tr>
-																            <tr>
-																              <th style=" width: 1%; white-space: nowrap; ">문서번호</th>
-																              <td id="document_id">${form.document_id}</td>
-																            </tr>
-																          </table>
-																        </div>
-												          
-												        
-												       
-												          			 <div class="right-table" style="border :1px soild black;">
-																        
-															       		<div id="list" class="right" >
-																          <table class="my-table" style="width: auto; table-layout: fixed; ">
-				
-																            <tr>
-																              <th style=" white-space: nowrap; " rowspan="4" >결재</th>
-																              <td style=" white-space: nowrap; ">기안자</td>
-																            </tr>
-																            <tr>
-																              <td></td>
-																            </tr>
-																            <tr>
-																              <td ></td>
-																            </tr>
-																             <tr>
-																              <td ></td>
-																            </tr>
-																            
-																	    </table>
-																	    </div>
-																	
-																	</div>
-												 			 </div><!--  제일 윗 부분-->
-												 			 
-												 			 
+												      <h1 style="text-align: center; margin-top: 25px; margin-bottom: 140px;">휴가 신청</h1>
+													      <div class="row" style="margin-bottom: 50px;" id="topRow">
+													          				<div class="left-table" style="border :1px soild black;">
+																	          <table class="my-table" style="width: auto; table-layout: fixed; margin-left:5px; margin-top: 50px;  ">
+																	            <colgroup>
+																	              <col style="width: 30%;">
+																	              <col style="width: 70%;">
+																	            </colgroup>
+																	            <tr>
+																	              <th style="width: 1%; white-space: nowrap; vertical-align: middle;">기안일</th>
+																	              <td>
+																					<div class="group">
+																					  ${form.limit_date}
+																				  </div>
+																				</td>
+																	            </tr>
+																	            <tr>
+																	              <th style=" width: 1%; white-space: nowrap; ">문서번호</th>
+																	              <td id="document_id">${form.document_id}</td>
+																	            </tr>
+																	          </table>
+																	        </div>
+													          
+													        
+													       
+													          			 <div class="right-table" style="border :1px soild black;">
+																	        
+																       		<div id="list" class="right" >
+																	          <table class="my-table" style="width: auto; table-layout: fixed; ">
+					
+																	            <tr>
+																	              <th style=" white-space: nowrap; " rowspan="4" >결재</th>
+																	              <td style=" white-space: nowrap; ">기안자</td>
+																	            </tr>
+																	            <tr>
+																	              <td></td>
+																	            </tr>
+																	            <tr>
+																	              <td ></td>
+																	            </tr>
+																	             <tr>
+																	              <td ></td>
+																	            </tr>
+																	            
+																		    </table>
+																		    </div>
+																		
+																		</div>
+												 			 </div>
+												  
 												   <div class="row" style="margin-bottom: 50px;">
 													  
 													  <table class="my-table">
@@ -377,59 +371,52 @@
 													    <tr>
 													      <th>문서 분류</th>
 													      <td>${form.code_name}</td>
-													      <th>비품 종류</th>
+													      <th>종류</th>
 													      <td>
 													      		<div class="group">
 											                        
 											                        <select class="form-control">
-																	   <c:if test="${form.equipment_kind eq '자재'}"> 
-																	    <option selected>자재</option>
+																	   <c:if test="${form.vacation_kind eq '휴가'}"> 
+																	    <option selected>휴가</option>
 																	  </c:if>
-																	  <c:if test="${form.equipment_kind eq '장비'}">
-																	    <option selected>장비</option>
+																	  <c:if test="${form.vacation_kind eq '연차'}">
+																	    <option selected>연차</option>
 																	  </c:if>
-																	  <c:if test="${form.equipment_kind eq '기타'}">
-																	    <option selected>기타</option>
+																	  <c:if test="${form.vacation_kind eq '반차'}">
+																	    <option selected>반차</option>
 																	  </c:if> 
 																	</select>
-																</div>
+																</div>	
 														</td>
 													    </tr>
 													    
 													    <tr>
-													      <th>금액</th>
-													      <td>
-													      		 ${form.amount}
+													      <th>기간 및 일시</th>
+													      <td style="justify-content: center; ">
+													      		 <div class="group">
+												                  
+												
+												                  <div class="input-group"  style="justify-content: space-around;">
+												                    ${form.start_date}~${form.end_date}
+												                  </div>
+												                  <!-- /.input group -->
+												                </div>
 														</td>
-														      <th>운송장 여부</th>
-														      <td>
-															    <div class="form-check form-check-inline">
-																	  <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning"
-																	    <c:if test="${form.is_billway eq '0'}">checked</c:if>/>
-																	  <label class="form-check-label" for="radioMorning">있음</label>
-																	</div>
-																	<div class="form-check form-check-inline">
-																	  <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon" 
-																	    <c:if test="${form.is_billway eq '1'}">checked</c:if>/>
-																	  <label class="form-check-label" for="radioAfternoon">없음</label>
+													      <th>반차 여부</th>
+													      <td>
+														    <div class="form-check form-check-inline">
+																  <input class="form-check-input" type="radio" name="radioPeriod" id="radioMorning"
+																    <c:if test="${form.vacation_sort eq '0'}">checked</c:if>/>
+																  <label class="form-check-label" for="radioMorning">오전</label>
 																</div>
-	                          								</td>
+																<div class="form-check form-check-inline">
+																  <input class="form-check-input" type="radio" name="radioPeriod" id="radioAfternoon" 
+																    <c:if test="${form.vacation_sort eq '1'}">checked</c:if>/>
+																  <label class="form-check-label" for="radioAfternoon">오후</label>
+															</div>
+                          								</td>
 													    </tr>
 													  </table>
-												  </div>
-												  <div class="row" style="margin-bottom: 50px;">
-													  
-													  
-													  <table class="my-table">
-													    <tr>
-													  	  
-														      <td >
-														     	 <a>- 운송장 있을 시 ' 있음으로 체크하고 해당 내용 파일 첨부 요망</a><br>
-														     	 <a>- 파일 첨부가 힘들 경우 해당 내용 내용란에 추가 바람</a>
-														      </td>
-													    </tr>
-													  </table>
-													  
 												  </div>
 												   <div class="row" style="margin-bottom: 50px;">
 													  
@@ -468,7 +455,7 @@
 												                        <label class="custom-file-label" for="exampleInputFile">${form.ori_file_name }</label>
 												                      </div>
 												                      <div class="input-group-append">
-												                        <span type="button" class="input-group-text" onclick="downloadFile('${form.ori_file_name }','${form.new_file_name }')">download</span>
+												                        <span class="input-group-text">download</span>
 												                      </div>
 												                    </div>
 												                  </div>
@@ -482,7 +469,7 @@
 												  <div class="row" style="margin-bottom: 50px;">
 													  
 													  
-													  <table class="my-table" id="referrer">
+													   <table class="my-table" id="referrer">
 													    <tr>
 													  	  <th style="background-color:white">참조자</th>
 														      <td>
@@ -504,7 +491,7 @@
 		  	
 		  	
 	  </div><!--  제일큰row 부분-->	
-
+ 
   
   <!-- /.content-wrapper -->
 	
@@ -569,7 +556,7 @@
       
       
       
-       <!-- 결재 요청 모달 -->
+      <!-- 결재 요청 모달 -->
 				<div class="modal fade" id="modal-default">
 				  <div class="modal-dialog">
 				    <div class="modal-content">
@@ -663,8 +650,8 @@
      
       
 	
-	 <jsp:include page="footer.jsp" />
-  
+	
+   <jsp:include page="footer.jsp" />
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -673,11 +660,7 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
-</div>
-
-
-
+</div><!--  제일큰 거-->
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -686,22 +669,10 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-
 <!-- bs-custom-file-input -->
 <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-
-
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 -->
 <script src="plugins/select2/js/select2.full.min.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
 <script src="plugins/moment/moment.min.js"></script>
 <script src="plugins/inputmask/jquery.inputmask.min.js"></script>
@@ -715,24 +686,11 @@
 <script src="plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <!-- dropzonejs -->
 <script src="plugins/dropzone/min/dropzone.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 <!-- Page specific script -->
-
+<!-- Your other custom scripts -->
 
 
 <script>
-
-
-
-//파일 다운로드
-function downloadFile(ori_fileName, new_fileName) {
-				  console.log('파일 다운로드');
-				  console.log(ori_fileName, new_fileName);
-				  window.location.href = '/download2.do?ori_fileName=' + ori_fileName + '&new_fileName=' + new_fileName; // 파일 다운로드를 위한 요청
-				}
 
 
 $(document).ready(function() {
@@ -964,9 +922,9 @@ function updateCharCount() {
         dataType: 'json',
         success: function(data) {
             console.log(data);
-    	      if (data != null) {
-    	  	        alert('결재요청이 완료되었습니다.');
-    	  	        location.href ='/paymentListDone.go';
+            if (data.success != null) {
+            	alert('전송 성공');
+            	location.href ='./';
             } else {
                 
             }
@@ -1023,9 +981,9 @@ function updateCharCount() {
 	        dataType: 'json',
 	        success: function(data) {
 	            console.log(data);
-	    	      if (data != null) {
-	    	  	        alert('반려요청이 완료되었습니다.');
-	    	  	        location.href ='/paymentListDone.go';
+	            if (data.success != null) {
+	            	alert('전송 성공');
+	            	location.href ='./';
 	            } else {
 	                
 	            }

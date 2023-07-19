@@ -213,11 +213,11 @@
 	height: 40px;
 }
 
-.subject {
-	color: #91bdce;
+/*  .subject {
+	color: black;
 	text-decoration: none;
 	background-color: transparent;
-}
+}  */
 
 modal-content {
 	width: 500px;
@@ -246,6 +246,12 @@ th, td {
 	padding: 8px;
 	border: 1px solid #ddd;
 	text-align: left;
+}
+#delbutton{
+	     background-color: #f82a2aa3;
+         border: 1px solid #f82a2aa3;
+         font-weight: bold;
+         color: white;
 }
 </style>
 </head>
@@ -332,7 +338,7 @@ th, td {
 								<!-- <button type="button" class="btn btn-danger" onclick="del()"
 									id="del">삭제</button> -->
 								<button type="button" class="btn btn-delete" data-toggle="modal"
-									data-target="#modal-delete" id="upload">삭제</button>
+									data-target="#modal-delete" id="delbutton">삭제</button>
 								<div class="container">
 									<nav aria-label="Page navigation" style="text-align: center">
 
@@ -369,8 +375,20 @@ th, td {
 										</tr>
 										<tr>
 											<th>수용인원</th>
-											<td><input type="text" name="Capacity" value=""
-												placeholder="수용인원을 입력하세요" class="modalinput" /></td>
+											<td>
+												<!-- <input type="text" name="Capacity" value=""
+												placeholder="수용인원을 입력하세요" class="modalinput" /> --> 
+												<select id="opt" name="Capacity"   class="modalinput">
+													<!-- <option value="default">조건</option> -->
+													<option value="4">4</option>
+													<option value="6">6</option>
+													<option value="8">8</option>
+													<option value="10">10</option>
+													<option value="12">12</option>
+													<option value="14">14</option>
+													<option value="16">16</option>											
+											</select>
+											</td>
 										</tr>
 										<tr>
 											<th>회의실 위치</th>
@@ -407,7 +425,7 @@ th, td {
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h4 class="modal-title">신규 회의실 등록</h4>
+								<h4 class="modal-title">회의실 삭제</h4>
 								<button type="button" class="close" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
@@ -622,7 +640,7 @@ th, td {
 		console.log(checkArr);
 		if (checkArr.length === 0) {
 			alert('체크된 항목이 없습니다.');
-			 $('#modal-delete').modal('hide');
+			$('#modal-delete').modal('hide');
 		} else {
 			$.ajax({
 				type : 'get',
@@ -636,7 +654,7 @@ th, td {
 					if (data.success) {
 						alert(data.msg);
 						listCall(showPage);
-						location.href='/MeetingRoomList.go';
+						location.href = '/MeetingRoomList.go';
 					}
 				},
 				error : function(e) {

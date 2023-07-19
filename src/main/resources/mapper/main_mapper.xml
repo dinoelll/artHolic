@@ -13,10 +13,11 @@
 	</select>
 	
 	<select id="informList" resultType="main">
-			SELECT member_id, subject,DATE_FORMAT(writeTime, '%Y-%m-%d') as writeTime
-			FROM board
-			WHERE board_code = 'inform'
-			ORDER BY writeTime DESC LIMIT 4	
+			SELECT b.member_id, b.subject, DATE_FORMAT(b.writeTime, '%Y-%m-%d') as writeTime, m.name
+			FROM board b
+			JOIN member m ON b.member_id = m.member_id
+			WHERE b.board_code = 'inform'
+			ORDER BY writeTime DESC LIMIT 4
 	</select>
 	
 	<select id="myMaillist">
@@ -28,6 +29,7 @@
 			  mem2.position_code,
 			  cd_dept.code_name AS dept_name,
 			  cd_pos.code_name AS position_name,
+			  mem.name,
 			  DATE_FORMAT(m.writeTime, '%Y-%m-%d')
 			FROM
 			  mail_receiver mr
@@ -35,9 +37,10 @@
 			  JOIN member mem2 ON m.member_id = mem2.member_id
 			  JOIN code cd_dept ON mem2.dept_code = cd_dept.code_id
 			  JOIN code cd_pos ON mem2.position_code = cd_pos.code_id
+			  JOIN member mem ON mem.member_id = m.member_id
 			WHERE
 			  mr.member_id = #{member_id}
-			ORDER BY writeTime DESC LIMIT 4
+			ORDER BY writeTime DESC LIMIT 4;
 </select>
 	
 	<select id="myPaymentlist">
@@ -67,6 +70,7 @@
 		FROM project pj
 		JOIN project_info pi2 ON pj.project_id = pi2.project_id
 		WHERE pi2.member_id = #{member_id}
+		ORDER BY pi2.project_id DESC LIMIT 4
    </select>
    
    
