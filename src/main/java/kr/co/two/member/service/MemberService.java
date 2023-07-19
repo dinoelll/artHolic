@@ -512,4 +512,10 @@ public class MemberService {
 	}
 
 
+
+	public boolean checkDuplicate(String memberId) {
+	    String existingMemberId = dao.checkDuplicate(memberId);
+	    return existingMemberId != null;
+	}
+
 }

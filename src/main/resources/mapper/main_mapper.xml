@@ -73,6 +73,9 @@
 		ORDER BY pi2.project_id DESC LIMIT 4
    </select>
    
+   <select id="getPassword" resultType="java.lang.String">
+   		SELECT pw FROM member WHERE member_id = #{member_id}
+   </select>
    
    
 </mapper>

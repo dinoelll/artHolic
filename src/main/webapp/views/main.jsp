@@ -477,16 +477,17 @@
 
 <script>
 
+var msg = "${msg}"; 
+if (msg !== "") {
+  alert(msg);
+}
+
 //페이지 로드 시 페이드 효과 적용
 window.addEventListener("load", function() {
   var fadeContainer = document.querySelector(".fade-container");
   fadeContainer.classList.add("fade-in");
 });
 
-var msg = "${msg}"; 
-if (msg !== "") {
-  alert(msg);
-}
 
 var showPage = 1;
 

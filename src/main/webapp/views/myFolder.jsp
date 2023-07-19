@@ -560,7 +560,7 @@ filelistcall();
 	    var folderName = $('#folderCreate').val().trim();
 	        
 	    // 폴더 이름이 공백인 경우 경고창 띄우고 함수 종료
-	    if (folderName === '') {
+	    if (folderName.trim() === '') {
 	       	alert('폴더 이름을 입력하세요.');
 	        return;
 	    }
@@ -596,7 +596,7 @@ filelistcall();
 		console.log(folderName,folderId);
 		
 		  // 폴더 이름이 공백인 경우 경고창 띄우고 함수 종료
-	    if (folderName === '') {
+	    if (folderName.trim() === '') {
 	       	alert('폴더 이름을 입력하세요.');
 	        return;
 	    }
@@ -646,7 +646,7 @@ filelistcall();
 	      },
 	      error: function(error) {
 	        // 폴더 삭제 실패 시
-	        alert('폴더 삭제에 실패했습니다.');
+	        alert('폴더에 있는 파일을 삭제 해 주세요.');
 	        console.log(error);
 	      }
 	    });
@@ -913,15 +913,16 @@ filelistcall();
 				  $('#file-list').html(content);
 				}
             
-	            $(document).on('click', '.delete-file', function() {
-	                 var fileName = $(this).closest('.file-item').data('new-file-name');
-	                  $('#modal-fileDelete').find('#fileName').text(fileName); // 모달 내에 파일 이름 출력
-	                  $('#modal-fileDelete').modal('show');
-	                });
-	            
-	            $('.btn-fileDelete').on('click', function() {
-	                  var fileName = $('#modal-fileDelete').find('#fileName').text();
-	            });
+            $(document).on('click', '.delete-file', function() {
+                 var fileName = $(this).closest('.file-item').data('new-file-name');
+                  $('#modal-fileDelete').find('#fileName').text(fileName); // 모달 내에 파일 이름 출력
+                  $('#modal-fileDelete').modal('show');
+                });
+            
+            $('.btn-fileDelete').on('click', function() {
+                  var fileName = $('#modal-fileDelete').find('#fileName').text();
+                  deleteFile(fileName);
+            });
 			
 			function deleteFile(fileName) {
 		
@@ -933,10 +934,12 @@ filelistcall();
 				    success: function(response) {
 				      // 삭제 성공 시 처리할 코드
 				      // drawFileList(fileList); // 파일 리스트 다시 그리기
+				      alert('파일 삭제에 성공 했습니다.');
 				      location.reload();
 				    },
 				    error: function(error) {
 				      // 삭제 실패 시 처리할 코드
+				      alert('파일 삭제에 실패 했습니다.');
 				      console.log(error);
 				    }
 				  });

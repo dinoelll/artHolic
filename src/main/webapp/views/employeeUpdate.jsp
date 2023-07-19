@@ -4,9 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <title>ArtHolic</title>
-<!-- 
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
- -->
+
 <!-- Ionicons -->
 <link rel="stylesheet"
 	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -143,7 +143,7 @@
 	<jsp:include page="header.jsp"/>
 	
 	<!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" style= "height: 1200px;">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -246,6 +246,12 @@
 						            </select>
 						        </div>
 						</li>
+						<li style="text-align: center;">
+                              <select name="blind" style="display: inline-block;">
+                                <option value="false" ${member.userBlindWhether == false ? 'selected' : ''}>블라인드 미처리 상태</option>
+                                <option value="true" ${member.userBlindWhether == true ? 'selected' : ''}>블라인드 처리 상태</option>
+                              </select>
+                        </li>
 						
 					</ul>	
 				<div style="display: flex; justify-content: center; margin-left: 120px">

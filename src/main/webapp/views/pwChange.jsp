@@ -134,8 +134,9 @@
 		</p>
 		
 		<font id="chkNotice" size="2"></font>
-		
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<span id="passwordStrength"></span>
+		<br>
+		<br>
 		<p> - 8자 ~ 16자의 영문 대/소문자, 숫자, 특수기호를 사용하여 비밀번호를 조합할 수 있습니다.</p>
 		<p> 
 		- 생년월일,전화번호,사번 등 개인정보와 관련된 숫자, 연속된 숫자, 연속된 키보드 배열과 같이 쉬운 비밀번호는 <br>
@@ -174,6 +175,46 @@
 </body>
 
 <script>
+
+function evaluatePasswordStrength(password) {
+	
+	  if (password.length >= 8) {
+	    return "높음";
+	  } else if (password.length >= 6) {
+	    return "중간";
+	  } else {
+	    return "낮음";
+	  }
+	}
+	
+$('#pw').keyup(function() {
+	  var password = $(this).val();
+	  var strength = evaluatePasswordStrength(password);
+	  
+	  var strengthText;
+	  if (strength === "높음") {
+	    strengthText = "높음";
+	    $('#passwordStrength').css({
+	      'color': 'green',
+	      'font-size': '14px'
+	    });
+	  } else if (strength === "중간") {
+	    strengthText = "중간";
+	    $('#passwordStrength').css({
+	      'color': 'orange',
+	      'font-size': '14px'
+	    });
+	  } else {
+	    strengthText = "낮음";
+	    $('#passwordStrength').css({
+	      'color': 'red',
+	      'font-size': '14px'
+	    });
+	  }
+	  
+	  $('#passwordStrength').text(strengthText);
+	});
+	
 
 $(document).ready(function() {
 	  $('#pw').keyup(function() {
