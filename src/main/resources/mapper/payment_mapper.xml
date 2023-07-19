@@ -125,8 +125,12 @@
         CASE WHEN #{order_column} = '1' THEN '대기중' ELSE #{result} END,
         #{note});
    </insert> 
-
-
+	
+	<insert id="paymentShipAlarm" parameterType="hashmap">
+		INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,iden_id)
+		VALUES(CONCAT('새로운 전자결재 알림','#{memo}'),'ALARM_PAYMENT',#{member_id},#{document_id})
+	</insert>
+	
 	<select id="findMemberId" resultType="string">
 		SELECT
 		member_id 
@@ -143,6 +147,10 @@
 		)
 	</insert> 
 	
+	<insert id="paymentReferrerAlarm" parameterType="hashmap">
+		INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,iden_id)
+		VALUES('새로운 전자결재(참조) 알림','ALARM_PAYMENT',#{member_id},#{document_id})
+	</insert>
 	
 		<select id="listCall" resultType="payment" parameterType="string">
 			    SELECT 
@@ -495,6 +503,37 @@
 				                ELSE result
 				             END
 				WHERE document_id = #{document_id};
+				
+				<selectKey keyColumn="member_id" keyProperty="alarm_id" resultType="String" order="AFTER">
+					SELECT member_id FROM payment_ship
+					WHERE document_id = #{document_id}
+					AND result='대기중'
+				</selectKey>
+		</update>
+		
+		<update id="payRequest2" parameterType="AlarmDTO">
+			  UPDATE payment_ship
+				SET note = CASE
+				              WHEN  result = '대기중' THEN #{note}
+				              ELSE note
+				          END,
+				    result = CASE
+				                WHEN  result = '대기중' THEN '결재완료'
+				                WHEN order_column = (
+				                    SELECT min(order_column)
+				                    FROM payment_ship
+				                    WHERE document_id = #{document_id}
+				                   		 AND result = '진행 중'
+				                ) THEN '대기중'
+				                ELSE result
+				             END
+				WHERE document_id = #{document_id};
+				
+				<selectKey keyColumn="member_id" keyProperty="alarm_id" resultType="String" order="AFTER">
+					SELECT member_id FROM payment_ship
+					WHERE document_id = #{document_id}
+					AND result='대기중'
+				</selectKey>
 		</update>
 		
 		<update id="payEnd" parameterType="String">

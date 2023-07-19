@@ -7,6 +7,8 @@ public class AlarmDTO {
 	private String alarm_receiver;
 	private boolean is_read;
 	private int iden_id;
+	private String project_name;
+	
 	
 	public int getAlarm_id() {
 		return alarm_id;
@@ -43,6 +45,12 @@ public class AlarmDTO {
 	}
 	public void setIden_id(int iden_id) {
 		this.iden_id = iden_id;
+	}
+	public String getProject_name() {
+		return project_name;
+	}
+	public void setProject_name(String project_name) {
+		this.project_name = project_name;
 	}
 	
 	

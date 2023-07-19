@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.two.payment.dto.MemberDTO;
 import kr.co.two.payment.dto.PayListDTO;
+import kr.co.two.payment.dto.PaymentAlarmDTO;
 import kr.co.two.payment.dto.PaymentDTO;
 import kr.co.two.project.dto.ProjectDTO;
 
@@ -82,7 +83,8 @@ public interface PaymentDAO {
 
 	ArrayList<PayListDTO> payReferrerCall(String document_id);
 	
-	int payRequest(String document_id, String note, String member_id);
+	// 변경
+	int payRequest(String document_id, String note, String member_id, String alarm_id);
 
 	int payEnd(String document_id, String note, String member_id);
 
@@ -99,6 +101,12 @@ public interface PaymentDAO {
 	ArrayList<PaymentDTO> note(String id, String document_id);
 
 	ArrayList<PaymentDTO> mainTimeline(String id);
+
+	void paymentShipAlarm(HashMap<String, String> params);
+
+	void paymentReferrerAlarm(HashMap<String, String> params);
+
+	int payRequest2(PaymentAlarmDTO alarmDto);
 
 
 

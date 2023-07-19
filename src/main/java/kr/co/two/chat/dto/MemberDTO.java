@@ -12,9 +12,10 @@ public class MemberDTO {
 	private String phone;
 	private String profile_photo;
 	private int Annual;
-	private boolean admin;
+	private boolean admin; 
 	private String dept_code;
 	private String position_code;
+	private String code_name;
 	
 	public String getMember_id() {
 		return member_id;
@@ -87,6 +88,12 @@ public class MemberDTO {
 	}
 	public void setPosition_code(String position_code) {
 		this.position_code = position_code;
+	}
+	public String getCode_name() {
+		return code_name;
+	}
+	public void setCode_name(String code_name) {
+		this.code_name = code_name;
 	}
 	
 	

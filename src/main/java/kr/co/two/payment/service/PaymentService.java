@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.co.two.payment.dao.PaymentDAO;
 import kr.co.two.payment.dto.MemberDTO;
 import kr.co.two.payment.dto.PayListDTO;
+import kr.co.two.payment.dto.PaymentAlarmDTO;
 import kr.co.two.payment.dto.PaymentDTO;
 import kr.co.two.project.dto.ProjectDTO;
 
@@ -201,7 +202,12 @@ public class PaymentService {
 	            params.put("order_column", order_column);
 	            String member_id =  params.get(paymentKey);
 	            params.put("member_id", member_id);
+	            if(i == 1) {
+	            	params.put("memo", "(결재요청)");
+	            	dao.paymentShipAlarm(params);
+	            }
 	            int paymentShipRow = dao.paymentShip(params);
+	            //dao.paymentShipAlarm(params);
 	            logger.info("payment변경완료Ship" + paymentShipRow);
 	        }
 	    }
@@ -215,6 +221,7 @@ public class PaymentService {
 	            String member_id =  params.get(referrerKey);
 	            params.put("member_id", member_id);
 	            int referrerRow = dao.payment_reference(params);
+	            dao.paymentReferrerAlarm(params);
 	            logger.info("참조자 변경완료 !! " + referrerRow);
 	        }
 	    	
@@ -601,16 +608,38 @@ public HashMap<String, Object> payListCall(String document_id) {
 	return map;
 }
 
-public int payRequest(String document_id, String note, String member_id) {
+public int payRequest(String document_id, String note, String member_id, HttpSession session) {
 	
 	//결재하기
-	int payRequestInt = dao.payRequest(document_id, note, member_id);
+	// 변경
+	PaymentAlarmDTO alarmDto = new PaymentAlarmDTO();
+	
+	alarmDto.setDocument_id(document_id);
+	alarmDto.setNote(note);
+	alarmDto.setMember_id(member_id);
+	
+	int payRequestInt = dao.payRequest2(alarmDto);
 	logger.info("payRequestInt: "+payRequestInt);
+	logger.info("alarm_id : " + alarmDto.getAlarm_id());
+	
+	HashMap<String, String> map = new HashMap<String, String>();
+	map.put("member_id", alarmDto.getAlarm_id());
+	map.put("document_id", alarmDto.getDocument_id());
+	map.put("note", alarmDto.getNote());
+	map.put("memo", "(결재요청)");
+	
+	dao.paymentShipAlarm(map);
 	
 	// 결재 전부다 완료되면 완료로 바꾸기
 	int payEndInt = dao.payEnd(document_id, note, member_id);
 	
-	
+	if(payEndInt == 1) {
+		HashMap<String, String> payEndMap = new HashMap<String, String>();
+		payEndMap.put("member_id", String.valueOf(session.getAttribute("loginId")));
+		payEndMap.put("document_id", document_id);
+		payEndMap.put("memo", "(결재완료)");
+		dao.paymentShip(payEndMap);
+	}
 	
 	
 	
