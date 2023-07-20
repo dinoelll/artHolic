@@ -123,7 +123,7 @@
          margin-left: 3px;
       }
       .input-group.date {
-      	margin-left : 93px;
+      	margin-left : 0px;
       }
       
       		#footer{
@@ -269,6 +269,7 @@
                               </tr>
                                -->
                                <tr>
+                               <th>시작 일</th>
                                	 <td>
 	                               	 <div class="input-group date" id="reservation" data-target-input="nearest">
 	                       				 <input name="start_date" id="start_date" type="text" class="form-control datetimepicker-input" data-target="#reservation"/>
@@ -280,6 +281,7 @@
                                </tr>
                                
                                <tr>
+                               <th>종료 일</th>
                                  <td>
 	                               	<div class="input-group date" id="reservation2" data-target-input="nearest">
 	                       				 <input name="end_date" id="end_date" type="text" class="form-control datetimepicker-input" data-target="#reservation2"/>
@@ -350,6 +352,7 @@
                                  <th colspan="2" style="text-align: center;"><br>프로젝트 일정</th>
                               </tr>
                               <tr>
+                              <th>시작 일</th>
                                	 <td>
 	                               	 <div class="input-group date" id="reservation3" data-target-input="nearest">
 	                       				 <input name="start_date2" id="start_date2" type="text" class="form-control datetimepicker-input" data-target="#reservation3"/>
@@ -361,6 +364,7 @@
                                </tr>
                                
                                <tr>
+                               <th>종료 일</th>
                                  <td>
 	                               	<div class="input-group date" id="reservation4" data-target-input="nearest">
 	                       				 <input name="end_date2" id="end_date2" type="text" class="form-control datetimepicker-input" data-target="#reservation4"/>
