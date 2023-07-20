@@ -349,16 +349,27 @@ div#calendar-ym {
 }
 
 table {
-	border-collapse: separate;
-	border-spacing: 10px;
+	border-collapse: collapse;
+	width: 100%;
 }
 
-.m-0 {
-	color: #91bdce;
+tr {
+	margin-bottom: 10px;
+}
+
+th, td {
+	padding: 8px;
+	border: 1px solid #91bdce;
+	text-align: left;
 }
 
 .reserved {
 	background-color: gray;
+}
+
+#meetingName, #meetionMember {
+	border: none; /* 테두리 없애기 */
+	outline: none; /* 포커스 효과 없애기 */
 }
 </style>
 </head>
@@ -391,7 +402,7 @@ table {
 			<!-- /.content-header -->
 
 
-
+<hr>
 
 			<div id="real-body">
 				<div id="calendar-ym"></div>
@@ -466,6 +477,17 @@ table {
 
 
 <script>
+	function reservation() {
+		console.log('저장');
+		if ($('#meetingName').val().trim() == "") {
+			alert("회의명을 등록해주세요");
+		} else if ($('#meetionMember').val().trim() == "") {
+			alert("참여팀을 등록해주세요");
+		} else {
+			$('#modal-form').submit();
+		}
+	}
+
 	/* --------------------------날짜, 회의실, 시간대 버튼 클릭 로직------------------------------------ */
 	function showCalendar() {
 		var calendarContainer = document.getElementById("calendar-container");
@@ -652,7 +674,7 @@ table {
 										.getElementsByClassName("time");
 								for (var j = 0; j < buttons.length; j++) {
 									buttons[j].removeAttribute("id");
-									buttons[j].style.backgroundColor = ""; 
+									buttons[j].style.backgroundColor = "";
 								}
 								this.id = "selected-time";
 								this.style.backgroundColor = "#c2c7d0";
@@ -694,7 +716,7 @@ table {
 	/* --------------------------예약 데이터 전송------------------------------------ */
 	function reserveMeeting(roomId, selectedDate, selectedRoom) {
 		console.log("색상이 바뀌어야한다!!!!!!!!!");
-		
+
 		// 예약 버튼 클릭 시 예약 처리
 		var selectedDate = selectedDate
 		var selectedRoom = selectedRoom
@@ -723,9 +745,9 @@ table {
 			$('#reservationInfo').html(
 					"회의날짜: " + selectedDate + "<br>회의실명: " + selectedRoom
 							+ "<br>회의시간: " + selectedTime);
-			
+
 			var selectedButton = document.getElementById("selected-time");
-			  selectedButton.style.backgroundColor = "#c2c7d0";
+			selectedButton.style.backgroundColor = "#c2c7d0";
 
 		}
 
@@ -742,12 +764,20 @@ table {
 							roomId);
 
 					// 서버로 데이터 전송 (업데이트 또는 삭제)
-					sendMeetingData(meetingName, meetionMember, selectedDate,
-							selectedRoom, selectedTime, startTime, endTime,
-							roomId);
+					if ($('#meetingName').val().trim() == "") {
+						alert("회의명을 등록해주세요");
+					} else if ($('#meetionMember').val().trim() == "") {
+						alert("참여팀을 등록해주세요");
+					} else {
+						sendMeetingData(meetingName, meetionMember,
+								selectedDate, selectedRoom, selectedTime,
+								startTime, endTime, roomId);
+						
+						closeModal();
+					}
 
 					// 모달 닫기
-					closeModal();
+					
 				});
 
 		function sendMeetingData(meetingName, meetionMember, selectedDate,
@@ -770,17 +800,14 @@ table {
 					// 요청 성공 시 처리할 코드 작성
 					console.log('예약 등록 성공');
 					console.log(response.success);
-					alert('예약이 완료되었습니다\n' + '<예약정보>\n' + '회의명 - ' + meetingName
+					/* alert('예약이 완료되었습니다\n' + '<예약정보>\n' + '회의명 - ' + meetingName
 							+ '\n' + '참가자 - ' + meetionMember + '\n' + '회의실 - '
 							+ selectedRoom + '\n' + '날짜 - ' + selectedDate
-							+ '\n' + '시간 - ' + startTime + '-' + endTime);
+							+ '\n' + '시간 - ' + startTime + '-' + endTime); */
 
-					 location.href = '/metingRoom.go'; 
-				/* 	var newtimeButton = document.getElementById("selected-time");
-					newtimeButton.disabled = true;
-					newtimeButton.classList.add("reserved");
-					showTimeSlots(selectedRoom, selectedDate, roomId,
-							timeButtonsContainer); */
+					location.href = '/reservationComplete.go?meetingName='+meetingName+'&meetionMember='+meetionMember+'&selectedRoom='+selectedRoom+'&selectedDate='+selectedDate+
+							'&startTime='+startTime+'&endTime='+endTime;
+					
 
 				},
 				error : function() {

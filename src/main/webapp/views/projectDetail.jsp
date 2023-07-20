@@ -151,13 +151,15 @@ table, td, th {
    cursor: pointer;
 }
 
-.subject {
-   color: #91bdce;
+ .subject {
+	color: black;
+	text-decoration: none;
+	background-color: transparent;
+}  
+b {
+    color: black;
 }
 
-b {
-   color: #91bdce;
-}
 
 #project_name{
    color:#91bdce;
