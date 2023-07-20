@@ -110,14 +110,18 @@
          margin-bottom: 15px;
          margin-left: 3px;
       }
-      
-            #footer {
+      /*
+   #footer {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    /* 기타 스타일 속성 추가 */
-}
+     기타 스타일 속성 추가 
+}*/
+
+	#footer{
+		margin-left: 0px;
+	}
       
    </style>
 </head>
@@ -229,9 +233,10 @@
    
     </section>
     <!-- /.content -->
-    <div id="footer">
-    <jsp:include page="footer.jsp"/>
+    <div>
+    
     </div>
+    <jsp:include page="footer.jsp"/>
    </div>
    
 </div>
@@ -240,6 +245,8 @@
    
    
    
+   <!-- jQuery 
+	<script src="plugins/jquery/jquery.min.js"></script>-->
    
    <!-- jQuery UI -->
    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>

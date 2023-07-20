@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
-<script src="/js/jquery.twbsPagination.js" type="text/javascript"></script>
+<script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
 
 
 
@@ -134,13 +134,17 @@
          margin-bottom: 15px;
          margin-left: 3px;
       }
-      
+      /*
       #footer {
 		 position: fixed;
 		 bottom: 0;
 		 left: 0;
 		 width: 100%;
-	/* 기타 스타일 속성 추가 */
+	 기타 스타일 속성 추가 
+	}*/
+	
+		#footer{
+		margin-left: 0px;
 	}
 	
 	.fixed-title {
@@ -243,41 +247,13 @@
       </table>
   
    </div>
-   
-            <!-- 모달창 -->
-         <div class="modal fade" id="modal-admin">
-           <div class="modal-dialog">
-             <div class="modal-content">
-               <div class="modal-header">
-                 <h4 class="modal-title">관리자 권한</h4>
-                 <!-- 폴더 id -->
-                 <span class="member_id" hidden=""></span>
-                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                   <span aria-hidden="true">&times;</span>
-                 </button>
-               </div>
-               <div class="modal-body">
-                 <p style="text-align: center;">관리자 권한을 <strong><span class="admin-action"></span></strong>하시겠습니까?</p>
-               </div>
-               <div class="modal-footer justify-content-between">
-                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                 <button type="button" class="btn btn-primary btn-admin">확인</button>
-               </div>
-             </div>
-             <!-- /.modal-content -->
-           </div>
-           <!-- /.modal-dialog -->
-         </div>
-         <!-- /.modal -->
-         
-   
     </section>
     <!-- /.content -->
-    <div id="footer">
-    <jsp:include page="footer.jsp"/>
+    <div>
+    
     </div>
+    <jsp:include page="footer.jsp"/>
    </div>
-   
 </div>
 <input type="hidden" value="${admin }" id="adminchk">
    

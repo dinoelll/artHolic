@@ -38,7 +38,7 @@
 
 
 
-<script src="/js/jquery.twbsPagination.js" type="text/javascript"></script>
+<script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
 
 
 
@@ -126,13 +126,17 @@
       	margin-left : 93px;
       }
       
+      		#footer{
+		margin-left: 0px;
+	}
+      /*
             #footer {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    /* 기타 스타일 속성 추가 */
-}
+     기타 스타일 속성 추가 
+}*/
       
    </style>
 </head>
@@ -433,16 +437,17 @@
    
     </section>
     <!-- /.content -->
-    <div id="footer">
-    <jsp:include page="footer.jsp"/>
+    <div>
+    
     </div>
+    <jsp:include page="footer.jsp"/>
    </div>
    
 </div>
 
    
    
-  <!-- jQuery -->
+  <!-- jQuery 
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -623,13 +628,14 @@ function listDraw(projectList) {
          content += '<th>'+dto.field_manager+'</th>';
          content += '<td>'+ dto.manager_phone +'</td>';
          content += '<td>'+ dto.start_date + '~' + dto.end_date +'</td>';
-         content += '<td><button class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-lg2">인원추가</button></td>';
          console.log(dto.member_id);
          console.log('${sessionScope.loginId}');
          if(dto.member_id == '${sessionScope.loginId}') {
+         content += '<td><button class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-lg2">인원추가</button></td>';
         	 content += '<td><input type="button" id="projectUpdate" class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-update" value="수정"></td>';
         	 content += '<td><button onclick="deleteConfirm('+'\'projectDel.do?project_id='+dto.project_id+'\')" class="btn btn-danger btn-sm">삭제</button></td>';
          } else {
+        	 content += '<td>인원선택불가</td>'
         	 content += '<td><span>수정불가</span></td>';
         	 content += '<td><span>삭제불가</span></td>';
          }
