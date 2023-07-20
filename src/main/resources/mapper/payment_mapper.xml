@@ -130,7 +130,7 @@
    
    <insert id="paymentShipAlarm" parameterType="hashmap">
       INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,iden_id)
-      VALUES(CONCAT('새로운 전자결재 알림','#{memo}'),'ALARM_PAYMENT',#{member_id},#{document_id})
+      VALUES(CONCAT('새로운 전자결재 알림','#{memo}','ALARM_PAYMENT',#{member_id},#{document_id})
    </insert>
    
 
@@ -735,7 +735,10 @@
           AND payment_ship.document_id = #{document_id}
           AND payment_ship.order_column = '1';
       </update>
-
+	<insert id="paymentShipAlarm" parameterType="hashmap">
+		INSERT INTO alarm (alarmcontent,alarm_code,alarm_receiver,is_read,iden_id) 
+		VALUES ('새로운 결재 알림','ALARM_PAYMENT',#{alarm_receiver},'0',#{iden_id})
+	</insert>
    
 
 </mapper>
