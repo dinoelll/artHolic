@@ -402,7 +402,7 @@ th, td {
 			<!-- /.content-header -->
 
 
-
+<hr>
 
 			<div id="real-body">
 				<div id="calendar-ym"></div>
