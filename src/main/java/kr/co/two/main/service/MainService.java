@@ -91,7 +91,10 @@ public class MainService {
 		
 		return map;
 	}
-	
 
+	public String getPassword(String member_id) {
+	
+		return dao.getPassword(member_id);
+	}
 	
 }

@@ -321,5 +321,16 @@ public class MemberController {
 		
 		return service.companydelete(cooper_id3);
 	}
-
+	
+    @PostMapping(value="/checkDuplicate.ajax")
+    @ResponseBody
+    public Map<String, Boolean> checkDuplicate(@RequestParam("member_id") String memberId) {
+        
+        logger.info("checkDuplicate Controller");
+        
+        boolean isDuplicate = service.checkDuplicate(memberId);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("duplicate", isDuplicate);
+        return response;
+    }
 }
