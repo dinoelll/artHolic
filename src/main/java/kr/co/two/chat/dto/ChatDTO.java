@@ -17,6 +17,7 @@ public class ChatDTO {
 	private boolean blind;
 	private boolean is_notice;
 	private String profile_photo;
+	private String code_name;
 	
 	public int getChat_room_id() {
 		return chat_room_id;
@@ -84,6 +85,12 @@ public class ChatDTO {
 	}
 	public void setSend_time(Timestamp send_time) {
 		this.send_time = send_time;
+	}
+	public String getCode_name() {
+		return code_name;
+	}
+	public void setCode_name(String code_name) {
+		this.code_name = code_name;
 	}
 	
 }

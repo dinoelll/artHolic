@@ -1008,7 +1008,7 @@ function writeVacationTemp() {
     success: function(data) {
 	      if (data != null) {
 	        alert('요청이 완료되었습니다.');
-	        location.href ='/paymentList.go';
+	        location.href ='/paymentListTemp.go';
       } else {
         alert('요청이 완료되었습니다.');
       }
