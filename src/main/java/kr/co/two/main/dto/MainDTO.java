@@ -16,7 +16,7 @@ public class MainDTO {
 			private String tel;
 			private Date birthday;
 			private String phone;
-			private String profile_photo;
+			private String profile_photo; 
 			private int Annaul;
 			private boolean admin;
 			private String dept_code;
