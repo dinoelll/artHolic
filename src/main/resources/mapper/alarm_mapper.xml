@@ -4,7 +4,23 @@
 	   
 <mapper namespace="kr.co.two.alarm.dao.AlarmDAO">
 	<select id="alarmCount" resultType="int" parameterType="String">
-		SELECT COUNT(id) from notice
-		WHERE receive_id = #{receive_id}
+		SELECT COUNT(alarm_id) from alarm
+		WHERE alarm_receiver = #{alarm_receiver}
+		AND is_read = 0
 	</select>
+	
+	<select id="alarmList" parameterType="String" resultType="AlarmDTO">
+		SELECT a.*, p.project_name FROM alarm a 
+		left JOIN `member` m2 on(a.alarm_receiver = m2.member_id)
+		left join elec_payment ep on (a.iden_id=ep.document_id)
+		left join mail m on (a.iden_id=m.mail_id)
+		left join project p on(a.iden_id=p.project_id)
+		where is_read = 0
+		AND a.alarm_receiver = #{alarm_receiver}
+	</select>
+	
+	<update id="readAlarm" parameterType="String">
+		UPDATE alarm SET is_read = 1
+		WHERE alarm_id=#{alarm_id} 
+	</update>
 </mapper>

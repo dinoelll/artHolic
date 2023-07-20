@@ -7,20 +7,20 @@
    <select id="getLatestDocumentNumber" parameterType="String" resultType="String">
         SELECT document_id
         FROM elec_payment
-        	<where>
-        		<if test="form_sort == 'PAYMENT_VAC'">
-		           document_id LIKE 'vac%'
-        	
-        		</if>
-        		<if test="form_sort == 'PAYMENT_BUY'">
-		           document_id LIKE 'buy%'
-        	
-        		</if>
-        		<if test="form_sort == 'PAYMENT_PRO'">
-		           document_id LIKE 'pro%'
-        	
-        		</if>
-        	</where>
+           <where>
+              <if test="form_sort == 'PAYMENT_VAC'">
+                 document_id LIKE 'vac%'
+           
+              </if>
+              <if test="form_sort == 'PAYMENT_BUY'">
+                 document_id LIKE 'buy%'
+           
+              </if>
+              <if test="form_sort == 'PAYMENT_PRO'">
+                 document_id LIKE 'pro%'
+           
+              </if>
+           </where>
         ORDER BY document_id DESC
         LIMIT 1
     </select>
@@ -121,570 +121,620 @@
 
 
    <insert id="paymentShip" parameterType="hashmap">
-		INSERT INTO payment_ship (document_id, member_id, order_column, result, note)
-		VALUES (#{document_id}, #{member_id}, #{order_column},
+      INSERT INTO payment_ship (document_id, member_id, order_column, result, note)
+      VALUES (#{document_id}, #{member_id}, #{order_column},
         CASE WHEN #{order_column} = '1' THEN '대기중' ELSE #{result} END,
         #{note});
    </insert> 
+
+   
+   <insert id="paymentShipAlarm" parameterType="hashmap">
+      INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,iden_id)
+      VALUES(CONCAT('새로운 전자결재 알림','#{memo}'),'ALARM_PAYMENT',#{member_id},#{document_id})
+   </insert>
+   
+
    
     <insert id="paymentShipTemp" parameterType="hashmap">
-		INSERT INTO payment_ship (document_id, member_id, order_column, result, note)
-		VALUES (#{document_id}, #{member_id}, #{order_column},
+      INSERT INTO payment_ship (document_id, member_id, order_column, result, note)
+      VALUES (#{document_id}, #{member_id}, #{order_column},
         CASE WHEN #{order_column} = '1' THEN '임시저장' ELSE #{result} END,
         #{note});
    </insert> 
 
 
-	<select id="findMemberId" resultType="string">
-		SELECT
-		member_id 
-		FROM member 
-		WHERE name= #{param1}
-		LIMIT 1
-	</select>	 
-	
-	<insert id="payment_reference" parameterType="hashmap">
-		INSERT INTO payment_reference(
-		document_id,member_id
-		)VALUES(
-		#{document_id},#{member_id}
-		)
-	</insert> 
-	
-	
-		<select id="listCall" resultType="payment" parameterType="string">
-				  SELECT 
-				    e.* ,
-				    c.code_name AS code_name
-				  FROM 
-				    elec_payment AS e
-				  LEFT JOIN code AS c ON e.form_sort = c.code_id
-				  <where>
-				    <if test="keyword != null and !keyword.equals('') and opt == 'paySubject'">AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-				    <if test="keyword != null and !keyword.equals('') and opt == 'code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
-				    <if test="keyword != null and !keyword.equals('') and opt == 'document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
-				    <if test="optt == '진행중'">AND state = '진행중'</if>
-				    <if test="optt == '완료'">AND state = '완료'</if>
-				    <if test="optt == '반려'">AND state = '반려'</if>
-				    <if test="member_id != null">AND e.id = #{member_id}</if>
-				    AND e.temp != 1
-				  </where>
-				  ORDER BY e.reg_date DESC
-				  LIMIT #{cnt} OFFSET #{offset}
-				</select>
-	
-		<select id="totalCount" resultType="int" parameterType="string">
-			    SELECT COUNT(document_id) FROM elec_payment
-			    <where>
-			        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'" >AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-			        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
-			            AND EXISTS (
-			                SELECT 1
-			                FROM code AS c
-			                WHERE c.code_id = elec_payment.form_sort
-			                AND c.code_name LIKE CONCAT('%',#{keyword},'%')
-			            )
-			        </if>
-			        <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
-			        <if test="optt == '진행중'">AND state = '진행중'</if>
-			        <if test="optt == '완료'">AND state = '완료'</if>
-			        <if test="optt == '반려'">AND state = '반려'</if>	
-			        <if test="member_id != null">AND id = #{member_id}</if>
-			    </where>
-			</select>
-	
-		
-		<select id="listCallTemp" resultType="payment" parameterType="string">
-			    SELECT 
-			    e.* ,
-			    c.code_name AS code_name
-			    FROM 
-			    elec_payment AS e
-			    LEFT JOIN code AS c ON e.form_sort  = c.code_id
-			    <where>
-			        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-			        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
-			        <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
-			        <if test="optt == '진행중'">AND state = '진행중'</if>
-			        <if test="optt == '완료'">AND state = '완료'</if>
-			        <if test="optt == '반려'">AND state = '반려'</if>
-   			        <if test="member_id != null">AND e.id = #{member_id}</if>
-			        <if test="temp == 1">AND temp = 1</if>
-			    </where>
-			    ORDER BY e.reg_date DESC
-			    LIMIT #{cnt} OFFSET #{offset}
-			</select>
-	
-			
-		<select id="totalCountTemp" resultType="int" parameterType="string">
-		    SELECT COUNT(document_id) FROM elec_payment
-		    <where>
-		        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'" >AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-		        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
-		            AND EXISTS (
-		                SELECT 1
-		                FROM code AS c
-		                WHERE c.code_id = elec_payment.form_sort
-		                AND c.code_name LIKE CONCAT('%',#{keyword},'%')
-		            )
-		        </if>
-		        <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
-				<if test="optt == '진행중'">AND state = '진행중'</if>
-		        <if test="optt == '완료'">AND state = '완료'</if>
-		        <if test="optt == '반려'">AND state = '반려'</if>	 
-		        <if test="temp == 1">AND temp = 1</if>
- 			        <if test="member_id != null">AND id = #{member_id}</if>    
-		    </where>
-		</select>
-	
-		
-		<select id="listCallPay" resultType="payment" parameterType="string">
-		    SELECT 
-		    e.* ,
-		    c.code_name AS code_name,
-		    m.name AS name
-		    FROM 
-		    elec_payment AS e
-		    LEFT JOIN code AS c ON e.form_sort  = c.code_id
-		    LEFT JOIN member AS m ON e.id  = m.member_id
-		    WHERE EXISTS (
-		        SELECT 1
-		        FROM payment_ship AS ps
-		        WHERE ps.member_id = #{member_id}
-		        AND ps.result = '대기중'
-		        AND ps.document_id = e.document_id
-		        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-		        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
-		         <if test="keyword != null and !keyword.equals('') and opt =='name'">AND m.name LIKE CONCAT('%',#{keyword},'%')</if>
-		        <if test="optt == '진행중'">AND e.state = '진행중'</if>
-		        <if test="optt == '완료'">AND e.state = '완료'</if>
-		        <if test="optt == '반려'">AND e.state = '반려'</if>
-			)
-		    ORDER BY e.reg_date DESC
-		    LIMIT #{cnt} OFFSET #{offset}
-		</select>
-			
-	
-		<select id="totalCountPay" resultType="int" parameterType="string">
-		    SELECT COUNT(e.document_id) FROM elec_payment AS e
-				WHERE EXISTS (
-			        SELECT 1
-			        FROM payment_ship AS ps
-			        WHERE ps.member_id = #{member_id}
-			        AND ps.result = '대기중'
-			        AND ps.document_id = e.document_id
-			        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-		        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
-				AND EXISTS (
-			                SELECT 1
-			                FROM code AS c
-			                WHERE c.code_id = e.form_sort
-			                AND c.code_name LIKE CONCAT('%',#{keyword},'%')
-			            )
-				</if>
-		        <if test="optt == '진행중'">AND e.state = '진행중'</if>
-		        <if test="optt == '완료'">AND e.state = '완료'</if>
-		        <if test="optt == '반려'">AND e.state = '반려'</if>
-			    )
 
-		</select>
+   <select id="findMemberId" resultType="string">
+      SELECT
+      member_id 
+      FROM member 
+      WHERE name= #{param1}
+      LIMIT 1
+   </select>    
+   
+   <insert id="payment_reference" parameterType="hashmap">
+      INSERT INTO payment_reference(
+      document_id,member_id
+      )VALUES(
+      #{document_id},#{member_id}
+      )
+   </insert> 
+   
+   <insert id="paymentReferrerAlarm" parameterType="hashmap">
+      INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,iden_id)
+      VALUES('새로운 전자결재(참조) 알림','ALARM_PAYMENT',#{member_id},#{document_id})
+   </insert>
+   
+      <select id="listCall" resultType="payment" parameterType="string">
+              SELECT 
+                e.* ,
+                c.code_name AS code_name
+              FROM 
+                elec_payment AS e
+              LEFT JOIN code AS c ON e.form_sort = c.code_id
+              <where>
+                <if test="keyword != null and !keyword.equals('') and opt == 'paySubject'">AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+                <if test="keyword != null and !keyword.equals('') and opt == 'code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
+                <if test="keyword != null and !keyword.equals('') and opt == 'document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
+                <if test="optt == '진행중'">AND state = '진행중'</if>
+                <if test="optt == '완료'">AND state = '완료'</if>
+                <if test="optt == '반려'">AND state = '반려'</if>
+                <if test="member_id != null">AND e.id = #{member_id}</if>
+                AND e.temp != 1
+              </where>
+              ORDER BY e.reg_date DESC
+              LIMIT #{cnt} OFFSET #{offset}
+            </select>
+   
+      <select id="totalCount" resultType="int" parameterType="string">
+             SELECT COUNT(document_id) FROM elec_payment
+             <where>
+                 <if test="keyword != null and !keyword.equals('') and opt =='paySubject'" >AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+                 <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
+                     AND EXISTS (
+                         SELECT 1
+                         FROM code AS c
+                         WHERE c.code_id = elec_payment.form_sort
+                         AND c.code_name LIKE CONCAT('%',#{keyword},'%')
+                     )
+                 </if>
+                 <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
+                 <if test="optt == '진행중'">AND state = '진행중'</if>
+                 <if test="optt == '완료'">AND state = '완료'</if>
+                 <if test="optt == '반려'">AND state = '반려'</if>   
+                 <if test="member_id != null">AND id = #{member_id}</if>
+             </where>
+         </select>
+   
+      
+      <select id="listCallTemp" resultType="payment" parameterType="string">
+             SELECT 
+             e.* ,
+             c.code_name AS code_name
+             FROM 
+             elec_payment AS e
+             LEFT JOIN code AS c ON e.form_sort  = c.code_id
+             <where>
+                 <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+                 <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
+                 <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
+                 <if test="optt == '진행중'">AND state = '진행중'</if>
+                 <if test="optt == '완료'">AND state = '완료'</if>
+                 <if test="optt == '반려'">AND state = '반려'</if>
+                    <if test="member_id != null">AND e.id = #{member_id}</if>
+                 <if test="temp == 1">AND temp = 1</if>
+             </where>
+             ORDER BY e.reg_date DESC
+             LIMIT #{cnt} OFFSET #{offset}
+         </select>
+   
+         
+      <select id="totalCountTemp" resultType="int" parameterType="string">
+          SELECT COUNT(document_id) FROM elec_payment
+          <where>
+              <if test="keyword != null and !keyword.equals('') and opt =='paySubject'" >AND paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+              <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
+                  AND EXISTS (
+                      SELECT 1
+                      FROM code AS c
+                      WHERE c.code_id = elec_payment.form_sort
+                      AND c.code_name LIKE CONCAT('%',#{keyword},'%')
+                  )
+              </if>
+              <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND document_id LIKE CONCAT('%',#{keyword},'%')</if>
+            <if test="optt == '진행중'">AND state = '진행중'</if>
+              <if test="optt == '완료'">AND state = '완료'</if>
+              <if test="optt == '반려'">AND state = '반려'</if>    
+              <if test="temp == 1">AND temp = 1</if>
+                  <if test="member_id != null">AND id = #{member_id}</if>    
+          </where>
+      </select>
+   
+      
+      <select id="listCallPay" resultType="payment" parameterType="string">
+          SELECT 
+          e.* ,
+          c.code_name AS code_name,
+          m.name AS name
+          FROM 
+          elec_payment AS e
+          LEFT JOIN code AS c ON e.form_sort  = c.code_id
+          LEFT JOIN member AS m ON e.id  = m.member_id
+          WHERE EXISTS (
+              SELECT 1
+              FROM payment_ship AS ps
+              WHERE ps.member_id = #{member_id}
+              AND ps.result = '대기중'
+              AND ps.document_id = e.document_id
+              <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+              <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
+               <if test="keyword != null and !keyword.equals('') and opt =='name'">AND m.name LIKE CONCAT('%',#{keyword},'%')</if>
+              <if test="optt == '진행중'">AND e.state = '진행중'</if>
+              <if test="optt == '완료'">AND e.state = '완료'</if>
+              <if test="optt == '반려'">AND e.state = '반려'</if>
+         )
+          ORDER BY e.reg_date DESC
+          LIMIT #{cnt} OFFSET #{offset}
+      </select>
+         
+   
+      <select id="totalCountPay" resultType="int" parameterType="string">
+          SELECT COUNT(e.document_id) FROM elec_payment AS e
+            WHERE EXISTS (
+                 SELECT 1
+                 FROM payment_ship AS ps
+                 WHERE ps.member_id = #{member_id}
+                 AND ps.result = '대기중'
+                 AND ps.document_id = e.document_id
+                 <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+              <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
+            AND EXISTS (
+                         SELECT 1
+                         FROM code AS c
+                         WHERE c.code_id = e.form_sort
+                         AND c.code_name LIKE CONCAT('%',#{keyword},'%')
+                     )
+            </if>
+              <if test="optt == '진행중'">AND e.state = '진행중'</if>
+              <if test="optt == '완료'">AND e.state = '완료'</if>
+              <if test="optt == '반려'">AND e.state = '반려'</if>
+             )
+
+      </select>
 
 
-				
-		<select id="listCallDone" resultType="payment" parameterType="string">
-		    SELECT 
-		    e.* ,
-		    c.code_name AS code_name,
-		    m.name AS name
-		    FROM 
-		    elec_payment AS e
-		    LEFT JOIN code AS c ON e.form_sort  = c.code_id
-		    LEFT JOIN member AS m ON e.id  = m.member_id
-		    WHERE EXISTS (
-		        SELECT 1
-		        FROM payment_ship AS ps
-		        WHERE ps.member_id = #{member_id}
-		          AND (ps.result = '결재완료' OR ps.result = '반려')
-		        AND ps.document_id = e.document_id
-		        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-		        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
-		        <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND e.document_id LIKE CONCAT('%',#{keyword},'%')</if>
-			    <if test="optt == '진행중'">AND e.state = '진행중'</if>
-			    <if test="optt == '완료'">AND e.state = '완료'</if>
-			    <if test="optt == '반려'">AND e.state = '반려'</if>
-			    )
-			    ORDER BY e.reg_date DESC
-			    LIMIT #{cnt} OFFSET #{offset}
-			</select>
-			
-	
-		<select id="totalCountDone" resultType="int" parameterType="string">
-		    SELECT COUNT(e.document_id) FROM elec_payment AS e
-				WHERE EXISTS (
-				    SELECT 1
-				    FROM payment_ship AS ps
-				    WHERE ps.member_id = #{member_id}
-				      AND (ps.result = '결재완료' OR ps.result = '반려')
-				    AND ps.document_id = e.document_id
-				    <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-				    <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
-				        AND EXISTS (
-				            SELECT 1
-				            FROM code AS c
-				            WHERE c.code_id = e.form_sort
-				            AND c.code_name LIKE CONCAT('%',#{keyword},'%')
-				        )
-				    </if>
-				    <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND e.document_id LIKE CONCAT('%',#{keyword},'%')</if>
-				    <if test="optt == '진행중'">AND e.state = '진행중'</if>
-				    <if test="optt == '완료'">AND e.state = '완료'</if>
-				    <if test="optt == '반려'">AND e.state = '반려'</if>	
-				   ) 
-		</select>
-		
-		
-		<select id="listCallTake" resultType="payment" parameterType="string">
-		    SELECT 
-		    e.* ,
-		    c.code_name AS code_name,
-		    m.name AS name
-		    FROM 
-		    elec_payment AS e
-		    LEFT JOIN code AS c ON e.form_sort  = c.code_id
-		    LEFT JOIN member AS m ON e.id  = m.member_id
-		    WHERE EXISTS (
-		        SELECT 1
-		        FROM payment_reference AS ps
-		        WHERE ps.member_id = #{member_id}
-		        AND ps.document_id = e.document_id
-		        <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-		        <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
-		        <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND e.document_id LIKE CONCAT('%',#{keyword},'%')</if>
-		        <if test="optt == '진행중'">AND e.state = '진행중'</if>
-		        <if test="optt == '완료'">AND e.state = '완료'</if>
-		        <if test="optt == '반려'">AND e.state = '반려'</if>
-		       ) 
-		    ORDER BY e.reg_date DESC
-		    LIMIT #{cnt} OFFSET #{offset}
-		</select>
-			
-	
-		<select id="totalCountTake" resultType="int" parameterType="string">
-		    SELECT COUNT(e.document_id) FROM elec_payment AS e
-				WHERE EXISTS (
-				    SELECT 1
-				    FROM payment_ship AS ps
-				    WHERE ps.member_id = #{member_id}
-				    AND ps.result = '결재완료'
-				    AND ps.document_id = e.document_id
-				    <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
-				    <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
-				        AND EXISTS (
-				            SELECT 1
-				            FROM code AS c
-				            WHERE c.code_id = e.form_sort
-				            AND c.code_name LIKE CONCAT('%',#{keyword},'%')
-				        )
-				    </if>
-				    <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND e.document_id LIKE CONCAT('%',#{keyword},'%')</if>
-				    <if test="optt == '진행중'">AND e.state = '진행중'</if>
-				    <if test="optt == '완료'">AND e.state = '완료'</if>
-				    <if test="optt == '반려'">AND e.state = '반려'</if>	
-					)
-		</select>
-		
-		<select id="vacationForm" resultType="payment" parameterType="string">
-				  SELECT 
-					    e.*,
-					    c1.code_name AS code_name,
-					    c2.code_name AS position,
-					    m.name AS name,
-					    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
-					    f.ori_file_name,
-					    f.new_file_name
-					FROM 
-					    elec_payment AS e
-					LEFT JOIN 
-					    member AS m ON e.id = m.member_id
-					LEFT JOIN 
-					    code AS c1 ON e.form_sort = c1.code_id
-					LEFT JOIN 
-					    code AS c2 ON m.position_code = c2.code_id
-					LEFT JOIN
-					    elec_payment_file AS f ON e.document_id = f.document_id
-					WHERE 
-					    e.document_id = #{document_id}
-		</select>
-		
-		<select id="buyItemForm" resultType="payment" parameterType="string">
-				  SELECT 
-					    e.*,
-					    c1.code_name AS code_name,
-					    c2.code_name AS position,
-					    m.name AS name,
-					    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
-					    f.ori_file_name,
-					    f.new_file_name
-					FROM 
-					    elec_payment AS e
-					LEFT JOIN 
-					    member AS m ON e.id = m.member_id
-					LEFT JOIN 
-					    code AS c1 ON e.form_sort = c1.code_id
-					LEFT JOIN 
-					    code AS c2 ON m.position_code = c2.code_id
-					LEFT JOIN
-					    elec_payment_file AS f ON e.document_id = f.document_id
-					WHERE 
-					    e.document_id = #{document_id}
-		</select>
-		
-		<select id="projectForm" resultType="payment" parameterType="string">
-				  SELECT 
-					    e.*,
-					    c1.code_name AS code_name,
-					    c2.code_name AS position,
-					    m.name AS name,
-					    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
-					    f.ori_file_name,
-					    f.new_file_name
-					FROM 
-					    elec_payment AS e
-					LEFT JOIN 
-					    member AS m ON e.id = m.member_id
-					LEFT JOIN 
-					    code AS c1 ON e.form_sort = c1.code_id
-					LEFT JOIN 
-					    code AS c2 ON m.position_code = c2.code_id
-					LEFT JOIN
-					    elec_payment_file AS f ON e.document_id = f.document_id
-					WHERE 
-					    e.document_id = #{document_id}
-		</select>
-		
-		
-		<select id="payListCall" resultType="payList" parameterType="string">
-				  SELECT 
-				    ps.*,
-				    m.Position_code AS position,
-				    (SELECT code_name FROM code WHERE code_id = m.Position_code) AS code_name,
-					m.name AS name	
-				    FROM
-				    payment_ship AS ps
-					LEFT JOIN
-				    member AS m ON ps.member_id = m.member_id
-					WHERE
-				    document_id = #{document_id}
-		</select>
-		
-		<select id="payReferrerCall" resultType="payList" parameterType="string">
-				  SELECT 
-				    pr.member_id,
-					m.name AS name	
-				    FROM
-				    payment_reference AS pr
-					LEFT JOIN
-				    member AS m ON pr.member_id = m.member_id
-					WHERE
-				    document_id = #{document_id}
-		</select>
-		
-		
-		<update id="payRequest" parameterType="String">
-			  UPDATE payment_ship
-				SET note = CASE
-				              WHEN  result = '대기중' THEN #{note}
-				              ELSE note
-				          END,
-				    result = CASE
-				                WHEN  result = '대기중' THEN '결재완료'
-				                WHEN order_column = (
-				                    SELECT min(order_column)
-				                    FROM payment_ship
-				                    WHERE document_id = #{document_id}
-				                   		 AND result = '진행 중'
-				                ) THEN '대기중'
-				                ELSE result
-				             END
-				WHERE document_id = #{document_id};
-		</update>
-		
-		<update id="payEnd" parameterType="String">
-				UPDATE elec_payment
-					SET state = '완료'
-					WHERE document_id = #{document_id}
-					  AND (
-					    SELECT COUNT(*)
-					    FROM payment_ship
-					    WHERE document_id = #{document_id}
-					      AND result != '결재완료'
-					  ) = 0
-					  AND EXISTS (
-					    SELECT 1
-					    FROM payment_ship
-					    WHERE document_id = #{document_id}
-					      AND result = '결재완료'
-					  );
-			</update>
-		
-		<update id="payRefuse" parameterType="String">
-			  UPDATE payment_ship
-				SET note = #{note},
-				result = '반려'
-				WHERE document_id = #{document_id}
-					AND member_id = #{member_id}
-		</update>
-		
-		<update id="paymentRefuse" parameterType="String">
-			 UPDATE elec_payment
-			  SET state = '반려'
-			  WHERE document_id = #{document_id}
-		</update>
-		
-		
-		
+            
+      <select id="listCallDone" resultType="payment" parameterType="string">
+          SELECT 
+          e.* ,
+          c.code_name AS code_name,
+          m.name AS name
+          FROM 
+          elec_payment AS e
+          LEFT JOIN code AS c ON e.form_sort  = c.code_id
+          LEFT JOIN member AS m ON e.id  = m.member_id
+          WHERE EXISTS (
+              SELECT 1
+              FROM payment_ship AS ps
+              WHERE ps.member_id = #{member_id}
+                AND (ps.result = '결재완료' OR ps.result = '반려')
+              AND ps.document_id = e.document_id
+              <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+              <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
+              <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND e.document_id LIKE CONCAT('%',#{keyword},'%')</if>
+             <if test="optt == '진행중'">AND e.state = '진행중'</if>
+             <if test="optt == '완료'">AND e.state = '완료'</if>
+             <if test="optt == '반려'">AND e.state = '반려'</if>
+             )
+             ORDER BY e.modi_date DESC
+             LIMIT #{cnt} OFFSET #{offset}
+         </select>
+         
+   
+      <select id="totalCountDone" resultType="int" parameterType="string">
+          SELECT COUNT(e.document_id) FROM elec_payment AS e
+            WHERE EXISTS (
+                SELECT 1
+                FROM payment_ship AS ps
+                WHERE ps.member_id = #{member_id}
+                  AND (ps.result = '결재완료' OR ps.result = '반려')
+                AND ps.document_id = e.document_id
+                <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+                <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
+                    AND EXISTS (
+                        SELECT 1
+                        FROM code AS c
+                        WHERE c.code_id = e.form_sort
+                        AND c.code_name LIKE CONCAT('%',#{keyword},'%')
+                    )
+                </if>
+                <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND e.document_id LIKE CONCAT('%',#{keyword},'%')</if>
+                <if test="optt == '진행중'">AND e.state = '진행중'</if>
+                <if test="optt == '완료'">AND e.state = '완료'</if>
+                <if test="optt == '반려'">AND e.state = '반려'</if>   
+               ) 
+      </select>
+      
+      
+      <select id="listCallTake" resultType="payment" parameterType="string">
+          SELECT 
+          e.* ,
+          c.code_name AS code_name,
+          m.name AS name
+          FROM 
+          elec_payment AS e
+          LEFT JOIN code AS c ON e.form_sort  = c.code_id
+          LEFT JOIN member AS m ON e.id  = m.member_id
+          WHERE EXISTS (
+              SELECT 1
+              FROM payment_reference AS ps
+              WHERE ps.member_id = #{member_id}
+              AND ps.document_id = e.document_id
+              <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+              <if test="keyword != null and !keyword.equals('') and opt =='code_name'">AND c.code_name LIKE CONCAT('%',#{keyword},'%')</if>
+              <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND e.document_id LIKE CONCAT('%',#{keyword},'%')</if>
+              <if test="optt == '진행중'">AND e.state = '진행중'</if>
+              <if test="optt == '완료'">AND e.state = '완료'</if>
+              <if test="optt == '반려'">AND e.state = '반려'</if>
+             ) 
+          ORDER BY e.reg_date DESC
+          LIMIT #{cnt} OFFSET #{offset}
+      </select>
+         
+   
+      <select id="totalCountTake" resultType="int" parameterType="string">
+          SELECT COUNT(e.document_id) FROM elec_payment AS e
+            WHERE EXISTS (
+                SELECT 1
+                FROM payment_ship AS ps
+                WHERE ps.member_id = #{member_id}
+                AND ps.result = '결재완료'
+                AND ps.document_id = e.document_id
+                <if test="keyword != null and !keyword.equals('') and opt =='paySubject'">AND e.paySubject LIKE CONCAT('%',#{keyword},'%')</if>
+                <if test="keyword != null and !keyword.equals('') and opt =='code_name'">
+                    AND EXISTS (
+                        SELECT 1
+                        FROM code AS c
+                        WHERE c.code_id = e.form_sort
+                        AND c.code_name LIKE CONCAT('%',#{keyword},'%')
+                    )
+                </if>
+                <if test="keyword != null and !keyword.equals('') and opt =='document_id'">AND e.document_id LIKE CONCAT('%',#{keyword},'%')</if>
+                <if test="optt == '진행중'">AND e.state = '진행중'</if>
+                <if test="optt == '완료'">AND e.state = '완료'</if>
+                <if test="optt == '반려'">AND e.state = '반려'</if>   
+               )
+      </select>
+      
+      <select id="vacationForm" resultType="payment" parameterType="string">
+              SELECT 
+                   e.*,
+                   c1.code_name AS code_name,
+                   c2.code_name AS position,
+                   m.name AS name,
+                   (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
+                   f.ori_file_name,
+                   f.new_file_name
+               FROM 
+                   elec_payment AS e
+               LEFT JOIN 
+                   member AS m ON e.id = m.member_id
+               LEFT JOIN 
+                   code AS c1 ON e.form_sort = c1.code_id
+               LEFT JOIN 
+                   code AS c2 ON m.position_code = c2.code_id
+               LEFT JOIN
+                   elec_payment_file AS f ON e.document_id = f.document_id
+               WHERE 
+                   e.document_id = #{document_id}
+      </select>
+      
+      <select id="buyItemForm" resultType="payment" parameterType="string">
+              SELECT 
+                   e.*,
+                   c1.code_name AS code_name,
+                   c2.code_name AS position,
+                   m.name AS name,
+                   (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
+                   f.ori_file_name,
+                   f.new_file_name
+               FROM 
+                   elec_payment AS e
+               LEFT JOIN 
+                   member AS m ON e.id = m.member_id
+               LEFT JOIN 
+                   code AS c1 ON e.form_sort = c1.code_id
+               LEFT JOIN 
+                   code AS c2 ON m.position_code = c2.code_id
+               LEFT JOIN
+                   elec_payment_file AS f ON e.document_id = f.document_id
+               WHERE 
+                   e.document_id = #{document_id}
+      </select>
+      
+      <select id="projectForm" resultType="payment" parameterType="string">
+              SELECT 
+                   e.*,
+                   c1.code_name AS code_name,
+                   c2.code_name AS position,
+                   m.name AS name,
+                   (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
+                   f.ori_file_name,
+                   f.new_file_name
+               FROM 
+                   elec_payment AS e
+               LEFT JOIN 
+                   member AS m ON e.id = m.member_id
+               LEFT JOIN 
+                   code AS c1 ON e.form_sort = c1.code_id
+               LEFT JOIN 
+                   code AS c2 ON m.position_code = c2.code_id
+               LEFT JOIN
+                   elec_payment_file AS f ON e.document_id = f.document_id
+               WHERE 
+                   e.document_id = #{document_id}
+      </select>
+      
+      
+      <select id="payListCall" resultType="payList" parameterType="string">
+              SELECT 
+                ps.*,
+                m.Position_code AS position,
+                (SELECT code_name FROM code WHERE code_id = m.Position_code) AS code_name,
+               m.name AS name   
+                FROM
+                payment_ship AS ps
+               LEFT JOIN
+                member AS m ON ps.member_id = m.member_id
+               WHERE
+                document_id = #{document_id}
+      </select>
+      
+      <select id="payReferrerCall" resultType="payList" parameterType="string">
+              SELECT 
+                pr.member_id,
+               m.name AS name   
+                FROM
+                payment_reference AS pr
+               LEFT JOIN
+                member AS m ON pr.member_id = m.member_id
+               WHERE
+                document_id = #{document_id}
+      </select>
+      
+      
+      <update id="payRequest" parameterType="String">
+           UPDATE payment_ship
+            SET note = CASE
+                          WHEN  result = '대기중' THEN #{note}
+                          ELSE note
+                      END,
+                result = CASE
+                            WHEN  result = '대기중' THEN '결재완료'
+                            WHEN order_column = (
+                                SELECT min(order_column)
+                                FROM payment_ship
+                                WHERE document_id = #{document_id}
+                                      AND result = '진행 중'
+                            ) THEN '대기중'
+                            ELSE result
+                         END
+            WHERE document_id = #{document_id};
+            
+            <selectKey keyColumn="member_id" keyProperty="alarm_id" resultType="String" order="AFTER">
+               SELECT member_id FROM payment_ship
+               WHERE document_id = #{document_id}
+               AND result='대기중'
+            </selectKey>
+      </update>
+      
+      <update id="payRequest2" parameterType="AlarmDTO">
+           UPDATE payment_ship
+            SET note = CASE
+                          WHEN  result = '대기중' THEN #{note}
+                          ELSE note
+                      END,
+                result = CASE
+                            WHEN  result = '대기중' THEN '결재완료'
+                            WHEN order_column = (
+                                SELECT min(order_column)
+                                FROM payment_ship
+                                WHERE document_id = #{document_id}
+                                      AND result = '진행 중'
+                            ) THEN '대기중'
+                            ELSE result
+                         END
+            WHERE document_id = #{document_id};
+            
+            <selectKey keyColumn="member_id" keyProperty="alarm_id" resultType="String" order="AFTER">
+               SELECT member_id FROM payment_ship
+               WHERE document_id = #{document_id}
+               AND result='대기중'
+            </selectKey>
+      </update>
+      
+      <update id="payEnd" parameterType="String">
+            UPDATE elec_payment
+               SET state = '완료'
+               WHERE document_id = #{document_id}
+                 AND (
+                   SELECT COUNT(*)
+                   FROM payment_ship
+                   WHERE document_id = #{document_id}
+                     AND result != '결재완료'
+                 ) = 0
+                 AND EXISTS (
+                   SELECT 1
+                   FROM payment_ship
+                   WHERE document_id = #{document_id}
+                     AND result = '결재완료'
+                 );
+         </update>
+      
+      <update id="payRefuse" parameterType="String">
+           UPDATE payment_ship
+            SET note = #{note},
+            result = '반려'
+            WHERE document_id = #{document_id}
+               AND member_id = #{member_id}
+      </update>
+      
+      <update id="paymentRefuse" parameterType="String">
+          UPDATE elec_payment
+           SET state = '반려'
+           WHERE document_id = #{document_id}
+      </update>
+      
+      
+      
 
-		<select id="mainRefuse" resultType="payment" parameterType="string">
-		   SELECT 
-		    e.*,
-		    c1.code_name AS code_name,
-		    c2.code_name AS position,
-		    m.name AS name,
-		    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
-		    m.name AS name
-			FROM
-			elec_payment AS e
-			LEFT JOIN code AS c1 ON e.form_sort  = c1.code_id
-		    LEFT JOIN member AS m ON e.id  = m.member_id
-		    LEFT JOIN code AS c2 ON m.position_code = c2.code_id
-			WHERE id = #{member_id} AND state  = '반려'
-			ORDER BY document_id DESC
-			LIMIT 4
-		</select>
-		
-		<select id="mainEnd" resultType="payment" parameterType="string">
-		   SELECT 
-		    e.*,
-		    c1.code_name AS code_name,
-		    c2.code_name AS position,
-		    m.profile_photo,
-		    m.name AS name,
-		    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
-		    m.name AS name
-			FROM
-			elec_payment AS e
-			LEFT JOIN code AS c1 ON e.form_sort  = c1.code_id
-		    LEFT JOIN member AS m ON e.id  = m.member_id
-		    LEFT JOIN code AS c2 ON m.position_code = c2.code_id
-			WHERE id = #{member_id} AND state  = '완료'
-			ORDER BY reg_date DESC
-			LIMIT 3
-		</select>
-		
-		<select id="mainTimeline" resultType="payment" parameterType="string">
-				  SELECT
-				    ep.*,
-				    ps.order_column,
-				    ps.member_id AS shipMember_id,
-				    ps.payment_ship_id AS payment_ship_id,
-				    pr.member_id AS referMember_id,
-				    pr.refer,
-				    c1.code_name AS code_name,
-				    c2.code_name AS position,
-				    c3.code_name AS form,
-				    m.name AS name,
-				    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
-				    m.name AS name
-				  FROM
-				    elec_payment AS ep
-				  LEFT JOIN
-				    payment_ship AS ps ON ep.document_id = ps.document_id AND #{member_id} = ps.member_id
-				  LEFT JOIN
-				    payment_reference AS pr ON ep.document_id = pr.document_id AND #{member_id} = pr.member_id
-				  LEFT JOIN code AS c1 ON ep.form_sort = c1.code_id
-				  LEFT JOIN member AS m ON ep.id = m.member_id
-				  LEFT JOIN code AS c2 ON m.position_code = c2.code_id
-				  LEFT JOIN code AS c3 ON ep.form_sort = c3.code_id
-				  WHERE (ep.temp IS NULL OR ep.temp != 1) -- temp 컬럼이 NULL이거나 1이 아닌 데이터만 가져옴
-				    AND (
-				      EXISTS (
-				        SELECT 1
-				        FROM payment_ship AS ps
-				        WHERE ps.member_id = #{member_id}
-				          AND ps.document_id = ep.document_id
-				      )
-				      OR EXISTS (
-				        SELECT 1
-				        FROM payment_reference AS pr
-				        WHERE pr.member_id = #{member_id}
-				          AND pr.document_id = ep.document_id
-				      )
-				      OR ep.id = #{member_id}
-				    )
-				  ORDER BY modi_date DESC;
-				</select>
-		
-		<select id="note" resultType="payment" parameterType="string">
-		   SELECT 
-		    ps.*,
-		    m.profile_photo,
-		    m.name AS name,
-		    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
-		    (SELECT code_name FROM code WHERE code_id = m.position_code) AS position,
-		    ep.paySubject AS paySubject
-		FROM
-		    payment_ship AS ps
-		    LEFT JOIN elec_payment AS ep ON ps.document_id = ep.document_id
-		    LEFT JOIN member AS m ON ps.member_id = m.member_id
-		WHERE
-		    ps.`result` IN ('결재완료', '반려')
-		    AND ps.document_id = #{document_id}
-		ORDER BY
-		    ps.document_id DESC;
-		</select>
-		
-		<update id="vacationFormSaveRequestTemp" parameterType="hashmap">
-		    UPDATE elec_payment, payment_ship
-		    SET elec_payment.state = '진행중',
-		    		elec_payment.payContent = #{payContent},
-		    		elec_payment.paySubject = #{payContent},
-		        payment_ship.result = 
-		            CASE
-		                WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
-		                ELSE '대기중'
-		            END
-		    WHERE elec_payment.document_id = #{document_id}
-		    AND payment_ship.document_id = #{document_id}
-		    AND payment_ship.order_column = '1';
-		</update>
-		<update id="buyItemFormSaveRequestTemp" parameterType="hashmap">
-		    UPDATE elec_payment, payment_ship
-		    SET elec_payment.state = '진행중',
-		    		elec_payment.payContent = #{payContent},
-		    		elec_payment.paySubject = #{payContent},
-		        payment_ship.result = 
-		            CASE
-		                WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
-		                ELSE '대기중'
-		            END
-		    WHERE elec_payment.document_id = #{document_id}
-		    AND payment_ship.document_id = #{document_id}
-		    AND payment_ship.order_column = '1';
-		</update>
-		<update id="projectFormSaveRequestTemp" parameterType="hashmap">
-		    UPDATE elec_payment, payment_ship
-		    SET elec_payment.state = '진행중',
-		    		elec_payment.payContent = #{payContent},
-		    		elec_payment.paySubject = #{payContent},
-		        payment_ship.result = 
-		            CASE
-		                WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
-		                ELSE '대기중'
-		            END
-		    WHERE elec_payment.document_id = #{document_id}
-		    AND payment_ship.document_id = #{document_id}
-		    AND payment_ship.order_column = '1';
-		</update>
+      <select id="mainRefuse" resultType="payment" parameterType="string">
+         SELECT 
+          e.*,
+          c1.code_name AS code_name,
+          c2.code_name AS position,
+          m.name AS name,
+          (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
+          m.name AS name
+         FROM
+         elec_payment AS e
+         LEFT JOIN code AS c1 ON e.form_sort  = c1.code_id
+          LEFT JOIN member AS m ON e.id  = m.member_id
+          LEFT JOIN code AS c2 ON m.position_code = c2.code_id
+         WHERE id = #{member_id} AND state  = '반려'
+         ORDER BY document_id DESC
+         LIMIT 4
+      </select>
+      
+      <select id="mainEnd" resultType="payment" parameterType="string">
+         SELECT 
+          e.*,
+          c1.code_name AS code_name,
+          c2.code_name AS position,
+          m.profile_photo,
+          m.name AS name,
+          (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
+          m.name AS name
+         FROM
+         elec_payment AS e
+         LEFT JOIN code AS c1 ON e.form_sort  = c1.code_id
+          LEFT JOIN member AS m ON e.id  = m.member_id
+          LEFT JOIN code AS c2 ON m.position_code = c2.code_id
+         WHERE id = #{member_id} AND state  = '완료'
+         ORDER BY reg_date DESC
+         LIMIT 3
+      </select>
+      
+      <select id="mainTimeline" resultType="payment" parameterType="string">
+  SELECT
+    ep.*,
+    ps.order_column,
+    ps.member_id AS shipMember_id,
+    ps.payment_ship_id AS payment_ship_id,
+    ps.result,
+    pr.member_id AS referMember_id,
+    pr.refer,
+    c1.code_name AS code_name,
+    c2.code_name AS position,
+    c3.code_name AS form,
+    m.name AS name,
+    (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
+    m.name AS name
+  FROM
+    elec_payment AS ep
+  LEFT JOIN
+    payment_ship AS ps ON ep.document_id = ps.document_id AND #{member_id} = ps.member_id
+  LEFT JOIN
+    payment_reference AS pr ON ep.document_id = pr.document_id AND #{member_id} = pr.member_id
+  LEFT JOIN code AS c1 ON ep.form_sort = c1.code_id
+  LEFT JOIN member AS m ON ep.id = m.member_id
+  LEFT JOIN code AS c2 ON m.position_code = c2.code_id
+  LEFT JOIN code AS c3 ON ep.form_sort = c3.code_id
+  WHERE (ep.temp IS NULL OR ep.temp != 1) -- temp 컬럼이 NULL이거나 1이 아닌 데이터만 가져옴
+    AND (
+      (ps.payment_ship_id IS NULL OR ps.result IS NULL) -- ps.payment_ship_id가 NULL이거나 ps.result가 NULL인 경우
+      OR (ps.result != '진행 중') -- ps.result가 '진행 중'이 아닌 경우
+    )
+    AND (
+      EXISTS (
+        SELECT 1
+        FROM payment_ship AS ps
+        WHERE ps.member_id = #{member_id}
+          AND ps.document_id = ep.document_id
+      )
+      OR EXISTS (
+        SELECT 1
+        FROM payment_reference AS pr
+        WHERE pr.member_id = #{member_id}
+          AND pr.document_id = ep.document_id
+      )
+      OR ep.id = #{member_id}
+    )
+  ORDER BY modi_date DESC;
+</select>
+
+      
+      <select id="note" resultType="payment" parameterType="string">
+         SELECT 
+          ps.*,
+          m.profile_photo,
+          m.name AS name,
+          (SELECT code_name FROM code WHERE code_id = m.dept_code) AS dept_name,
+          (SELECT code_name FROM code WHERE code_id = m.position_code) AS position,
+          ep.paySubject AS paySubject
+      FROM
+          payment_ship AS ps
+          LEFT JOIN elec_payment AS ep ON ps.document_id = ep.document_id
+          LEFT JOIN member AS m ON ps.member_id = m.member_id
+      WHERE
+          ps.`result` IN ('결재완료', '반려')
+          AND ps.document_id = #{document_id}
+      ORDER BY
+          ps.document_id DESC;
+      </select>
+      
+      <update id="vacationFormSaveRequestTemp" parameterType="hashmap">
+          UPDATE elec_payment, payment_ship
+          SET elec_payment.state = '진행중',
+                elec_payment.payContent = #{payContent},
+                elec_payment.paySubject = #{payContent},
+              payment_ship.result = 
+                  CASE
+                      WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
+                      ELSE '대기중'
+                  END
+          WHERE elec_payment.document_id = #{document_id}
+          AND payment_ship.document_id = #{document_id}
+          AND payment_ship.order_column = '1';
+      </update>
+      <update id="buyItemFormSaveRequestTemp" parameterType="hashmap">
+          UPDATE elec_payment, payment_ship
+          SET elec_payment.state = '진행중',
+                elec_payment.payContent = #{payContent},
+                elec_payment.paySubject = #{payContent},
+              payment_ship.result = 
+                  CASE
+                      WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
+                      ELSE '대기중'
+                  END
+          WHERE elec_payment.document_id = #{document_id}
+          AND payment_ship.document_id = #{document_id}
+          AND payment_ship.order_column = '1';
+      </update>
+      <update id="projectFormSaveRequestTemp" parameterType="hashmap">
+          UPDATE elec_payment, payment_ship
+          SET elec_payment.state = '진행중',
+                elec_payment.payContent = #{payContent},
+                elec_payment.paySubject = #{payContent},
+              payment_ship.result = 
+                  CASE
+                      WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
+                      ELSE '대기중'
+                  END
+          WHERE elec_payment.document_id = #{document_id}
+          AND payment_ship.document_id = #{document_id}
+          AND payment_ship.order_column = '1';
+      </update>
 
    
 

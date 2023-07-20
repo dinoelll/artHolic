@@ -32,7 +32,8 @@
 	</select>
 	
 	<select id="memberListAll" resultType="MemberDTO">
-		SELECT * FROM member
+		select m.*,c.code_name from `member` m
+		JOIN code c on (m.dept_code = c.code_id)
 	</select>
 	
 	<insert id="createRoom" parameterType="ChatDTO" useGeneratedKeys="true" keyProperty="chat_room_id">

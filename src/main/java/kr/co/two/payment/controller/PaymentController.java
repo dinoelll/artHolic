@@ -227,7 +227,7 @@ public class PaymentController {
 		
 		String member_id =  (String) session.getAttribute("loginId");
 		
-		return service.payRequest(document_id, note, member_id );
+		return service.payRequest(document_id, note, member_id, session);
 	}
 	
 	@PostMapping(value = "/payRefuse.ajax")
