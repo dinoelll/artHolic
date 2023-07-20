@@ -14,6 +14,7 @@ public class InformDTO {
 	private boolean is_form;
 	private Date writeTime;
 	private String board_code;
+	private String name;
 	
 	
 	public String getSubject() {
@@ -57,6 +58,12 @@ public class InformDTO {
 	}
 	public void setIs_form(boolean is_form) {
 		this.is_form = is_form;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

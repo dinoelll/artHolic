@@ -11,17 +11,19 @@
    
     
 	<select id="listCall" resultType="inform" parameterType="string">
-	    SELECT * FROM board
+	    SELECT b.*, m.name AS name
+	    FROM board b
+	    JOIN member m ON b.member_id = m.member_id
 	    <where>
-	        board_code = 'inform'
-	        <if test="keyword != null and !keyword.equals('') and opt == 'member_id'">
-	            AND member_id LIKE CONCAT('%', #{keyword}, '%')
+	        b.board_code = 'inform'
+	        <if test="keyword != null and !keyword.equals('') and opt == 'name'">
+	            AND name LIKE CONCAT('%', #{keyword}, '%')
 	        </if>
 	        <if test="keyword != null and !keyword.equals('') and opt == 'subject'">
-	            AND subject LIKE CONCAT('%', #{keyword}, '%')
+	            AND b.subject LIKE CONCAT('%', #{keyword}, '%')
 	        </if>
 	    </where>
-	    ORDER BY CASE WHEN is_form = 1 THEN 0 ELSE 1 END, board_id DESC
+	    ORDER BY CASE WHEN b.is_form = 1 THEN 0 ELSE 1 END, b.board_id DESC
 	    LIMIT #{cnt} OFFSET #{offset}
 	</select>
 	
@@ -33,12 +35,19 @@
 			<if test="keyword != null and !keyword.equals('') and opt =='subject'"> AND subject LIKE CONCAT('%',#{keyword},'%')</if>
 		</where>
 	</select>
+	
+	<select id="adminChk" resultType="int">
+		SELECT admin FROM member
+		WHERE member_id = #{member_id}
+	</select>
    
    
-   <select id="informDetail" resultType="inform">
-   	SELECT * FROM board
-   		WHERE board_id = #{board_id}
-   </select>
+	<select id="informDetail" resultType="inform">
+	    SELECT b.*, m.name AS name
+	    FROM board b
+	    JOIN member m ON b.member_id = m.member_id
+	    WHERE b.board_id = #{board_id}
+	</select>
    
    <select id="informUpdate" resultType="inform">
 	 SELECT * FROM board

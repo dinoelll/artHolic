@@ -110,14 +110,18 @@
          margin-bottom: 15px;
          margin-left: 3px;
       }
-      
-            #footer {
+      /*
+   #footer {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    /* 기타 스타일 속성 추가 */
-}
+     기타 스타일 속성 추가 
+}*/
+
+	#footer{
+		margin-left: 0px;
+	}
       
    </style>
 </head>
@@ -167,8 +171,10 @@
             
             <td>
             <div>
+            <c:if test="${admin == 1}">
                <input style="float:right;" type="button" id="briefingWrite" onclick="location.href='/briefingWrite.go'" value="등록">
-               </div>
+            </c:if>
+            </div>
             </td>
          </tr>
          </table>
@@ -227,9 +233,10 @@
    
     </section>
     <!-- /.content -->
-    <div id="footer">
-    <jsp:include page="footer.jsp"/>
+    <div>
+    
     </div>
+    <jsp:include page="footer.jsp"/>
    </div>
    
 </div>
@@ -238,6 +245,8 @@
    
    
    
+   <!-- jQuery 
+	<script src="plugins/jquery/jquery.min.js"></script>-->
    
    <!-- jQuery UI -->
    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -334,8 +343,8 @@ function listDraw(briefingList) {
      briefingList.forEach(function(dto,board_id){
          content += '<tr>';
          content += '<td><p>'+dto.board_id+'</p></td>';
-         content += '<th><a href="briefingDetail.do?board_id='+dto.board_id+'">'+dto.subject+'</a></th>';
-         content += '<th><a href="employeeDetail.go?member_id='+dto.member_id+'">'+dto.member_id+'</a> </th>';
+         content += '<th><a href="briefingDetail.do?board_id='+dto.board_id+'&member_id='+dto.member_id+'">'+dto.subject+'</a></th>';
+         content += '<th><a href="employeeDetail.go?member_id='+dto.member_id+'">'+dto.name+'</a> </th>';
          content += '<td>'+ dto.writeTime +'</td>';
          content += '</tr>';
        });
