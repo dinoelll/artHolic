@@ -27,4 +27,6 @@ public interface MainDAO {
 
 	ArrayList<MainDTO> myProjectlist(String member_id);
 
+	String getPassword(String member_id);
+
 }

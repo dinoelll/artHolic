@@ -5,14 +5,14 @@
 <mapper namespace="kr.co.two.member.dao.MemberDAO">
 
 		<select id="employeeTotalList" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, reg_date FROM member
+			SELECT member_id, name, dept_code, position_code, admin, member.reg_date FROM member
 			WHERE userBlindWhether = 0
 			ORDER BY member.reg_date DESC
 			LIMIT #{param2} OFFSET #{param3}
 		</select>
 		
 		<select id="employeeDeptTotalList" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, reg_date
+			SELECT member_id, name, dept_code, position_code, admin, member.reg_date
 			FROM member
 			JOIN code ON dept_code = code_id
 			WHERE code_name LIKE CONCAT('%', #{param3}, '%')
@@ -21,14 +21,14 @@
 		</select>
 		
 		<select id="employeeNameTotalList" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, reg_date
+			SELECT member_id, name, dept_code, position_code, admin, member.reg_date
 			FROM member WHERE name LIKE CONCAT ('%',#{param3},'%') AND userBlindWhether = 0
 			ORDER BY member.reg_date DESC
 			LIMIT #{param4} OFFSET #{param5}
 		</select>
 		
 		<select id="employeePositionTotalList" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, reg_date
+			SELECT member_id, name, dept_code, position_code, admin, member.reg_date
 			FROM member
 			JOIN code ON position_code = code_id
 			WHERE code_name LIKE CONCAT('%', #{param3}, '%')
@@ -37,14 +37,14 @@
 		</select>
 	
 		<select id="employeeTotalListByProcess" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, reg_date
+			SELECT member_id, name, dept_code, position_code, admin, member.reg_date
 			FROM member WHERE admin = #{param2} AND userBlindWhether = 0
 			ORDER BY member.reg_date DESC
 			LIMIT #{param3} OFFSET #{param4}
 		</select>
 		
 		<select id="employeeDeptTotalListByProcess" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, reg_date
+			SELECT member_id, name, dept_code, position_code, admin, member.reg_date
 			FROM member 
 			JOIN code ON dept_code = code_id
 			WHERE code_name LIKE CONCAT ('%',#{param3},'%') AND admin = #{param4} AND userBlindWhether = 0
@@ -53,14 +53,14 @@
 		</select>
 		
 		<select id="employeeNameTotalListByProcess" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, reg_date
+			SELECT member_id, name, dept_code, position_code, admin, member.reg_date
 			FROM member WHERE name LIKE CONCAT ('%',#{param3},'%') AND admin = #{param4} AND userBlindWhether = 0
 			ORDER BY member.reg_date DESC
 			LIMIT #{param5} OFFSET #{param6}
 		</select>
 		
 		<select id="employeePositionTotalListByProcess" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, reg_date
+			SELECT member_id, name, dept_code, position_code, admin, member.reg_date
 			FROM member 
 			JOIN code ON position_code = code_id
 			WHERE code_name LIKE CONCAT ('%',#{param3},'%') AND admin = #{param4} AND userBlindWhether = 0
@@ -123,14 +123,14 @@
 		
 		
 		<select id="employeeBlindTotalList" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin , modi_date FROM member
+			SELECT member_id, name, dept_code, position_code, admin , member.modi_date FROM member
 			WHERE userBlindWhether = 1
 			ORDER BY member.reg_date DESC
 			LIMIT #{param2} OFFSET #{param3}
 		</select>
 		
 		<select id="employeeBlindDeptTotalList" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, modi_date
+			SELECT member_id, name, dept_code, position_code, admin, member.modi_date
 			FROM member 
 			JOIN code ON dept_code = code_id
 			WHERE code_name LIKE CONCAT ('%',#{param3},'%') AND userBlindWhether = 1
@@ -139,14 +139,14 @@
 		</select>
 		
 		<select id="employeeBlindNameTotalList" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, modi_date
+			SELECT member_id, name, dept_code, position_code, admin, member.modi_date
 			FROM member WHERE name LIKE CONCAT ('%',#{param3},'%') AND userBlindWhether = 1
 			ORDER BY member.reg_date DESC
 			LIMIT #{param4} OFFSET #{param5}
 		</select>
 		
 		<select id="employeeBlindPositionTotalList" parameterType="HashMap" resultType="member">
-			SELECT member_id, name, dept_code, position_code, admin, modi_date
+			SELECT member_id, name, dept_code, position_code, admin, member.modi_date
 			FROM member 
 			JOIN code ON position_code = code_id
 			WHERE code_name LIKE CONCAT ('%',#{param3},'%') AND userBlindWhether = 1
@@ -328,5 +328,9 @@
 		<delete id="companyDelete">
 		    DELETE FROM cooper WHERE cooper_id = #{cooper_id3}
 		</delete>
+		
+		<select id="checkDuplicate" resultType="java.lang.String">
+            SELECT member_id FROM member WHERE member_id = #{member_id}
+        </select>
 		
 </mapper>
