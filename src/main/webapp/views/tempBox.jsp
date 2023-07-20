@@ -145,12 +145,12 @@
                   <button type="button" class="btn btn-default btn-sm" id="del" onclick="mailtrash(this)">
                     <i class="far fa-trash-alt"></i>&nbsp;&nbsp;삭제&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
-                  <button type="button" class="btn btn-default btn-sm" id="reply" onclick="reply(this)">
+                  <!-- <button type="button" class="btn btn-default btn-sm" id="reply" onclick="reply(this)">
                     <i class="fas fa-reply"></i>&nbsp;&nbsp;답장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
                   <button type="button" class="btn btn-default btn-sm" id="forwarding">
                     <i class="fas fa-share"></i>&nbsp;&nbsp;전달 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  </button>
+                  </button> -->
 <!--                   <select id="mailFilter">
                   	<option value="" selected disabled hidden>필터</option>
                   	<option value="all">모든 메일</option>
@@ -429,7 +429,7 @@ listCall(showPage);
 				 }else if(item.is_receiver == 3 && item.blind == false && item.temp == false){
 					 content += '<span class="type">[보낸 메일함]</span>';
 				 }else if(item.blind == true){
-					 content += '<span class="type">[휴지통]</span>';
+					 content += '';
 				 }else if(item.temp == true){
 					 content += '<span class="type">[임시보관함]</span>';
 				 }

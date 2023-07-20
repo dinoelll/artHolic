@@ -39,7 +39,7 @@ public interface MailDAO {
 
    HashMap<String, Object> tempList(HashMap<String, Object> params);
 
-   void mailFavorite(Integer mail_id, boolean isLike, String type, String member_id);
+   void mailFavorite(Integer mail_id, boolean isLike, String type, String member_id,String set);
 
    int tempListUpdate(HashMap<String, String> params);
 
@@ -47,7 +47,7 @@ public interface MailDAO {
 
    int savereceiverWrite(MailDTO dto);
 
-   MailDTO isFavoriteStatus(Integer mail_id, String type, String member_id);
+   MailDTO isFavoriteStatus(Integer mail_id, String type, String member_id,String set);
 
 	/*
 	 * int mailbookmark(int mailId, Boolean isFavorite, String type);
@@ -63,7 +63,7 @@ public interface MailDAO {
 
    int mailtrash(String mailId, String type,String member_id);
 
-   int maildel(String mailId,String member_id);
+   int maildel(int mail_id,String member_id, String set);
 
    int mymaildel(String mailId,String member_id);
 
@@ -72,6 +72,10 @@ public interface MailDAO {
 	void referrerMailAlarm(MailDTO dto);
 
 	void updateread(int mail_id, String type, Timestamp writeTime, String member_id);
+
+	void tempsaveupdate(String mail_id, Timestamp writeTime, String mailSubject, String mailContent);
+
+	int mailrestore(int mail_id, String member_id, String set);
 	
   //Object mailtempGet(int mail_id, String type);
 
