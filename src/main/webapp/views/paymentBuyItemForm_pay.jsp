@@ -482,7 +482,14 @@
 												  <div class="row" style="margin-bottom: 50px;">
 													  
 													  
-													
+													  <table class="my-table" id="referrer">
+													    <tr>
+													  	  <th style="background-color:white">참조자</th>
+														      <td>
+														     	 <input type="text" class="invisible-input" value="">
+														      </td>
+													    </tr>
+													  </table>
 													  
 												  </div>
 											  	
