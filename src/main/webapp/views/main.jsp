@@ -642,7 +642,7 @@ function myPaymentlistPrint(myPaymentlist) {
 	    });
 	  } else {
 		  content += '<tr>';
-		  content += '<td colspan="4" style="text-align: center;">신청한 결재가 없습니다.</td>';
+		  content += '<td colspan="5" style="text-align: center;">신청한 결재가 없습니다.</td>';
 		  content += '</tr>';
 	  }
 
