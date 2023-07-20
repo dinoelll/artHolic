@@ -109,8 +109,6 @@ public interface MemberDAO {
 			String searchText, int cnt, int offset);
 
 	int companyDelete(String cooper_id3);
-
-	String checkDuplicate(String memberId);
 	
 	
 	
