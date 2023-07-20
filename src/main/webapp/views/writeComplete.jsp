@@ -7,10 +7,10 @@
 <!-- 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
  -->
-   <!-- Ionicons -->
+	<!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!--  Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">   
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">	
 
   <!-- Font Awesome-->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -39,71 +39,71 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <style>
 
-   .main-sidebar {
-      background-color: #e9ddc6;
-   }
-   .mt-2 .nav .nav-item .nav-link p {
-      color : black;
-   }
-   .logo {
-      width : 231px;
-      height : 68px;
-   }
-   #footer {
-      margin-left: 0px;   
-   }
-   
-   .content {
-        display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 700px;
-      text-align: center;
-   }
-   
-   p{
-      color: gray;
-   }
-   
-   .btn-sm1 {
-      color: gray;
-      font-weight: bold;
-      background-color: white;
-      width: 114px;
-      border: none;
-      border-radius: 10px;
-      margin-top: 30px;
-   }
-   
-   .btn-sm2 {
-      color: white;
-      font-weight: bold;
-      background-color: #91bdce;
-      width: 114px;
-      border: none;
-      border-radius: 10px;
-      margin-top: 30px;
-      margin-left: 30px;
-   }
-   
-   .send-icon{
-      font-size: 150px;
-      color: #e9ddc6;
-   }
+	.main-sidebar {
+		background-color: #e9ddc6;
+	}
+	.mt-2 .nav .nav-item .nav-link p {
+		color : black;
+	}
+	.logo {
+		width : 231px;
+		height : 68px;
+	}
+	#footer {
+		margin-left: 0px;	
+	}
+	
+	.content {
+	  	display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 700px;
+		text-align: center;
+	}
+	
+	p{
+		color: gray;
+	}
+	
+	.btn-sm1 {
+		color: gray;
+		font-weight: bold;
+		background-color: white;
+		width: 114px;
+		border: none;
+		border-radius: 10px;
+		margin-top: 30px;
+	}
+	
+	.btn-sm2 {
+		color: white;
+		font-weight: bold;
+		background-color: #91bdce;
+		width: 114px;
+		border: none;
+		border-radius: 10px;
+		margin-top: 30px;
+		margin-left: 30px;
+	}
+	
+	.send-icon{
+		font-size: 150px;
+		color: #e9ddc6;
+	}
 
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
-   <div class="wrapper">
-      <jsp:include page="header.jsp"/>
-       <!-- Content Wrapper. Contains page content -->
+	<div class="wrapper">
+		<jsp:include page="header.jsp"/>
+	 	<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-      <!--<h1 class="m-0">Dashboard</h1> -->
+		<!--<h1 class="m-0">Dashboard</h1> -->
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -117,46 +117,47 @@
     <!-- /.content-header -->
     
     <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-       
-      <i class="fa-thin fa-paper-plane fa-beat"></i>
-      <br>
-      <br>
-      <br>
-      <br>
-      <p> - 상대방에게 메일 전송이 정상적으로 전송되었습니다. -</p>
-      <p> - 보낸 메일함에서 확인 가능 합니다. -</p>
-       
-       <a href="mailWrite.go" class="btn btn-primary btn-sm1 ">메일 쓰기</a>
-        <a href="inBox.go" class="btn btn-primary btn-sm2 ">보낸 메일함</a>
-       
-      </div>
-      <!-- /.container-fluid -->
-         
-   </section>
+	 <section class="content">
+	   <div class="container-fluid">
+	    
+		<i class="fas fa-paper-plane send-icon"></i>
+		<br>
+		<br>
+		<br>
+		<br>
+		<p> - 상대방에게 메일 전송이 정상적으로 전송되었습니다. -</p>
+		<p> - 받은 메일함에서 확인 가능 합니다. -</p>
+	    
+	    <a href="mailWrite.go" class="btn btn-primary btn-sm1 ">메일 쓰기</a>
+        <a href="inBox.go" class="btn btn-primary btn-sm2 ">받은 메일함</a>
+        <input type="hidden" name="type" value="receive">
+	    
+	   </div>
+	   <!-- /.container-fluid -->
+	      
+	</section>
     <!-- /.content -->
     
-      
-      <jsp:include page="footer.jsp"/>
-      </div>
-   </div>
-   
-   <!-- jQuery -->
-   <script src="plugins/jquery/jquery.min.js"></script>
-   <!-- jQuery UI -->
-   <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-   
-   <!-- Bootstrap 4 -->
-   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-   <!-- overlayScrollbars -->
-   <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-   <!-- AdminLTE App -->
-   <script src="dist/js/adminlte.js"></script>
+		
+		<jsp:include page="footer.jsp"/>
+		</div>
+	</div>
+	
+	<!-- jQuery -->
+	<script src="plugins/jquery/jquery.min.js"></script>
+	<!-- jQuery UI -->
+	<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+	
+	<!-- Bootstrap 4 -->
+	<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- overlayScrollbars -->
+	<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="dist/js/adminlte.js"></script>
 
-   <!-- AdminLTE for demo purposes 
-   <script src="dist/js/demo.js"></script>
-   -->
+	<!-- AdminLTE for demo purposes 
+	<script src="dist/js/demo.js"></script>
+	-->
 </body>
 
 <script>

@@ -44,8 +44,8 @@ public class InformService {
 //	}
 	
 	   @Transactional
-	   public ModelAndView informDetail(String board_id) {
-	      InformDTO dto = dao.informDetail(board_id);
+	   public ModelAndView informDetail(String board_id, String member_id) {
+	      InformDTO dto = dao.informDetail(board_id,member_id);
 	      ModelAndView mav = new ModelAndView("informDetail");
 	      mav.addObject("inform", dto);
 	      
@@ -123,6 +123,11 @@ public class InformService {
 			dao.is_formDel(id);
 		}
 		return map;
+	}
+
+	public int adminChk(String member_id) {
+		
+		return dao.adminChk(member_id);
 	}
 
 

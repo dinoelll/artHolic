@@ -8,60 +8,53 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
-<!-- Ionicons -->
-<link rel="stylesheet"
-   href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-<!--  Google Font: Source Sans Pro -->
-<link rel="stylesheet"
-   href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-
-<!-- Font Awesome-->
-<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-
-<!-- Tempusdominus Bootstrap 4 -->
-<link rel="stylesheet"
-   href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-
-<!--  iCheck -->
-<link rel="stylesheet"
-   href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-
-<!-- JQVMap
-  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-  -->
-<!-- Theme style-->
-<link rel="stylesheet" href="dist/css/adminlte.min.css">
-<!-- overlayScrollbars-->
-<link rel="stylesheet"
-   href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-
-<link rel="stylesheet" href="plugins/fullcalendar/main.css">
+<!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+  <!-- BS Stepper -->
+  <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
+  <!-- dropzonejs -->
+  <link rel="stylesheet" href="plugins/dropzone/min/dropzone.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
 
-  <!-- Bootstrap4 Duallistbox -->
-  <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 
-<script src="/js/jquery.twbsPagination.js" type="text/javascript"></script>
-
-<!-- Datetimepicker 라이브러리 불러오기 -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
 
 
-  <!-- 부트스트랩 JavaScript 파일 불러오기 -->
+
+
+  <!-- 부트스트랩 JavaScript 파일 불러오기
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    -->
+   <!-- 
   <script>
     $(function() {
       $("#datepicker").datepicker();
     });
   </script>
-
+ -->
 
 
 <style>
@@ -129,14 +122,21 @@
          margin-bottom: 15px;
          margin-left: 3px;
       }
+      .input-group.date {
+      	margin-left : 0px;
+      }
       
+      		#footer{
+		margin-left: 0px;
+	}
+      /*
             #footer {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    /* 기타 스타일 속성 추가 */
-}
+     기타 스타일 속성 추가 
+}*/
       
    </style>
 </head>
@@ -238,7 +238,7 @@
                         </button>
                      </div>
                      <div class="modal-body">
-                        <form action="projectWrite.do" method="post">
+                        <form action="projectWrite.do" id="writeForm" method="post">
                            <table>
                               <tr>
                                  <th>프로젝트명</th>
@@ -249,27 +249,55 @@
                               </tr>
                               <tr>
                                  <th>프로젝트 담당자</th>
-                                 <td><input type="text" name="project_manager" value="" /></td>
+                                 <td><input type="text" name="project_manager" id="project_manager" value="" /></td>
                               </tr>
                               <tr>
                                  <th>현장 관리자</th>
-                                 <td><input type="text" name="field_manager" value="" /></td>
+                                 <td><input type="text" name="field_manager" id="field_manager" value="" /></td>
                               </tr>
                               <tr>
                                  <th>담당자 연락처</th>
-                                 <td><input type="text" name="manager_phone" value="" /></td>
+                                 <td><input type="text" name="manager_phone" id="manager_phone" value="" /></td>
                               </tr>
                               <tr>
                                  <th colspan="2" style="text-align: center;"><br>프로젝트 일정</th>
                               </tr>
+                              <!-- 
                               <tr>
                                  <th>시작 일</th>
                                  <td><input type="text" name="start_date" id="start_date" readonly="readonly" /></td>
                               </tr>
+                               -->
+                               <tr>
+                               <th>시작 일</th>
+                               	 <td>
+	                               	 <div class="input-group date" id="reservation" data-target-input="nearest">
+	                       				 <input name="start_date" id="start_date" type="text" class="form-control datetimepicker-input" data-target="#reservation"/>
+	                       				 <div class="input-group-append" data-target="#reservation" data-toggle="datetimepicker">
+	                            			<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+	                        			</div>
+	                   				 </div>
+                   				 </td>
+                               </tr>
+                               
+                               <tr>
+                               <th>종료 일</th>
+                                 <td>
+	                               	<div class="input-group date" id="reservation2" data-target-input="nearest">
+	                       				 <input name="end_date" id="end_date" type="text" class="form-control datetimepicker-input" data-target="#reservation2"/>
+	                       				 <div class="input-group-append" data-target="#reservation2" data-toggle="datetimepicker">
+	                            			<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+	                        			</div>
+	                   				 </div>
+                   				 </td>
+                               </tr>
+                               
+                               <!-- 
                               <tr>
                                  <th>종료 일</th>
                                  <td><input type="text" name="end_date" id="end_date" readonly="readonly"/></td>
                               </tr>
+                               -->
                            </table>
                         </form>
                      </div>
@@ -324,13 +352,28 @@
                                  <th colspan="2" style="text-align: center;"><br>프로젝트 일정</th>
                               </tr>
                               <tr>
-                                 <th>시작 일</th>
-                                 <td><input type="text" name="start_date" id="start_date2" /></td>
-                              </tr>
-                              <tr>
-                                 <th>종료 일</th>
-                                 <td><input type="text" name="end_date" id="end_date2" /></td>
-                              </tr>
+                              <th>시작 일</th>
+                               	 <td>
+	                               	 <div class="input-group date" id="reservation3" data-target-input="nearest">
+	                       				 <input name="start_date2" id="start_date2" type="text" class="form-control datetimepicker-input" data-target="#reservation3"/>
+	                       				 <div class="input-group-append" data-target="#reservation3" data-toggle="datetimepicker">
+	                            			<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+	                        			</div>
+	                   				 </div>
+                   				 </td>
+                               </tr>
+                               
+                               <tr>
+                               <th>종료 일</th>
+                                 <td>
+	                               	<div class="input-group date" id="reservation4" data-target-input="nearest">
+	                       				 <input name="end_date2" id="end_date2" type="text" class="form-control datetimepicker-input" data-target="#reservation4"/>
+	                       				 <div class="input-group-append" data-target="#reservation4" data-toggle="datetimepicker">
+	                            			<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+	                        			</div>
+	                   				 </div>
+                   				 </td>
+                               </tr>
                            </table>
                         </form>
                      </div>
@@ -398,28 +441,43 @@
    
     </section>
     <!-- /.content -->
-    <div id="footer">
-    <jsp:include page="footer.jsp"/>
+    <div>
+    
     </div>
+    <jsp:include page="footer.jsp"/>
    </div>
    
 </div>
 
    
    
-   <!-- jQuery UI -->
-   <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-   
-   <!-- Bootstrap4 Duallistbox -->
+  <!-- jQuery 
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Select2 -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
+<!-- Bootstrap4 Duallistbox -->
 <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-   
-   <!-- Bootstrap 4 -->
-   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-   <!-- overlayScrollbars -->
-   <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-   <!-- AdminLTE App -->
-   <script src="dist/js/adminlte.js"></script>
-   <!-- DataTables  & Plugins -->
+<!-- InputMask -->
+<script src="plugins/moment/moment.min.js"></script>
+<script src="plugins/inputmask/jquery.inputmask.min.js"></script>
+<!-- date-range-picker -->
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- BS-Stepper -->
+<script src="plugins/bs-stepper/js/bs-stepper.min.js"></script>
+<!-- dropzonejs -->
+<script src="plugins/dropzone/min/dropzone.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+
+
+
+
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -429,8 +487,27 @@
 
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
 </body>
 <script>
+
+//$("#datepicker").datepicker();
+
+
+//Date picker
+$('#reservation').datetimepicker({
+    format: 'L'
+});
+$('#reservation2').datetimepicker({
+    format: 'L'
+});
+$('#reservation3').datetimepicker({
+    format: 'L'
+});
+$('#reservation4').datetimepicker({
+    format: 'L'
+});
+
 
 var msg = "${msg}";
 if (msg != "") {
@@ -464,9 +541,19 @@ function save() {
 
     if ($('#project_name').val() == "") {
        alert("프로젝트명을 입력 해주세요.");
+    } else if($('#project_manager').val() == ""){
+    	alert("프로젝트 담당자를 입력 해주세요.");
+    } else if($('#field_manager').val() == ""){
+    	alert("현장 관리자를 입력 해주세요.");
+    } else if($('#manager_phone').val() == ""){
+    	alert("담당자 연락처를 입력 해주세요.");
+    } else if($('#start_date').val() == ""){
+    	alert("프로젝트 시작 일을 입력 해주세요.");
+    } else if($('#end_date').val() == ""){
+    	alert("프로젝트 종료 일을 입력 해주세요.");
     } else {
        /* $('input[name="content"]').val(content); */
-       $('form').submit();
+       $('#writeForm').submit();
 
     }
  }
@@ -485,7 +572,7 @@ $('#myproject').change(function() {
    // 리스트 불러오기
 function listCall(page,cnt){
    		console.log(myproject);
-   		console.log('리스트불러와!!!!!!!!!!!');
+   		console.log('리스트 부르기');
         var cnt = 10;
       $.ajax({
          type:'post',
@@ -529,53 +616,15 @@ function listCall(page,cnt){
    });
 }
    
-/*    // 달력 DatePicker
-$(function() {
-    $("#datepicker").datepicker();
-  });
-   */
-   $(function() {
-        $("#start_date").datepicker({
-          dateFormat: "yy-mm-dd",
-          changeMonth: true,
-          changeYear: true,
-          yearRange: "-100:+0"
-        });
-      });
 
-   $(function() {
-        $("#end_date").datepicker({
-          dateFormat: "yy-mm-dd",
-          changeMonth: true,
-          changeYear: true,
-          yearRange: "-100:+0"
-        });
-      });
-   
-   $(function() {
-       $("#start_date2").datepicker({
-         dateFormat: "yy-mm-dd",
-         changeMonth: true,
-         changeYear: true,
-         yearRange: "-100:+0"
-       });
-     });
-
-  $(function() {
-       $("#end_date2").datepicker({
-         dateFormat: "yy-mm-dd",
-         changeMonth: true,
-         changeYear: true,
-         yearRange: "-100:+0"
-       });
-     });
    
    //리스트 작성
 function listDraw(projectList) {
      console.log("listDraw Call");
      var content = '';
      
-
+     
+     if (projectList && Array.isArray(projectList) && projectList.length > 0) {
      projectList.forEach(function(dto,project_id){
          content += '<tr>';
          content += '<th><a href="projectCalendar.go?project_id=' + dto.project_id + '&project_name=' + dto.project_name + '">' + dto.project_name + '</a></th>';
@@ -583,11 +632,25 @@ function listDraw(projectList) {
          content += '<th>'+dto.field_manager+'</th>';
          content += '<td>'+ dto.manager_phone +'</td>';
          content += '<td>'+ dto.start_date + '~' + dto.end_date +'</td>';
+         console.log(dto.member_id);
+         console.log('${sessionScope.loginId}');
+         if(dto.member_id == '${sessionScope.loginId}') {
          content += '<td><button class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-lg2">인원추가</button></td>';
-         content += '<td><input type="button" id="projectUpdate" class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-update" value="수정"></td>';
-         content += '<td><a href="projectDel.do?project_id='+dto.project_id+'" class="btn btn-danger btn-sm">삭제</a></td>';
+        	 content += '<td><input type="button" id="projectUpdate" class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-update" value="수정"></td>';
+        	 content += '<td><button onclick="deleteConfirm('+'\'projectDel.do?project_id='+dto.project_id+'\')" class="btn btn-danger btn-sm">삭제</button></td>';
+         } else {
+        	 content += '<td>인원선택불가</td>'
+        	 content += '<td><span>수정불가</span></td>';
+        	 content += '<td><span>삭제불가</span></td>';
+         }
+         
          content += '</tr>';
        });
+     } else {
+ 	    content += '<tr>';
+ 	    content += '<td colspan="8" style="text-align: center;">검색한 정보가 없습니다.</td>';
+ 	    content += '</tr>';
+ 	  }
 
      $('#projectList').empty();
      $('#projectList').append(content);
@@ -600,7 +663,14 @@ function listDraw(projectList) {
      })
    }
    
-   
+   function deleteConfirm(path) {
+	   console.log(path);
+	   if (!confirm("프로젝트를 삭제 하시겠습니까?")) {
+           
+       } else {
+           location.href=path;
+       }
+   }
    
    
 // 모달 수정창이 열릴 때 호출되는 함수
@@ -700,7 +770,7 @@ $(document).ready(function() {
         if(option.length>0){
            
            option.forEach(function(item,member_id){
-              content += '<option value="'+item.member_id+'">'+item.dept_code+'&nbsp;&nbsp;'+item.position_code+'&nbsp;&nbsp;'
+              content += '<option value="'+item.member_id+'">'+item.dept_name+'&nbsp;&nbsp;'+item.position_name+'&nbsp;&nbsp;'
                  +item.name+'</option>';
            })
         }else{

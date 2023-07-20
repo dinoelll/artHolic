@@ -108,6 +108,7 @@
 	border-radius: 5px;
 	max-width: 400px;
 	text-align: center;
+	width: 400px;
 }
 
 #modal-title {
@@ -119,17 +120,14 @@
 }
 
 #modal-form button {
-	margin: 10px;
-	padding: 5px 10px;
-	border-radius: 5px;
-	background-color: #3c8dbc;
-	color: #fff;
-	border: none;
-	cursor: pointer;
+	
 }
 
+#delete:hover {
+	background-color: #357ca5;
+}
 
-#modal-form button:hover {
+#change:hover {
 	background-color: #357ca5;
 }
 
@@ -138,77 +136,132 @@
 }
 
 .btn-primary {
-    background-color: #91bdce;
-    border-color: #91bdce;;
-    box-shadow: none;
+	background-color: #91bdce;
+	border-color: #91bdce;;
+	box-shadow: none;
 }
 
 .btn-primary.disabled, .btn-primary:disabled {
-    color: #fff;
-    background-color: #91bdce;
-    border-color: #91bdce;
+	color: #fff;
+	background-color: #91bdce;
+	border-color: #91bdce;
 }
-#save{
+
+#save {
 	float: center;
 	background-color: #91bdce;
-    border-color: #91bdce;
-     color: #fff;
+	border-color: #91bdce;
+	color: #fff;
 }
 
-.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #4d798a;
-    border-color: #4d798a;
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active,
+	.show>.btn-primary.dropdown-toggle {
+	color: #fff;
+	background-color: #4d798a;
+	border-color: #4d798a;
 }
-
-
 
 .bg-success {
-    background-color: #05b6fa!important;
+	background-color: #05b6fa !important;
 }
+
 .bg-warning {
-    background-color: #36d1f7!important;
+	background-color: #36d1f7 !important;
 }
+
 .bg-info {
-    background-color: #4d798a!important;
+	background-color: #4d798a !important;
 }
+
 .bg-primary {
-    background-color: #11515e!important;
+	background-color: #11515e !important;
 }
+
 .bg-danger {
-    background-color: #4f7178!important;
+	background-color: #4f7178 !important;
 }
+
 4f7178
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .text-primary {
-    color: #05b6fa!important;
+	color: #05b6fa !important;
 }
+
 .text-warning {
-    color: #36d1f7!important;
+	color: #36d1f7 !important;
 }
+
 .text-success {
-    color: #4d798a!important;
+	color: #4d798a !important;
 }
+
 .text-danger {
-    color: #11515e!important;
+	color: #11515e !important;
 }
 
 .row {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -7.5px;
-    margin-left: -7.5px;
-    width: 80%;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	margin-right: -7.5px;
+	margin-left: -7.5px;
+	width: 80%;
 }
 
 .wrapper, body, html {
-    min-height: 100%;
-    width: 100%;
+	min-height: 100%;
+	width: 100%;
 }
 
+#change{
+	background-color: #3c8dbc;
+	margin: 10px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	float:left;
+}
+#delete {
+	background-color: #3c8dbc;
+	margin: 10px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	float:right;
+}
 
+#x {
+	background-color: white;
+	color: black;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 5px;
+	margin: 10px;
+	float: right;
 
+	position: absolute;
+    top: 410px;
+    right: 745px;
+    cursor: pointer;
+}
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -226,8 +279,8 @@
 						<!-- /.col -->
 						<div class="col-sm-6">
 							<ol class="breadcrumb float-sm-right">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active">Dashboard v1</li>
+								<!-- 								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item active">Dashboard v1</li> -->
 							</ol>
 						</div>
 						<!-- /.col -->
@@ -241,12 +294,19 @@
 
 			<div id="modal" style="display: none;">
 				<!-- 모달 내부의 입력 폼 -->
+
 				<form id="modal-form">
-					<label for="modal-title">내용</label> <input type="text"
-						id="modal-title" name="title"> <br>
-					<button type="submit">변경</button>
+					<div>
+						<button type="button" onclick="closeModal()" id="x">x</button>
+					</div>
+					<div >
+						<label for="modal-title">내용</label>
+
+					</div>
+					<input type="text" id="modal-title" name="title"> <br>
+					<button type="submit" id="change">변경</button>
 					<button type="button" id="delete">삭제</button>
-					<button type="button" onclick="closeModal()">취소</button>
+
 				</form>
 			</div>
 
@@ -261,10 +321,11 @@
 								<div class="card">
 									<div class="card-header">
 										<!-- <h4 class="card-title">일정 </h4> -->
-										<button onclick="sendEventsToServer()" id="save" class="btn">일정 저장</button>
+										<button onclick="sendEventsToServer()" id="save" class="btn">일정
+											저장</button>
 									</div>
 									<!-- <button onclick="cl_ev()">이벤트 불러오기</button> -->
-									
+
 
 
 
@@ -277,9 +338,9 @@
 											<div class="external-event bg-primary">회식</div>
 											<div class="external-event bg-danger">휴가</div>
 											<div class="checkbox">
-												 <label for="drop-remove"> <input type="checkbox"
+												<label for="drop-remove"> <input type="checkbox"
 													id="drop-remove"> 일정 리스트에서 삭제하기
-												</label> 
+												</label>
 											</div>
 										</div>
 									</div>

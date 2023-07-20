@@ -774,10 +774,12 @@
 <!-- InputMask -->
 <script src="plugins/moment/moment.min.js"></script>
 <script src="plugins/inputmask/jquery.inputmask.min.js"></script>
+
 <!-- date-range-picker -->
 <script src="plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap color picker -->
 <script src="plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- BS-Stepper -->
@@ -1031,7 +1033,7 @@ function writeVacationTemp() {
 	      console.log(data);
 	      if (data != null) {
 		        alert('요청이 완료되었습니다.');
-		        location.href ='/paymentList.go';
+		        location.href ='/paymentListTemp.go';
 	        
 	      } else {
 	        alert('전송 실패');

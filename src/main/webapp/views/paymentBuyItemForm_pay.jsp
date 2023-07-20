@@ -482,14 +482,7 @@
 												  <div class="row" style="margin-bottom: 50px;">
 													  
 													  
-													  <table class="my-table" id="referrer">
-													    <tr>
-													  	  <th style="background-color:white">참조자</th>
-														      <td>
-														     	 <input type="text" class="invisible-input" value="">
-														      </td>
-													    </tr>
-													  </table>
+													
 													  
 												  </div>
 											  	
@@ -964,9 +957,9 @@ function updateCharCount() {
         dataType: 'json',
         success: function(data) {
             console.log(data);
-            if (data.success != null) {
-            	alert('전송 성공');
-            	location.href ='./';
+    	      if (data != null) {
+    	  	        alert('결재요청이 완료되었습니다.');
+    	  	        location.href ='/paymentListDone.go';
             } else {
                 
             }
@@ -1023,9 +1016,9 @@ function updateCharCount() {
 	        dataType: 'json',
 	        success: function(data) {
 	            console.log(data);
-	            if (data != null) {
-		  	        alert('요청이 완료되었습니다.');
-		  	        location.href ='/paymentListDone.go';
+	    	      if (data != null) {
+	    	  	        alert('반려요청이 완료되었습니다.');
+	    	  	        location.href ='/paymentListDone.go';
 	            } else {
 	                
 	            }

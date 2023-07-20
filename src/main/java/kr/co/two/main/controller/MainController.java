@@ -34,6 +34,7 @@ public class MainController {
 	
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public String main(HttpSession session, Model model) {
+		String page = "login";
 		
         String member_id = (String) session.getAttribute("loginId");
         session.getAttribute("admin");

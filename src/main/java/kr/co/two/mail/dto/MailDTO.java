@@ -19,7 +19,7 @@ public class MailDTO {
    private String mailContent;
    private boolean Favorites;
    private boolean temp;
-   private boolean blind;
+   private String blind;
    private String type;
    
    //mail_receiver
@@ -92,10 +92,10 @@ public class MailDTO {
    public void setRead_chk(boolean read_chk) {
       this.read_chk = read_chk;
    }
-   public boolean isBlind() {
+   public String getBlind() {
       return blind;
    }
-   public void setBlind(boolean blind) {
+   public void setBlind(String blind) {
       this.blind = blind;
    }
    public String getReference() {

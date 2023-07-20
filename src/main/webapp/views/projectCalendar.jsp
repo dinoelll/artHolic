@@ -182,18 +182,6 @@
 	background-color: #4f7178 !important;
 }
 
-4f7178
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -213,9 +201,11 @@
 	color: #11515e !important;
 }
 
-.subject {
-	color: #91bdce;
-}
+ .subject {
+	color: black;
+	text-decoration: none;
+	background-color: transparent;
+}  
 
 #project {
 	color: #91bdce;
@@ -245,8 +235,8 @@
 						<!-- /.col -->
 						<div class="col-sm-6">
 							<ol class="breadcrumb float-sm-right">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active">Dashboard v1</li>
+	<!-- 							<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item active">Dashboard v1</li> -->
 							</ol>
 						</div>
 						<!-- /.col -->

@@ -770,7 +770,7 @@
 					if(item.member_id == name) {
 						content+='';
 					}else {
-						content+='<tr><th><input type="checkbox" name="member_id" value="'+item.member_id+'" class="create_input"></th><th>'+item.member_id+'</th><th>'+item.dept_code+'</th></tr>';
+						content+='<tr><th><input type="checkbox" name="member_id" value="'+item.member_id+'" class="create_input"></th><th>'+item.name+'</th><th>'+item.code_name+'</th></tr>';
 					}
 					
 				});
@@ -812,7 +812,7 @@
 					if(item.member_id == name) {
 						content+='';
 					}else {
-						content+='<tr><th><input type="checkbox" name="member_id" value="'+item.member_id+'" class="invite_input"></th><th>'+item.member_id+'</th><th>'+item.dept_code+'</th></tr>';
+						content+='<tr><th><input type="checkbox" name="member_id" value="'+item.member_id+'" class="invite_input"></th><th>'+item.name+'</th><th>'+item.code_name+'</th></tr>';
 					}
 					
 				});

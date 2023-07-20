@@ -35,6 +35,7 @@ import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.util.UriUtils;
 
 import kr.co.two.mail.dto.MailDTO;
 import kr.co.two.mail.service.MailService;
@@ -82,13 +83,13 @@ public class MailController {
    @RequestMapping(value="/mailWrite.go")
    public String mailWrite(Model model,HttpSession session) {
 		
-		 String page = "mailWrite"; 
+		 /*String page = "mailWrite"; 
 		 if (session.getAttribute("model") != null) {
 			Object mailinfo = session.getAttribute("model");
 			model.addAttribute("model", mailinfo);
 			logger.info("maidinfo"+mailinfo);
 			session.removeAttribute("model");
-		}
+		}*/
 		
 		 
       return "mailWrite";
@@ -113,11 +114,12 @@ public class MailController {
 	   model.addAttribute("model", service.mailDetail(model,seletedMailId,type,member_id));
 	   if(type.equals("temp")){
 		   logger.info("임시저장왔따.");
-		   HashMap<String, ArrayList<MailDTO>> map = (HashMap<String, ArrayList<MailDTO>>) service.mailDetail(model,seletedMailId,type,member_id);
-		   logger.info("map:"+map.get("memberdto"));
-		   
-		   session.setAttribute("model", service.mailDetail(model,seletedMailId,type,member_id));
-		   page = "redirect:/mailWrite.go?selfBox=true";
+		   //HashMap<String, ArrayList<MailDTO>> map = (HashMap<String, ArrayList<MailDTO>>) service.mailDetail(model,seletedMailId,type,member_id);
+		   //logger.info("map:"+map.get("memberdto"));
+		   //session.setAttribute("model", service.mailDetail(model,seletedMailId,type,member_id));
+		   //page = "redirect:/mailWrite.go?selfBox=true";
+		   model.addAttribute("model", service.mailDetail(model, seletedMailId, type, member_id));
+		   model.addAttribute("type", type);
 	   }
 	   model.addAttribute("set", params.get("set"));
 	   return page;
@@ -167,7 +169,7 @@ public class MailController {
    // 메일 전송 완료 페이지 이동
    @GetMapping(value="/writeComplete.go")
    public String writeComplete() {
-      
+	   logger.info("test2");
       return "writeComplete";
    }
    
@@ -227,16 +229,17 @@ public class MailController {
    
    //메일 상세보기 파일 다운로드
    @GetMapping(value="mailPhotoDownload.do")
-   public ResponseEntity<Resource> mailPhotoDownload(String path) {
+   public ResponseEntity<Resource> mailPhotoDownload(String path,String file) {
       
       Resource body = new FileSystemResource(root+"/"+path);
       HttpHeaders header = new HttpHeaders();
-      String fileName = "이미지"+path.substring(path.lastIndexOf("."));
+		/* String fileName = "이미지" + path.substring(path.lastIndexOf(".")); */
+      String fileName = UriUtils.encode(file, "UTF-8");
       header.add("Content-type", "application/octet-stream");
-      header.add("content-Disposition", "attatchment;fileName\""+fileName+"\"");
-      
-      return new ResponseEntity<Resource>(body,header,HttpStatus.OK);
-   }
+      header.add("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+      return new ResponseEntity<>(body, header, HttpStatus.OK);
+  }
    
    
    // 임시저장
@@ -285,19 +288,28 @@ public class MailController {
    // mail 즐겨찾기
    @PostMapping(value="mail/Like.ajax")
    @ResponseBody
-   public HashMap<String, Object> mailFavorite(@RequestParam("mailId") Integer mail_id, boolean isLike, @RequestParam String type,HttpSession session) {
-      logger.info("mail_id: "+mail_id+"/"+"isLike: "+isLike+"/type: "+type);
+   public HashMap<String, Object> mailFavorite(@RequestParam("mailId") Integer mail_id, boolean isLike, @RequestParam String type,HttpSession session,
+		   @RequestParam(required = false) String set) {
+      logger.info("mail_id: "+mail_id+"/"+"isLike: "+isLike+"/type: "+type+"/set: "+set);
       String member_id = (String) session.getAttribute("loginId");
-      return service.mailFavorite(mail_id,isLike,type,member_id);
+      return service.mailFavorite(mail_id,isLike,type,member_id,set);
    }
    
-   
+   // 휴지통
    @PostMapping(value="mail/trash.ajax")
    @ResponseBody
-   public HashMap<String, Object> mailtrash(@RequestParam String mailId, @RequestParam String type,HttpSession session){
-	   logger.info("mailId: "+mailId+"/ type: "+type);
+   public HashMap<String, Object> mailtrash(@RequestParam String mailId, @RequestParam String type,HttpSession session, @RequestParam(required = false) String set){
+	   logger.info("mailId: "+mailId+"/ type: "+type+"/ set: "+set);
 	   String member_id = (String) session.getAttribute("loginId");
-	   return service.mailtrash(mailId,type,member_id);
+	   return service.mailtrash(mailId,type,member_id,set);
+   }
+   
+   @PostMapping(value="mail/restore.ajax")
+   @ResponseBody
+   public HashMap<String, Object> mailrestore(@RequestParam String mail_id, @RequestParam String type, @RequestParam String set, HttpSession session){
+	   logger.info("mail_id: "+mail_id+"/type: "+type+"/set: "+set);
+	   String member_id = (String) session.getAttribute("loginId");
+	   return service.mailrestore(Integer.parseInt(mail_id),member_id,set);
    }
 
 

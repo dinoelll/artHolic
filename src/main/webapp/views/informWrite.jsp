@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <title>ArtHolic</title>
   
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
   <!-- Editor -->
   <link rel="stylesheet" href="/richtexteditor/res/style.css">
 <link rel="stylesheet" href="/richtexteditor/rte_theme_default.css">
@@ -102,7 +104,6 @@
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 
 </body>
 <script>

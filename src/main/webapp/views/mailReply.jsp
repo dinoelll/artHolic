@@ -114,11 +114,11 @@
                         <table>
                            <tr>
                               <th>보낸사람:</th>
-                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-sender"></span></td>
+                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-sender"></span></span></td>
                            </tr>
                            <tr>
                               <th>받는사람:</th>
-                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-recipient"></span></td>
+                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-recipient"><span id="primember"></span></span></td>
                            </tr>
                            <tr>
                               <th>참조:</th>
@@ -130,20 +130,20 @@
                            </tr>
                            <tr>
                               <th>제목:</th>
-                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-mailSubject"></span></td>
+                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-mailSubject"><span id="prisubject"></span></span></td>
                            </tr>
                            <tr>
                               <td colspan="2"><p></p></td>
                            </tr>
                            <tr>
-                              <td colspan="2"><span id="preview-mailContent"></span></td>
+                              <td colspan="2"><span id="preview-mailContent"><span id="pricontent"></span></span></td>
                            </tr>
                         </table>
                      </div>
                      <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default"
                            data-dismiss="modal">수정</button>
-                        <button type="submit" class="btn btn-primary">보내기</button>
+                        <button type="submit" class="btn btn-primary" onclick="send()">보내기</button>
                      </div>
                   </div>
                   <!-- /.modal-content -->
@@ -245,10 +245,13 @@
                         <div class="form-group" id="form-sendMember">
                            받는사람
                            <c:if test="${set=='reply'}">
-                           	<input class="form-control" value="${model.memberdto.get(0).dept_name}&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}" name="sendMember" id="recipient-input" readOnly>
+                           	<input class="form-control" value="${model.memberdto.get(0).dept_name}팀&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}" name="sendMember" id="recipient-input" readOnly>
                         	</c:if> 
                         	<c:if test="${set=='forwarding' }">
                         		<input class="form-control" value="" name="sendMember" id="recipient-input" readOnly>
+                        	</c:if>
+                        	<c:if test="${set == null}">
+                        		<input class="form-control" name="sendMember" id="recipient-input" readOnly>
                         	</c:if>
                         </div>
                         <div class="form-group" id="form-referenceMember">
@@ -262,12 +265,19 @@
                            <c:if test="${set=='forwarding' }">
                            	<input class="form-control" name="mailSubject" id="mailSubject" value="PW: ${model.dto.get(0).mailSubject}">
                            </c:if>
+                           <c:if test="${model.memberdto.get(0).temp == true}">
+                           		<input class="form-control" name="mailSubject" id="mailSubject" value="${model.memberdto.get(0).mailSubject}">
+                           </c:if> 
                         </div>
                         <div class="form-group" id="mailMessage">
                            
                         </div>
                         <div class="form-group">
                            <textarea id="compose-textarea" class="form-control" style="height: 300px" name="mailContent">	
+                           <c:if test="${model.memberdto.get(0).temp == true}">
+                           		${model.memberdto.get(0).mailContent}
+                           </c:if>
+                           <c:if test="${set =='reply' || set== 'forwarding' }">
                            <br/>
                            <br/>
                            <br/>
@@ -279,18 +289,18 @@
                            -----Original Message-----
                            <br/>
                  <p>subject&nbsp;:&nbsp; ${model.dto.get(0).mailSubject}</p>
-                 <p>From&nbsp;:&nbsp;${model.memberdto.get(0).dept_name}&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}</p>
+                 <p>From&nbsp;:&nbsp;${model.memberdto.get(0).dept_name}팀&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}</p>
                  <p>To&nbsp;:&nbsp;
                <c:forEach items="${model.dto}" var="item">
                        <c:if test="${item.is_receiver == 0 || item.is_receiver == 2}">
-                          ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                          ${item.dept_name}팀&nbsp; ${item.position_name}&nbsp;${item.name}
                        </c:if>
                     </c:forEach>
                     </p>
                 <p>cc&nbsp;:&nbsp;
                    <c:forEach items="${model.dto}" var="item">
                       <c:if test="${item.is_receiver == 1}">
-                         ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                         ${item.dept_name}팀&nbsp; ${item.position_name}&nbsp;${item.name}
                       </c:if>
                    </c:forEach>
                    </p>
@@ -302,6 +312,7 @@
               		${file.ori_file_name }
                 </c:forEach>
                 </p>
+                </c:if>
                            </textarea>
                         </div>
                         <div class="form-group">
@@ -309,7 +320,13 @@
                               <i class="fas fa-paperclip"></i> Attachment
                               <input type="file" name="attachment" multiple="multiple" id="attachment-input">
                            </div>
-                           <div id="attachment-info"></div>
+                           <div id="attachment-info">
+                           <c:if test= "${model.memberdto.get(0).temp == true}">
+                           <c:forEach items="${model.mailpthotoList}" var = "file">
+			              		${file.ori_file_name }
+			                </c:forEach>
+			                </c:if>
+                           </div>
                         </div>
                      </div>
                      <!-- /.card-body -->
@@ -322,7 +339,12 @@
                      </div>
                      <div class="tempList" id="tempList">
                      	<c:if test="${set=='reply'}">
-                        <input type="hidden" class="approvers" name="approvers" value="${model.memberdto.get(0).send}">
+                        	<input type="hidden" class="approvers" name="approvers" value="${model.memberdto.get(0).send}">
+                        	<input type="hidden" class="set" name="set" value="${set}">
+                        </c:if>
+                        <c:if test="${type=='temp'}">
+                        	<input type="hidden" class="type" name="type" value="${type}">
+                        	<input type="hidden" calss="mailId" id="mail_id" name="mail_id" value="${model.memberdto.get(0).mail_id}">
                         </c:if>
                      </div>
                   </form>
@@ -392,78 +414,56 @@
       document.querySelector('.mailCard1').classList.remove('hidden');
       document.querySelector('.mailCard2').classList.add('hidden');
       document.getElementById('form-sendMember').style.display = 'block';
-       document.getElementById('form-referenceMember').style.display = 'block';
-       document.getElementById('mysendButton').classList.add('hidden');
-       document.getElementById('sendButton').classList.remove('hidden');
+      document.getElementById('form-referenceMember').style.display = 'block';
+      document.getElementById('mysendButton').classList.add('hidden');
+      document.getElementById('sendButton').classList.remove('hidden');
    }
    
    // URL에서 매개변수 추출
    const urlParams = new URLSearchParams(window.location.search);
    const selfBoxParam = urlParams.get('selfBox');
-   //const tempParams = urlParams.get('type');
    console.log(selfBoxParam);
-   //console.log(tempParams);
    
    if (selfBoxParam) {
      selfBox();
    } else {
      mailBox();
    }
-/*    if(tempParams){
-	   selfBox();
-   }else{
-	   mailBox();
-   } */
-   
-   // temp 아작스로 값 불러오기
-   /* $(document).ready(function() {
-        $.ajax({
-          url: 'mail/tempGet.ajax', 
-          type: 'post',
-          data: {
-        	  'type' : temp,
-        	  'mail_id' : $('#mail_id').val()
-          },
-          dataType:'json',
-          success: function(data) {
-             console.log(data);
-             optionPrint(data.dto);
-          },error: function(e){
-             console.log(e);
-          }
-        })
-        
-        function tempGetPrint(data){
-           var content;
-           if(data.length>0){
-              data.forEach(function(item,mail_id){
-            	  $('#mailSubject').val(item.mailSubject);
-            	  $('#mailContent').val(item.mailContent);
-              })
-           }else{
-              console.log('없음');
-           }
-        }
-   }) */
+   if ($("input[name='type']").val() === 'temp') {
+	    selfBox();
+	} else {
+	    mailBox();
+	}
    
 
 
-   // 받는사람, 제목, 내용 미 입력 시 메세지 (수정필요)
-   /* $(document).ready(function() {
+	// 받는사람, 제목, 내용 미 입력 시 메세지 
+   $(document).ready(function() {
        $('#mailForm').submit(function(event) {
-           var recipientInput = $('#recipient-input').val();
+    	   var recipientInput = $('#recipient-input').val();
            var mailSubject = $('#mailSubject').val();
            var composeTextarea = $('#compose-textarea').val();
-
-           if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
-               var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
-               $('#mailMessage').html('<p class="error">' + Message + '</p>');
-               event.preventDefault();
-           } else {
-               $('#mailMessage').empty(); // 문구 삭제
+           var mailCard2 = document.querySelector('.mailCard2');
+           var isHidden2 = mailCard2.classList.contains('hidden');
+           if (isHidden2) {
+        	   if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
+                   var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
+                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
+                   event.preventDefault();
+               } else {
+                   $('#mailMessage').empty(); // 문구 삭제
+               }
+           } else{
+        	   if( mailSubject == "" || composeTextarea.trim() == ""){
+    			   var Message = "제목, 내용을 모두 입력해주세요.";
+                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
+                   event.preventDefault();
+               } else {
+                   $('#mailMessage').empty(); // 문구 삭제
+               }
            }
-       });
-   }); */
+       })
+    })
 
 
    $(function () {
@@ -560,6 +560,7 @@
 
            $('#recipient-input').val(selectedApprovers);
            $('#cc-input').val(selectedReferrers);
+           $('#modal-lg2').modal('hide');
        });
    });
    
@@ -584,7 +585,7 @@
            if(option.length>0){
               
               option.forEach(function(item,member_id){
-                 content += '<option value="'+item.member_id+'">'+item.dept_name+'&nbsp;&nbsp;'+item.position_name +'&nbsp;&nbsp;'
+                 content += '<option value="'+item.member_id+'">'+item.dept_name+'팀&nbsp;&nbsp;'+item.position_name +'&nbsp;&nbsp;'
                     +item.name+'</option>';
               })
            }else{
@@ -660,7 +661,8 @@
    
    // 저장
    function save(){
-      $('#mailForm').append('<input type="hidden" name="type" value="save">');
+      //$('#mailForm').append('<input type="hidden" name="type" value="tempsave">');
+      $('input[name="type"]').attr('value','tempsave');
       $('#mailForm').submit();
    }
    
@@ -702,14 +704,6 @@
        }
       });
        
-   }
-   
-   // 임시저장 두번째부터
-   function tempList(mail_id) {
-      var content;
-      content = '<input type="hidden" id="mail_id" name="mail_id" value="' + mail_id + '">';
-      
-      $('#tempList').append(content);
    }
 
    

@@ -27,6 +27,8 @@ public class ProjectDTO {
    private String email;
    private String dept_code;
    private String position_code;
+   private String dept_name;
+   private String position_name;
    
    
    public int getProject_id() {
@@ -148,6 +150,18 @@ public class ProjectDTO {
 	}
 	public void setPosition_code(String position_code) {
 		this.position_code = position_code;
+	}
+	public String getDept_name() {
+		return dept_name;
+	}
+	public void setDept_name(String dept_name) {
+		this.dept_name = dept_name;
+	}
+	public String getPosition_name() {
+		return position_name;
+	}
+	public void setPosition_name(String position_name) {
+		this.position_name = position_name;
 	}
 
 

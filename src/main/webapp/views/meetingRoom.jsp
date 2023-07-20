@@ -173,11 +173,12 @@
 
 /* 모달 폼 스타일 */
 #modal-form {
-	background-color: #fff;
+	background-color: #f4f6f9;
 	padding: 20px;
 	border-radius: 5px;
 	max-width: 400px;
 	text-align: center;
+	width: 500px;
 }
 
 #modal-title {
@@ -349,17 +350,50 @@ div#calendar-ym {
 }
 
 table {
-	border-collapse: separate;
-	border-spacing: 10px;
+	border-collapse: collapse;
+	width: 100%;
 }
 
-.m-0 {
-	color: #91bdce;
+tr {
+	margin-bottom: 10px;
+}
+
+td {
+	padding: 8px;
+	border: 1px solid #91bdce;
+	text-align: left;
+	
+}
+th{
+	float:left;
+	font-size: 12px;
+	padding: 8px;
 }
 
 .reserved {
 	background-color: gray;
 }
+
+#meetingName, #meetionMember {
+	border: none; /* 테두리 없애기 */
+	outline: none; /* 포커스 효과 없애기 */
+	background-color: #f4f6f9;
+}
+
+#submitButton {
+	float: right;
+	width: 60px;
+	height: 40px;
+}
+
+#closeButton {
+	float: left;
+	width: 60px;
+	height: 40px;
+}
+/* #modal-title{
+	background-color: #e9ddc6;
+} */
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed"
@@ -391,7 +425,7 @@ table {
 			<!-- /.content-header -->
 
 
-
+			<hr>
 
 			<div id="real-body">
 				<div id="calendar-ym"></div>
@@ -421,27 +455,36 @@ table {
 	<div id="modal" style="display: none;">
 		<!-- 모달 내부의 입력 폼 -->
 		<form id="modal-form">
+		
 			<label for="modal-title">회의실 예약</label>
+			
+			<hr>
 			<table style="border-collapse: separate; border-spacing: 10px;">
 				<tr>
 					<th>회의명</th>
+				</tr>
+				<tr>
 					<td><input type="text" id="meetingName" name="meetingName"></td>
 				</tr>
 				<tr>
 					<th>참가자</th>
+				</tr>
+				<tr>
 					<td><input type="text" id="meetionMember" name="meetionMember"></td>
 				</tr>
 				<tr>
 					<th>예약정보</th>
+				</tr>
+				<tr>
 					<td>
 						<p id="reservationInfo"></p>
 					</td>
 				</tr>
 			</table>
-
+			<hr>
 			<br>
-			<button type="submit">예약</button>
-			<button type="button" onclick="closeModal()">취소</button>
+			<button type="button" onclick="closeModal()" id="closeButton">취소</button>
+			<button type="submit" id="submitButton">예약</button>
 		</form>
 	</div>
 
@@ -466,6 +509,17 @@ table {
 
 
 <script>
+	function reservation() {
+		console.log('저장');
+		if ($('#meetingName').val().trim() == "") {
+			alert("회의명을 등록해주세요");
+		} else if ($('#meetionMember').val().trim() == "") {
+			alert("참여팀을 등록해주세요");
+		} else {
+			$('#modal-form').submit();
+		}
+	}
+
 	/* --------------------------날짜, 회의실, 시간대 버튼 클릭 로직------------------------------------ */
 	function showCalendar() {
 		var calendarContainer = document.getElementById("calendar-container");
@@ -652,7 +706,7 @@ table {
 										.getElementsByClassName("time");
 								for (var j = 0; j < buttons.length; j++) {
 									buttons[j].removeAttribute("id");
-									buttons[j].style.backgroundColor = ""; 
+									buttons[j].style.backgroundColor = "";
 								}
 								this.id = "selected-time";
 								this.style.backgroundColor = "#c2c7d0";
@@ -694,7 +748,7 @@ table {
 	/* --------------------------예약 데이터 전송------------------------------------ */
 	function reserveMeeting(roomId, selectedDate, selectedRoom) {
 		console.log("색상이 바뀌어야한다!!!!!!!!!");
-		
+
 		// 예약 버튼 클릭 시 예약 처리
 		var selectedDate = selectedDate
 		var selectedRoom = selectedRoom
@@ -721,11 +775,11 @@ table {
 			console.log("모달창 등장!");
 			$('#modal').show();
 			$('#reservationInfo').html(
-					"회의날짜: " + selectedDate + "<br>회의실명: " + selectedRoom
-							+ "<br>회의시간: " + selectedTime);
-			
+					"<b>회의날짜: " + selectedDate + "<br>회의실명: " + selectedRoom
+							+ "<br>회의시간: " + selectedTime+"</b>");
+
 			var selectedButton = document.getElementById("selected-time");
-			  selectedButton.style.backgroundColor = "#c2c7d0";
+			selectedButton.style.backgroundColor = "#c2c7d0";
 
 		}
 
@@ -742,12 +796,20 @@ table {
 							roomId);
 
 					// 서버로 데이터 전송 (업데이트 또는 삭제)
-					sendMeetingData(meetingName, meetionMember, selectedDate,
-							selectedRoom, selectedTime, startTime, endTime,
-							roomId);
+					if ($('#meetingName').val().trim() == "") {
+						alert("회의명을 등록해주세요");
+					} else if ($('#meetionMember').val().trim() == "") {
+						alert("참여팀을 등록해주세요");
+					} else {
+						sendMeetingData(meetingName, meetionMember,
+								selectedDate, selectedRoom, selectedTime,
+								startTime, endTime, roomId);
+
+						closeModal();
+					}
 
 					// 모달 닫기
-					closeModal();
+
 				});
 
 		function sendMeetingData(meetingName, meetionMember, selectedDate,
@@ -770,17 +832,16 @@ table {
 					// 요청 성공 시 처리할 코드 작성
 					console.log('예약 등록 성공');
 					console.log(response.success);
-					alert('예약이 완료되었습니다\n' + '<예약정보>\n' + '회의명 - ' + meetingName
+					/* alert('예약이 완료되었습니다\n' + '<예약정보>\n' + '회의명 - ' + meetingName
 							+ '\n' + '참가자 - ' + meetionMember + '\n' + '회의실 - '
 							+ selectedRoom + '\n' + '날짜 - ' + selectedDate
-							+ '\n' + '시간 - ' + startTime + '-' + endTime);
+							+ '\n' + '시간 - ' + startTime + '-' + endTime); */
 
-					 location.href = '/metingRoom.go'; 
-				/* 	var newtimeButton = document.getElementById("selected-time");
-					newtimeButton.disabled = true;
-					newtimeButton.classList.add("reserved");
-					showTimeSlots(selectedRoom, selectedDate, roomId,
-							timeButtonsContainer); */
+					location.href = '/reservationComplete.go?meetingName='
+							+ meetingName + '&meetionMember=' + meetionMember
+							+ '&selectedRoom=' + selectedRoom
+							+ '&selectedDate=' + selectedDate + '&startTime='
+							+ startTime + '&endTime=' + endTime;
 
 				},
 				error : function() {
