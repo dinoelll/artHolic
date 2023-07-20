@@ -167,8 +167,10 @@
             
             <td>
             <div>
+            <c:if test="${admin == 1}">
                <input style="float:right;" type="button" id="briefingWrite" onclick="location.href='/briefingWrite.go'" value="등록">
-               </div>
+            </c:if>
+            </div>
             </td>
          </tr>
          </table>
@@ -334,8 +336,8 @@ function listDraw(briefingList) {
      briefingList.forEach(function(dto,board_id){
          content += '<tr>';
          content += '<td><p>'+dto.board_id+'</p></td>';
-         content += '<th><a href="briefingDetail.do?board_id='+dto.board_id+'">'+dto.subject+'</a></th>';
-         content += '<th><a href="employeeDetail.go?member_id='+dto.member_id+'">'+dto.member_id+'</a> </th>';
+         content += '<th><a href="briefingDetail.do?board_id='+dto.board_id+'&member_id='+dto.member_id+'">'+dto.subject+'</a></th>';
+         content += '<th><a href="employeeDetail.go?member_id='+dto.member_id+'">'+dto.name+'</a> </th>';
          content += '<td>'+ dto.writeTime +'</td>';
          content += '</tr>';
        });

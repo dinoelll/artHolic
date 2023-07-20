@@ -189,7 +189,7 @@
                <select id="opt" name="select">
                      <option value="default">공지사항 검색</option>
                      <option value="subject">제목</option>
-                     <option value="member_id">작성자</option>
+                     <option value="name">작성자</option>
                </select>   
                <input type="text" id="keyword" placeholder="검색어를 입력하세요.">
                   <button id="searchButton">검색</button>
@@ -197,9 +197,13 @@
             
             <td>
             <div>
-            <input type="button" onclick="del()" id="delBtn" value="삭제" />
+           
+            <c:if test="${admin == 1}">
+           		<input type="button" onclick="del()" id="delBtn" value="삭제" />
                <input style="float:right;" type="button" id="informWrite" onclick="location.href='/informWrite.go'" value="등록">
-               <input type="button" onclick="is_formDel()" id="is_formDel" value="필독해제" />
+                <input type="button" onclick="is_formDel()" id="is_formDel" value="필독해제" />
+             </c:if>
+               
                </div>
             </td>
          </tr>
@@ -207,25 +211,34 @@
       <table id="example1" class="table table-bordered table-striped">
          <thead>
             <tr id="thead" style="text-align:center">
+             <c:if test="${admin == 1}">
                <th><input id="all" type="checkbox" /></th>
+               </c:if>
 				<th>작성자</th>
 				<th>제목</th>
 				<th>작성일자</th>
+				 <c:if test="${admin == 1}">
 				<th>삭제</th>
+				</c:if>
             </tr>
          </thead>
          <tbody id="informList" style="text-align:center">
            <!-- 리스트가 출력될 영역 -->
          </tbody>   
          <tr>
-         <td colspan="5" id="paging">   
+          <c:if test="${admin == 1}">
+         <td colspan="5" id="paging">  
+          </c:if> 
+           <c:if test="${admin == 0}">
+         <td colspan="3" id="paging">  
+          </c:if>  
             <!--    플러그인 사용   (twbsPagination)   -->
             <div class="container" >                           
                <nav aria-label="Page navigation" style="text-align:center">
                   <ul class="pagination" id="pagination"></ul>
                </nav>               
             </div>
-         </td>
+            </td>
       </tr>
       </table>
   
@@ -266,7 +279,7 @@
    </div>
    
 </div>
-
+<input type="hidden" value="${admin }" id="adminchk">
    
    
    
@@ -363,22 +376,37 @@ function listCall(page,cnt){
 function listDraw(informList) {
      console.log("listDraw Call");
      var content = '';
-
+     var adminchk = $('#adminchk').val();
      informList.forEach(function(dto,board_id){
          content += '<tr>';
+         if (adminchk ==1) {
          content += '<td><input type="checkbox" value="'+dto.board_id+'" /></td>';
-         content += '<th><a href="employeeDetail.go?member_id='+dto.member_id+'">'+dto.member_id+'</a> </th>';
-         content += '<th><a href="informDetail.do?board_id=' + dto.board_id + '"';
+         }
+         content += '<th>'+dto.name+'</th>';
+         content += '<th><a href="informDetail.do?board_id=' + dto.board_id + '&member_id='+dto.member_id+'"';
          content += ' class="' + (dto.is_form == 1 ? 'fixed-title' : '') + '"';
          content += '>' + dto.subject + '</a></th>';
          content += '<td>'+ dto.writeTime +'</td>';
-         content += '<th><a href="informDel.do?board_id='+dto.board_id+'">삭제</a></th>';
+        
+         if (adminchk ==1) {
+           content += '<th><button onclick="informDel('+'\'informDel.do?board_id='+dto.board_id+'\')">삭제</button></th>';
+             // 이하 content를 사용한 JavaScript 코드
+         }
          content += '</tr>';
        });
 
      $('#informList').empty();
      $('#informList').append(content);
-   }
+}
+   
+function informDel(path) {
+	console.log(path);
+	if (!confirm("공지사항을 삭제 하시겠습니까?")) {
+        
+    } else {
+        location.href=path;
+    }
+}
    
    
    // 전체 체크박스 선택

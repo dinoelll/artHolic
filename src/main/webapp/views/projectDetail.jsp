@@ -201,7 +201,7 @@ b {
             <!-- Default box -->
             <div class="card">
                <div class="card-header">
-                  <h3 class="card-title">Project Detail</h3>
+                  <h3 class="card-title">프로젝트 피드</h3>
 
                   <div class="card-tools">
 
@@ -213,10 +213,6 @@ b {
                      <button type="button" class="btn btn-tool"
                         data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
-                     </button>
-                     <button type="button" class="btn btn-tool"
-                        data-card-widget="remove" title="Remove">
-                        <i class="fas fa-times"></i>
                      </button>
                   </div>
                </div>
@@ -256,12 +252,14 @@ b {
    <!-- Bootstrap 4 -->
    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
    <!-- overlayScrollbars -->
-   <script
-      src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+   <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
    <!-- AdminLTE App -->
    <script src="dist/js/adminlte.js"></script>
 
-
+<!-- date-range-picker -->
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 
 
 </body>
@@ -319,8 +317,11 @@ b {
                                                          + '" class="btn btn-default btn-sm"><i class="fas fa-cloud-download-alt"></i></a>';
                                                    html += '</div>';
                                                 }
-                                                html += '<a href="feedUpdate.go?feed_id=' + feed_id + '&feed_file_id=' + detail.feed_file_id + '&project_id=' + detail.project_id + '&project_name=' + detail.project_name + '" class="btn btn-sm btn-primary">수정</a>'
-                                                html += '<a href="feedDel.do?feed_id=' + feed_id + '&feed_file_id=' + detail.feed_file_id + '&project_id=' + detail.project_id + '&project_name=' + detail.project_name + '" class="btn btn-danger btn-sm">삭제</a>';
+                                                console.log(detail.member_id);
+                                                if(detail.member_id == '${sessionScope.loginId}'){
+                                                	 html += '<a href="feedUpdate.go?feed_id=' + feed_id + '&feed_file_id=' + detail.feed_file_id + '&project_id=' + detail.project_id + '&project_name=' + detail.project_name + '" class="btn btn-sm btn-primary">수정</a>'
+                                                     html += '<a href="feedDel.do?feed_id=' + feed_id + '&feed_file_id=' + detail.feed_file_id + '&project_id=' + detail.project_id + '&project_name=' + detail.project_name + '" class="btn btn-danger btn-sm">삭제</a>';
+                                                }
                                                 html += '</div>';
 
                                                 html += '</div></div>';

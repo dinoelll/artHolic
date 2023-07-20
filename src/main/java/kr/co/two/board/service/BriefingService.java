@@ -75,8 +75,8 @@ public class BriefingService {
 		   }
 	
 	@Transactional
-	public ModelAndView detail(String board_id) {
-		BriefingDTO dto = dao.detail(board_id);
+	public ModelAndView detail(String board_id, String member_id) {
+		BriefingDTO dto = dao.detail(board_id,member_id);
 		
 		ModelAndView mav = new ModelAndView("briefingDetail");
 		mav.addObject("briefing", dto);
@@ -123,6 +123,15 @@ public class BriefingService {
 	      
 	      return mav;
 		
+	}
+
+
+
+
+
+	public int adminChk(String member_id) {
+		
+		return dao.adminChk(member_id);
 	}
 
 
