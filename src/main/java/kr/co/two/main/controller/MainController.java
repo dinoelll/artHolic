@@ -32,16 +32,20 @@ public class MainController {
 	
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public String main(HttpSession session, Model model) {
+		String page = "login";
 		
 		String member_id = (String) session.getAttribute("loginId");
 		session.getAttribute("admin");
 		
-		MainDTO memberDto = service.mainMember(member_id);
-		model.addAttribute("member",memberDto);
-		MainDTO AnnaulDto = service.myAnnaul(member_id);
-	    model.addAttribute("Annaul",AnnaulDto);
-	    
-	    return "main";
+		if (member_id !=null) {
+			page="main";
+			MainDTO memberDto = service.mainMember(member_id);
+			model.addAttribute("member",memberDto);
+			MainDTO AnnaulDto = service.myAnnaul(member_id);
+		    model.addAttribute("Annaul",AnnaulDto);
+		}
+		 
+	    return page;
 	}
 	
 	@RequestMapping(value="/mainInformList.ajax", method=RequestMethod.POST)

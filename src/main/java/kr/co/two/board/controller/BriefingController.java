@@ -3,9 +3,12 @@ package kr.co.two.board.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +31,18 @@ public class BriefingController {
 	  
 	  Logger logger = LoggerFactory.getLogger(getClass());
 	  
-	  @RequestMapping(value= "/briefingList.go") public String main() {
+	  @RequestMapping(value= "/briefingList.go") 
+	  public String main(Model model, HttpSession session) {
+		  
+			String member_id = (String) session.getAttribute("loginId");
+			logger.info("member_id : "+ member_id);
+			
+			int admin = service.adminChk(member_id);
+
+			model.addAttribute("admin", admin);
+			logger.info("admin : "+ admin);
 	  
-	  return "briefingList"; 
+			return "briefingList"; 
 	  
 	  }
 	  
@@ -46,6 +58,8 @@ public class BriefingController {
 	  
 	  @RequestMapping(value="/briefingWrite.go") 
 	  public String writeForm() {
+		  
+		  
 	  
 		  return "briefingWrite"; 
 	  }
@@ -63,9 +77,10 @@ public class BriefingController {
 	  
 	  
 	  @GetMapping(value="/briefingDetail.do") public ModelAndView
-	  detail(@RequestParam String board_id) {
-
-		  return service.detail(board_id); 
+	  detail(@RequestParam String board_id, @RequestParam String member_id) {
+		  
+		  
+		  return service.detail(board_id,member_id); 
 	  }
 	  
 	   @GetMapping(value = "/briefingDel.do")

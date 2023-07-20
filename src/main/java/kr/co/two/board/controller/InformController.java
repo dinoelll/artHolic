@@ -3,10 +3,13 @@ package kr.co.two.board.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +31,8 @@ public class InformController {
 	@GetMapping(value = "/informWrite.go")
 	public String informWrite() {
 		
+	
+		
 		return "informWrite";
 	}
 	
@@ -40,7 +45,16 @@ public class InformController {
 	   }
 	
 	@GetMapping(value = "/informList.go")
-	public String informList() {
+	public String informList(Model model, HttpSession session) {
+		
+		String member_id = (String) session.getAttribute("loginId");
+		logger.info("member_id : "+ member_id);
+		
+		int admin = service.adminChk(member_id);
+		
+
+		model.addAttribute("admin", admin);
+		logger.info("admin : "+ admin);
 		
 		return "informList";
 	}
@@ -60,8 +74,8 @@ public class InformController {
 //	}
 	
 	   @GetMapping(value = "/informDetail.do")
-	   public ModelAndView detail(@RequestParam String board_id) {
-	      return service.informDetail(board_id);
+	   public ModelAndView detail(@RequestParam String board_id, @RequestParam String member_id) {
+	      return service.informDetail(board_id,member_id);
 	   }
 	   
 	   @GetMapping(value = "/informUpdate.go")

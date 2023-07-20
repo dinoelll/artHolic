@@ -70,11 +70,11 @@
    </insert>
 
 
-   <select id="getAllFeed" parameterType="string"
-      resultType="hashmap">
-      select f.feed_id
+   <select id="getAllFeed" parameterType="string" resultType="hashmap">
+     select f.feed_id
       , f.project_id
       , (select m.name from member m where m.member_id = f.member_id) AS name
+      , (select m2.member_id  from member m2 where m2.member_id = f.member_id) AS member_id
       , f.content
       , DATE_FORMAT(f.date,'%Y-%m-%d') as date
       , ff.feed_file_id
@@ -85,13 +85,15 @@
       left join feed_file ff on ff.feed_id = f.feed_id
       left join project p on p.project_id = f.project_id
       WHERE f.project_id = #{project_id}
-      order by f.feed_id ASC
+      order by f.feed_id ASC;
    </select>
    
    
    
    <select id="projectAddOption" resultType="project">
-      SELECT * FROM member
+      select m.*, c1.code_name as dept_name, c2.code_name as position_name  from member m 
+		join code c1 on(m.dept_code = c1.code_id)
+		join code c2 on(m.position_code = c2.code_id)
    </select>
    
    

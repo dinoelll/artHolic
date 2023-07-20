@@ -9,6 +9,7 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,6 +46,19 @@ public class ReservationController {
 	@RequestMapping(value = "/ReservationList.go")
 	public String ReservationList() {
 		return "reservationList";
+	}
+	
+	@RequestMapping(value = "/reservationComplete.go")
+	public String reservationComplete(Model model, @RequestParam String meetingName,@RequestParam String meetionMember,@RequestParam String selectedRoom,@RequestParam String selectedDate,@RequestParam String startTime,@RequestParam String endTime) {
+		logger.info(meetingName,endTime);
+		model.addAttribute("meetingName", meetingName);
+		model.addAttribute("meetionMember", meetionMember);
+		model.addAttribute("selectedRoom", selectedRoom);
+		model.addAttribute("selectedDate", selectedDate);
+		model.addAttribute("startTime", startTime);
+		model.addAttribute("endTime", endTime);
+		
+		return "reservationComplete";
 	}
 	
 	
