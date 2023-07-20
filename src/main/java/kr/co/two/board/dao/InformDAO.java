@@ -14,7 +14,7 @@ public interface InformDAO {
 
 	//ArrayList<InformDTO> informList();
 
-	InformDTO informDetail(String board_id);
+	InformDTO informDetail(String board_id, String member_id);
 
 	int informUpdateDo(HashMap<String, Object> params);
 
@@ -27,6 +27,8 @@ public interface InformDAO {
 	int totalCount(String opt, String keyword);
 
 	void is_formDel(String id);
+
+	int adminChk(String member_id);
 	
 	
 

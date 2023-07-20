@@ -15,6 +15,7 @@ public class BriefingDTO {
 	private String member_id;
 	private String board_code;
 	private Date writeTime;
+	private String name;
 	
 	
 	
@@ -59,6 +60,12 @@ public class BriefingDTO {
 	}
 	public void setWriteTime(Date writeTime) {
 		this.writeTime = writeTime;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

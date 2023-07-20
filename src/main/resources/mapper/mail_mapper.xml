@@ -30,7 +30,7 @@
       keyColumn="mail_id"
       keyProperty="mail_id">
       INSERT INTO mail(member_id,writeTime,mailSubject,mailContent,blind,Favorites,temp)
-         VALUES(#{member_id},#{writeTime},#{mailSubject},#{mailContent},false,false,
+         VALUES(#{member_id},#{writeTime},#{mailSubject},#{mailContent},0,false,
       <choose>
             <when test='type == "save" or type == "send"'>
               false
@@ -45,7 +45,7 @@
    <!-- 내게쓰기 -->
    <insert id="savereceiverWrite" parameterType="mail">
       INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
-         VALUES(#{mail_id},#{member_id},false,false,false,2)
+         VALUES(#{mail_id},#{member_id},false,false,0,2)
    </insert>
    
    <!-- 메일 첨부파일 올리기 -->
@@ -57,13 +57,13 @@
    <!-- 받는사람 DB 저장 -->
    <insert id="receiverWrite" parameterType="mail">
       INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
-         VALUES(#{mail_id},#{member_id},false,false,false,0)
+         VALUES(#{mail_id},#{member_id},false,false,0,0)
    </insert>
    
    <!-- 참조자 DB 저장 -->
    <insert id="referenceMemberWrite" parameterType="mail">
       INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
-         VALUES(#{mail_id},#{member_id},false,false,false,1)
+         VALUES(#{mail_id},#{member_id},false,false,0,1)
    </insert>
    
    <!-- 참조자 여부 -->
@@ -134,7 +134,7 @@
 	  		UNION SELECT DISTINCT 
 	  </if>
 	   <if test="type=='send' or type=='temp' or type=='all' or type=='trash' or type=='import'">
-		  m.mail_id, 3 AS send, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, m.temp, mb.name,
+		  m.mail_id, mb.member_id AS send, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, m.temp, mb.name,
 		  MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
   	  	  MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name,NULL AS read_chk, NULL AS read_date
 		  FROM mail m
@@ -180,7 +180,13 @@
 	 <if test='type == "send" || type== "temp"'>
 	    mail SET favorites = #{isLike} WHERE mail_id = #{mail_id} AND member_id = #{member_id}
 	  </if>
+	  <if test='type == "trash" and( set == "send" || set == "temp" )'>
+	    mail SET favorites = #{isLike} WHERE mail_id = #{mail_id} AND member_id = #{member_id}
+	  </if>
 	  <if test='type == "self" || type == "receive"'>
+	    mail_receiver SET bookmark = #{isLike} WHERE mail_id = #{mail_id} AND member_id = #{member_id}
+	  </if>
+	  <if test='type == "trash" and( set == "self" || set == "receive" )'>
 	    mail_receiver SET bookmark = #{isLike} WHERE mail_id = #{mail_id} AND member_id = #{member_id}
 	  </if>
 	</update>
@@ -190,7 +196,13 @@
       <if test='type == "send"|| type== "temp"'>
 	    * FROM mail WHERE mail_id = #{mail_id} AND member_id = #{member_id}
 	  </if>
+	  <if test='type == "trash" and( set == "send" || set == "temp" )'>
+	    * FROM mail WHERE mail_id = #{mail_id} AND member_id = #{member_id}
+	  </if>
 	  <if test='type == "self" || type == "receive"'>
+	    * FROM mail_receiver WHERE mail_id = #{mail_id} AND member_id = #{member_id}
+	  </if>
+	  <if test='type == "trash" and( set == "self" || set == "receive" )'>
 	    * FROM mail_receiver WHERE mail_id = #{mail_id} AND member_id = #{member_id}
 	  </if>
    </select> 
@@ -223,7 +235,8 @@
    <if test="type== 'all' and !(searchText == null or searchText.equals('')) or type =='import' or type=='trash'">
    COUNT(*) AS row_count
 	FROM (
-	SELECT DISTINCT mr.mail_id, mr.member_id, m.writeTime, m.mailSubject, m.mailContent, mr.blind, m.favorites, mr.bookmark, mr.is_receiver, m.temp, mb.name
+	SELECT m.mail_id,m.member_id,m.writeTime,m.mailSubject,m.mailContent,m.blind,m.favorites,mr.bookmark,
+    mr.is_receiver,m.temp,mb.name,<!-- mf.mail_file_id, -->mr.read_chk,mr.read_date
 	</if>
 	<if test="type=='receive' or type=='self'">
 	COUNT (mr.mail_id) 
@@ -232,17 +245,19 @@
 	  FROM mail m
 	  LEFT OUTER JOIN mail_receiver mr ON m.mail_id = mr.mail_id
 	  LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
+      <!-- LEFT OUTER JOIN mail_file mf ON mf.mail_id = mr.mail_id -->
 	  WHERE mr.member_id = #{member_id}
 	  <if test="type=='all' and !(searchText == null or searchText.equals(''))"> 
 	  	<if test ="searchInformation=='allMail'">
 	  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
 	  	</if>
 	  	<if test ="type=='all' and searchInformation=='mailSubject'">
-	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
-	  	</if>
-	  	<if test ="type=='all' and searchInformation=='mailContent'">
 	  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
 	  	</if>
+	  	<if test ="type=='all' and searchInformation=='mailContent'">
+	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  	AND mr.blind in (0,1) 
 	  </if>
 	  <if test="type=='receive'">
 	  	AND mr.blind=0 AND (mr.is_receiver = 0 OR mr.is_receiver = 1)
@@ -254,12 +269,14 @@
 	  	AND mr.blind= 0 AND mr.bookmark=1
 	  </if>
 	  <if test="type=='trash'">
-	  	AND m.blind = 1
+	  	AND mr.blind = 1
 	  </if>
 	</if>
 	  <if test="type== 'all' and !(searchText == null or searchText.equals('')) or type =='import' or type=='trash'">
 	  		UNION
-	  		SELECT DISTINCT m.mail_id, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, NULL, NULL, m.temp, mb.name
+	  		SELECT DISTINCT 
+			m.mail_id, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, 
+			m.temp, mb.name, <!-- mf.mail_file_id -->3 as read_chk, NULL as read_date
 	  </if>
 	  <if test="type=='temp' or type=='send'">
 	  		COUNT (m.mail_id) 
@@ -267,18 +284,24 @@
 	  <if test="type=='temp' or type=='send' or type=='all' or type =='import' or type=='trash'">
 		  FROM mail m
 		  LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
+		  <!-- LEFT OUTER JOIN mail_file mf ON (mf.mail_id = m.mail_id) -->
 		  WHERE m.member_id = #{member_id}
+		  AND NOT EXISTS (
+	      SELECT 1
+	      FROM mail_receiver mr
+	      WHERE m.mail_id = mr.mail_id AND mr.is_receiver = 2)
 	  </if>
 	  <if test="type=='all' and !(searchText == null or searchText.equals('')) "> 
 	  	<if test ="searchInformation=='allMail'">
 	  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
 	  	</if>
 	  	<if test ="searchInformation=='mailSubject'">
-	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
-	  	</if>
-	  	<if test ="searchInformation=='mailContent'">
 	  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
 	  	</if>
+	  	<if test ="searchInformation=='mailContent'">
+	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  	AND m.blind in (0,1) 
 	  </if>
 	  <if test="type=='temp'">
 	  	AND m.blind=0 AND temp = 1
@@ -304,26 +327,27 @@
    
    
    <select id="mailSelfBox" resultType="mail">
-	  SELECT DISTINCT 
+	  SELECT 
 	  <if test="type=='receive' or type=='self' or type=='all' or type=='import' or type=='trash'">
-	  mr.mail_id, mr.member_id, m.writeTime, m.mailSubject, m.mailContent, mr.blind, m.favorites, mr.bookmark, mr.is_receiver, m.temp, mb.name, mf.mail_file_id
-	  ,mr.read_chk,mr.read_date
-	  FROM mail m
-	  LEFT OUTER JOIN mail_receiver mr ON m.mail_id = mr.mail_id
-	  LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
-	  LEFT OUTER JOIN mail_file mf ON (mf.mail_id = mr.mail_id)
-	  WHERE mr.member_id = #{member_id}
+		m.mail_id,m.member_id,m.writeTime,m.mailSubject,m.mailContent,m.blind,m.favorites,mr.bookmark,
+		mr.is_receiver,m.temp,mb.name,mf.mail_file_id,mr.read_chk,mr.read_date
+		FROM mail m
+    	LEFT OUTER JOIN mail_receiver mr ON m.mail_id = mr.mail_id
+    	LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
+    	LEFT OUTER JOIN mail_file mf ON mf.mail_id = mr.mail_id
+	    WHERE mr.blind IN (0, 1) AND mr.member_id = #{member_id}
 	  </if>
 	    <if test="type=='all' and !(searchText == null or searchText.equals(''))"> 
 	  	<if test ="searchInformation=='allMail'">
 	  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
 	  	</if>
 	  	<if test ="searchInformation=='mailSubject'">
-	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
-	  	</if>
-	  	<if test ="searchInformation=='mailContent'">
 	  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
 	  	</if>
+	  	<if test ="searchInformation=='mailContent'">
+	  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+	  	</if>
+	  	AND mr.blind in (0,1)
 	  </if>
 	  <if test="type=='receive'">
 	  	AND mr.blind=0 AND (mr.is_receiver = 0 OR mr.is_receiver = 1)
@@ -337,26 +361,36 @@
 		<if test="type=='trash'">
 	  	AND mr.blind = 1
 	  </if>
+	  <if test="type=='receive' or type=='self' or type=='import' or type=='trash' or type=='all'">
+	  	GROUP BY
+    	m.mail_id, m.member_id,m.writeTime,m.mailSubject,m.mailContent,m.blind,m.favorites,m.temp,mb.name,
+    	mf.mail_file_id,mr.read_chk,mr.read_date
+	  </if>
 	  <if test="type== 'all' and !(searchText == null or searchText.equals('')) or type=='import' or type=='trash'">
 	  		UNION SELECT DISTINCT 
 	  </if>
 	   <if test="type=='send' or type=='temp' or type=='all' or type=='import' or type=='trash'">
-		  m.mail_id, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, m.temp, mb.name, mf.mail_file_id
-		  ,NULL AS read_chk,NULL AS read_date
-		  FROM mail m
-		  LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
-		  LEFT OUTER JOIN mail_file mf ON (mf.mail_id = m.mail_id)
-		  WHERE m.member_id = #{member_id}
+			m.mail_id, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, 
+			m.temp, mb.name, mf.mail_file_id,3 as read_chk, NULL as read_date
+			FROM mail m
+			LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
+			LEFT OUTER JOIN mail_file mf ON (mf.mail_id = m.mail_id)
+		    WHERE m.member_id = #{member_id}
+		    AND NOT EXISTS (
+			    SELECT 1
+			    FROM mail_receiver mr
+			    WHERE m.mail_id = mr.mail_id AND mr.is_receiver = 2) 
 		  <if test="type=='all' and !(searchText == null or searchText.equals(''))"> 
 		  	<if test ="searchInformation=='allMail'">
 		  		AND (m.mailContent LIKE CONCAT('%', #{searchText}, '%') OR m.mailSubject LIKE CONCAT('%', #{searchText}, '%'))
 		  	</if>
 		  	<if test ="searchInformation=='mailSubject'">
-		  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
-		  	</if>
-		  	<if test ="searchInformation=='mailContent'">
 		  		AND m.mailSubject LIKE CONCAT('%', #{searchText}, '%')
 		  	</if>
+		  	<if test ="searchInformation=='mailContent'">
+		  		AND m.mailContent LIKE CONCAT('%', #{searchText}, '%')
+		  	</if>
+		  	AND m.blind in (0,1) 
 		  </if>
 	    </if>
 	    <if test="type=='temp'">
@@ -371,7 +405,10 @@
 		<if test="type=='trash'">
 	  		AND m.blind = 1
 	  	</if>
-		ORDER BY mail_id DESC
+	  	<if test="type=='send' or type=='temp' or type=='all' or type=='import' or type=='trash'">
+	  	GROUP BY m.mail_id
+	  	</if>
+		ORDER BY writeTime DESC
 	    LIMIT #{cnt} OFFSET #{offset}
 	</select>
 	
@@ -397,15 +434,33 @@
 	
 	<!--  메일 진짜 삭제 -->
 	<delete id="maildel">
-		DELETE FROM mail_receiver WHERE blind = 1 AND mail_id = #{mail_id} AND member_id=#{member_id}
-	</delete>
-	
-	<delete id="mymaildel">
-		DELETE FROM mail WHERE blind = 1 AND mail_id = #{mail_id} AND member_id = #{member_id}
+		UPDATE
+		<if test="set =='self' or set == 'receive'">
+			mail_receiver SET blind = 3 WHERE blind = 1 AND member_id=#{member_id} AND mail_id = #{mail_id}
+		</if>
+		<if test="set =='send' or set == 'temp'">
+			mail SET blind = 3 WHERE blind = 1 AND member_id=#{member_id} AND mail_id = #{mail_id}
+		</if>
 	</delete>
 	
 	<!-- 수신확인 -->
 	<update id="updateread">
 		UPDATE mail_receiver SET read_chk = true, read_date = #{writeTime} WHERE mail_id = #{mail_id} AND member_id= #{member_id}
+	</update>
+	
+	<!-- temp = 0 임시저장후 보내기 -->
+	<update id="tempsaveupdate">
+		UPDATE mail SET temp = 0, writeTime = #{writeTime}, mailSubject = #{mailSubject}, mailContent=#{mailContent} WHERE mail_id = #{mail_id}
+	</update>
+	
+	<!-- 휴지통 복원 -->
+	<update id="mailrestore">
+		UPDATE 
+		<if test="set =='send' or set == 'temp'">
+			mail SET blind = 0 WHERE member_id = #{member_id} AND mail_id = #{mail_id}
+		</if>
+		<if test="set =='receive' or set=='self'">
+			mail_receiver SET blind = 0 WHERE member_id = #{member_id} AND mail_id = #{mail_id}
+		</if>
 	</update>
 	</mapper>

@@ -121,12 +121,12 @@
                  </c:if>
                  </a>제목&nbsp;&nbsp;${dto.memberdto.get(0).mailSubject}</div>
                  <div class="mailboxForm" id="mailMember">보낸사람&nbsp;&nbsp;
-                    ${dto.memberdto.get(0).dept_name}&nbsp;${dto.memberdto.get(0).position_name}&nbsp;${dto.memberdto.get(0).name}
+                    ${dto.memberdto.get(0).dept_name}팀&nbsp;${dto.memberdto.get(0).position_name}&nbsp;${dto.memberdto.get(0).name}
                  </div>
                 <div class="mailboxForm" id="SendMember">받는사람&nbsp;&nbsp;
                <c:forEach items="${dto.dto}" var="item">
                        <c:if test="${item.is_receiver == 0 || item.is_receiver == 2}">
-                          ${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}
+                          ${item.dept_name}팀&nbsp;${item.position_name}&nbsp;${item.name}
                        </c:if>
                     </c:forEach>
                  </div>
@@ -171,7 +171,7 @@
                     <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> ${file.ori_file_name }</a>
                         <span class="mailbox-attachment-size clearfix mt-1">
                           <span>2.67 MB</span>
-                          <a href="mailPhotoDownload.do?path=${file.new_file_name}" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
+                          <a href="mailPhotoDownload.do?path=${file.new_file_name}&file=${file.ori_file_name }" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
                         </span>
                   </div>
                 </li>

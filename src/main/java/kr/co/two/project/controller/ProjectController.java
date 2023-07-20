@@ -68,6 +68,16 @@ public class ProjectController {
    public String projectWrite(@RequestParam HashMap<String, Object> params, Model model) {
 
       logger.info("params" + params);
+      String startYMD[] = String.valueOf(params.get("start_date")).split("/");
+      String endYMD[] = String.valueOf(params.get("end_date")).split("/");
+      for (String string : startYMD) {
+    	  logger.info(string);
+      }
+      for (String string : endYMD) {
+    	  logger.info(string);
+      }
+      params.put("start_date", startYMD[2]+"-"+startYMD[0]+"-"+startYMD[1]);
+      params.put("end_date", endYMD[2]+"-"+endYMD[0]+"-"+endYMD[1]);
 
       String msg = "다시 시도해주세요.";
 
@@ -305,6 +315,19 @@ public class ProjectController {
 				
 				logger.info("projectUpdate Do Controller");
 				logger.info("params :"+params);
+				
+			      String startYMD[] = String.valueOf(params.get("start_date2")).split("/");
+			      String endYMD[] = String.valueOf(params.get("end_date2")).split("/");
+			      for (String string : startYMD) {
+			    	  logger.info(string);
+			      }
+			      for (String string : endYMD) {
+			    	  logger.info(string);
+			      }
+			      params.put("start_date2", startYMD[2]+"-"+startYMD[0]+"-"+startYMD[1]);
+			      params.put("end_date2", endYMD[2]+"-"+endYMD[0]+"-"+endYMD[1]);
+				
+				
 				
 				return service.projectUpdate(params);
 				

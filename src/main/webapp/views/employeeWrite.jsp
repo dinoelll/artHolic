@@ -113,6 +113,21 @@
 		color: white;
 	}
 	
+	.checkId{
+        border: 1px solid #f82a2aa3;
+        border-radius: 5px; 
+        background-color: #f82a2aa3;
+        margin-left: 330px;
+        width: 100px;
+        color: white;
+    }
+    
+    #msg{
+        color: #f82a2aa3;
+        font-size: 12px;
+        margin-left: 20px;
+    }
+	
 </style>
 <script>
         function previewProfileImage(event) {
@@ -142,7 +157,7 @@
 	<jsp:include page="header.jsp"/>
 	
 	<!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+    <div class="content-wrapper" style= "height: 1200px;">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -221,8 +236,14 @@
 						        <option value="art_01">부장</option>
 						    </select> 	
 						</li>
-
-						<li><input type="text" name="member_id" placeholder="사번" style="border: none;"></li>
+						
+						<li>
+                            <input type="text" name="member_id" id="member_id" placeholder="사번" style="border: none;">
+                            <button type="button" class="checkId" onclick="checkDuplicate()">중복 확인</button>                            
+                        </li>
+                        
+                        <div id="msg"></div>
+                        
 					    <li><input type="password" id="pw" name="pw" placeholder="비밀번호" style="border: none;"></li>
 					    <li><input type="password" id="pwChk" name="pwChk" placeholder="비밀번호 확인" style="border: none;"></li>
 					   
@@ -292,6 +313,27 @@
 </body>
 <script>
 
+function checkDuplicate() {
+    var member_id = document.getElementById("member_id").value;
+    console.log("member_id");
+    $.ajax({
+        url: "/checkDuplicate.ajax",
+        method: "POST",
+        data: { member_id: member_id },
+        success: function(response) {
+            var msgElement = document.getElementById("msg");
+            if (response.duplicate) {
+                msgElement.innerText = "중복된 사번입니다. 다른 사번을 입력해주세요.";
+            } else {
+                msgElement.innerText = "사용 가능한 사번입니다.";
+            }
+        },
+        error: function() {
+            alert("중복 확인 중 오류가 발생했습니다.");
+        }
+    });
+}
+
 function validateForm() {
 
 	  var fileInput = document.getElementById("file-input");
@@ -310,7 +352,7 @@ function validateForm() {
 
 	  var deptDropdown = document.getElementById("dept-dropdown");
 	  var positionDropdown = document.getElementById("position-dropdown");
-	  if (deptDropdown.value === "" || positionDropdown.value === "") {
+      if (deptDropdown.value === "default" || positionDropdown.value === "default") {
 	    alert("직급과 부서를 선택해 주세요.");
 	    return false; 
 	  }
