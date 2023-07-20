@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <title>ArtHolic</title>
   
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
   <!-- Editor -->
   <link rel="stylesheet" href="/richtexteditor/res/style.css">
 <link rel="stylesheet" href="/richtexteditor/rte_theme_default.css">
@@ -120,9 +122,12 @@
             <td>
             <input type="hidden" value="${inform.board_id}" name="board_id" />
             	<div style="font-size:22px;"><b>${inform.subject}</b></div>
-            	<div style="margin-top: 10px;">${inform.member_id} &nbsp;&nbsp; ${inform.writeTime}
-	            	<button id="updateBtn" style="float:right;">수정</button>
-					<button id="delBtn" type="button" onclick="location.href='informDel.do?board_id=${inform.board_id}'" >삭제</button>
+            	<div style="margin-top: 10px;">${inform.name} &nbsp;&nbsp; ${inform.writeTime}
+            		<c:if test="${sessionScope.admin eq true}">
+		            	<button id="updateBtn" style="float:right;">수정</button>
+						<button id="delBtn" type="button" onclick="informDel('informDel.do?board_id=${inform.board_id}')" >삭제</button>
+					</c:if>
+					
 					<button id="listBtn" type="button" onclick="location.href='/informList.go'" >리스트</button>
 					</div>
             </td>
@@ -153,7 +158,6 @@
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 
 </body>
 <script>
@@ -167,6 +171,15 @@ config.toolbar_simple="{save, print, html2pdf, code}";
 var editor = new RichTextEditor("#div_editor",config);
 editor.setHTMLCode($("#content").html()); // editor 에 내용 넣기
 editor.setReadOnly();
+
+function informDel(path) {
+	console.log(path);
+	if(!confirm('공지사항을 삭제 하시겠습니까?')) {
+		
+	}else {
+		location.href=path;
+	}
+}
 
 </script>
 </html>

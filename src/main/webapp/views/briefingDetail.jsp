@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <title>ArtHolic</title>
   
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
   <!-- Editor -->
   <link rel="stylesheet" href="/richtexteditor/res/style.css">
 <link rel="stylesheet" href="/richtexteditor/rte_theme_default.css">
@@ -67,7 +69,7 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-
+	
     <!-- Main content -->
     <section class="content">
     
@@ -77,9 +79,11 @@
             <td>
             <input type="hidden" value="${briefing.board_id}" name="board_id" />
             	<div style="font-size:22px;"><b>${briefing.subject}</b></div>
-            	<div style="margin-top: 10px;">${briefing.member_id} &nbsp;&nbsp; ${briefing.writeTime}
+            	<div style="margin-top: 10px;">${briefing.name} &nbsp;&nbsp; ${briefing.writeTime}
+            	<c:if test="${sessionScope.loginId eq briefing.member_id}">
 	            	<button class="btn btn-sm btn-primary" style="float:right;">수정</button>
 					<button type="button" onclick="location.href='briefingDel.do?board_id=${briefing.board_id}'" class="btn btn-sm btn-primary" style="float:right;">삭제</button>
+					</c:if>
 					<button type="button" onclick="location.href='/briefingList.go'" style="float:right;" class="btn btn-sm btn-primary">리스트</button>
 					</div>
             </td>
@@ -106,7 +110,6 @@
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 
 </body>
 <script>

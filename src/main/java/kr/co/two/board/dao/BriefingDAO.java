@@ -18,7 +18,7 @@ public interface BriefingDAO {
 	
 	ArrayList<BriefingDTO> list(String opt, String keyword, int cnt, int offset);
 
-	BriefingDTO detail(String board_id);
+	BriefingDTO detail(String board_id, String member_id);
 
 
 	int write(BriefingDTO dto);
@@ -31,5 +31,8 @@ public interface BriefingDAO {
 
 
 	BriefingDTO briefingUpdate(String board_id);
+
+
+	int adminChk(String member_id);
 
 }

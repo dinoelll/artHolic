@@ -52,6 +52,12 @@
 
 
 <style>
+ .subject {
+	color: black;
+	text-decoration: none;
+	background-color: transparent;
+}  
+
 .main-sidebar {
 	background-color: #e9ddc6;
 }
@@ -553,6 +559,7 @@
 					if (data.success) {
 						alert(data.msg);
 						listCall(showPage);
+						location.href = '/ReservationList.go';
 					}
 				},
 				error : function(e) {
