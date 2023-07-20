@@ -213,11 +213,12 @@
 	height: 40px;
 }
 
- .subject {
+.subject {
 	color: black;
 	text-decoration: none;
 	background-color: transparent;
-}  
+}
+
 modal-content {
 	width: 500px;
 	height: 600px;
@@ -228,7 +229,7 @@ modal-content {
 }
 
 #previewImage {
-	width: 150px;
+	width: 300px;
 	height: 100px;
 }
 
@@ -356,7 +357,7 @@ th, td {
 
 				<div class="modal fade" id="modal-default">
 					<div class="modal-dialog">
-						<div class="modal-content">
+						<div class="modal-content" style="margin-top: 172px;">
 							<div class="modal-header">
 								<h4 class="modal-title">신규 회의실 등록</h4>
 								<button type="button" class="close" data-dismiss="modal"
@@ -370,11 +371,15 @@ th, td {
 									<table>
 										<tr>
 											<th>회의실 이름</th>
+										</tr>
+										<tr>
 											<td><input type="text" name="room_name" id="room_name"
 												value="" placeholder="회의실 이름을 입력하세요" class="modalinput" /></td>
 										</tr>
 										<tr>
 											<th>수용인원</th>
+										</tr>
+										<tr>
 											<td>
 												<!-- <input type="text" name="Capacity" value=""
 												placeholder="수용인원을 입력하세요" class="modalinput" /> --> <select
@@ -392,17 +397,23 @@ th, td {
 										</tr>
 										<tr>
 											<th>회의실 위치</th>
+										</tr>
+										<tr>
 											<td><input type="text" name="location" id="location"
 												value="" placeholder="회의실 위치를 입력하세요" class="modalinput" /></td>
 										</tr>
 										<tr>
 											<th>회의실 대표 이미지</th>
+										</tr>
+										<tr>
 											<td><input type="file" name="mrPhoto" id="mrPhoto"
 												value="" accept="image/*"></td>
 
 										</tr>
 										<tr>
 											<th>미리보기</th>
+										</tr>
+										<tr>
 											<td><img id="previewImage" src="#" alt="미리보기"></td>
 										</tr>
 									</table>
@@ -496,12 +507,12 @@ th, td {
 
 	function save() {
 		console.log('저장');
-		if($('#room_name').val().trim() == "") {
+		if ($('#room_name').val().trim() == "") {
 			alert("회의실 이름을 등록해주세요");
 		} else if ($('#location').val().trim() == "") {
 			alert("회의실 위치를 등록해주세요");
-		}else if ($('#mrPhoto').val() == "") {
-			alert("사진을 등록해주세요"); 
+		} else if ($('#mrPhoto').val() == "") {
+			alert("사진을 등록해주세요");
 		} else {
 			/* $('input[name="content"]').val(content); */
 			$('form').submit();
