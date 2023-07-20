@@ -171,7 +171,7 @@
                     <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> ${file.ori_file_name }</a>
                         <span class="mailbox-attachment-size clearfix mt-1">
                           <span>2.67 MB</span>
-                          <a href="mailPhotoDownload.do?path=${file.new_file_name}" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
+                          <a href="mailPhotoDownload.do?path=${file.new_file_name}&file=${file.ori_file_name }" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
                         </span>
                   </div>
                 </li>

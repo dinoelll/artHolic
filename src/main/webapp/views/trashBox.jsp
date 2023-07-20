@@ -359,7 +359,12 @@ listCall(showPage);
 			 var formId = 'mail' + mail_id;
 			 content += '<tr>';
 			 content += '<td>';
-			 content += '<form method="post" action="mailDetail.do/'+mail_id+'" id="' + formId + '">';
+			 if(item.temp == true){
+				 content += '<form method="post" action="mailreply.go" id="' + formId + '">';
+			 }else{
+				 content += '<form method="post" action="mailDetail.do/'+mail_id+'" id="' + formId + '">';
+			 }
+			 /* content += '<form method="post" action="mailDetail.do/'+mail_id+'" id="' + formId + '">'; */
 			 content += '<div class="icheck-primary">';
 			 content += '<input type="checkbox" name="Rowcheck" value="" id="check'+formId+'" data-mail-id="' + item.mail_id +'">';
 			 content += '<label for="check'+formId+'"></label>';
@@ -368,36 +373,37 @@ listCall(showPage);
 			 content += '<td class="mailbox-star" id="mailSubjectForm" ><a href="#" class="toggle-favorite" data-mail-id="' + item.mail_id + '">';
 			 content += '<input type="hidden" class="receiver" value="'+item.is_receiver+'">';
 			 content += '<input type="hidden" class="blind" value="'+item.blind+'">';
-			 /*if(title != '검색결과'){
-					 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == false ){
-						 content += '<input type="hidden" name="set" id="set" value="receive">';
+			 if(title != '검색결과'){
+					 if(item.is_receiver == 0 || item.is_receiver == 1){
+						 content += '<input type="hidden" name="set" value="receive">';
 						 if(item.bookmark>0){
 							 content += '<i class="fas fa-star text-warning">';
 						 }else{
 							 content += '<i class="far fa-star">';
 						 }
-					 }else if(item.is_receiver == 2 && item.blind == false){
-						 content += '<input type="hidden" name="set" id="set" value="self">';
+					 }else if(item.is_receiver == 2 ){
+						 content += '<input type="hidden" name="set" value="self">';
 						 if(item.bookmark>0){
 							 content += '<i class="fas fa-star text-warning">';
 						 }else{
 							 content += '<i class="far fa-star">';
 						 }
-					 }else if(item.is_receiver == 3 && item.blind == true && item.temp == false){
-						 content += '<input type="hidden" name="set" id="set" value="send">';
+					 }else if(item.is_receiver == 3 && item.temp == false){
+						 content += '<input type="hidden" name="set" value="send">';
 						 if(item.favorites>0){
 							 content += '<i class="fas fa-star text-warning">';
 						 }else{
 							 content += '<i class="far fa-star">';
 						 }
-					 }else if(item.temp == true && item.blind == true){
-						 content += '<input type="hidden" name="set" id="set" value="temp">';
+					 }else if(item.temp == true ){
+						 content += '<input type="hidden" name="set" value="temp">';
 						 if(item.favorites>0){
 							 content += '<i class="fas fa-star text-warning">';
 						 }else{
 							 content += '<i class="far fa-star">';
 						 }
-					 }*/
+					}
+			 }
 				 if(title == '검색결과'){
 				 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == false ){
 					 if(item.bookmark>0){
@@ -532,8 +538,10 @@ listCall(showPage);
 
 	    var mailId = $(this).data('mail-id');
 	    var mailToggle = $(this).find('i');
+	    var set = $(this).closest('tr').find('input[name="set"]').val();
 	    console.log(mailToggle);
 	    console.log(mailId);
+	    console.log(set);
 	    // 현재 즐겨찾기 상태 가져오기
 	    var isLike = $(this).find('i').hasClass('fas');
 	    console.log(isLike);
@@ -544,14 +552,18 @@ listCall(showPage);
 	    if($('#title').text() == '검색결과'){
 			if(typeHTML=='[받은 메일함]'){
 				Like = 'receive';
+				set = 'receive';
 			 }else if(typeHTML=='[내게 쓴 메일함]'){
 				 Like = 'self';
+				 set = 'self';
 			 }else if(typeHTML=='[보낸 메일함]'){
 				 Like = 'send';
+				 set = 'send';
 			 }else if(typeHTML=='[휴지통]'){
 				 Like = 'trash';
 			}else if(typeHTML=='[임시보관함]'){
 				Like = 'temp';
+				set = 'temp';
 			}
 	    }
 
@@ -561,12 +573,13 @@ listCall(showPage);
 	        data: {
 	            'mailId': mailId, // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
 	            'isLike': !isLike, // 현재 즐겨찾기 상태를 반대로 전환하여 서버에 전달
-	            'type' : 'trash'
+	            'type' : Like,
+	            'set' : set
 	        },dataType: 'json'
 	        ,success: function (response) {
 	        	console.log(response.isLike.favorites);
                 console.log(response.isLike.bookmark);
-	                 if(Like=='self' || Like=='receive'){
+	                 if(set=='self' || set=='receive'){
 	                	 console.log('Bookmark:', response.isLike.bookmark);
 		                  // 서버로부터의 응답 처리
 		                  if (response.isLike.bookmark === true) {
@@ -578,7 +591,7 @@ listCall(showPage);
 		                  }
 	                 }
                 
-	                 if(Like=='send' || Like=='temp'){
+	                 if(set=='send' || set=='temp'){
 	                	 console.log('Favorites:', response.isLike.favorites);
 		                  // 서버로부터의 응답 처리
 		                  if (response.isLike.favorites === true) {
@@ -681,8 +694,9 @@ function del(){
 	    
 	checkedCheckboxes.each(function() {
 		var mailId = $(this).data('mail-id');
-		var set = $('input[name="set"]').val();
+		var set = $(this).closest('tr').find('input[name="set"]').val();
 		console.log(mailId);
+		console.log(set);
 		$.ajax({
 			type: 'POST',
 			url: 'mail/trash.ajax',
@@ -705,7 +719,7 @@ function del(){
 					window.location.href = './importBox.go';
 				}
 			}
-		});
+		}); 
 	});
 }
 
@@ -714,7 +728,7 @@ function restore(){
 	var count = checkedCheckboxes.length;
 	checkedCheckboxes.each(function() {
 		var mailId = $(this).data('mail-id');
-		var set = $('input[name="set"]').val();
+		var set = $(this).closest('tr').find('input[name="set"]').val();
 		console.log(set);
 		console.log(mailId);
 		$.ajax({
@@ -729,7 +743,7 @@ function restore(){
 				listCall(showPage);
 	     		$('#pagination').twbsPagination('destroy');
 			}
-		}); 
+		});  
 	});
 };
 	

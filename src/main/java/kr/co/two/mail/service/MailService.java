@@ -429,10 +429,10 @@ public class MailService {
    }
    
    // 즐겨찾기
-   public HashMap<String, Object> mailFavorite(Integer mail_id, boolean isLike, String type, String member_id) {
+   public HashMap<String, Object> mailFavorite(Integer mail_id, boolean isLike, String type, String member_id, String set) {
       HashMap<String, Object> map = new HashMap<String, Object>();
-      dao.mailFavorite(mail_id,isLike,type,member_id);
-      MailDTO dto = dao.isFavoriteStatus(mail_id,type,member_id);
+      dao.mailFavorite(mail_id,isLike,type,member_id,set);
+      MailDTO dto = dao.isFavoriteStatus(mail_id,type,member_id,set);
       logger.info("isLikeStatues : "+dto );
       logger.info("bookmark: "+dto.isBookmark());
       logger.info("favorites: "+dto.isFavorites());
@@ -488,20 +488,37 @@ public class MailService {
      
       map.put("dto", sendMemberList);
       // `mailMemberList`에서 `mail_id`가 `NULL`인 행 제외
-      for (Iterator<MailDTO> iterator = mailMemberList.iterator(); iterator.hasNext();) {
+      /*for (Iterator<MailDTO> iterator = mailMemberList.iterator(); iterator.hasNext();) {
           MailDTO mail = iterator.next();
           if (Integer.valueOf(mail.getMail_id()) == null) {
               iterator.remove();
           }
       }
+      */
       // 디테일 가져오기
       mailMemberList = dao.mailMemberDetail(mail_id,type,member_id);
+      
+      
+      for (Iterator<MailDTO> iterator = mailMemberList.iterator(); iterator.hasNext();) {
+          MailDTO mail = iterator.next();
+          Integer mailId = mail.getMail_id();
+          if (mailId == null) {
+              iterator.remove();
+          } else {
+              // mailId가 null이 아닌 경우에 대한 추가 로직 처리
+              logger.info("receiver list: " + mail.getDept_name());
+              logger.info("receiver list: " + mail.getPosition_name());
+          }
+      }
+      
+      
       map.put("memberdto", mailMemberList);
 
-      for (MailDTO maillist : mailMemberList) { // 리스트 하나하나씩 꺼내기
+      /*for (MailDTO maillist : mailMemberList) { // 리스트 하나하나씩 꺼내기
 			logger.info("receiver list: "+maillist.getDept_name());
 			logger.info("receiver list: "+maillist.getPosition_name());
-	}
+			int mailId = maillist.getMail_id();
+      }*/
       
       //사진 가져오기
       int photo = dao.mailCheckPhoto(mail_id);

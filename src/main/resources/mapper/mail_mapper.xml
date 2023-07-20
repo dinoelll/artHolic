@@ -134,7 +134,7 @@
 	  		UNION SELECT DISTINCT 
 	  </if>
 	   <if test="type=='send' or type=='temp' or type=='all' or type=='trash' or type=='import'">
-		  m.mail_id, 3 AS send, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, m.temp, mb.name,
+		  m.mail_id, mb.member_id AS send, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, m.temp, mb.name,
 		  MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
   	  	  MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name,NULL AS read_chk, NULL AS read_date
 		  FROM mail m
@@ -180,7 +180,13 @@
 	 <if test='type == "send" || type== "temp"'>
 	    mail SET favorites = #{isLike} WHERE mail_id = #{mail_id} AND member_id = #{member_id}
 	  </if>
+	  <if test='type == "trash" and( set == "send" || set == "temp" )'>
+	    mail SET favorites = #{isLike} WHERE mail_id = #{mail_id} AND member_id = #{member_id}
+	  </if>
 	  <if test='type == "self" || type == "receive"'>
+	    mail_receiver SET bookmark = #{isLike} WHERE mail_id = #{mail_id} AND member_id = #{member_id}
+	  </if>
+	  <if test='type == "trash" and( set == "self" || set == "receive" )'>
 	    mail_receiver SET bookmark = #{isLike} WHERE mail_id = #{mail_id} AND member_id = #{member_id}
 	  </if>
 	</update>
@@ -190,7 +196,13 @@
       <if test='type == "send"|| type== "temp"'>
 	    * FROM mail WHERE mail_id = #{mail_id} AND member_id = #{member_id}
 	  </if>
+	  <if test='type == "trash" and( set == "send" || set == "temp" )'>
+	    * FROM mail WHERE mail_id = #{mail_id} AND member_id = #{member_id}
+	  </if>
 	  <if test='type == "self" || type == "receive"'>
+	    * FROM mail_receiver WHERE mail_id = #{mail_id} AND member_id = #{member_id}
+	  </if>
+	  <if test='type == "trash" and( set == "self" || set == "receive" )'>
 	    * FROM mail_receiver WHERE mail_id = #{mail_id} AND member_id = #{member_id}
 	  </if>
    </select> 
@@ -224,7 +236,7 @@
    COUNT(*) AS row_count
 	FROM (
 	SELECT m.mail_id,m.member_id,m.writeTime,m.mailSubject,m.mailContent,m.blind,m.favorites,mr.bookmark,
-    mr.is_receiver,m.temp,mb.name,mf.mail_file_id,mr.read_chk,mr.read_date
+    mr.is_receiver,m.temp,mb.name,<!-- mf.mail_file_id, -->mr.read_chk,mr.read_date
 	</if>
 	<if test="type=='receive' or type=='self'">
 	COUNT (mr.mail_id) 
@@ -233,7 +245,7 @@
 	  FROM mail m
 	  LEFT OUTER JOIN mail_receiver mr ON m.mail_id = mr.mail_id
 	  LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
-      LEFT OUTER JOIN mail_file mf ON mf.mail_id = mr.mail_id
+      <!-- LEFT OUTER JOIN mail_file mf ON mf.mail_id = mr.mail_id -->
 	  WHERE mr.member_id = #{member_id}
 	  <if test="type=='all' and !(searchText == null or searchText.equals(''))"> 
 	  	<if test ="searchInformation=='allMail'">
@@ -264,7 +276,7 @@
 	  		UNION
 	  		SELECT DISTINCT 
 			m.mail_id, m.member_id, m.writeTime, m.mailSubject, m.mailContent, m.blind, m.favorites, 3 AS bookmark,  3 AS is_receiver, 
-			m.temp, mb.name, mf.mail_file_id,3 as read_chk, NULL as read_date
+			m.temp, mb.name, <!-- mf.mail_file_id -->3 as read_chk, NULL as read_date
 	  </if>
 	  <if test="type=='temp' or type=='send'">
 	  		COUNT (m.mail_id) 
@@ -272,7 +284,7 @@
 	  <if test="type=='temp' or type=='send' or type=='all' or type =='import' or type=='trash'">
 		  FROM mail m
 		  LEFT OUTER JOIN member mb ON mb.member_id = m.member_id
-		  LEFT OUTER JOIN mail_file mf ON (mf.mail_id = m.mail_id)
+		  <!-- LEFT OUTER JOIN mail_file mf ON (mf.mail_id = m.mail_id) -->
 		  WHERE m.member_id = #{member_id}
 		  AND NOT EXISTS (
 	      SELECT 1
@@ -392,6 +404,9 @@
 		</if>
 		<if test="type=='trash'">
 	  		AND m.blind = 1
+	  	</if>
+	  	<if test="type=='send' or type=='temp' or type=='all' or type=='import' or type=='trash'">
+	  	GROUP BY m.mail_id
 	  	</if>
 		ORDER BY writeTime DESC
 	    LIMIT #{cnt} OFFSET #{offset}

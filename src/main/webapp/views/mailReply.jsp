@@ -114,11 +114,11 @@
                         <table>
                            <tr>
                               <th>보낸사람:</th>
-                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-sender"></span></td>
+                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-sender"></span></span></td>
                            </tr>
                            <tr>
                               <th>받는사람:</th>
-                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-recipient"></span></td>
+                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-recipient"><span id="primember"></span></span></td>
                            </tr>
                            <tr>
                               <th>참조:</th>
@@ -130,20 +130,20 @@
                            </tr>
                            <tr>
                               <th>제목:</th>
-                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-mailSubject"></span></td>
+                              <td>&nbsp;&nbsp;&nbsp;<span id="preview-mailSubject"><span id="prisubject"></span></span></td>
                            </tr>
                            <tr>
                               <td colspan="2"><p></p></td>
                            </tr>
                            <tr>
-                              <td colspan="2"><span id="preview-mailContent"></span></td>
+                              <td colspan="2"><span id="preview-mailContent"><span id="pricontent"></span></span></td>
                            </tr>
                         </table>
                      </div>
                      <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default"
                            data-dismiss="modal">수정</button>
-                        <button type="submit" class="btn btn-primary">보내기</button>
+                        <button type="submit" class="btn btn-primary" onclick="send()">보내기</button>
                      </div>
                   </div>
                   <!-- /.modal-content -->

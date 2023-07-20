@@ -143,7 +143,7 @@
                      <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default"
                            data-dismiss="modal">수정</button>
-                        <button type="submit" class="btn btn-primary">보내기</button>
+                        <button type="submit" class="btn btn-primary" onclick="send()">보내기</button>
                      </div>
                   </div>
                   <!-- /.modal-content -->
