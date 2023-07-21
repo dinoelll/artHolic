@@ -642,6 +642,7 @@
 	
 	function chatHistory(data) {
 		$('.m-b-0.chat_history').html('');
+		console.log(data);
 		data.forEach(function(item) {
 			var content = '';
 			console.log(item.is_notice);
@@ -674,7 +675,7 @@
 					content+='<div class="message-data text-right">';
 					content+='<span class="message-data-time">'+formattedTime+'</span>';
 					content+='<img src="/photo/'+item.profile_photo+'" alt="avatar">';
-					content+='<div>'+item.send_id+'</div>';
+					content+='<div>'+item.name+'</div>';
 					content+='</div>';
 					content+='<div class="message other-message float-right">'+item.content+'</div>';
 					//content+='</li>';

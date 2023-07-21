@@ -16,7 +16,7 @@
 	</select>
 	
 	<select id="chatHistory" resultType="ChatDTO" parameterType="String">
-		select c.*, m.profile_photo from chat c join member m on (c.send_id = m.member_id)
+		select c.*, m.profile_photo, m.name from chat c join member m on (c.send_id = m.member_id)
 		WHERE chat_room_id = #{chat_room_id}
 		order by send_time asc 
 	</select>
