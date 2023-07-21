@@ -43,7 +43,7 @@ public interface MailDAO {
 
    int tempListUpdate(HashMap<String, String> params);
 
-   ArrayList<MailDTO> mailSelfBox(int cnt, int offset, String type, String searchInformation, String searchText, String member_id);
+   ArrayList<MailDTO> mailSelfBox(int cnt, int offset, String type, String searchInformation, String searchText, String member_id,String mailFilter);
 
    int savereceiverWrite(MailDTO dto);
 
@@ -76,6 +76,12 @@ public interface MailDAO {
 	void tempsaveupdate(String mail_id, Timestamp writeTime, String mailSubject, String mailContent);
 
 	int mailrestore(int mail_id, String member_id, String set);
+
+	int readchktotal(String member_id);
+
+	ArrayList<MailDTO> readchkBox( String member_id,int cnt, int offset);
+
+	int delread(String receivermember, String mail_id);
 	
   //Object mailtempGet(int mail_id, String type);
 

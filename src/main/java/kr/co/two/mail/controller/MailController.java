@@ -179,6 +179,11 @@ public class MailController {
 	   return "selfComplete";
    }
    
+   @RequestMapping(value="/mailreadcheck.go")
+   public String readcheck() {
+	   return "acknowledgment";
+   }
+   
    // 메일 보내기
    @RequestMapping(value="/mailWrite.do")
    public String mailWrite(@RequestParam String type,@RequestParam HashMap<String, String> params, MultipartFile[] attachment,
@@ -279,10 +284,10 @@ public class MailController {
    @RequestMapping(value="mail/selfBox.ajax")
    @ResponseBody
    public HashMap<String, Object> mailSelfBox(@RequestParam String page,@RequestParam String cnt, @RequestParam String searchInformation,
-		   @RequestParam String searchText,@RequestParam String type,HttpSession session){
-      logger.info("page: "+page+"/cnt: "+cnt+"/searchInformation: "+searchInformation+"/searchText: "+searchText+"/type:"+type);
+		   @RequestParam String searchText,@RequestParam String type,HttpSession session, @RequestParam String mailFilter){
+      logger.info("page: "+page+"/cnt: "+cnt+"/searchInformation: "+searchInformation+"/searchText: "+searchText+"/ mailFilter: "+mailFilter+"/type:"+type);
       String member_id = (String) session.getAttribute("loginId");
-	   return service.mailSelfBox(Integer.parseInt(page),Integer.parseInt(cnt),searchInformation,searchText,type,member_id);
+	   return service.mailSelfBox(Integer.parseInt(page),Integer.parseInt(cnt),searchInformation,searchText,type,member_id,mailFilter);
    }
    
    // mail 즐겨찾기
@@ -304,12 +309,30 @@ public class MailController {
 	   return service.mailtrash(mailId,type,member_id,set);
    }
    
+   // 휴지통 복원
    @PostMapping(value="mail/restore.ajax")
    @ResponseBody
    public HashMap<String, Object> mailrestore(@RequestParam String mail_id, @RequestParam String type, @RequestParam String set, HttpSession session){
 	   logger.info("mail_id: "+mail_id+"/type: "+type+"/set: "+set);
 	   String member_id = (String) session.getAttribute("loginId");
 	   return service.mailrestore(Integer.parseInt(mail_id),member_id,set);
+   }
+   
+   // 수신확인
+   @PostMapping(value="mail/readcheck.ajax")
+   @ResponseBody
+   public HashMap<String, Object> mailreadcheck(@RequestParam String type, @RequestParam String cnt, @RequestParam String page,HttpSession session){
+	   logger.info("type: "+type+"/cnt: "+cnt+"/page: "+page);
+	   String member_id = (String) session.getAttribute("loginId");
+	   return service.mailreadcheck(type,Integer.parseInt(cnt),Integer.parseInt(page),member_id);
+   }
+   
+   // 발송취소
+   @PostMapping(value="mail/delread.ajax")
+   @ResponseBody
+   public HashMap<String, Object> maildelread(@RequestParam String receivermember, @RequestParam String mail_id){
+	   logger.info("receivermember: "+receivermember+"/mail_id: "+mail_id);
+	   return service.maildelread(receivermember,mail_id);
    }
 
 
