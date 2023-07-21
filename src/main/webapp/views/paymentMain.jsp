@@ -304,6 +304,9 @@
 													                    <c:when test="${t.state eq '반려'}">
 													                        <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
 													                    </c:when>
+													                   <c:when test="${t.result eq '결재완료'}">
+													                        <h3 class="timeline-header"><a href="./paymentVacationFormDetail.go?document_id=${t.document_id}">${t.paySubject}</a></h3>
+													                    </c:when>
 											                    	</c:choose>
 												            </c:when>
 												            <c:when test="${ empty t.payment_ship_id and empty t.refer}">
@@ -587,8 +590,7 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+
 
 <!-- SweetAlert2 -->
 <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
