@@ -108,6 +108,7 @@
 	border-radius: 5px;
 	max-width: 400px;
 	text-align: center;
+	width: 400px;
 }
 
 #modal-title {
@@ -118,7 +119,7 @@
 	border-radius: 5px;
 }
 
-#modal-form button {
+/* #modal-form button {
 	margin: 10px;
 	padding: 5px 10px;
 	border-radius: 5px;
@@ -126,9 +127,12 @@
 	color: #fff;
 	border: none;
 	cursor: pointer;
-}
+} */
 
-#modal-form button:hover {
+#change:hover {
+	background-color: #357ca5;
+}
+#delete:hover {
 	background-color: #357ca5;
 }
 
@@ -211,6 +215,42 @@
 	color: #91bdce;
 	text-align-last: center;
 }
+
+#change{
+	background-color: #3c8dbc;
+	margin: 10px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	float:left;
+}
+#delete {
+	background-color: #3c8dbc;
+	margin: 10px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	float:right;
+}
+
+#x {
+	background-color: white;
+	color: black;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 5px;
+	margin: 10px;
+	float: right;
+
+	position: absolute;
+    top: 410px;
+    right: 745px;
+    cursor: pointer;
+}
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -253,12 +293,19 @@
 
 			<div id="modal" style="display: none;">
 				<!-- 모달 내부의 입력 폼 -->
+
 				<form id="modal-form">
-					<label for="modal-title">내용</label> <input type="text"
-						id="modal-title" name="title"> <br>
-					<button type="submit">변경</button>
+					<div>
+						<button type="button" onclick="closeModal()" id="x">x</button>
+					</div>
+					<div >
+						<label for="modal-title">내용</label>
+
+					</div>
+					<input type="text" id="modal-title" name="title"> <br>
+					<button type="submit" id="change">변경</button>
 					<button type="button" id="delete">삭제</button>
-					<button type="button" onclick="closeModal()">취소</button>
+
 				</form>
 			</div>
 
