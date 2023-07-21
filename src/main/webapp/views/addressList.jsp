@@ -423,11 +423,7 @@
 						content += '<td>' + dto.position_name + '</td>';
 						content += '<td>' + dto.dept_name + '</td>';
 						content += '<td>' + dto.phone + '</td>';
-						content += '<td><a href="/mailWrite2.go?id='
-								+ dto.member_id + '&name=' + dto.name
-								+ '&dept=' + dto.dept_name + '&position='
-								+ dto.position_name + '">' + dto.email
-								+ '</a></td>';
+						content += '<td>' + dto.email + '</td>';
 						content += '<td>' + dto.tel + '</td>';
 						content += '</tr>';
 					});
@@ -469,7 +465,7 @@
 				success : function(data) {
 					console.log("success");
 					console.log(data.data);
-					alert('즐겨찾기가 해제되었습니다.');
+					/* alert('즐겨찾기가 해제되었습니다.'); */
 					listCall(showPage);
 					/* location.href='/address.go';	 */
 				},
@@ -494,7 +490,7 @@
 				success : function(data) {
 					console.log("success");
 					console.log(data.data);
-					alert('즐겨찾기가 등록되었습니다.');
+					/* alert('즐겨찾기가 등록되었습니다.'); */
 					listCall(showPage);
 					/* location.href='/address.go';	 */
 				},
