@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ArtHolic</title>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
-<script src="/js/jquery.twbsPagination.js" type="text/javascript"></script>
+<script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
 
 
 
@@ -163,7 +163,7 @@
                <select id="opt" name="select">
                      <option value="default">현장설명 검색</option>
                      <option value="subject">제목</option>
-                     <option value="member_id">작성자</option>
+                     <option value="name">작성자</option>
                </select>   
                <input type="text" id="keyword" placeholder="검색어를 입력하세요.">
                   <button id="searchButton">검색</button>
@@ -344,7 +344,7 @@ function listDraw(briefingList) {
          content += '<tr>';
          content += '<td><p>'+dto.board_id+'</p></td>';
          content += '<th><a href="briefingDetail.do?board_id='+dto.board_id+'&member_id='+dto.member_id+'">'+dto.subject+'</a></th>';
-         content += '<th><a href="employeeDetail.go?member_id='+dto.member_id+'">'+dto.name+'</a> </th>';
+         content += '<th>'+dto.name+'</th>';
          content += '<td>'+ dto.writeTime +'</td>';
          content += '</tr>';
        });
