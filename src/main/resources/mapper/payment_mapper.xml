@@ -739,6 +739,6 @@
 	
 	<select id="paymentCompleteMember" parameterType="String" resultType="String">
 		SELECT id FROM elec_payment
-		WHERE document_id='vac-a-0018'
+		WHERE document_id=#{document_id}
 	</select>
 </mapper>
