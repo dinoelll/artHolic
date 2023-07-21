@@ -62,8 +62,8 @@
    
    <!-- 참조자 DB 저장 -->
    <insert id="referenceMemberWrite" parameterType="mail">
-      INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver,read_chk)
-         VALUES(#{mail_id},#{member_id},false,false,0,1,'읽지않음')
+      INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
+         VALUES(#{mail_id},#{member_id},false,false,0,1)
    </insert>
    
    <!-- 참조자 여부 -->
