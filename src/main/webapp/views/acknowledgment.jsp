@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  
  
   <style>
   	.main-sidebar {
@@ -35,7 +36,7 @@
 	.test{
 		display:inline;
 	}
-	#forwarding,#reply,#del,#mailFilter,#readcheck{
+	#forwarding,#reply,#del,#mailFilter{
         font-weight: bold;
         background-color: white;
         border: 1px solid white;
@@ -43,21 +44,21 @@
         font-size: 15px;
    }
    
-   #forwarding:hover,#reply:hover,#del:hover,#mailFilter:hover,#readcheck:hover{
+   #forwarding:hover,#reply:hover,#del:hover,#mailFilter:hover{
         border-color: rgba(233, 221, 198, 0.4);
         color: cornflowerblue;
     }
-    #mailFilter,#readcheck{
+    #mailFilter{
     	border-style: none;
     	font-weight:bold;
     	text-align: center;
     	cursor: pointer;
-    	font-size: 15x;
+    	font-size: 14.2px;
     }
     #searchInformation{
     	text-align: center;
     	cursor: pointer;
-    	font-size: 15px;
+    	font-size: 14.5;
     }
 	#paging {
 	  position: fixed;
@@ -77,9 +78,13 @@
 	#spanhidden{
 		display: none;
 	}
-	.hidden {
-	  display: none;
-	}
+	.hidden{
+       display: none;
+    }
+    #readicon{
+    	color :orange;
+    	font-weight: bold;
+    }
 	.notice {
 	  display: block;
 	  background-color: gray;
@@ -100,7 +105,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 id="title">보낸 메일함</h1>
+            <h1 id="title">수신확인</h1>
           </div>
           <!--  
           <div class="col-sm-6">
@@ -167,8 +172,7 @@
                   </button>
                   <button type="button" class="btn btn-default btn-sm" id="forwarding">
                     <i class="fas fa-share"></i>&nbsp;&nbsp;전달 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  </button> &nbsp;&nbsp;&nbsp;&nbsp;
-                  <button id="readcheck" class="readcheck" onclick="location.href='mailreadcheck.go'"><i class="fa fa-user-check"></i>수신확인</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </button>&nbsp;
                   <select id="mailFilter" name="mailFilter">
                   	<option value="" selected disabled hidden>필터</option>
                   	<!-- <option value="all">모든 메일</option>
@@ -195,7 +199,7 @@
               </div>
               <div class="table-responsive mailbox-messages">
                 <table class="table table-hover table-striped">
-				  <colgroup>
+<%-- 				  <colgroup>
 				  	<col width=5%/>
 				  	<col width=5%/>
 				  	<col width=5%/>
@@ -203,8 +207,9 @@
 				  	<col width=45%/>
 				  	<col width=5%/>
 				  	<col width=20%/>
-				  </colgroup>
+				  </colgroup> --%>
                   <tbody id="list">
+                  
                   </tbody>
                    
                 </table>
@@ -214,7 +219,7 @@
             </div>
 
 
-			<div id="trashMessage" class="hidden">메일이 휴지통에 이동되었습니다.</div>
+			<div id="delreadMessage" class="hidden">메일 발송이 취소되었습니다.</div>
           <!-- /.card -->
           <div id="paging">	
 			<!-- 	플러그인 사용	(twbsPagination)	-->
@@ -260,7 +265,7 @@ var showPage = 1;
 var selectedSearchInformation = "allMail";
 var selectedMailFilter = "new";
 //var selectedSearchMailBox = "allBox";
-var type = "send";
+var type = "receive";
 var searchText = "";
 var cnt = 10;
 
@@ -307,9 +312,9 @@ listCall(showPage);
 	   console.log(searchText);
 	   if(selectedSearchInformation !== "" ){
 		   type='all';
-		   listCall(showPage);
 		   $('#title').html('검색결과');
 		   $('#pagination').twbsPagination('destroy');
+		   listCall(showPage);
 	   }
 	};
 	
@@ -328,14 +333,11 @@ listCall(showPage);
   function listCall(page){
 	  $.ajax({
 		 type:'post'
-		 ,url:'mail/selfBox.ajax'
+		 ,url:'mail/readcheck.ajax'
 		 ,data:{
 			 'page':page,
 			 'cnt': cnt,
-			 'searchInformation': selectedSearchInformation,
-			 'searchText': searchText,
 			 'type':type,
-			 'mailFilter':selectedMailFilter,
 		 },dataType: 'json'
 	  	 ,success:function(data){
 			 console.log(data);
@@ -374,7 +376,8 @@ listCall(showPage);
 			 var formId = 'mail' + mail_id;
 			 content += '<tr>';
 			 content += '<td>';
-			 content += '<form method="post" action="mailDetail.do/'+mail_id+'" id="' + formId + '">';
+			 content += '<form method="post" class="mailForm" action="mailDetail.do/' + mail_id + '" id="' + formId + '" data-mail-id="' + item.mail_id + '">';
+			 content += '<input type="hidden" name="set" value="" id="set">';
 			 content += '<div class="icheck-primary">';
 			 content += '<input type="checkbox" name="Rowcheck" value="" id="check'+formId+'" data-mail-id="' + item.mail_id +'">';
 			 content += '<label for="check'+formId+'"></label>';
@@ -382,11 +385,7 @@ listCall(showPage);
 			 content += '</td>';
 			 content += '<td class="mailbox-star" id="mailSubjectForm" ><a href="#" class="toggle-favorite" data-mail-id="' + item.mail_id + '">';
 			 if(title != '검색결과'){
-				 if (item.favorites>0){
-					 content += '<i class="fas fa-star text-warning">';
-				 }else {
-					 content += '<i class="far fa-star">';
-				 }
+				
 			 }else{
 				 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == false ){
 					 if(item.bookmark>0){
@@ -419,7 +418,7 @@ listCall(showPage);
 			 content += '</i></a></td>';
 			 content += '<td>';
 			 if(title==='검색결과'){
-				 if(item.is_receiver == 0 || item.is_receiver == 1 || item.is_receiver == 2){
+				 if(item.is_receiver == 0 || item.is_receiver == 1){
 					 if(item.read_chk == false){
 						 content += '<i class="far fa-envelope"></i>';
 					 }else{
@@ -429,51 +428,61 @@ listCall(showPage);
 					 content += '<i class="far fa-envelope-open"></i>';
 				 }
 			 }else{
-				 content += '<i class="far fa-envelope-open"></i>';
+				 if(item.read_chk === false){
+					 content += '<i class="far fa-envelope"></i>';
+				 }else{
+					 content += '<i class="far fa-envelope-open"></i>';
+				 }
 			 }
 			 content += '</td>';
-			 content += '<td class="mailbox-name">'+item.name+'</a></td>';
+			 content += '<td class="mailbox-name">'+item.receiver_name+'</a></td>';
 			 content += '<td class="mailbox-subject"><a href="#" onclick="mailDetail(this)" data-mail-id="' + item.mail_id +'"><span class="typespan">';
 			 if (title === '검색결과'){
 				 console.log(item.is_receiver);
-				 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == false ){
+				 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == 0 ){
 					 content += '<span class="type">[받은 메일함]</span>';
-				 }else if(item.is_receiver == 2 && item.blind == false){
+				 }else if(item.is_receiver == 2 && item.blind == 0){
 					 content += '<span class="type">[내게 쓴 메일함]</span>';
-				 }else if(item.is_receiver == 3 && item.blind == false && item.temp == false){
+				 }else if(item.is_receiver == 3 && item.blind == false && item.temp == true){
 					 content += '<span class="type">[보낸 메일함]</span>';
-				 }else if(item.blind == true){
+				 }else if(item.blind == 1){
 					 content += '<span class="type">[휴지통]</span>';
-				 }else if(item.temp == true){
+				 }else if(item.temp == true && item.blind == 0){
 					 content += '<span class="type">[임시보관함]</span>';
 				 }
 			 }
 			 content += '</span><b>'+item.mailSubject+'</b></a></td>';
-			 content += '<td class="mailbox-attachment">';
-			 if (item.mail_file_id != null && item.mail_file_id !== 0) {
-			        content += '<i class="fas fa-paperclip"></i>';
-			 }
-			 content += '</td>';
 			 content += '</form>';
-			 var timestamp = item.writeTime; // 예시: timestamp 값
+			 var timestamp = item.sentTime; // 예시: timestamp 값
 			 var date = new Date(timestamp);
-			 var formattedDateTime = date.getFullYear() + '-' + addZero(date.getMonth() + 1) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
+			 var formattedDateTime = date.getFullYear() + '-' + addZero(date.getMonth() + 1) + '-' + addZero(date.getDate());
 			 content += '<td class="mailbox-date">' + formattedDateTime + '</td>';
+			 
+			 var date = new Date(item.read_date);
+			 var formattedDate2 = date.getFullYear() + '-' + addZero(date.getMonth() + 1) + '-' + addZero(date.getDate());
+			 if (item.read_chk == true && (item.blind == 0 || item.blind == 1)) {
+				 content += '<td><i class="far fa-envelope-open"></i>&nbsp;'+formattedDate2+'</td>';
+				 content += '<td></td>';
+			}else if(item.read_chk == false && (item.blind == 0 || item.blind == 1)){
+				content += '<td>읽지않음</td>';
+				content += '<td><a href="#" onclick="delread(this)" id="delread"><span id="readicon">X</span> 발송취소</a></td>';
+				content += '<input type="hidden" name="receivermember" value="'+item.receiver_member_id+'">';
+				content += '<input type="hidden" name="receivemail_id" value="'+item.mail_id+'">';
+			}else if(item.blind == 2){
+				content += '<td>발송취소</td>';
+				content += '<td></td>';
+			}
 			 content += '</tr>';
 		  });
 	  }else{
-		  content += '<tr>';
-		  if (title === '검색결과'){
-			content += '<td colspan="7" style="text-align: center;">검색된 메일이 없습니다.<td>';
-		  }else{
-			content += '<td colspan="7" style="text-align: center;">메일이 없습니다.<td>';
-		  }
-		  content += '</tr>';
+			content += '<tr>';
+			content += '<td colspan="9" style="text-align: center;">메일이 없습니다.<td>';
+			content += '</tr>';
 		}
 	  
 	  $('#list').empty();
 	  $('#list').append(content);
-	  $('.typespan').append('<sapn class="type" id="spanhidden">[보낸 메일함]</span>');
+	  $('.typespan').append('<sapn class="type" id="spanhidden">[받은 메일함]</span>');
 
 	  
   }
@@ -530,7 +539,7 @@ listCall(showPage);
 	    // 현재 즐겨찾기 상태 가져오기
 	    var isLike = $(this).find('i').hasClass('fas');
 	    console.log(isLike);
-	    var Like = 'send';
+	    var Like = 'receive';
 	    
 	    var typeHTML = $(this).closest('tr').find('.typespan .type:first').text();
 	    console.log(typeHTML);
@@ -596,32 +605,13 @@ listCall(showPage);
 	    return value < 10 ? '0' + value : value;
 	  }
 	
-	  $('.checkbox-toggle').data('clicks', false);
-	// 체크박스
-  /* $('.checkbox-toggle').click(function (e) {
-		 console.log('클릭!');
-	     var clicks = $(this).data('clicks')
-	    console.log(clicks);
-	     var mailId = $(this).data('mail-id');
-	     console.log(mailId);
-	     if (clicks === true) {
-	       //Uncheck all checkboxes
-	       $(this).find('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
-	       $(this).find('.checkbox-toggle .far.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
-	     } else if (clicks === false ){
-	       //Check all checkboxes
-	       $(this).find('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
-	       $(this).find('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
-	     }
-	     $(this).data('clicks', !clicks)
-	   })  */
+$('.checkbox-toggle').data('clicks', false);
 	// 전체선택 
 	   $(function(){
 	      var chkObj = $("input[name='Rowcheck']");
 	      var rowCnt = chkObj.length;
 	      console.log(chkObj);
 
-	        
 	        $("input[name='allCheck']").click(function(){
 	          var chk_listArr = $("input[name='Rowcheck']"); // 체크박스의 name 속성을 "Rowcheck"로 수정
 	          for (var i=0; i<chk_listArr.length; i++){
@@ -636,24 +626,26 @@ listCall(showPage);
 	            $("input[name='allCheck']")[0].checked = false;
 	          }
 	        });
-	        
-	        if(chkObj.length > 1){
-	        	console.log('2개다');
-	        	}
 	      });
-	
-   	  
 	   
  function mailtrash(element){
 		
 	  var checkedCheckboxes = $('input[type="checkbox"]:checked');
+	  var count = checkedCheckboxes.length;
+	  var mailId = $(this).data('mail-id');
 	  console.log(checkedCheckboxes);
-      var rowCnt = checkedCheckboxes.length;
-	  checkedCheckboxes.each(function() {
-	    var mailId = $(this).data('mail-id');
-	  	console.log(mailId);
+	  console.log(mailId);
+	  	if (count > 0) {
+	   		if (type === 'trash') {
+			    var confirmation = confirm("영구 삭제시, 복원되지 않습니다. 정말로 삭제하시겠습니까?");
+			    if (!confirmation) {
+			      // 삭제 취소
+			      return;
+			    }
+	   		}
+		}
 	
-		var Like = 'send';
+		var Like = 'receive';
 		    
 	    var typeHTML = $(this).closest('tr').find('.typespan .type:first').text();
 	    console.log(typeHTML);
@@ -670,7 +662,8 @@ listCall(showPage);
 				Like = 'temp';
 			}
 	    }
-	    
+	checkedCheckboxes.each(function() {
+		var mailId = $(this).data('mail-id');
 	    $.ajax({
 	        type: 'POST',
 	        url: 'mail/trash.ajax',
@@ -683,15 +676,68 @@ listCall(showPage);
 	        	if(response.result){
 	        		listCall(showPage);
 	     		   $('#pagination').twbsPagination('destroy');
-	     		  trashMessage(); 
 	        	}
 	        }
-	});
-	  })
+		});
+	})
 } 
+	
+function reply(element){
+	var Rowcheck = $('input[name="Rowcheck"]:checked');
+	console.log(Rowcheck);
+	var mailId = $(this).data('mail-id');
+	console.log(mailId);
+	if(Rowcheck){
+		var formId = 'mail' + mailId;
+		$('#set').attr('value','reply');
+		$('#'+formId).attr('action','/mailreply.go?');
+		$('#'+formId).submit();	
+	}
+ }
  
- 	function trashMessage() {
-	  var message = document.getElementById('trashMessage');
+/* 
+var Rowcheck = $('input[name="Rowcheck"]:checked');
+
+if (Rowcheck.length > 1) {
+    $('#forwarding').addClass('hidden');
+    $('#reply').addClass('hidden');
+} else {
+    $('#forwarding').removeClass('hidden');
+    $('#reply').removeClass('hidden');
+} */
+
+function delread(element){
+	var receivermember = $(element).closest('tr').find("input[name='receivermember']").val();
+    var mailId = $(element).closest('tr').find("input[name='receivemail_id']").val();
+	console.log(mailId);
+	console.log(receivermember);
+	
+	var confirmation = confirm('발송 취소 시, 수신자의 메일에서 삭제됩니다. 발송을 취소하시겠습니까? ');
+	if (!confirmation) {
+	      return;
+	    }
+	
+	$.ajax({
+        type: 'POST',
+        url: 'mail/delread.ajax',
+        data: {
+            'receivermember': receivermember, // 서버에서 즐겨찾기 상태를 전환할 때 필요한 메일의 고유 식별자
+            'mail_id' : mailId
+        },dataType: 'json'
+        ,success: function (response) {
+        	console.log(response.result);
+        	if(response.result){
+        		listCall(showPage);
+     		   $('#pagination').twbsPagination('destroy');
+     		   delreadMessage();
+        	}
+        }
+	});
+	
+}
+
+function delreadMessage() {
+	  var message = document.getElementById('delreadMessage');
 	  message.classList.add('notice'); // 메시지를 보여주기 위해 'show' 클래스 추가
 
 	  // 3초 후에 메시지를 숨기기 위해 setTimeout 사용

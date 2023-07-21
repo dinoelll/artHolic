@@ -330,7 +330,7 @@
   
   
 <script>
-    loginChk();
+    //loginChk();
    function loginChk() {
         var loginId = '${sessionScope.loginId}';
         var admin = '${sessionScope.admin}';
@@ -385,7 +385,7 @@
 	   			data.forEach(function(item){
 	   				content += '<div class="dropdown-divider"></div>';
 	   				if(item.alarm_code == 'ALARM_FEED') {
-	   					content += '<a href="/projectDetail.go?type=jsp&project_id'+item.iden_id+'&project_name='+item.project_name+'" onclick="readAlarm(\''+item.alarm_id+'\')" class="dropdown-item">';
+	   					content += '<a href="/projectDetail.go?type=jsp&project_id='+item.iden_id+'&project_name='+item.project_name+'" onclick="readAlarm(\''+item.alarm_id+'\')" class="dropdown-item">';
 	   				} else if(item.alarm_code == 'ALARM_MAIL') {
 	   					content += '<a href="/inBox.go" onclick="readAlarm(\''+item.alarm_id+'\')" class="dropdown-item">';
 	   				} else {

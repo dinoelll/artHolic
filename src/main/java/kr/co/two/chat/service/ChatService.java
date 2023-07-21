@@ -94,12 +94,13 @@ public class ChatService {
 		
 		messageMap.put("chat_room_id", chatRoomId);
 		messageMap.put("is_notice", true);
-		
+		String member_name;
 		for (String member_id : (ArrayList<String>) map.get("member_id_array")) {
 			logger.info("member_id : "+ member_id);
 			
 			messageMap.put("send_id", member_id);
-			messageMap.put("content", member_id+"님이 입장하셨습니다");
+			member_name = dao.getName(member_id);
+			messageMap.put("content", member_name+"님이 입장하셨습니다");
 			
 			dao.insert_chat_room_info(chatRoomId, member_id);
 			dao.chatStored(messageMap);
@@ -135,16 +136,21 @@ public class ChatService {
 		
 		messageMap.put("chat_room_id", chatRoomId);
 		messageMap.put("is_notice", true);
-		
+		String member_name;
 		for (String member_id : (ArrayList<String>) map.get("member_id_array")) {
 			logger.info("member_id : "+ member_id);
 	
 			messageMap.put("send_id", member_id);
-			messageMap.put("content", member_id+"님이 입장하셨습니다");
+			member_name = dao.getName(member_id);
+			messageMap.put("content", member_name+"님이 입장하셨습니다");
 			
 			dao.insert_chat_room_info(chatRoomId, member_id);
 			dao.chatStored(messageMap);
 		}
 		return "success";
+	}
+
+	public MemberDTO myProfilePhoto(String member_id) {
+		return dao.myProfilePhoto(member_id);
 	}
 }

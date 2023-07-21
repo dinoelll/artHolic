@@ -75,6 +75,7 @@
 					<input type="text" name="subject" value="${inform.subject}"/>
 		    		<input type="checkbox" name="is_form" value="1"> 필독 등록
 		    		<input type="hidden" name="board_id" value="${inform.board_id}"/>
+		    		<input type="hidden" name="member_id" value="${sessionScope.loginId}" />
 		    	</td>
 			</tr>
 			<tr>

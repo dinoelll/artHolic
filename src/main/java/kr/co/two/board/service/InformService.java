@@ -57,12 +57,30 @@ public class InformService {
 		
 		logger.info("updateDo : "+params);
 		String page = "redirect:/informDetail.do";
-		if(dao.informUpdateDo(params)>0) {
-			page = "redirect:/informDetail.do?board_id="+params.get("board_id");
-		}
 		
-		return page;
+		/*
+		 * if(dao.informUpdateDo(params)>0) { page =
+		 * "redirect:/informDetail.do?board_id="+params.get("board_id"); }
+		 */
+		
+		// member_id 값이 있는 경우, URL에 추가합니다.
+		if (params.containsKey("member_id")) {
+	        page += "?member_id=" + params.get("member_id");
+	    }
+
+	    // board_id 값이 있는 경우, URL에 추가합니다.
+	    if (params.containsKey("board_id")) {
+	        page += "&board_id=" + params.get("board_id");
+	    }
+
+	    if (dao.informUpdateDo(params) > 0) {
+	        // 리다이렉트 URL에 추가된 파라미터를 유지하면서 리다이렉트합니다.
+	        return page;
+	    }
+	    
+	    return "redirect:/informDetail.do"; // 실패 시 이동할 페이지를 지정합니다.
 	}
+
 
 	@Transactional
 	public ModelAndView informUpdate(String board_id) {

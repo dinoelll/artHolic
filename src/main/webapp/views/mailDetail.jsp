@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="<%= request.getContextPath() %>/dist/css/adminlte.min.css">
   <base href="<%= request.getContextPath() %>/" target="_self">
   <style>
-     .main-sidebar {
+    .main-sidebar {
       background-color: #e9ddc6;
    }
    .mt-2 .nav .nav-item .nav-link p {
@@ -44,6 +44,21 @@
    .hidden{
        display: none;
     }
+    .subject{
+    	font-size: 25px;
+    	font-weight: bold;
+    }
+    #star{
+    	font-size: 25px;
+    }
+    #forwarding:hover,#reply:hover,#del:hover{
+        border-color: rgba(233, 221, 198, 0.4);
+        color: cornflowerblue;
+    }
+    #writeTimeDisplay{
+    	color: gray;
+    }
+    
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -58,22 +73,22 @@
         <div class="row mb-2">
           <div class="col-sm-6">
 	          <c:if test="${type.equals('receive')}">
-	            <h1>받은 메일함</h1>
+	            <h1 class="title">받은 메일함</h1>
 	          </c:if>
 	          <c:if test="${type.equals('send')}">
-	            <h1>보낸 메일함</h1>
+	            <h1 id="title">보낸 메일함</h1>
 	          </c:if>
 	          <c:if test="${type.equals('temp')}">
-	            <h1>임시 보관함</h1>
+	            <h1 class="title">임시 보관함</h1>
 	          </c:if>
 	          <c:if test="${type.equals('self')}">
-	            <h1>내게 쓴 메일함</h1>
+	            <h1 class="title">내게 쓴 메일함</h1>
 	          </c:if>
 	          <c:if test="${type.equals('trash')}">
-	            <h1>휴지통</h1>
+	            <h1 class="title">휴지통</h1>
 	          </c:if>
 	          <c:if test="${type.equals('import')}">
-	            <h1>중요 메일함</h1>
+	            <h1 class="title">중요 메일함</h1>
 	          </c:if>
           </div>
         </div>
@@ -105,21 +120,21 @@
                  <div class="mailboxForm"><a href="#" id="mailSubjectForm">
                  <c:if test="${type.equals('receive')|| type.equals('self') }">
                  	<c:if test="${dto.memberdto.get(0).bookmark==false}">
-                 		<i class="far fa-star"></i>
+                 		<i class="far fa-star" id="star" ></i>
                  	</c:if>
                  	<c:if test="${dto.memberdto.get(0).bookmark==true}">
-                 		<i class="fas fa-star text-warning"></i>
+                 		<i class="fas fa-star text-warning" id="star" ></i>
                  	</c:if>
                  </c:if>
                  <c:if test="${type.equals('send')}">
                  	<c:if test="${dto.memberdto.get(0).favorites==false}">
-                 		<i class="far fa-star" ></i>
+                 		<i class="far fa-star" id="star" ></i>
                  	</c:if>
                  	<c:if test="${dto.memberdto.get(0).favorites==true}">
-                 		<i class="fas fa-star text-warning" ></i>
+                 		<i class="fas fa-star text-warning" id="star" ></i>
                  	</c:if>
                  </c:if>
-                 </a>제목&nbsp;&nbsp;${dto.memberdto.get(0).mailSubject}</div>
+                 </a><span class="subject">&nbsp;&nbsp;${dto.memberdto.get(0).mailSubject}</span></div>
                  <div class="mailboxForm" id="mailMember">보낸사람&nbsp;&nbsp;
                     ${dto.memberdto.get(0).dept_name}팀&nbsp;${dto.memberdto.get(0).position_name}&nbsp;${dto.memberdto.get(0).name}
                  </div>
@@ -130,6 +145,9 @@
                        </c:if>
                     </c:forEach>
                  </div>
+                 <c:forEach items="${dto.dto}" var="item">
+                 </c:forEach>
+                 <c:if test="${item.is_receiver == 1}">
                 <div class="mailboxForm" id="refferMember">참조&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                    <c:forEach items="${dto.dto}" var="item">
                       <c:if test="${item.is_receiver == 1}">
@@ -137,7 +155,8 @@
                       </c:if>
                    </c:forEach>
                 </div>
-                <div class="mailboxForm">${dto.memberdto.get(0).writeTime}</div>
+                </c:if>
+                <div class="mailboxForm" id="writeTimeDisplay">${dto.memberdto.get(0).writeTime}</div>
                 <input type="hidden" value="${dto.memberdto.get(0).mail_id}" name="mail_id" id="mail_id">
                 <input type="hidden" value="${dto.memberdto.get(0).mail_id}" name="seletedMailId" id="seletedMailId">
                 <input type="hidden" value="${type}" name="type" id="type">
@@ -228,9 +247,15 @@
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- Page specific script -->
+<!-- <script src="dist/js/demo.js"></script>
+Page specific script -->
 <script>
+function formatDate(dateTimeString) {
+	  const date = new Date(dateTimeString);
+	  const formattedTime = date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+	  return formattedTime;
+	}
+	
   $(document).ready(function() {
     
      $('#mailSubjectForm').click(function (e) {

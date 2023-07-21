@@ -59,4 +59,14 @@
 		SELECT * FROM chat_room_info
 		WHERE chat_room_id=#{chat_room_id}
 	</select>
+	
+	<select id="getName" parameterType="String" resultType="String">
+		SELECT name FROM member
+		WHERE member_id = #{member_id}
+	</select>
+	
+	<select id="myProfilePhoto" parameterType="String" resultType="memberDTO">
+		SELECT profile_photo FROM member
+		WHERE member_id=#{member_id} 
+	</select>
 </mapper>

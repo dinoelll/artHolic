@@ -733,24 +733,36 @@ public int payRequest(String document_id, String note, String member_id, HttpSes
    alarmDto.setNote(note);
    alarmDto.setMember_id(member_id);
    
-   int payRequestInt = dao.payRequest2(alarmDto);
-   logger.info("payRequestInt: "+payRequestInt);
+   HashMap<String, String> map = new HashMap<String, String>();
+   
+   if(dao.waitCount(document_id) == 0) {
+	   logger.info("waitCount == 0" + dao.waitCount(document_id));
+	   dao.payRequest(document_id, note, member_id);
+   }else {
+	   logger.info("waitCount != 0" + dao.waitCount(document_id));
+	   dao.payRequest2(alarmDto);
+	   map.put("member_id", alarmDto.getAlarm_id());
+	   map.put("document_id", alarmDto.getDocument_id());
+	   //map.put("note", alarmDto.getNote());
+	   map.put("memo", "(결재요청)");
+	   dao.paymentShipAlarm(map);
+   }
+   //int payRequestInt = dao.payRequest2(alarmDto);
+   //logger.info("payRequestInt: "+payRequestInt);
    logger.info("alarm_id : " + alarmDto.getAlarm_id());
    
-   HashMap<String, String> map = new HashMap<String, String>();
-   map.put("member_id", alarmDto.getAlarm_id());
-   map.put("document_id", alarmDto.getDocument_id());
-   map.put("note", alarmDto.getNote());
-   map.put("memo", "(결재요청)");
    
-   dao.paymentShipAlarm(map);
+   
+   
+   
    
    // 결재 전부다 완료되면 완료로 바꾸기
    int payEndInt = dao.payEnd(document_id, note, member_id);
    
    if(payEndInt == 1) {
+	  logger.info("결재완료 : payEndInt==1");
       HashMap<String, String> payEndMap = new HashMap<String, String>();
-      payEndMap.put("member_id", String.valueOf(session.getAttribute("loginId")));
+      payEndMap.put("member_id", dao.paymentCompleteMember(document_id));
       payEndMap.put("document_id", document_id);
       payEndMap.put("memo", "(결재완료)");
       dao.paymentShipAlarm(payEndMap);
@@ -770,7 +782,13 @@ public int payRefuse(String document_id, String note, String member_id) {
    int paymentRefuseInt = dao.paymentRefuse(document_id, note, member_id);
    logger.info("paymentRefuseInt: "+paymentRefuseInt);
    
+   HashMap<String, String> map = new HashMap<String, String>();
    
+   map.put("document_id", document_id);
+   map.put("memo", "(결재반려)");
+   map.put("member_id", dao.paymentCompleteMember(document_id));
+   
+   dao.paymentShipAlarm(map);
    
    return 1;
 }

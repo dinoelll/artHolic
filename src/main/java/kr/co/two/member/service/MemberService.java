@@ -252,6 +252,7 @@ public class MemberService {
         if (memberDTO != null) {
             String enc_pw = memberDTO.getPw();
             success = encoder.matches(pw, enc_pw);
+        	//success = true;
         }
         
         logger.info("success :" + success);
