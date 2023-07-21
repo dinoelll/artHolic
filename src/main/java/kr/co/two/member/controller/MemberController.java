@@ -163,31 +163,26 @@ public class MemberController {
 		logger.info("id :"+id+"/"+"pw :"+pw);
 		
 		String page = "login";
-		
-	    if (pw.equals("1111")) {
-	        model.addAttribute("msg", "현재 비밀번호는 임시 비밀번호입니다. 비밀번호를 변경해주세요.");
-	    }
 				
 		if (service.isUserBlind(id)) {
-	        model.addAttribute("msg", "계정이 비활성화 되었습니다. 관리자에게 문의해주세요.");
-	    } else {
-	        MemberDTO dto = service.login(id, pw);
-	        logger.info("profile_photo : " + dto.getProfile_photo());
-	        if (dto != null) {
+		    model.addAttribute("msg", "계정이 비활성화 되었습니다. 관리자에게 문의해주세요.");
+		} else {
+		    MemberDTO dto = service.login(id, pw);
+		    if (dto != null) {
+		        logger.info("profile_photo : " + dto.getProfile_photo());
 
-	            String name = dto.getName();
+		        String name = dto.getName();
 
-	            page = "redirect:/main";
+		        page = "redirect:/main";
 
-	        session.setAttribute("loginId", id);
-            session.setAttribute("admin", dto.isAdmin());
-            session.setAttribute("name", name);
-            logger.info("admin : " + dto.isAdmin());
-            
-	        } else {
-	        model.addAttribute("msg", "아이디 또는 비밀번호가 올바르지 않습니다. 다시 시도해주세요.");
-	        }
-	    }
+		        session.setAttribute("loginId", id);
+		        session.setAttribute("admin", dto.isAdmin());
+		        session.setAttribute("name", name);
+		        logger.info("admin : " + dto.isAdmin());
+		    } else {
+		        model.addAttribute("msg", "아이디 또는 비밀번호가 올바르지 않습니다. 다시 시도해주세요.");
+		    }
+		}
 		
 	    return page;
  		}
