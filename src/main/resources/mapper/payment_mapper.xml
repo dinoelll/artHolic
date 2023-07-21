@@ -129,8 +129,8 @@
 
    
    <insert id="paymentShipAlarm" parameterType="hashmap">
-      INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,iden_id)
-      VALUES(CONCAT('새로운 전자결재 알림','#{memo}','ALARM_PAYMENT',#{member_id},#{document_id})
+      INSERT INTO alarm(alarmcontent,alarm_code,alarm_receiver,is_read,iden_id)
+      VALUES(CONCAT('새로운 전자결재 알림',#{memo}),'ALARM_PAYMENT',#{member_id}, false ,#{document_id})
    </insert>
    
 
@@ -521,11 +521,6 @@
                          END
             WHERE document_id = #{document_id};
             
-            <selectKey keyColumn="member_id" keyProperty="alarm_id" resultType="String" order="AFTER">
-               SELECT member_id FROM payment_ship
-               WHERE document_id = #{document_id}
-               AND result='대기중'
-            </selectKey>
       </update>
       
       <update id="payRequest2" parameterType="AlarmDTO">
@@ -546,7 +541,7 @@
                          END
             WHERE document_id = #{document_id};
             
-            <selectKey keyColumn="member_id" keyProperty="alarm_id" resultType="String" order="AFTER">
+            <selectKey keyColumn="member_id" keyProperty="alarm_id" resultType="java.lang.String" order="AFTER">
                SELECT member_id FROM payment_ship
                WHERE document_id = #{document_id}
                AND result='대기중'
@@ -736,6 +731,14 @@
           AND payment_ship.order_column = '1';
       </update>
 	
-   
-
+   <select id="waitCount" parameterType="String" resultType="int">
+   		SELECT COUNT(member_id) FROM payment_ship
+   		WHERE result = '진행 중'
+   		AND document_id = #{document_id}
+   </select>
+	
+	<select id="paymentCompleteMember" parameterType="String" resultType="String">
+		SELECT id FROM elec_payment
+		WHERE document_id='vac-a-0018'
+	</select>
 </mapper>

@@ -84,7 +84,7 @@ public interface PaymentDAO {
    ArrayList<PayListDTO> payReferrerCall(String document_id);
    
    // 변경
-   int payRequest(String document_id, String note, String member_id, String alarm_id);
+   int payRequest(String document_id, String note, String member_id);
 
    int payEnd(String document_id, String note, String member_id);
 
@@ -120,6 +120,10 @@ public interface PaymentDAO {
      int buyItemFormSaveRequestTemp(HashMap<String, String> params);
      
      int projectFormSaveRequestTemp(HashMap<String, String> params);
+
+	int waitCount(String document_id);
+
+	String paymentCompleteMember(String document_id);
     
 
 

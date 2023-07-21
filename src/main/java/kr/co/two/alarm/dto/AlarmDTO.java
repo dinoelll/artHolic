@@ -1,19 +1,19 @@
 package kr.co.two.alarm.dto;
 
 public class AlarmDTO {
-	private int alarm_id;
+	private String alarm_id;
 	private String alarmcontent;
 	private String alarm_code;
 	private String alarm_receiver;
 	private boolean is_read;
-	private int iden_id;
+	private String iden_id;
 	private String project_name;
 	
 	
-	public int getAlarm_id() {
+	public String getAlarm_id() {
 		return alarm_id;
 	}
-	public void setAlarm_id(int alarm_id) {
+	public void setAlarm_id(String alarm_id) {
 		this.alarm_id = alarm_id;
 	}
 	public String getAlarmcontent() {
@@ -40,10 +40,10 @@ public class AlarmDTO {
 	public void setIs_read(boolean is_read) {
 		this.is_read = is_read;
 	}
-	public int getIden_id() {
+	public String getIden_id() {
 		return iden_id;
 	}
-	public void setIden_id(int iden_id) {
+	public void setIden_id(String iden_id) {
 		this.iden_id = iden_id;
 	}
 	public String getProject_name() {
