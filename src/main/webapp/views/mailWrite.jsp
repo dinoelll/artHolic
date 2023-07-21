@@ -70,7 +70,23 @@
        font-size: smaller;
        text-align: -webkit-center;
    }
-   
+   .mailSend,.mymailSend,#preview-button{
+   		font-size: 15px;
+   }
+   #send:hover,.mailSend:hover,.mymailSend:hover,#preview-button:hover{
+   		border-color: rgba(233, 221, 198, 0.4);
+        color: cornflowerblue;
+   }
+   .hidden {
+	  display: none;
+	}
+	.show {
+	  display: block;
+	  background-color: gray;
+	  color: #fff;
+	  padding: 10px;
+	  text-align: center;
+	}
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -84,7 +100,7 @@
             <div class="container-fluid">
                <div class="row mb-2">
                   <div class="col-sm-6">
-                     <h1>메일 쓰기</h1>
+                     <h1 id="title">메일 쓰기</h1>
                   </div>
                   <!--  
                   <div class="col-sm-6">
@@ -225,7 +241,7 @@
                      <div class="card-header">
                         <div class="mailCard1">
                            <button id="send" class="mailSend" onclick="send()">보내기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                           <button type="button" id="preview-button"class="btn btn-default div-hidden"data-toggle="modal" data-target="#modal-default">미리보기</button>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                           <button type="button" id="preview-button"class="btn btn-default div-hidden"data-toggle="modal" data-target="#modal-default">미리보기</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                            <!-- <button id="temp_save" class="mailSend" onclick="temp()">임시저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
                            <button id="formGnb_button" data-toggle="modal" data-target="#modal-lg2" class="mailSend">받는이선택</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                            <button id="selfBox" class="mailSend" onclick="selfBox()">내게쓰기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -286,7 +302,7 @@
             <!-- /.col -->
             </div>
             
-
+		<div id="tempMessage" class="hidden">임시 저장했습니다. 임시 보관함에서 확인해 주세요.</div>
          <!-- /.row -->
          </section>
          <!-- /.content -->
@@ -320,25 +336,59 @@
 <script>
 
    // 메일쓰기 숨기기
-   function selfBox(){
-      document.querySelector('.mailCard2').classList.remove('hidden');
-      document.querySelector('.mailCard1').classList.add('hidden');
-      document.getElementById('form-sendMember').style.display = 'none';
-       document.getElementById('form-referenceMember').style.display = 'none';
-       document.getElementById('sendButton').classList.add('hidden');
-       document.getElementById('mysendButton').classList.remove('hidden');
-       // 보낸사람, 참조자 지우기(수정필요)
-       document.getElementById("recipient-input").value = "";
-       document.getElementById("cc-input").value = "";
-       var approvers = document.getElementsByClassName('approvers');
-       while (approvers.length > 0) {
-           approvers[0].remove();
-       }
-       var referrer = document.getElementsByClassName('referrer');
-       while (referrer.length > 0) {
-          referrer[0].remove();
-       }
-   }
+
+	  function selfBox() {
+		    // 받는사람과 참조자 입력값 가져오기
+		    var recipient = document.getElementById("recipient-input").value;
+		    var cc = document.getElementById("cc-input").value;
+		    
+		    // 받는사람이나 참조자가 추가되어 있는지 확인
+		    if (recipient.trim() !== "" || cc.trim() !== "") {
+		        // 확인 대화상자 표시
+		        var confirmResult = confirm("내게 쓰기 시에는 다른 사람에게 메일을 보낼 수 없습니다. 내게 쓰기 모드로 전환하시겠습니까?");
+		        
+		        // 사용자가 "확인" 버튼을 눌렀을 때
+		        if (confirmResult) {
+		            // 받는사람과 참조자 지우기
+		            document.getElementById("recipient-input").value = "";
+		            document.getElementById("cc-input").value = "";
+		            
+		            // selfBox 함수의 나머지 내용 실행
+		            console.log(title);
+		            document.querySelector('.mailCard2').classList.remove('hidden');
+		            document.querySelector('.mailCard1').classList.add('hidden');
+		            document.getElementById('form-sendMember').style.display = 'none';
+		            document.getElementById('form-referenceMember').style.display = 'none';
+		            document.getElementById('sendButton').classList.add('hidden');
+		            document.getElementById('mysendButton').classList.remove('hidden');
+		            var approvers = document.getElementsByClassName('approvers');
+		            while (approvers.length > 0) {
+		                approvers[0].remove();
+		            }
+		            var referrer = document.getElementsByClassName('referrer');
+		            while (referrer.length > 0) {
+		                referrer[0].remove();
+		            }
+		        }
+		    } else {
+		        // 받는사람과 참조자가 없을 때는 그냥 selfBox 함수 실행
+		        console.log(title);
+		        document.querySelector('.mailCard2').classList.remove('hidden');
+		        document.querySelector('.mailCard1').classList.add('hidden');
+		        document.getElementById('form-sendMember').style.display = 'none';
+		        document.getElementById('form-referenceMember').style.display = 'none';
+		        document.getElementById('sendButton').classList.add('hidden');
+		        document.getElementById('mysendButton').classList.remove('hidden');
+		        var approvers = document.getElementsByClassName('approvers');
+		        while (approvers.length > 0) {
+		            approvers[0].remove();
+		        }
+		        var referrer = document.getElementsByClassName('referrer');
+		        while (referrer.length > 0) {
+		            referrer[0].remove();
+		        }
+		    }
+		}
    
    // 내게쓰기 숨기기
    function mailBox(){
@@ -357,10 +407,13 @@
    console.log(selfBoxParam);
    //console.log(tempParams);
    
+   
    if (selfBoxParam) {
      selfBox();
+     
    } else {
      mailBox();
+     
    }
 
 
@@ -389,27 +442,6 @@
                    $('#mailMessage').empty(); // 문구 삭제
                }
            }
-           
-           
-           
-           
-    	   /* if(mailBox()){
-    		   if (recipientInput == "" || mailSubject == "" || composeTextarea == "") {
-                   var Message = "받는사람, 제목, 내용을 모두 입력해주세요.";
-                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
-                   event.preventDefault();
-               } else {
-                   $('#mailMessage').empty(); // 문구 삭제
-               }
-    	   }else{
-    		   if( mailSubject == "" || composeTextarea == ""){
-    			   var Message = "제목, 내용을 모두 입력해주세요.";
-                   $('#mailMessage').html('<p class="error">' + Message + '</p>');
-                   event.preventDefault();
-               } else {
-                   $('#mailMessage').empty(); // 문구 삭제
-               }
-    		} */
     	   })
        });
 
@@ -645,6 +677,7 @@
 		,success:function(data){
           console.log(data);
           tempList(data.mail_id);
+          tempMessage();
          
        },error:function(e){
           console.log(e);
@@ -660,6 +693,16 @@
       
       $('#tempList').append(content);
    }
+   
+   function tempMessage() {
+		  var message = document.getElementById('tempMessage');
+		  message.classList.add('show'); // 메시지를 보여주기 위해 'show' 클래스 추가
+
+		  // 3초 후에 메시지를 숨기기 위해 setTimeout 사용
+		  setTimeout(function() {
+		    message.classList.remove('show'); // 'show' 클래스 제거하여 메시지를 숨김
+		  }, 1000); // 3초 (3000ms) 후에 메시지를 숨김
+		} 
    
    
 </script>

@@ -33,6 +33,11 @@ public class MailDTO {
    private String position_name;
    private String send;
    
+   private String sender_member_id;
+   private String receiver_member_id;
+   private String receiver_name;
+   private Date sentTime;
+   
    //member
    private String pw;
    private String name;
@@ -277,6 +282,30 @@ public class MailDTO {
 	}
 	public void setRead_date(Date read_date) {
 		this.read_date = read_date;
+	}
+	public String getSender_member_id() {
+		return sender_member_id;
+	}
+	public void setSender_member(String sender_member_id) {
+		this.sender_member_id = sender_member_id;
+	}
+	public String getReceiver_member_id() {
+		return receiver_member_id;
+	}
+	public void setReceiver_member_id(String receiver_member_id) {
+		this.receiver_member_id = receiver_member_id;
+	}
+	public String getReceiver_name() {
+		return receiver_name;
+	}
+	public void setReceiver_name(String receiver_name) {
+		this.receiver_name = receiver_name;
+	}
+	public Date getSentTime() {
+		return sentTime;
+	}
+	public void setSentTime(Date sentTime) {
+		this.sentTime = sentTime;
 	}
 
 }

@@ -62,8 +62,8 @@
    
    <!-- 참조자 DB 저장 -->
    <insert id="referenceMemberWrite" parameterType="mail">
-      INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver)
-         VALUES(#{mail_id},#{member_id},false,false,0,1)
+      INSERT INTO mail_receiver(mail_id,member_id,read_chk,bookmark,blind,is_receiver,read_chk)
+         VALUES(#{mail_id},#{member_id},false,false,0,1,'읽지않음')
    </insert>
    
    <!-- 참조자 여부 -->
@@ -408,7 +408,13 @@
 	  	<if test="type=='send' or type=='temp' or type=='all' or type=='import' or type=='trash'">
 	  	GROUP BY m.mail_id
 	  	</if>
-		ORDER BY writeTime DESC
+	  	<if test="mailFilter == 'new'">
+	  		ORDER BY writeTime DESC
+	  	</if>
+	  	<if test="mailFilter == 'old'">
+	  		ORDER BY writeTime 
+	  	</if>
+		
 	    LIMIT #{cnt} OFFSET #{offset}
 	</select>
 	
@@ -462,5 +468,44 @@
 		<if test="set =='receive' or set=='self'">
 			mail_receiver SET blind = 0 WHERE member_id = #{member_id} AND mail_id = #{mail_id}
 		</if>
+	</update>
+	
+	<!-- 수신확인 카운트 -->
+	<select id="readchktotal" resultType="int">
+	SELECT COUNT(*) AS total_count
+	FROM (
+	    SELECT m.mail_id, m.member_id AS sender_member_id, m.mailSubject, m.mailContent, m.writeTime AS sentTime,
+	        m.blind AS sentBlind, m2.member_id AS receiver_member_id, mr.read_chk, mr.read_date, m2.name AS receiver_name,
+	        MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
+	        MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name
+	    FROM mail m
+	    JOIN mail_receiver mr ON m.mail_id = mr.mail_id
+	    JOIN member m2 ON m2.member_id = mr.member_id
+	    JOIN code c ON (c.code_id = m2.position_code OR c.code_id = m2.dept_code)
+	    WHERE mr.is_receiver IN (0, 1) AND m.blind IN (0,1) AND m.member_id = #{member_id}
+	    GROUP BY m.mail_id, sender_member_id, m.mailSubject, m.mailContent, m.writeTime, m.blind, m.favorites, m.temp, m2.member_id, 
+	             mr.read_chk, mr.read_date, mr.bookmark, m2.name
+	) AS subquery
+	</select>
+	
+	<!-- 수신확인리스트 -->
+	<select id="readchkBox" resultType="mail">
+	SELECT m.mail_id, m.member_id AS sender_member_id,m.mailSubject,m.mailContent,m.writeTime AS sentTime,m.blind AS sentBlind,
+	    m2.member_id AS receiver_member_id,mr.read_chk,mr.read_date,m2.name AS receiver_name,mr.blind,
+	    MAX(CASE WHEN c.code_group_id = 'DEPT' THEN c.code_name END) AS dept_name,
+	    MAX(CASE WHEN c.code_group_id = 'POSITION' THEN c.code_name END) AS position_name
+	FROM mail m
+	JOIN mail_receiver mr ON m.mail_id = mr.mail_id
+	JOIN member m2 ON m2.member_id = mr.member_id
+	JOIN code c ON (c.code_id = m2.position_code OR c.code_id = m2.dept_code)
+	WHERE mr.is_receiver IN (0, 1) AND m.blind IN (0,1) AND m.member_id = #{member_id}
+	GROUP BY m.mail_id, sender_member_id, m.mailSubject, m.mailContent, m.writeTime, m.blind, m.favorites, m.temp, m2.member_id, 
+	         mr.read_chk, mr.read_date, mr.bookmark, m2.name
+	ORDER BY m.writeTime DESC LIMIT #{cnt} OFFSET #{offset}
+	</select>
+	
+	<!-- 발송삭제 -->
+	<update id="delread">
+	UPDATE mail_receiver SET blind = 2 WHERE mail_id = #{mail_id} AND member_id= #{receivermember}
 	</update>
 	</mapper>

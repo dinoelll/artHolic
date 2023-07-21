@@ -531,7 +531,7 @@ function informlistPrint(informList) {
 			
 	      content += '<tr>';
 	      content += '<td>' + item.name + '</td>';
-	      content += '<td>' + item.subject + '</td>';
+	      content += '<td>' + subject + '</td>';
 	      content += '<td>' + item.writeTime + '</td>';
 	      content += '</tr>';
 	    });
@@ -574,14 +574,14 @@ function myMaillistPrint(myMaillist) {
 	  if (myMaillist && Array.isArray(myMaillist) && myMaillist.length > 0) {
 		    myMaillist.forEach(function (item, myMaillist) {
 		      var mailSubject = item.mailSubject;
-		      if (mailSubject.length > 10) {
-		        mailSubject = mailSubject.substring(0, 7) + '...';
+	      if (mailSubject.length > 10) {
+	        mailSubject = mailSubject.substring(0, 7) + '...';
 		  }
 			
 	      content += '<tr>';
 	      content += '<td>' + item.dept_name + '/' + item.position_name + '</td>';
 	      content += '<td>' + item.name + '</td>';
-	      content += '<td>' + item.mailSubject + '</td>';
+	      content += '<td>' + mailSubject + '</td>';
 	      content += '<td>' + item.writeTime + '</td>';
 	      content += '</tr>';
 	    });

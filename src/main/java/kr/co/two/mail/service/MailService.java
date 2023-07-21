@@ -275,7 +275,10 @@ public class MailService {
         	        }
         	    }
         	}
-
+        if(type.equals("tempsave")) {
+        	// 기존 파일 삭제
+        	mailPhotoDel(mail_id);
+        }
        if(attachments.length > 0 && !StringUtils.isEmpty(attachments[0].getOriginalFilename())) {
            processAttachments(mail_id, attachments);
         }
@@ -292,7 +295,6 @@ public class MailService {
        if(type.equals("save")||type.equals("tempsave")){
           page = "redirect:/selfComplete.go";
        }else if(type.equals("send")) {
-    	   logger.info("test");
     	   page = "redirect:/writeComplete.go";
        }
 
@@ -443,7 +445,7 @@ public class MailService {
    
 
    // 메일 리스트 아작스
-   public HashMap<String, Object> mailSelfBox(int page, int cnt, String searchInformation, String searchText, String type, String member_id) {
+   public HashMap<String, Object> mailSelfBox(int page, int cnt, String searchInformation, String searchText, String type, String member_id,String mailFilter) {
 		logger.info("아작스도착");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		ArrayList<MailDTO> list = new ArrayList<MailDTO>();
@@ -464,7 +466,7 @@ public class MailService {
 		 * dao.totalCount(type,searchInformation); }
 		 */
 		logger.info("total: "+total);
-		list = dao.mailSelfBox(cnt,offset,type,searchInformation,searchText,member_id);
+		list = dao.mailSelfBox(cnt,offset,type,searchInformation,searchText,member_id,mailFilter);
 		map.put("list", list);
 		/*
 		 * for (MailDTO maillist : list) { // 리스트 하나하나씩 꺼내기
@@ -544,22 +546,6 @@ public class MailService {
 			int delrow = dao.maildel(Integer.parseInt(mail_Id), member_id,set);
 			logger.info("delrow: "+delrow);
 			map.put("result", delrow);
-			/*ArrayList<MailDTO> mailMemberList = new ArrayList<MailDTO>();
-			mailMemberList = dao.mailSendDetail(Integer.parseInt(mail_Id),member_id);
-		 	 logger.info("size : " + mailMemberList.size());
-			 	for (MailDTO mail : mailMemberList) {
-			        if (mail.getIs_receiver() == 0 || mail.getIs_receiver() == 1 || mail.getIs_receiver() == 2) {
-			            int receivetrashRow = dao.maildel(Integer.parseInt(mail_Id),member_id);
-			            logger.info("receivetrashRow: " + receivetrashRow);
-			            map.put("result", receivetrashRow);
-			        }else {
-			        	int trashRow = dao.mymaildel(String.valueOf(mail.getMail_id()),member_id);
-			        	logger.info("trashRow: " + trashRow);
-			        	map.put("result", trashRow);
-			        }
-			        
-			    }
-			   */
 		}else {
 			int row = dao.mailtrash(mail_Id,type,member_id);
 			logger.info("trash row: "+row);
@@ -573,6 +559,39 @@ public class MailService {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		int restorerow = dao.mailrestore(mail_id,member_id,set);
 		map.put("result", restorerow);
+		return map;
+	}
+
+	//수신확인
+	public HashMap<String, Object> mailreadcheck(String type, int cnt, int page, String member_id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		ArrayList<MailDTO> list = new ArrayList<MailDTO>();
+		  
+		int offset = (page-1)*cnt;
+		int total = dao.readchktotal(member_id);
+		int range = total%cnt == 0?total/cnt:(total/cnt)+1;
+		  
+		logger.info("전체 게시물 수: "+total);
+		logger.info("총 페이지:" +range);
+		
+		page = page > range ? range : page;
+		
+		map.put("currPage", page);
+		map.put("pages", range);
+
+		logger.info("total: "+total);
+		list = dao.readchkBox(member_id,cnt,offset);
+		map.put("list", list);
+		return map;
+	}
+
+	// 발송취소
+	public HashMap<String, Object> maildelread(String receivermember, String mail_id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int row = dao.delread(receivermember,mail_id);
+		logger.info("row: "+row);
+		map.put("result", row);
+		
 		return map;
 	}
 

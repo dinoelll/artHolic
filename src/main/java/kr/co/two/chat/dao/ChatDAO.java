@@ -33,4 +33,8 @@ public interface ChatDAO {
 
 	ArrayList<ChatDTO> chatRoomInfo(String chat_room_id);
 
+	String getName(String member_id);
+
+	MemberDTO myProfilePhoto(String member_id);
+
 }

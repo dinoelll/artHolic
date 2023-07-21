@@ -133,4 +133,10 @@ public class ChatController {
 		return service.inviteChatRoom(map);
 	}
 	
+	@PostMapping(value="/myProfilePhoto.ajax")
+	@ResponseBody
+	public MemberDTO myProfilePhoto(@RequestParam String member_id) {
+		logger.info(member_id);
+		return service.myProfilePhoto(member_id);
+	}
 }
