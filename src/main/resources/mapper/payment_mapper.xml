@@ -690,45 +690,45 @@
       
       <update id="vacationFormSaveRequestTemp" parameterType="hashmap">
           UPDATE elec_payment, payment_ship
-          SET elec_payment.state = '진행중',
-                elec_payment.payContent = #{payContent},
-                elec_payment.paySubject = #{payContent},
-              payment_ship.result = 
-                  CASE
-                      WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
-                      ELSE '대기중'
-                  END
-          WHERE elec_payment.document_id = #{document_id}
-          AND payment_ship.document_id = #{document_id}
-          AND payment_ship.order_column = '1';
+    SET elec_payment.state = '진행중',
+        elec_payment.payContent = #{payContent},
+        elec_payment.paySubject = #{payContent},
+        payment_ship.result = CASE
+            WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
+            ELSE '대기중'
+        END,
+        elec_payment.Temp = 0
+    WHERE elec_payment.document_id = #{document_id}
+    AND payment_ship.document_id = #{document_id}
+    AND payment_ship.order_column = '1';
       </update>
       <update id="buyItemFormSaveRequestTemp" parameterType="hashmap">
           UPDATE elec_payment, payment_ship
-          SET elec_payment.state = '진행중',
-                elec_payment.payContent = #{payContent},
-                elec_payment.paySubject = #{payContent},
-              payment_ship.result = 
-                  CASE
-                      WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
-                      ELSE '대기중'
-                  END
-          WHERE elec_payment.document_id = #{document_id}
-          AND payment_ship.document_id = #{document_id}
-          AND payment_ship.order_column = '1';
+    SET elec_payment.state = '진행중',
+        elec_payment.payContent = #{payContent},
+        elec_payment.paySubject = #{payContent},
+        payment_ship.result = CASE
+            WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
+            ELSE '대기중'
+        END,
+        elec_payment.Temp = 0
+    WHERE elec_payment.document_id = #{document_id}
+    AND payment_ship.document_id = #{document_id}
+    AND payment_ship.order_column = '1';
       </update>
       <update id="projectFormSaveRequestTemp" parameterType="hashmap">
           UPDATE elec_payment, payment_ship
-          SET elec_payment.state = '진행중',
-                elec_payment.payContent = #{payContent},
-                elec_payment.paySubject = #{payContent},
-              payment_ship.result = 
-                  CASE
-                      WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
-                      ELSE '대기중'
-                  END
-          WHERE elec_payment.document_id = #{document_id}
-          AND payment_ship.document_id = #{document_id}
-          AND payment_ship.order_column = '1';
+    SET elec_payment.state = '진행중',
+        elec_payment.payContent = #{payContent},
+        elec_payment.paySubject = #{payContent},
+        payment_ship.result = CASE
+            WHEN elec_payment.state = '임시저장' AND payment_ship.order_column = '1' THEN '임시저장'
+            ELSE '대기중'
+        END,
+        elec_payment.Temp = 0
+    WHERE elec_payment.document_id = #{document_id}
+    AND payment_ship.document_id = #{document_id}
+    AND payment_ship.order_column = '1';
       </update>
 	
    <select id="waitCount" parameterType="String" resultType="int">
