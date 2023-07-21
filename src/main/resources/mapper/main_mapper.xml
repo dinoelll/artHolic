@@ -4,13 +4,13 @@
 	   
 <mapper namespace="kr.co.two.main.dao.MainDAO">
 
-	<select id="mainMember">
-			SELECT m.tel, m.name, m.email, m.phone, cd_dept.code_name AS dept_name, cd_pos.code_name AS position_name
-			FROM member m
-			JOIN code cd_dept ON m.dept_code = cd_dept.code_id
-			JOIN code cd_pos ON m.position_code = cd_pos.code_id
-			WHERE m.member_id = #{member_id}
-	</select>
+	<select id="mainMember" resultType="main">
+         SELECT  m.profile_photo, m.tel, m.name, m.email, m.phone, cd_dept.code_name AS dept_name, cd_pos.code_name AS position_name
+         FROM member m
+         JOIN code cd_dept ON m.dept_code = cd_dept.code_id
+         JOIN code cd_pos ON m.position_code = cd_pos.code_id
+         WHERE m.member_id = #{member_id}
+   </select>
 	
 	<select id="informList" resultType="main">
 			SELECT b.member_id, b.subject, DATE_FORMAT(b.writeTime, '%Y-%m-%d') as writeTime, m.name
