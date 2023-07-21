@@ -44,6 +44,9 @@
 		magin-left: 45px;
 	}
 	
+	#content{
+		display: none;
+	}
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -73,7 +76,12 @@
 			<tr>
 				<td>
 					<div id="div_editor"></div>
-					<input id="content" type="hidden" name="content" value="${feed.content}"/>
+					
+					<div id="content">
+					 ${feed.content}
+					 
+					</div>
+					<input id="contents" type="hidden" name="content" value=""/>
 					<input type="hidden" name="feed_id" value="${feed.feed_id}"/>
 				</td>
 			</tr>
@@ -132,7 +140,7 @@ function goToProjectDetail() {
 
 var editor = new RichTextEditor("#div_editor",config);
 
-editor.setHTMLCode($("#content").val()); // editor 에 내용 넣기
+editor.setHTMLCode($("#content").html()); // editor 에 내용 넣기
 
 function updateDo(){
 	console.log('수정');
@@ -141,7 +149,7 @@ function updateDo(){
 	if(content.length>(4*1024*1024)){
 		alert('컨텐츠의 크기가 너무 큽니다. 이미지의 크기나 갯수를 줄여 주세요');
 	}else{
-		$('input[name="content"]').val(content);
+		$('#contents').val(content);
 		$('form').submit();
 	}
 	
