@@ -80,7 +80,7 @@
    .hidden {
 	  display: none;
 	}
-	.show {
+	.notice {
 	  display: block;
 	  background-color: gray;
 	  color: #fff;
@@ -696,11 +696,11 @@
    
    function tempMessage() {
 		  var message = document.getElementById('tempMessage');
-		  message.classList.add('show'); // 메시지를 보여주기 위해 'show' 클래스 추가
+		  message.classList.add('notice'); // 메시지를 보여주기 위해 'show' 클래스 추가
 
 		  // 3초 후에 메시지를 숨기기 위해 setTimeout 사용
 		  setTimeout(function() {
-		    message.classList.remove('show'); // 'show' 클래스 제거하여 메시지를 숨김
+		    message.classList.remove('notice'); // 'show' 클래스 제거하여 메시지를 숨김
 		  }, 1000); // 3초 (3000ms) 후에 메시지를 숨김
 		} 
    
