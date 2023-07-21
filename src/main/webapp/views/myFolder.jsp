@@ -560,7 +560,7 @@ filelistcall();
 	    var folderName = $('#folderCreate').val().trim();
 	        
 	    // 폴더 이름이 공백인 경우 경고창 띄우고 함수 종료
-	    if (folderName === '') {
+        if (folderName.trim() === '') {
 	       	alert('폴더 이름을 입력하세요.');
 	        return;
 	    }
@@ -596,7 +596,7 @@ filelistcall();
 		console.log(folderName,folderId);
 		
 		  // 폴더 이름이 공백인 경우 경고창 띄우고 함수 종료
-	    if (folderName === '') {
+	    if (folderName.trim() === '') {
 	       	alert('폴더 이름을 입력하세요.');
 	        return;
 	    }
@@ -646,7 +646,7 @@ filelistcall();
 	      },
 	      error: function(error) {
 	        // 폴더 삭제 실패 시
-	        alert('폴더 삭제에 실패했습니다.');
+	        alert('폴더에 있는 파일을 모두 삭제 해주세요.');
 	        console.log(error);
 	      }
 	    });

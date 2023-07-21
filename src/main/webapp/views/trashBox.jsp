@@ -37,21 +37,29 @@
 	.test{
 		display:inline;
 	}
-	#forwarding,#reply,#del,#restore{
+	#forwarding,#reply,#del,#mailFilter,#restore{
         font-weight: bold;
         background-color: white;
         border: 1px solid white;
         color: black;
+        font-size: 15px;
    }
    
    #forwarding:hover,#reply:hover,#del:hover,#mailFilter:hover,#restore:hover{
         border-color: rgba(233, 221, 198, 0.4);
+        color: cornflowerblue;
     }
     #mailFilter{
     	border-style: none;
     	font-weight:bold;
     	text-align: center;
     	cursor: pointer;
+    	font-size: 15px;
+    }
+    #searchInformation{
+    	text-align: center;
+    	cursor: pointer;
+    	font-size: 15px;
     }
 	#paging {
 	  position: fixed;
@@ -70,6 +78,16 @@
 	}
 	#spanhidden{
 		display: none;
+	}
+	.hidden {
+	  display: none;
+	}
+	.notice {
+	  display: block;
+	  background-color: gray;
+	  color: #fff;
+	  padding: 10px;
+	  text-align: center;
 	}
   </style>
 </head>
@@ -144,7 +162,7 @@
                 <div class="btn-group">
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <button type="button" class="btn btn-default btn-sm" id="del" onclick="del(this)">
-                    <i class="far fa-trash-alt"></i>&nbsp;&nbsp;삭제&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <i class="far fa-trash-alt"></i>&nbsp;&nbsp;영구삭제&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
                   <!-- <button type="button" class="btn btn-default btn-sm" id="reply" onclick="reply(this)" >
                     <i class="fas fa-reply"></i>&nbsp;&nbsp;답장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -155,14 +173,14 @@
                   <button type="button" class="btn btn-default btn-sm" id="restore" onclick="restore(this)">
                     <i class="fas fa-share"></i>&nbsp;&nbsp;복원 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </button>
-<!--                   <select id="mailFilter">
+                   <select id="mailFilter" name="mailFilter">
                   	<option value="" selected disabled hidden>필터</option>
-                  	<option value="all">모든 메일</option>
+                  	<!-- <option value="all">모든 메일</option>
                   	<option value="unread">안읽은 메일</option>
-                  	<option value="import">중요 메일</option>
+                  	<option value="import">중요 메일</option> -->
                   	<option value="new">최신순</option>
                   	<option value="old">오래된순</option>
-                  </select> -->
+                  </select> 
                 </div>
                 <!-- /.btn-group -->
                 <!-- <div class="float-right">
@@ -200,7 +218,7 @@
             </div>
 
 
-			
+			<div id="trashMessage" class="hidden">메일이 영구삭제 되었습니다.</div>
           <!-- /.card -->
           <div id="paging">	
 			<!-- 	플러그인 사용	(twbsPagination)	-->
@@ -244,11 +262,11 @@
 
 var showPage = 1;
 var selectedSearchInformation = "allMail";
-//var selectedMailFilter = "all";
+var selectedMailFilter = "new";
 //var selectedSearchMailBox = "allBox";
 var type = "trash";
 var searchText = "";
-var cnt = 15;
+var cnt = 10;
 
 
 listCall(showPage);
@@ -300,14 +318,14 @@ listCall(showPage);
 	};
 	
 	// 메일 필터 선택에 따른 출력
-	/* $('#mailFilter').change(function(){
+	 $('#mailFilter').change(function(){
 		selectedMailFilter = $(this).val();
 		console.log(selectedMailFilter);
 		if(selectedMailFilter !== ""){
 		   listCall(showPage);
 		   $('#pagination').twbsPagination('destroy');
 		}
-	}); */
+	}); 
 	
 	
   // 리스트 부르기
@@ -321,6 +339,7 @@ listCall(showPage);
 			 'searchInformation': selectedSearchInformation,
 			 'searchText': searchText,
 			 'type':type,
+			 'mailFilter':selectedMailFilter
 		 },dataType: 'json'
 	  	 ,success:function(data){
 			 console.log(data);
@@ -479,9 +498,13 @@ listCall(showPage);
 			 content += '</tr>';
 		  });
 	  }else{
-			content += '<tr>';
-			content += '<td colspan="6" style="text-align: center;">검색된 메일이 없습니다.<td>';
-			content += '</tr>';
+		  content += '<tr>';
+		  if (title === '검색결과'){
+			content += '<td colspan="7" style="text-align: center;">검색된 메일이 없습니다.<td>';
+		  }else{
+			content += '<td colspan="7" style="text-align: center;">메일이 없습니다.<td>';
+		  }
+		  content += '</tr>';
 		}
 	  
 	  $('#list').empty();
@@ -742,12 +765,21 @@ function restore(){
 			,success: function(response){
 				listCall(showPage);
 	     		$('#pagination').twbsPagination('destroy');
+	     		trashMessage();
 			}
 		});  
 	});
 };
 	
+function trashMessage() {
+	  var message = document.getElementById('trashMessage');
+	  message.classList.add('notice'); // 메시지를 보여주기 위해 'show' 클래스 추가
 
+	  // 3초 후에 메시지를 숨기기 위해 setTimeout 사용
+	  setTimeout(function() {
+	    message.classList.remove('notice'); // 'show' 클래스 제거하여 메시지를 숨김
+	  }, 1000); // 3초 (3000ms) 후에 메시지를 숨김
+	} 
   
 </script>
 </body>

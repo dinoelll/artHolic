@@ -635,7 +635,7 @@ function listDraw(projectList) {
          console.log(dto.member_id);
          console.log('${sessionScope.loginId}');
          if(dto.member_id == '${sessionScope.loginId}') {
-         content += '<td><button class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-lg2">인원추가</button></td>';
+         content += '<td><button class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-lg2">인원선택</button></td>';
         	 content += '<td><input type="button" id="projectUpdate" class="formGnb_button mailSend" data-project_id="'+dto.project_id+'" data-toggle="modal" data-target="#modal-update" value="수정"></td>';
         	 content += '<td><button onclick="deleteConfirm('+'\'projectDel.do?project_id='+dto.project_id+'\')" class="btn btn-danger btn-sm">삭제</button></td>';
          } else {

@@ -107,13 +107,32 @@ public class BriefingService {
 	public String briefingUpdateDo(HashMap<String, Object> params) {
 		
 		logger.info("updateDo : "+params);
-		String page = "redirect:/briefingDetail.do";
-		if(dao.briefingUpdateDo(params)>0) {
-			page = "redirect:/briefingDetail.do?board_id="+params.get("board_id");
-		}
 		
-		return page;
+		String page = "redirect:/briefingDetail.do";
+		
+		/*
+		 * if(dao.briefingUpdateDo(params)>0) { page =
+		 * "redirect:/briefingDetail.do?board_id="+params.get("board_id"); }
+		 */
+		
+		
+		if (params.containsKey("member_id")) {
+	        page += "?member_id=" + params.get("member_id");
+	    }
+
+	    // board_id 값이 있는 경우, URL에 추가합니다.
+	    if (params.containsKey("board_id")) {
+	        page += "&board_id=" + params.get("board_id");
+	    }
+
+	    if (dao.briefingUpdateDo(params) > 0) {
+	        // 리다이렉트 URL에 추가된 파라미터를 유지하면서 리다이렉트합니다.
+	        return page;
+	    }
+	    
+	    return "redirect:/briefingDetail.do"; // 실패 시 이동할 페이지를 지정합니다.
 	}
+		 
 
 	@Transactional
 	public ModelAndView briefingUpdate(String board_id) {
