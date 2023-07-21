@@ -470,10 +470,10 @@
 									                    <div class="profile-photo">
 														  <c:choose>
 														    <c:when test="${not empty e.profile_photo}">
-														      <img class="img-fluid rounded-circle" src="dist/img/${e.profile_photo}" alt="">
+														      <img class="img-fluid rounded-circle" src="/photo/${e.profile_photo}" alt="">
 														    </c:when>
 														    <c:otherwise>
-														      <img class="img-fluid rounded-circle" src="dist/img/기본프로필.jpg" alt="">
+														      <img class="img-fluid rounded-circle" src="/photo/기본프로필.jpg" alt="">
 														    </c:otherwise>
 														  </c:choose>
 														</div>

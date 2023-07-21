@@ -631,7 +631,7 @@
 					            <div class="row">
 					              <div class="col-sm-1">
 					                <div class="rounded-circle" style="width: 50px; height: 50px; overflow: hidden;">
-					                  <img class="img-fluid" src="dist/img/여자 증명사진.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+					                  <img class="img-fluid" src="/photo/여자 증명사진.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
 					                </div>
 					              </div>
 					              <div class="col-sm-11">
@@ -850,9 +850,9 @@ function noteSuccess(data) {
         content += '<div class="col-sm-1">';
         content += '<div class="rounded-circle" style="width: 50px; height: 50px; overflow: hidden;">';
         if (note.profile_photo) {
-        	  content += '<img class="img-fluid" src="dist/img/' + note.profile_photo + '" alt="" style="width: 100%; height: 100%; object-fit: cover;">';
+        	  content += '<img class="img-fluid" src="/photo/' + note.profile_photo + '" alt="" style="width: 100%; height: 100%; object-fit: cover;">';
         	} else {
-        	  content += '<img class="img-fluid" src="dist/img/기본프로필.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover;">';
+        	  content += '<img class="img-fluid" src="/photo/기본프로필.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover;">';
         	}
         content += '</div>';
         content += '</div>';
