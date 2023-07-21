@@ -74,6 +74,7 @@
 				<td>
 					<input type="text" name="subject" value="${briefing.subject}"/>
 		    		<input type="hidden" name="board_id" value="${briefing.board_id}"/>
+		    		<input type="hidden" name="member_id" value="${sessionScope.loginId}" />
 		    	</td>
 			</tr>
 			<tr>
