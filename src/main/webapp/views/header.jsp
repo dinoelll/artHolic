@@ -330,7 +330,7 @@
   
   
 <script>
-    //loginChk();
+   loginChk();
    function loginChk() {
         var loginId = '${sessionScope.loginId}';
         var admin = '${sessionScope.admin}';
