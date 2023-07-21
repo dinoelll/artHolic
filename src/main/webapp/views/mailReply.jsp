@@ -70,6 +70,17 @@
        font-size: smaller;
        text-align: -webkit-center;
    }
+   .original{
+   	color: gray;
+   	
+   }
+   .mailSend,.mymailSend,#preview-button{
+   		font-size: 15px;
+   }
+   #send:hover,.mailSend:hover,.mymailSend:hover,#preview-button:hover{
+   		border-color: rgba(233, 221, 198, 0.4);
+        color: cornflowerblue;
+   }
    
   </style>
 </head>
@@ -288,26 +299,28 @@
                            <br/>
                            -----Original Message-----
                            <br/>
-                 <p>subject&nbsp;:&nbsp; ${model.dto.get(0).mailSubject}</p>
-                 <p>From&nbsp;:&nbsp;${model.memberdto.get(0).dept_name}팀&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}</p>
-                 <p>To&nbsp;:&nbsp;
+                           <br/>
+                           <br/>
+                 <p><span style="font-weight:bold;">subject&nbsp;:&nbsp;</span> ${model.dto.get(0).mailSubject}</p>
+                 <p><span style="font-weight:bold;">From&nbsp;:&nbsp;</span>${model.memberdto.get(0).dept_name}팀&nbsp;${model.memberdto.get(0).position_name}&nbsp;${model.memberdto.get(0).name}</p>
+                 <p><span style="font-weight:bold;">To&nbsp;:&nbsp;</span>
                <c:forEach items="${model.dto}" var="item">
                        <c:if test="${item.is_receiver == 0 || item.is_receiver == 2}">
                           ${item.dept_name}팀&nbsp; ${item.position_name}&nbsp;${item.name}
                        </c:if>
                     </c:forEach>
                     </p>
-                <p>cc&nbsp;:&nbsp;
+                <p><span style="font-weight:bold;">cc&nbsp;:&nbsp;</span>
                    <c:forEach items="${model.dto}" var="item">
                       <c:if test="${item.is_receiver == 1}">
                          ${item.dept_name}팀&nbsp; ${item.position_name}&nbsp;${item.name}
                       </c:if>
                    </c:forEach>
                    </p>
-               <p>Sent&nbsp;:&nbsp;${model.memberdto.get(0).writeTime}</p>
-                <p>content&nbsp;:&nbsp;${model.memberdto.get(0).mailContent}</p>
+               <p><span style="font-weight:bold;">Sent&nbsp;:&nbsp;</span>${model.memberdto.get(0).writeTime}</p>
+                <p><span style="font-weight:bold;">content&nbsp;:&nbsp;</span>${model.memberdto.get(0).mailContent}</p>
                 <p>
-				file&nbsp;:&nbsp;
+				<span style="font-weight:bold;">file&nbsp;:&nbsp;</span>
               <c:forEach items="${model.mailpthotoList}" var = "file">
               		${file.ori_file_name }
                 </c:forEach>
@@ -388,26 +401,57 @@
 <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <script>
 
-   // 메일쓰기 숨기기
-   function selfBox(){
-      document.querySelector('.mailCard2').classList.remove('hidden');
-      document.querySelector('.mailCard1').classList.add('hidden');
-      document.getElementById('form-sendMember').style.display = 'none';
-       document.getElementById('form-referenceMember').style.display = 'none';
-       document.getElementById('sendButton').classList.add('hidden');
-       document.getElementById('mysendButton').classList.remove('hidden');
-       // 보낸사람, 참조자 지우기(수정필요)
-       document.getElementById("recipient-input").value = "";
-       document.getElementById("cc-input").value = "";
-       var approvers = document.getElementsByClassName('approvers');
-       while (approvers.length > 0) {
-           approvers[0].remove();
-       }
-       var referrer = document.getElementsByClassName('referrer');
-       while (referrer.length > 0) {
-          referrer[0].remove();
-       }
-   }
+function selfBox() {
+    // 받는사람과 참조자 입력값 가져오기
+    var recipient = document.getElementById("recipient-input").value;
+    var cc = document.getElementById("cc-input").value;
+    
+    // 받는사람이나 참조자가 추가되어 있는지 확인
+    if (recipient.trim() !== "" || cc.trim() !== "") {
+        // 확인 대화상자 표시
+        var confirmResult = confirm("내게 쓰기 시에는 다른 사람에게 메일을 보낼 수 없습니다. 내게 쓰기 모드로 전환하시겠습니까?");
+        
+        // 사용자가 "확인" 버튼을 눌렀을 때
+        if (confirmResult) {
+            // 받는사람과 참조자 지우기
+            document.getElementById("recipient-input").value = "";
+            document.getElementById("cc-input").value = "";
+            
+            // selfBox 함수의 나머지 내용 실행
+            console.log(title);
+            document.querySelector('.mailCard2').classList.remove('hidden');
+            document.querySelector('.mailCard1').classList.add('hidden');
+            document.getElementById('form-sendMember').style.display = 'none';
+            document.getElementById('form-referenceMember').style.display = 'none';
+            document.getElementById('sendButton').classList.add('hidden');
+            document.getElementById('mysendButton').classList.remove('hidden');
+            var approvers = document.getElementsByClassName('approvers');
+            while (approvers.length > 0) {
+                approvers[0].remove();
+            }
+            var referrer = document.getElementsByClassName('referrer');
+            while (referrer.length > 0) {
+                referrer[0].remove();
+            }
+        }
+    } else {
+        // 받는사람과 참조자가 없을 때는 그냥 selfBox 함수 실행
+        document.querySelector('.mailCard2').classList.remove('hidden');
+        document.querySelector('.mailCard1').classList.add('hidden');
+        document.getElementById('form-sendMember').style.display = 'none';
+        document.getElementById('form-referenceMember').style.display = 'none';
+        document.getElementById('sendButton').classList.add('hidden');
+        document.getElementById('mysendButton').classList.remove('hidden');
+        var approvers = document.getElementsByClassName('approvers');
+        while (approvers.length > 0) {
+            approvers[0].remove();
+        }
+        var referrer = document.getElementsByClassName('referrer');
+        while (referrer.length > 0) {
+            referrer[0].remove();
+        }
+    }
+}
    
    // 내게쓰기 숨기기
    function mailBox(){
