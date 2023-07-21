@@ -532,6 +532,22 @@
 	console.log(name);
 	var socket;
 	var stompClient;
+	var userName;
+	
+	$.ajax({
+		url:'getMemberName.ajax',
+		type:'post',
+		async : false,
+		data:{'member_id': name},
+		dataType:'json',
+		success:function(data){
+			console.log(data);
+			userName = data.name;
+		},
+		error:function(e){
+			console.log(e);
+		}
+	});
 	
 	var scrollPosition = 0;
 	chatListAjax();
@@ -932,25 +948,12 @@
 	*/
 	function chat_room_exit() {
 		console.log(chat_room_id);
-		var userName;
+		
 		
 		if (stompClient) {
 	    	console.log('if문 시작');
 	    	
-	    	$.ajax({
-				url:'getMemberName.ajax',
-				type:'post',
-				async : false,
-				data:{'member_id': name},
-				dataType:'json',
-				success:function(data){
-					console.log(data);
-					userName = data.name;
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+	    	
 	    	
 	        var chatMessage = {
 	            chat_room_id: chat_room_id,
