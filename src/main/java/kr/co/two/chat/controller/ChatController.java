@@ -69,7 +69,7 @@ public class ChatController {
 		logger.info("session id : " + headerAccessor.getSessionId());
 		logger.info("dto : " + dto.getChat_room_id());
 		logger.info("dto : " + dto.getSend_id());
-		logger.info("dto : " + dto.getContent());
+		//logger.info("dto : " + dto.getContent());
 		logger.info("dto : " + dto.isIs_notice());
 		
 		logger.info("template : " + template);
@@ -138,5 +138,12 @@ public class ChatController {
 	public MemberDTO myProfilePhoto(@RequestParam String member_id) {
 		logger.info(member_id);
 		return service.myProfilePhoto(member_id);
+	}
+	
+	@PostMapping(value="/getMemberName.ajax")
+	@ResponseBody
+	public MemberDTO getMemberName(@RequestParam String member_id) {
+		logger.info(member_id);
+		return service.getMemberName(member_id);
 	}
 }

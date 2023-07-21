@@ -65,8 +65,13 @@
 		WHERE member_id = #{member_id}
 	</select>
 	
-	<select id="myProfilePhoto" parameterType="String" resultType="memberDTO">
+	<select id="myProfilePhoto" parameterType="String" resultType="MemberDTO">
 		SELECT profile_photo FROM member
 		WHERE member_id=#{member_id} 
+	</select>
+	
+	<select id="getMemberName" parameterType="String" resultType="MemberDTO">
+		SELECT name FROM member
+		WHERE member_id = #{member_id}
 	</select>
 </mapper>
