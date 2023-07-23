@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import kr.co.two.alarm.config.WebSocketHandler;
 import kr.co.two.payment.dao.PaymentDAO;
 import kr.co.two.payment.dto.MemberDTO;
 import kr.co.two.payment.dto.PayListDTO;
@@ -29,6 +29,8 @@ import kr.co.two.project.dto.ProjectDTO;
 public class PaymentService {
 
    @Autowired PaymentDAO dao;
+   
+   @Autowired WebSocketHandler handler;
    
    Logger logger = LoggerFactory.getLogger(getClass());
    
@@ -257,6 +259,7 @@ public class PaymentService {
                params.put("member_id", member_id);
                if(i == 1) {
                   params.put("memo", "(결재요청)");
+                  handler.sendAlarm("알림");
                   dao.paymentShipAlarm(params);
                }
                int paymentShipRow = dao.paymentShip(params);
@@ -753,7 +756,7 @@ public int payRequest(String document_id, String note, String member_id, HttpSes
    
    
    
-   
+   handler.sendAlarm("알림");
    
    
    // 결재 전부다 완료되면 완료로 바꾸기
@@ -766,6 +769,7 @@ public int payRequest(String document_id, String note, String member_id, HttpSes
       payEndMap.put("document_id", document_id);
       payEndMap.put("memo", "(결재완료)");
       dao.paymentShipAlarm(payEndMap);
+      handler.sendAlarm("알림");
    }
    
    
@@ -789,6 +793,7 @@ public int payRefuse(String document_id, String note, String member_id) {
    map.put("member_id", dao.paymentCompleteMember(document_id));
    
    dao.paymentShipAlarm(map);
+   handler.sendAlarm("알림");
    
    return 1;
 }

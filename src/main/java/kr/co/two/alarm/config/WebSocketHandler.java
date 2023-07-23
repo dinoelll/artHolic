@@ -64,12 +64,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
      
  }
      
- //클라이언트 연결을 끊었을 때 실행
- @Override
- public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-     sessionList.remove(session);
-     logger.info("{} 연결 끊김.", session.getId());
- }
+	 //클라이언트 연결을 끊었을 때 실행
+	 @Override
+	 public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+	     sessionList.remove(session);
+	     logger.info("{} 연결 끊김.", session.getId());
+	 }
 
 	public void setPostCreated(boolean isPostCreated) {
 		this.isPostCreated = isPostCreated;

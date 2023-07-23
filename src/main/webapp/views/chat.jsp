@@ -537,7 +537,6 @@
 	$.ajax({
 		url:'getMemberName.ajax',
 		type:'post',
-		async : false,
 		data:{'member_id': name},
 		dataType:'json',
 		success:function(data){
