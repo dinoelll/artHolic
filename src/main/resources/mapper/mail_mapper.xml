@@ -361,10 +361,13 @@
 		<if test="type=='trash'">
 	  	AND mr.blind = 1
 	  </if>
-	  <if test="type=='receive' or type=='self' or type=='import' or type=='trash' or type=='all'">
+	  <if test="type=='self' or type=='import' or type=='trash' or type=='all'">
 	  	GROUP BY
     	m.mail_id, m.member_id,m.writeTime,m.mailSubject,m.mailContent,m.blind,m.favorites,m.temp,mb.name,
     	mf.mail_file_id,mr.read_chk,mr.read_date
+	  </if>
+	  <if test="type=='receive'">
+	  	GROUP BY m.mail_id
 	  </if>
 	  <if test="type== 'all' and !(searchText == null or searchText.equals('')) or type=='import' or type=='trash'">
 	  		UNION SELECT DISTINCT 
