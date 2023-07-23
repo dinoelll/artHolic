@@ -153,4 +153,8 @@ public class ChatService {
 	public MemberDTO myProfilePhoto(String member_id) {
 		return dao.myProfilePhoto(member_id);
 	}
+
+	public MemberDTO getMemberName(String member_id) {
+		return dao.getMemberName(member_id);
+	}
 }

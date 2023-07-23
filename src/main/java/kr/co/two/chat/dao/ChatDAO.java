@@ -37,4 +37,6 @@ public interface ChatDAO {
 
 	MemberDTO myProfilePhoto(String member_id);
 
+	MemberDTO getMemberName(String member_id);
+
 }

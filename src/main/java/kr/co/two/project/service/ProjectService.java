@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.two.alarm.config.WebSocketHandler;
 import kr.co.two.mail.dto.MailDTO;
 import kr.co.two.member.dto.MemberDTO;
 import kr.co.two.project.dao.ProjectDAO;
@@ -36,9 +37,15 @@ public class ProjectService {
    ProjectDAO dao;
 
    Logger logger = LoggerFactory.getLogger(getClass());
+   
+   WebSocketHandler handler = null;
 
    @Value("${spring.servlet.multipart.location}")
    private String attachmentRoot;
+   
+   public ProjectService(WebSocketHandler handler) {
+	   this.handler = handler;
+   }
 
    public HashMap<String, Object> listCall(int page, int cnt, String opt, String keyword,String myproject) {
 
@@ -116,7 +123,7 @@ public class ProjectService {
 		}
       }
       
-      
+      handler.sendAlarm("알림");
       
       return "redirect:/projectDetail.go?type=controller";
 

@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.util.StringUtils;
 
+import kr.co.two.alarm.config.WebSocketHandler;
 import kr.co.two.mail.dao.MailDAO;
 import kr.co.two.mail.dto.MailDTO;
 
@@ -44,6 +45,8 @@ public class MailService {
    @Autowired MailDAO dao;
    
    Logger logger = LoggerFactory.getLogger(getClass());
+   
+   @Autowired WebSocketHandler handler;
 
    public ArrayList<MailDTO> mailgetOptions() {
       
@@ -172,6 +175,7 @@ public class MailService {
        if (!recipients.equals("") && !recipients.isEmpty()) {
            logger.info("Saving receivers");
            String[] recipientList = recipients.split(",");
+           handler.sendAlarm("알림");
            for (String recipient : recipientList) {
                dto.setMember_id(recipient);
                int result = dao.receiverWrite(dto);

@@ -532,6 +532,21 @@
 	console.log(name);
 	var socket;
 	var stompClient;
+	var userName;
+	
+	$.ajax({
+		url:'getMemberName.ajax',
+		type:'post',
+		data:{'member_id': name},
+		dataType:'json',
+		success:function(data){
+			console.log(data);
+			userName = data.name;
+		},
+		error:function(e){
+			console.log(e);
+		}
+	});
 	
 	var scrollPosition = 0;
 	chatListAjax();
@@ -623,42 +638,43 @@
 	        });
 	    });
 	}
-	/*
-	<li class="clearfix">
-    <div class="message-data text-right">
-        <span class="message-data-time">10:10 AM, Today</span>
-        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
-       	<div>강경석</div>
-    </div>
-    <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
-    
-	</li>
-	<li class="clearfix">
-	    <div class="message-data">
-	        <span class="message-data-time">10:12 AM, Today</span>
-	    </div>
-	    <div class="message my-message">Are we meeting today?</div>                                    
-	</li>    
-	*/
+	
 	function chatHistory(data) {
 		$('.m-b-0.chat_history').html('');
+		console.log(data);
 		data.forEach(function(item) {
 			var content = '';
-				
 			console.log(item.is_notice);
+			
+			var inputTime = item.send_time;
+
+			// Date 객체를 생성하여 입력된 시간을 파싱
+			var dateObj = new Date(inputTime);
+
+			const formattedTime = new Intl.DateTimeFormat('ko-KR', {
+				  year: 'numeric',
+				  month: '2-digit',
+				  day: '2-digit',
+				  hour: '2-digit',
+				  minute: '2-digit',
+				  hour12: false
+				}).format(dateObj);
+
+			console.log(formattedTime); // 출력 예: "2023-07-21 15:36"
+			
 			if(item.is_notice != true){
 				if(name == item.send_id) {
 					content+='<li class="clearfix">';
 					content+='<div class="message-data">';
-					content+='<span class="message-data-time">'+item.send_time+'</span>';
+					content+='<span class="message-data-time">'+formattedTime+'</span>';
 					content+='</div>';
 					content+='<div class="message my-message">'+item.content+'</div>';
 				}else {
 					content+='<li class="clearfix">';
 					content+='<div class="message-data text-right">';
-					content+='<span class="message-data-time">'+item.send_time+'</span>';
+					content+='<span class="message-data-time">'+formattedTime+'</span>';
 					content+='<img src="/photo/'+item.profile_photo+'" alt="avatar">';
-					content+='<div>'+item.send_id+'</div>';
+					content+='<div>'+item.name+'</div>';
 					content+='</div>';
 					content+='<div class="message other-message float-right">'+item.content+'</div>';
 					//content+='</li>';
@@ -932,12 +948,17 @@
 	*/
 	function chat_room_exit() {
 		console.log(chat_room_id);
+		
+		
 		if (stompClient) {
 	    	console.log('if문 시작');
+	    	
+	    	
+	    	
 	        var chatMessage = {
 	            chat_room_id: chat_room_id,
 	            send_id: name,
-	            content: name+'님이 퇴장하셨습니다.',
+	            content: userName+'님이 퇴장하셨습니다.',
 	            is_notice : true
 	        };
 			console.log('chat_room_exit');
