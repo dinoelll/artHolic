@@ -383,7 +383,11 @@ listCall(showPage);
 			 content += '</td>';
 			 content += '<td class="mailbox-star" id="mailSubjectForm" ><a href="#" class="toggle-favorite" data-mail-id="' + item.mail_id + '">';
 			 if(title != '검색결과'){
-				 
+				 if(item.bookmark>0){
+					 content += '<i class="fas fa-star text-warning">';
+				 }else{
+					 content += '<i class="far fa-star">';
+				 }
 			 }else{
 				 if((item.is_receiver == 0 || item.is_receiver == 1) && item.blind == false ){
 					 if(item.bookmark>0){

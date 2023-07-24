@@ -147,7 +147,6 @@
                  </div>
                  <c:forEach items="${dto.dto}" var="item">
                  </c:forEach>
-                 <c:if test="${item.is_receiver == 1}">
                 <div class="mailboxForm" id="refferMember">참조&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                    <c:forEach items="${dto.dto}" var="item">
                       <c:if test="${item.is_receiver == 1}">
@@ -155,12 +154,11 @@
                       </c:if>
                    </c:forEach>
                 </div>
-                </c:if>
                 <div class="mailboxForm" id="writeTimeDisplay">${dto.memberdto.get(0).writeTime}</div>
                 <input type="hidden" value="${dto.memberdto.get(0).mail_id}" name="mail_id" id="mail_id">
                 <input type="hidden" value="${dto.memberdto.get(0).mail_id}" name="seletedMailId" id="seletedMailId">
                 <input type="hidden" value="${type}" name="type" id="type">
-                <c:forEach items="${dto.dto}" var="item">
+                <%-- <c:forEach items="${dto.dto}" var="item">
                 	<input type="hidden" value="${item.dept_name}&nbsp; ${item.position_name}&nbsp;${item.name}" name="refferMember">
                 </c:forEach>
                 <c:forEach items="${dto.mailpthotoList}" var = "file">
@@ -169,7 +167,7 @@
                 <input type="hidden" value=" ${dto.memberdto.get(0).dept_name}&nbsp;${dto.memberdto.get(0).position_name}&nbsp;${dto.memberdto.get(0).name}" name = "mailMember">
                 <input type="hidden" value="${dto.memberdto.get(0).mailContent}" name="mailConent">
                 
-                <input type="hidden" value="${dto.memberdto.get(0).mailSubject}" name="mailSubject">
+                <input type="hidden" value="${dto.memberdto.get(0).mailSubject}" name="mailSubject"> --%>
                 <input type="hidden" name="set" value="" id="set">
                   <!--<span class="mailbox-read-time float-right">2023.07.24 10:03</span></h6> -->
               </div>
