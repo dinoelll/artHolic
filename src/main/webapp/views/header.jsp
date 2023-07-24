@@ -350,7 +350,7 @@
    
    var socket;
 
-   socket = new WebSocket('ws://192.168.12.41/alarm');
+   socket = new WebSocket('ws://localhost/alarm');
 
     socket.onopen = function(event) {
 		console.log('WebSocket 연결이 열렸습니다.');
@@ -424,6 +424,57 @@
        var message = event.data;
        console.log('수신된 메시지: ' + message);
        // 메시지 처리 로직 구현
+       
+       $.ajax({
+	   		type:'post',
+	   		url:'alarmCount.ajax',
+	   		async: false,
+	   		data: {
+	   			receive_id : '${sessionScope.loginId}'
+	   		},
+	   		dataType:'json',
+	   		success:function(data){
+	   			console.log(data);
+	   			$('.badge.badge-warning.navbar-badge').html(data);
+	   		},
+	   		error:function(e){
+	   			console.log(e);
+	   		}		
+   		});
+       
+       
+       $.ajax({
+	   		type:'post',
+	   		url:'alarmList.ajax',
+	   		data: {
+	   			receive_id : '${sessionScope.loginId}'
+	   		},
+	   		dataType:'json',
+	   		success:function(data){
+	   			console.log(data);
+	   			var content='';
+	   			$('.dropdown-menu.dropdown-menu-lg.dropdown-menu-right').html('');
+	   			data.forEach(function(item){
+	   				content += '<div class="dropdown-divider"></div>';
+	   				if(item.alarm_code == 'ALARM_FEED') {
+	   					content += '<a href="/projectDetail.go?type=jsp&project_id='+item.iden_id+'&project_name='+item.project_name+'" onclick="readAlarm(\''+item.alarm_id+'\')" class="dropdown-item">';
+	   				} else if(item.alarm_code == 'ALARM_MAIL') {
+	   					content += '<a href="/inBox.go" onclick="readAlarm(\''+item.alarm_id+'\')" class="dropdown-item">';
+	   				} else {
+	   					content += '<a href="/paymentMain.go" onclick="readAlarm(\''+item.alarm_id+'\')" class="dropdown-item">';
+	   				}
+	   				
+	   				content += item.alarmcontent+'</a>';
+	   			});
+	   			$('.dropdown-menu.dropdown-menu-lg.dropdown-menu-right').append(content);
+	   			// HTML에 알림 목록 추가
+	   			//$('#notification-table').append(content);
+	
+	   		},
+	   		error:function(e){
+	   			console.log(e);
+	   		}		
+		});
    };
 
    socket.onclose = function(event) {
