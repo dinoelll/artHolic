@@ -4,9 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <title>ArtHolic</title>
-<!-- 
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
- -->
+
 <!-- Ionicons -->
 <link rel="stylesheet"
 	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">

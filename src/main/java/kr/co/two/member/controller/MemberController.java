@@ -88,7 +88,7 @@ public class MemberController {
 	}
 	
 	@PostMapping(value="/join.do")
-	public ModelAndView employeeJoinDo(@RequestParam HashMap<String, String> params, @RequestParam MultipartFile profile) {
+	public String employeeJoinDo(@RequestParam HashMap<String, String> params, @RequestParam MultipartFile profile) {
 	    
 		logger.info("employeeJoin Do Controller");
 	    logger.info("params: " + params);
@@ -116,8 +116,10 @@ public class MemberController {
 	        // Handle birthday conversion error
 	        logger.error("Failed to parse birthday: " + birthdayString, e);
 	    }
-
-	    return service.join(params,profile,email);
+	    
+	    service.join(params,profile,email);
+	    
+	    return "redirect:/employeeList.go";
 	}
 	
 	@RequestMapping(value="/admin.ajax")
@@ -221,7 +223,7 @@ public class MemberController {
 	}
 	
 	@PostMapping(value="/update.do")
-	public ModelAndView employeeUpdate(@RequestParam HashMap<String, String> params, @RequestParam MultipartFile profile) {
+	public String employeeUpdate(@RequestParam HashMap<String, String> params, @RequestParam MultipartFile profile) {
 		
 		logger.info("employeeUpdate Controller");
 		logger.info("params: " + params);
@@ -252,8 +254,10 @@ public class MemberController {
 	        // Handle birthday conversion error
 	        logger.error("Failed to parse birthday: " + birthdayString, e);
 	    }
-
-        return service.update(params,profile,email,blind);
+	    
+	    service.update(params,profile,email,blind);
+	    
+        return "redirect:/employeeList.go";
 	}
 	
 	@RequestMapping(value="/companyAddress.go")
@@ -282,7 +286,9 @@ public class MemberController {
 		logger.info("companyWrite Call Controller");
 		logger.info("params :"+params);
 		
-		return service.companyWrite(params);
+		service.companyWrite(params);
+		
+		return "redirect:/employeeList.go";
 	}
 	
 	@RequestMapping(value="/companyDetail.ajax")
